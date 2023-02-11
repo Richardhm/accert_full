@@ -51,6 +51,9 @@ return [
         'allowed' => true,
     ],
 
+    
+   
+
     /*
     |--------------------------------------------------------------------------
     | Admin Panel Logo
@@ -154,6 +157,7 @@ return [
     'layout_fixed_navbar' => null,
     'layout_fixed_footer' => null,
     'layout_dark_mode' => null,
+
 
     /*
     |--------------------------------------------------------------------------
@@ -304,7 +308,7 @@ return [
             'icon'        => 'fas fa-money-bill',
             'icon_color' => 'white', 
             'classes'  => 'text-white',
-            
+            'can'       => 'orcamento'            
         ],
 
         [
@@ -313,7 +317,7 @@ return [
             "icon" => "fas fa-id-card-alt",
             'icon_color' => 'white',
             'classes' => 'text-white',
-            
+            'can'       => 'contratos'  
         ],
 
         [
@@ -322,6 +326,7 @@ return [
             "icon" => "fas fa-coins",
             'icon_color' => 'white',
             'classes' => 'text-white',
+            'can'       => 'financeiro'  
             
         ],
 
@@ -331,7 +336,7 @@ return [
             "icon" => "fas fa-id-card-alt",
             'icon_color' => 'white',
             'classes' => 'text-white',
-            
+            'can'       => 'comissao'
         ],
 
         [
@@ -340,7 +345,7 @@ return [
             "icon" => "fas fa-crown",
             'icon_color' => 'white',
             'classes' => 'text-white',
-            
+            'can' => 'premiacoes'
         ],
 
         [
@@ -348,6 +353,7 @@ return [
             'icon'    => 'fas fa-cog',
             'icon_color' => 'white',
             'classes' => 'text-white',
+            'can' => 'configuracoes',
             'submenu' => [
                 [
                     'text' => 'Corretora',
@@ -365,10 +371,10 @@ return [
                 ],
                 [
                     "text" => "Tabela Origem",
-                    "url" => "admin/cidades",
+                    "url" => "admin/tabela_origem",
                     "icon" => "fas fa-city",
                     'classes' => 'text-white',
-                    "active" => ['cidades',"http://localhost:8000/admin/cidades/*"]
+                    "active" => ['tabela_origem',"http://localhost:8000/admin/tabela_origem/*"]
 
                 ],
                 [
@@ -468,15 +474,20 @@ return [
         'Select2' => [
             'active' => false,
             'files' => [
+                // [
+                //     'type' => 'js',
+                //     'asset' => false,
+                //     'location' => '/vendor/select2/js/select2.min.js',
+                // ],
                 [
-                    'type' => 'js',
+                    'type' => 'css',
                     'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js',
+                    'location' => '/vendor/select2/css/select2.min.css',
                 ],
                 [
                     'type' => 'css',
                     'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css',
+                    'location' => '/vendor/select2-bootstrap4-theme/select2-bootstrap4.min.css',
                 ],
             ],
         ],
@@ -489,6 +500,22 @@ return [
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js',
                 ],
             ],
+        ],
+        'Toastr' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => '/vendor/toastr/toastr.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => '/vendor/toastr/toastr.min.css',
+                ],
+               
+            ]
         ],
         'Sweetalert2' => [
             'active' => false,
@@ -514,6 +541,28 @@ return [
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
                 ],
             ],
+        ],
+        'jqueryUi' => [
+            'active' => false,
+            'files' => [
+                // Core
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/jquery-ui/jquery-ui.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/jquery-ui/datepicker-pt-BR.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/jquery-ui/jquery-ui.min.css',
+                ],
+               
+            ]
         ],
     ],
 

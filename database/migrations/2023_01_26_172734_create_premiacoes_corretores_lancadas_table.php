@@ -17,6 +17,7 @@ class CreatePremiacoesCorretoresLancadasTable extends Migration
             $table->id();
             $table->unsignedBigInteger('premiacoes_id');
             $table->integer("parcela");
+            $table->date("data");
             $table->decimal("valor",10,2);
             $table->boolean("status");
             $table->foreign('premiacoes_id')->references('id')->on('premiacoes')->onDelete('cascade');

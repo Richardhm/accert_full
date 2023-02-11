@@ -15,10 +15,10 @@ class CreateDependentesTable extends Migration
     {
         Schema::create('dependentes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('cliente_id');
             $table->string("nome");
             $table->string("cpf");
-            $table->foreign('user_id')->references('id')->on('users')->onDelete("cascade");
+            $table->foreign('cliente_id')->references('id')->on('clientes')->onDelete("cascade");
             $table->timestamps();
         });
     }

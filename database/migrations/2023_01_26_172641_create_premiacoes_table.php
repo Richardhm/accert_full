@@ -20,11 +20,13 @@ class CreatePremiacoesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('administradora_id');
             $table->unsignedBigInteger('tabela_origens_id');
+            $table->unsignedBigInteger('contrato_id')->nullable();
             $table->timestamps();
             $table->foreign('plano_id')->references('id')->on('planos')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('administradora_id')->references('id')->on('administradoras')->onDelete('cascade');
             $table->foreign('tabela_origens_id')->references('id')->on('tabela_origens')->onDelete('cascade');
+            $table->foreign('contrato_id')->references('id')->on('contratos')->onDelete('cascade');
         });
     }
 

@@ -15,10 +15,17 @@ class CreateComissoesCorretoresConfiguracoesTable extends Migration
     {
         Schema::create('comissoes_corretores_configuracoes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('comissoes_id');
-            $table->integer("parcela");
-            $table->decimal("porcentagens",10,2);
-            $table->foreign('comissoes_id')->references('id')->on('comissoes')->onDelete('cascade');
+            $table->unsignedBigInteger('plano_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('administradora_id');
+            $table->unsignedBigInteger('tabela_origens_id');
+            
+            $table->string('valor');
+            $table->integer('parcela');
+            $table->foreign('plano_id')->references('id')->on('planos')->onDelete("cascade");
+            $table->foreign('user_id')->references('id')->on('users')->onDelete("cascade");
+            $table->foreign('administradora_id')->references('id')->on('administradoras')->onDelete("cascade");
+           $table->foreign('tabela_origens_id')->references('id')->on('tabela_origens')->onDelete('cascade');
             $table->timestamps();
         });
     }

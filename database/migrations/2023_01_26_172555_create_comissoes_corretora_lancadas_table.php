@@ -17,6 +17,7 @@ class CreateComissoesCorretoraLancadasTable extends Migration
             $table->id();
             $table->unsignedBigInteger('comissoes_id');
             $table->integer("parcela");
+            $table->date("data");
             $table->decimal("valor",10,2);
             $table->boolean("status");
             $table->foreign('comissoes_id')->references('id')->on('comissoes')->onDelete('cascade');

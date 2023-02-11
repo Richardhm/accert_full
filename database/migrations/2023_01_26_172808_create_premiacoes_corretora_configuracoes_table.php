@@ -20,12 +20,18 @@ class CreatePremiacoesCorretoraConfiguracoesTable extends Migration
     {
         Schema::create('premiacoes_corretora_configuracoes', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('plano_id');
             
-            $table->unsignedBigInteger('premiacoes_id');
-            $table->integer("parcela");
-            $table->decimal("porcentagem",10,2);
-            $table->foreign('premiacoes_id')->references('id')->on('premiacoes')->onDelete('cascade');
-
+            $table->unsignedBigInteger('administradora_id');
+            $table->unsignedBigInteger('tabela_origens_id');
+            
+            $table->string('valor');
+            $table->integer('parcela');
+            
+            $table->foreign('plano_id')->references('id')->on('planos')->onDelete("cascade");
+            
+            $table->foreign('administradora_id')->references('id')->on('administradoras')->onDelete("cascade");
+            $table->foreign('tabela_origens_id')->references('id')->on('tabela_origens')->onDelete('cascade');
 
             $table->timestamps();
         });

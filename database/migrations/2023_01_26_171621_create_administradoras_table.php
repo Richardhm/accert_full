@@ -17,7 +17,7 @@ class CreateAdministradorasTable extends Migration
             $table->id();
             $table->string("nome");
             $table->string("logo")->nullable();
-            $table->string("cor");
+            $table->string("cor")->nullable();
             $table->timestamps();
         });
     }
