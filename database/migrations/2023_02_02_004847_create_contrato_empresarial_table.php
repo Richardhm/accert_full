@@ -15,12 +15,11 @@ class CreateContratoEmpresarialTable extends Migration
     {
         Schema::create('contrato_empresarial', function (Blueprint $table) {
             $table->id();
+
             $table->unsignedBigInteger('plano_empresarial_id')->nullable();
             $table->unsignedBigInteger('tabela_origens_id');
+            $table->unsignedBigInteger('financeiro_id');
             $table->unsignedBigInteger('user_id');
-            
-
-
             $table->date('data');
 
             $table->string('codigo_corretora');
@@ -37,7 +36,23 @@ class CreateContratoEmpresarialTable extends Migration
             $table->decimal('valor_boleto',10,2);            
             $table->string('codigo_cliente');
             $table->string('senha_cliente');
-            $table->integer('dia_vencimento');
+            $table->decimal('valor_plano_saude',10,2);    
+            $table->decimal('valor_plano_odonto',10,2);    
+
+            $table->string('codigo_saude');
+            $table->string('codigo_odonto');
+
+
+            $table->date('data_boleto');
+
+            $table->string('responsavel');
+            $table->string('telefone');
+            $table->string('celular');
+            $table->string('email');
+            $table->string('cidade');
+            $table->string('uf');
+            
+            $table->integer('plano_contrado');
 
             $table->foreign('plano_empresarial_id')->references('id')->on('plano_empresarial');
             $table->foreign('tabela_origens_id')->references('id')->on('tabela_origens');

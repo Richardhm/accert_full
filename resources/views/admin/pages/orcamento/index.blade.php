@@ -259,6 +259,59 @@
 				 });
 				return false;
 			});
+
+			$("body").on('click','.card_plano:not(".cards_destaque_links")',function(){
+
+				
+
+
+                $(".cards_destaque_links").remove();
+                let administradora_id = $(this).find('input[name="administradora_id"]').val();
+				
+
+
+                // let odonto = $(this).find('input[name="odonto"]').val();
+                // let plano_id = $(this).find('input[name="plano_id"]').val();
+                // let cotacao = $("#cotacao_id").val();
+                // let cliente = $("#cliente_id").val();
+                // let telefone = $("#celular").val().replace(" ","").replace("(","").replace(")","").replace("  ","").replace(" ","").replace("-","");
+                // //var alvo = $(document).height() - $(window).height() - $(window).scrollTop();
+                // let email = $('input[name="email"]').val();
+                // let cidade = $('select[name="cidades"]').val();
+                // let origem_cidade = $('select[name="origem_cidade"]').val();
+                var element = $('<div></div>');
+                var links = `
+                    
+                        
+                        <a style="color:#FFF;margin-left:10px;display:flex;flex-basis:100%;align-items:center;justify-content: center;" class="border p-1 border-dark rounded enviar_mensagem bg-danger pdf" href="">
+                            <span style="margin-right:15px;">Criar PDF</span>
+                            <i class="fas fa-file-pdf"></i>
+                        </a>
+                    
+                    `
+                element.html(links);
+                element.addClass("cards_destaque_links")
+                element.hide();
+
+
+                $(this).find('table').after(element);
+                element.fadeIn();
+
+
+            });
+
+
+			$("body").on('click','.pdf',function(){
+				
+				return false;
+			});
+
+
+
+
+
+
+
 		});
 
 	</script>

@@ -39,6 +39,11 @@ class Contrato extends Model
         return $this->belongsTo(Cliente::class,'cliente_id','id');
     }
 
+    public function cliente()
+    {
+        return $this->hasOne(Cliente::class);
+    }
+
     public function comissao()
     {
         return $this->hasOne(Comissoes::class);

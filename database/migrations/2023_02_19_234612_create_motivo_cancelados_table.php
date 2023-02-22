@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePlanosTable extends Migration
+class CreateMotivoCanceladosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreatePlanosTable extends Migration
      */
     public function up()
     {
-        Schema::create('planos', function (Blueprint $table) {
+        Schema::create('motivo_cancelados', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->boolean('empresarial')->default(0);
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ class CreatePlanosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('planos');
+        Schema::dropIfExists('motivo_cancelados');
     }
 }

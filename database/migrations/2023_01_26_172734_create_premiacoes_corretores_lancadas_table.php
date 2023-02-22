@@ -19,7 +19,9 @@ class CreatePremiacoesCorretoresLancadasTable extends Migration
             $table->integer("parcela");
             $table->date("data");
             $table->decimal("valor",10,2);
-            $table->boolean("status");
+            $table->boolean("status_financeiro")->nullable()->default(0);
+            $table->boolean("status_gerente")->nullable()->default(0);
+            $table->boolean('cancelado')->nullable()->default(0);
             $table->foreign('premiacoes_id')->references('id')->on('premiacoes')->onDelete('cascade');
             $table->timestamps();
         });

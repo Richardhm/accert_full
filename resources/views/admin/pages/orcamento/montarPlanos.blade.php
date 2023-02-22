@@ -1,4 +1,5 @@
-      @php 
+@if(count($planos) >= 1) 
+@php 
         $ii=0;         
         $total_apartamento_coparticipacao = 0;
         $total_enfermaria_coparticipacao = 0;
@@ -19,7 +20,7 @@
             @if($ii==0)
               <div class="card shadow card_plano">
                 <div class="card-body" style="box-shadow:rgba(0,0,0,0.8) 0.6em 0.7em 5px;padding:0.6rem;">
-                  
+                <input type="hidden" name="administradora_id" id="administradora_id" value="{{$planos[$i]->admin_id}}"> 
                   <div class="d-flex mb-2">
                     <div style="flex-basis:30%;background-color:#fff;padding:10px;border-radius:10px;">
                       <img class="mx-auto" src="{{asset($planos[$i]->admin_logo)}}"  alt="{{$planos[$i]->admin_nome}}" width="100%;">
@@ -138,3 +139,6 @@
         </tr>
       </tfoot>   
       </div>      
+@else 
+  <h3>Sem Resultados para essa pesquisa</h3>
+@endif

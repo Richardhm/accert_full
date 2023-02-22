@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'Cadastro Individual')
+@section('title', 'Cadastro Empresarial')
 @section('plugins.jqueryUi', true)
 @section('content_header')
 	<h2 class="text-white">Plano Empresarial</h2>
@@ -27,8 +27,8 @@
                 </div>
                 <div style="flex-basis:10%">
                     <div>
-                        <span for="plano_empresarial_id" class="text-white" style="font-size:0.875em;">Plano:</span>
-                        <select required class="form-control  form-control-sm" id="plano_empresarial_id" name="plano_empresarial_id">
+                        <span for="plano_id" class="text-white" style="font-size:0.875em;">Plano:</span>
+                        <select required class="form-control  form-control-sm" id="plano_id" name="plano_id">
                             <option value="">--Plano--</option>
                             @foreach($planos_empresarial as $p)
                                 <option value="{{$p->id}}">{{$p->nome}}</option>

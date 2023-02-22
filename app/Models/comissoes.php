@@ -23,6 +23,9 @@ class comissoes extends Model
     {
         return $this->belongsTo(Contrato::class);   
     }
+    
+
+
 
 
 

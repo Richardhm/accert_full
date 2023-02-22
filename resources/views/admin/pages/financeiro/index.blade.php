@@ -1,30 +1,129 @@
 @extends('adminlte::page')
 @section('title', 'Financeiro')
-@section('plugins.jqueryUi', true)
-@section('plugins.Toastr', true)
+@section('plugins.Sweetalert2',true)
 @section('plugins.Datatables', true)
-@section('content_header')
 
+@section('content_top_nav_right')
+    <li class="nav-item mostrar_comissao"><a href="" class="nav-link div_info text-white">
+        <i class='fas fa-eye'></i>
+    </a></li>
+    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+        <i class="fas fa-expand-arrows-alt text-white"></i>
+    </a>
+    
+@stop
+
+@section('content_header')
     <ul class="list_abas">
         <li data-id="aba_individual" class="ativo">Individual</li>
         <li data-id="aba_coletivo">Coletivo</li>
         <li data-id="aba_empresarial">Empresarial</li>
     </ul>
-
-@stop
-
-@section('content_top_nav_right')
-    <li class="nav-item"><a href="" class="nav-link div_info"><i class="fas fa-cogs text-white"></i></a></li>
-    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-        <i class="fas fa-expand-arrows-alt text-white"></i>
-    </a>
 @stop
 
 @section('content')
 
-    <div class="container_div_info">
-        
+    <div id="container_mostrar_comissao" class="ocultar"></div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="cancelarModal" tabindex="-1" aria-labelledby="cancelarModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cancelarModalLabel">Cancelados</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST" name="formulario_cancelados" id="formulario_cancelados">
+                        <input type="hidden" name="comissao_id_cancelado" id="comissao_id_cancelado">
+                        <div class="form-group">
+                            <label for="">Data Baixa:</label>
+                            <input type="date" name="date" id="date" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="motivo">Motivo Cancelamento:</label>
+                            <select name="motivo" id="motivo" class="form-control">
+                                <option value="">--Escolher o Motivo--</option>
+                                
+                                @foreach($motivo_cancelados as $mm) 
+                                    <option value="{{$mm->id}}">{{$mm->nome}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="obs">Observação:</label> 
+                            <textarea name="obs" id="obs" cols="30" rows="4" class="form-control"></textarea>
+                        </div>
+
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+
+                    </form>
+                </div>            
+            </div>
+        </div>
     </div>
+
+    <div class="modal fade" id="dataBaixaModal" tabindex="-1" role="dialog" aria-labelledby="dataBaixaModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dataBaixaModalLabel">Data Da Baixa?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" name="data_da_baixa" id="data_da_baixa" method="POST">
+                    <input type="date" name="data_baixa" id="data_baixa" class="form-control form-control-sm">
+                    <input type="hidden" name="comissao_id" id="comissao_id_baixa">                   
+                    <div id="error_data_baixa">
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dataBaixaIndividualModal" tabindex="-1" role="dialog" aria-labelledby="dataBaixaIndividualLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dataBaixaIndividualLabel">Data Da Baixa?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" name="data_da_baixa_individual" id="data_da_baixa_individual" method="POST">
+                    <input type="date" name="date_baixa_individual" id="date_baixa_individual" class="form-control form-control-sm">
+                    <input type="hidden" name="comissao_id_baixa_individual" id="comissao_id_baixa_individual">                   
+                    <div id="error_data_baixa_individual">
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
 
     <section class="conteudo_abas">
         <!--------------------------------------INDIVIDUAL------------------------------------------>
@@ -50,51 +149,71 @@
                         <h5 class="text-center d-flex align-items-center justify-content-center py-2 border-bottom">Pendentes</h5>
 
 
-
-
-
-                        <ul style="margin:0;padding:0;list-style:none;" id="listar">
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                        <ul style="margin:0;padding:0;list-style:none;" id="listar_individual">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_em_analise_individual" class="individual">
                                 <span>Em Análise</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">1</span>                        
+                               <span class="badge badge-light individual_quantidade_em_analise" style="width:45px;text-align:right;">{{$qtd_individual_em_analise}}</span>                        
                             </li>
-
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_1_parcela_individual" class="individual">
                                 <span>Pagamento 1º Parcela</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">100</span>                        
+                               <span class="badge badge-light individual_quantidade_1_parcela" style="width:45px;text-align:right;">{{$qtd_individual_parcela_01}}</span>                        
                             </li>
 
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_2_parcela_individual" class="individual">
                                <span>Pagamento 2º Parcela</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">1000</span>                        
+                               <span class="badge badge-light individual_quantidade_2_parcela" style="width:45px;text-align:right;">{{$qtd_individual_parcela_02}}</span>                        
                             </li>
 
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_3_parcela_individual" class="individual">
                                <span>Pagamento 3º Parcela</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">10000</span>                        
+                               <span class="badge badge-light individual_quantidade_3_parcela" style="width:45px;text-align:right;">{{$qtd_individual_parcela_03}}</span>                        
                             </li>
 
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_4_parcela_individual" class="individual">
                                <span>Pagamento 4º Parcela</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_parcela_04}}</span>                        
+                               <span class="badge badge-light individual_quantidade_4_parcela" style="width:45px;text-align:right;">{{$qtd_individual_parcela_04}}</span>                        
                             </li>
 
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_5_parcela_individual" class="individual">
                                <span>Pagamento 5º Parcela</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_parcela_05}}</span>                        
+                               <span class="badge badge-light individual_quantidade_5_parcela" style="width:45px;text-align:right;">{{$qtd_individual_parcela_05}}</span>                        
                             </li>
 
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_6_parcela_individual" class="individual">
                                <span>Pagamento 6º Parcela</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_parcela_06}}</span>                        
+                               <span class="badge badge-light individual_quantidade_6_parcela" style="width:45px;text-align:right;">{{$qtd_individual_parcela_06}}</span>                        
                             </li>
 
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
-                               <span>Finalizado</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">0</span>                        
-                            </li>
+                            
                         </ul>
                     </div>
+
+
+                    <div style="background-color:#123449;border-radius:5px;">   
+                        <ul style="list-style:none;margin:0;padding:10px 0;" id="grupo_finalizados_individual">
+
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="finalizado_individual" class="individual">
+                                <span>Finalizado</span>
+                                <span class="badge badge-light individual_quantidade_finalizado" style="width:45px;text-align:right;">{{$qtd_individual_finalizado}}</span>  
+                            </li>
+                        
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="cancelado_individual" class="individual">
+                                <span>Cancelados</span>
+                                <span class="badge badge-light individual_quantidade_cancelado" style="width:45px;text-align:right;">{{$qtd_individual_cancelado}}</span>
+                            </li>
+                            
+                        </ul>
+                    </div>
+
+
+
+
+
+
+
+
+
+
                 </div>
                 <!--Fim Coluna da Esquerda  -->
 
@@ -107,7 +226,6 @@
                                 <tr>
                                     <th>Data</th>
                                     <th>Corretor</th>
-                                    
                                     <th>Cliente</th>
                                     <th>Vencimento</th>                                  
                                     <th>Status</th>
@@ -233,7 +351,6 @@
                             </div>
 
 
-
                         </div>
 
                        
@@ -280,6 +397,14 @@
                         </div>                
                     </section>                    
 
+                    <div class="button_individual mt-1">
+                        <button class="btn btn-danger w-50 mr-2 excluir_individual" data-comissao="">Excluir</button>
+                        <button class="btn btn-success w-50 next_individual">Conferido</button>
+                    </div>
+
+
+
+
                 </div>    
                 <!---------FIM DIREITA-------------->    
             </section>
@@ -304,50 +429,66 @@
                     </div>
                     
                     <div style="margin:0 0 20px 0;padding:0;background-color:#123449;border-radius:5px;">
-                        <h5 class="text-center d-flex align-items-center justify-content-center py-2 border-bottom">Pendentes</h5>
+                        <div class="border-bottom align-items-center py-2" style="display:flex;flex-basis:100%;justify-content: space-between;">
+                            <h5 class="ml-1">Pendentes</h5>
+                            <span class="mr-2">{{$total}}</span>
+                        </div>
+                        
                         <ul style="margin:0;padding:0;list-style:none;" id="listar">
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="em_analise_coletivo" class="fundo coletivo ">
                                 <span>Em Analise</span>
-                                <span class="badge badge-light" style="width:45px;text-align:right;vertical-align: middle;">10</span>                        
+                                <span class="badge badge-light em_analise_coletivo" style="width:45px;text-align:right;vertical-align: middle;">{{$qtd_coletivo_em_analise}}</span>                        
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_adesao_coletivo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="emissao_boleto_coletivo" class="coletivo">
                                 <span>Emissão Boleto</span>
-                                <span class="badge badge-light" style="width:45px;text-align:right;">20</span>
+                                <span class="badge badge-light emissao_boleto_coletivo" style="width:45px;text-align:right;">{{$qtd_coletivo_emissao_boleto}}</span>
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_vigencia">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_adesao_coletivo" class="coletivo">
                                 <span>Pagamento Adesão</span>
-                                <span class="badge badge-light" style="width:45px;text-align:right;">30</span>
+                                <span class="badge badge-light pagamento_adesao_coletivo" style="width:45px;text-align:right;">{{$qtd_coletivo_pg_adesao}}</span>
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_vigencia">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_vigencia_coletivo" class="coletivo">
                                 <span>Pagamento Vigência</span>
-                                <span class="badge badge-light" style="width:45px;text-align:right;">30</span>
+                                <span class="badge badge-light pagamento_vigencia_coletivo" style="width:45px;text-align:right;">{{$qtd_coletivo_pg_vigencia}}</span>
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_vigencia">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_segunda_parcela" class="coletivo">
                                 <span>Pagamento 2º Parcela</span>
-                                <span class="badge badge-light" style="width:45px;text-align:right;">30</span>
+                                <span class="badge badge-light coletivo_quantidade_segunda_parcela" style="width:45px;text-align:right;">{{$qtd_coletivo_02_parcela}}</span>
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_vigencia">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_terceira_parcela" class="coletivo">
                                 <span>Pagamento 3º Parcela</span>
-                                <span class="badge badge-light" style="width:45px;text-align:right;">30</span>
+                                <span class="badge badge-light coletivo_quantidade_terceira_parcela" style="width:45px;text-align:right;">{{$qtd_coletivo_03_parcela}}</span>
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_vigencia">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_quarta_parcela" class="coletivo">
                                 <span>Pagamento 4º Parcela</span>
-                                <span class="badge badge-light" style="width:45px;text-align:right;">30</span>
+                                <span class="badge badge-light coletivo_quantidade_quarta_parcela" style="width:45px;text-align:right;">{{$qtd_coletivo_04_parcela}}</span>
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_vigencia">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_quinta_parcela" class="coletivo">
                                 <span>Pagamento 5º Parcela</span>
-                                <span class="badge badge-light" style="width:45px;text-align:right;">30</span>
+                                <span class="badge badge-light coletivo_quantidade_quinta_parcela" style="width:45px;text-align:right;">{{$qtd_coletivo_05_parcela}}</span>
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_vigencia">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_sexta_parcela" class="coletivo">
                                 <span>Pagamento 6º Parcela</span>
-                                <span class="badge badge-light" style="width:45px;text-align:right;">30</span>
+                                <span class="badge badge-light coletivo_quantidade_sexta_parcela" style="width:45px;text-align:right;">{{$qtd_coletivo_06_parcela}}</span>
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="finalizado_coletivo">
+                            
+                        </ul>
+                    </div>
+
+                    <div style="background-color:#123449;border-radius:5px;">   
+                        <ul style="list-style:none;margin:0;padding:10px 0;" id="grupo_finalizados">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="finalizado_coletivo" class="coletivo">
                                 <span>Finalizado</span>
-                                <span class="badge badge-light" style="width:45px;text-align:right;">30</span>
+                                <span class="badge badge-light quantidade_coletivo_finalizado" style="width:45px;text-align:right;">{{$qtd_coletivo_finalizados}}</span>
+                            </li>
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="cancelado_coletivo" class="coletivo">
+                                <span>Cancelados</span>
+                                <span class="badge badge-light quantidade_coletivo_cancelados" style="width:45px;text-align:right;">{{$qtd_coletivo_cancelados}}</span>
                             </li>
                         </ul>
                     </div>
+
+
                 </div>    
                 <!--FIM COLUNA DA ESQUERDA-->
 
@@ -372,10 +513,11 @@
                 </div>  
                 <!--FIM COLUNA DA CENTRAL-->
 
-
                 <!--COLUNA DA DIREITA-->    
                 <div class="mr-1 coluna-right">
+                    
                     <section class="p-1" style="background-color:#123449;">
+                        
                         
                         <div class="d-flex mb-2">
                                 
@@ -389,8 +531,18 @@
                                 <input type="text" id="tipo_plano_coletivo_view" class="form-control  form-control-sm" readonly>
                             </div>
 
-                            <div style="flex-basis:40%;" id="status">
-                                <span class="text-white" style="font-size:0.875em;">Status:</span>
+                            <div style="flex-basis:40%;margin-top:1%;" id="status">
+                                <span class="text-white" style="margin:0;padding:0;font-size:0.875em;display:flex;">
+                                    
+                                    <span style="flex-basis:50%;">  
+                                        Status:
+                                    </span>
+                                    
+                                    <div class="container_edit" style="flex-basis:50%;font-size:0.9em;">
+                                        <i class="fas fa-edit text-white editar_btn"></i>
+                                    </div> 
+
+                                </span>
                                 <input type="text" id="estagio_contrato_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>  
 
@@ -538,13 +690,13 @@
                                 <input type="text" id="texto_descricao_coletivo_view" value="" class="form-control form-control-sm" readonly> 
                             </div>    
  
-                            
+                            <input type="hidden" id="cliente_id_alvo" />
                         </div>                
                     </section>    
                 
                     <div class="buttons mt-1">
-                        <button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>
-                        <button class="btn btn-success w-50 next">Next</button>
+                        <button class="btn btn-danger w-50 mr-2 excluir_coletivo">Excluir</button>
+                        <button class="btn btn-success w-50 next">Conferido</button>
                     </div>
 
 
@@ -576,44 +728,46 @@
                     <div style="margin:0 0 20px 0;padding:0;background-color:#123449;border-radius:5px;">
                         <h5 class="text-center d-flex align-items-center justify-content-center py-2 border-bottom">Pendentes</h5>
 
-                        
-
-
-
-                        <ul style="margin:0;padding:0;list-style:none;" id="listar">
+                        <ul style="margin:0;padding:0;list-style:none;" id="listar_empresarial">
                             
-                           <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo"  style="">
+                           <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_em_analise_empresarial"  class="empresarial">
                                 <span>Em Análise</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">1</span>                        
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_empresarial_em_analise}}</span>                        
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
-                                <span>Pagamento Adesão</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">100</span>                        
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_1_parcela_empresarial" class="empresarial">
+                                <span>Pagamento 1º Parcela</span>
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_empresarial_parcela_01}}</span>                        
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_2_parcela_empresarial" class="empresarial">
                                <span>Pagamento 2º Parcela</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">1000</span>                        
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_empresarial_parcela_02}}</span>                        
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_3_parcela_empresarial" class="empresarial">
                                <span>Pagamento 3º Parcela</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">10000</span>                        
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_empresarial_parcela_03}}</span>                        
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_4_parcela_empresarial" class="empresarial">
                                <span>Pagamento 4º Parcela</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_parcela_04}}</span>                        
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_empresarial_parcela_04}}</span>                        
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_5_parcela_empresarial" class="empresarial">
                                <span>Pagamento 5º Parcela</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_parcela_05}}</span>                        
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_empresarial_parcela_05}}</span>                        
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_6_parcela_empresarial" class="empresarial">
                                <span>Pagamento 6º Parcela</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_parcela_06}}</span>                        
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_empresarial_parcela_06}}</span>                        
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_finalizado_empresarial" class="empresarial">
                                <span>Finalizado</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">0</span>                        
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_empresarial_finalizado}}</span>                        
                             </li>
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_cancelado_empresarial" class="empresarial">
+                               <span>Cancelado</span>
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_empresarial_cancelado}}</span>                        
+                            </li>
+
+
                         </ul>
                     </div>
                 </div>
@@ -735,17 +889,6 @@
 
                         </div>              
 
-
-                                
-
-
-
-
-                        
-
-                        
-
-
                         <div class="d-flex mb-2">
 
                             <div style="flex-basis:24%;">
@@ -770,12 +913,6 @@
 
 
                         </div>                    
-
-
-
-
-
-
 
                         <div class="d-flex mb-2">
 
@@ -844,97 +981,169 @@
 @stop  
 
 @section('js')
-    <script src="{{asset('js/jquery.mask.min.js')}}"></script>   
-   
+
     <script>
-        $(function(){
+        $(function(){  
 
-            let url = window.location.href.indexOf("?");
-            if(url != -1) {
-                var b =  window.location.href.substring(url);
-                var alvo = b.split("=")[1];
-                if(alvo == "coletivo") {
-                    $('.list_abas li').removeClass('ativo');
-                    $('.list_abas li:nth-child(2)').addClass("ativo");
-                    $('.conteudo_abas main').addClass('ocultar');
-                    $('#aba_coletivo').removeClass('ocultar');
-                    var c = window.location.href.replace(b,"");
-                    window.history.pushState({path:c},'',c);
-                } 
-                if(alvo == "empresarial") {
-                    $('.list_abas li').removeClass('ativo');
-                    $('.list_abas li:nth-child(3)').addClass("ativo");
-                    $('.conteudo_abas main').addClass('ocultar');
-                    $('#aba_empresarial').removeClass('ocultar');
-                    var c = window.location.href.replace(b,"");
-                    window.history.pushState({path:c},'',c);  
+            
+
+
+
+           $("body").on('click','.excluir_coletivo',function(){
+                if($(this).attr('data-cliente-excluir')) {
+                    Swal.fire({
+                        title: 'Você tem certeza que deseja realizar essa operação?',
+                        showDenyButton: true,
+                        confirmButtonText: 'Sim',
+                        denyButtonText: `Cancelar`,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            let id_cliente = $(this).attr('data-cliente-excluir');
+                            $.ajax({
+                                url:"{{route('financeiro.excluir.cliente')}}",
+                                method:"POST",
+                                data:"id_cliente="+id_cliente,
+                                success:function(res) {
+                                    if(res != "error") {
+                                        $(".coletivo_quantidade_em_analise").html(res.qtd_coletivo_em_analise);    
+                                        $(".coletivo_quantidade_emissao_boleto").html(res.qtd_coletivo_emissao_boleto);
+                                        $(".coletivo_quantidade_pagamento_adesao").html(res.qtd_coletivo_pg_adesao);
+                                        $(".coletivo_quantidade_pagamento_vigencia").html(res.qtd_coletivo_pg_vigencia);
+                                        $(".coletivo_quantidade_segunda_parcela").html(res.qtd_coletivo_02_parcela);
+                                        $(".coletivo_quantidade_terceira_parcela").html(res.qtd_coletivo_03_parcela);
+                                        $(".coletivo_quantidade_quarta_parcela").html(res.qtd_coletivo_04_parcela);
+                                        $(".coletivo_quantidade_quinta_parcela").html(res.qtd_coletivo_05_parcela);
+                                        $(".coletivo_quantidade_sexta_parcela").html(res.qtd_coletivo_06_parcela);
+                                        $(".quantidade_coletivo_finalizado").html(res.qtd_coletivo_finalizado);
+                                        table.ajax.reload();
+                                        limparFormulario();
+                                        $(".excluir_coletivo").removeAttr('data-cliente-excluir');
+                                    } else {
+                                        Swal.fire('Opss', 'Erro ao excluir o cliente', 'error')  
+                                    }
+                                }
+                            });    
+                        } else if (result.isDenied) {
+                            //
+                        }
+                    })
                 }
+           }); 
 
-            }
+           $("body").on('click','.excluir_individual',function(){
+                
+                if($(this).attr('data-cliente-excluir-individual')) {
+                   
+                    Swal.fire({
+                        title: 'Você tem certeza que deseja realizar essa operação?',
+                        showDenyButton: true,
+                        confirmButtonText: 'Sim',
+                        denyButtonText: `Cancelar`,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            let id_cliente = $(this).attr('data-cliente-excluir-individual');
+                            $.ajax({
+                                url:"{{route('financeiro.excluir.cliente.individual')}}",
+                                method:"POST",
+                                data:"id_cliente="+id_cliente,
+                                success:function(res) {
+                                    if(res != "error") {
+                                        $(".individual_quantidade_em_analise").html(res.qtd_individual_em_analise);    
+                                        $(".individual_quantidade_1_parcela").html(res.qtd_individual_01_parcela);
+                                        $(".individual_quantidade_2_parcela").html(res.qtd_individual_02_parcela);
+                                        $(".individual_quantidade_3_parcela").html(res.qtd_individual_03_parcela);
+                                        $(".individual_quantidade_4_parcela").html(res.qtd_individual_04_parcela);
+                                        $(".individual_quantidade_5_parcela").html(res.qtd_individual_05_parcela);
+                                        $(".individual_quantidade_6_parcela").html(res.qtd_individual_06_parcela);
+                                        $(".individual_quantidade_finalizado").html(res.qtd_individual_finalizado);
+                                        $(".individual_quantidade_cancelado").html(res.qtd_individual_cancelado);
+                                        
+                                        table_individual.ajax.reload();
+                                        limparFormularioIndividual();
+                                    } else {
+                                        Swal.fire('Opss', 'Erro ao excluir o cliente', 'error')  
+                                    }
+                                }
+                            });    
+                        } else if (result.isDenied) {
+                            //
+                        }
+                    })
+                }
+           }); 
 
 
+
+            
+           $('form[name="formulario_cancelados"]').on('submit',function(){
+                $.ajax({
+                    url:"{{route('financeiro.contrato.cancelados')}}",
+                    method:"POST",
+                    data:$(this).serialize(),
+                    success:function(res) {
+                        console.log(res);
+                        if(res == "error") {
+
+                        } else {
+                            
+                            if(res.plano == "coletivo") {
+
+                                $(".coletivo_quantidade_em_analise").html(res.dados.qtd_coletivo_em_analise);    
+                                $(".coletivo_quantidade_emissao_boleto").html(res.dados.qtd_coletivo_emissao_boleto);
+                                $(".coletivo_quantidade_pagamento_adesao").html(res.dados.qtd_coletivo_pg_adesao);
+                                $(".coletivo_quantidade_pagamento_vigencia").html(res.dados.qtd_coletivo_pg_vigencia);
+                                $(".coletivo_quantidade_segunda_parcela").html(res.dados.qtd_coletivo_02_parcela);
+                                $(".coletivo_quantidade_terceira_parcela").html(res.dados.qtd_coletivo_03_parcela);
+                                $(".coletivo_quantidade_quarta_parcela").html(res.dados.qtd_coletivo_04_parcela);
+                                $(".coletivo_quantidade_quinta_parcela").html(res.dados.qtd_coletivo_05_parcela);
+                                $(".coletivo_quantidade_sexta_parcela").html(res.dados.qtd_coletivo_06_parcela);
+                                $(".quantidade_coletivo_finalizado").html(res.dados.qtd_coletivo_finalizado);
+                                $(".quantidade_coletivo_cancelados").html(res.dados.qtd_coletivo_cancelado);
+                                $("#cancelarModal").modal('hide');
+                                table.ajax.reload();
+                                limparFormulario();
+                            } else {
+                                $(".individual_quantidade_em_analise").html(res.dados.qtd_individual_em_analise);    
+                                $(".individual_quantidade_1_parcela").html(res.dados.qtd_individual_01_parcela);
+                                $(".individual_quantidade_2_parcela").html(res.dados.qtd_individual_02_parcela);
+                                $(".individual_quantidade_3_parcela").html(res.dados.qtd_individual_03_parcela);
+                                $(".individual_quantidade_4_parcela").html(res.dados.qtd_individual_04_parcela);
+                                $(".individual_quantidade_5_parcela").html(res.dados.qtd_individual_05_parcela);
+                                $(".individual_quantidade_6_parcela").html(res.dados.qtd_individual_06_parcela);
+                                $(".individual_quantidade_finalizado").html(res.dados.qtd_individual_finalizado);
+                                $(".individual_quantidade_cancelado").html(res.dados.qtd_individual_cancelado);
+                                $("#cancelarModal").modal('hide');
+                                table_individual.ajax.reload();
+                                limparFormularioIndividual();
+                            }
+                        }
+                    }
+                });
+                return false;
+           });     
+
+            $(".mostrar_comissao").on('mouseenter',function(){                
+                let id_cliente  = $('.next').attr('data-cliente');
+                let id_contrato = $('.next').attr('data-contrato');
+                if(id_cliente && id_contrato) {
+                    $.ajax({
+                        url:"{{route('financeiro.ver.contrato')}}",
+                        method:"POST",
+                        data:"contrato_id="+id_contrato,
+                        success:function(res) {
+                            $("#container_mostrar_comissao").html(res).removeClass('ocultar');        
+                        }
+                    });
+                }
+            }).on('mouseleave',function(){
+                $("#container_mostrar_comissao").html('').addClass('ocultar'); 
+            });
+            
             String.prototype.ucWords = function () {
                 let str = this.toLowerCase()
                 let re = /(^([a-zA-Z\p{M}]))|([ -][a-zA-Z\p{M}])/g
                 return str.replace(re, s => s.toUpperCase())
             }
-
-
-
-            $('#cadastrarIndividualModal').on('hidden.bs.modal', function (event) {
-                $('#cadastrar_pessoa_fisica_formulario_individual').each(function(){
-                    this.reset();
-                    //$("#coparticipacao_sim").removeClass('active');
-                    //$("#coparticipacao_nao").removeClass('active');
-
-                    //let dados = $("body").find('#coparticipacao_sim');
-
-
-                });
-            })
-
-            $('#cadastrarContratoModal').on('hidden.bs.modal', function (event) {
-                $('#cadastrar_pessoa_fisica_formulario_modal_coletivo').each(function(){
-                    this.reset();
-                    //$("#coparticipacao_sim").removeClass('active');
-                    //$("#coparticipacao_nao").removeClass('active');
-
-                    //let dados = $("body").find('#coparticipacao_sim');
-
-
-                });
-            });
-
-            $("#cadastrarEmpresarial").on('hidden.bs.modal', function (event) {
-                $('#cadastrar_dados_empresarial').each(function(){
-                    this.reset();
-                    //$("#coparticipacao_sim").removeClass('active');
-                    //$("#coparticipacao_nao").removeClass('active');
-
-                    //let dados = $("body").find('#coparticipacao_sim');
-
-
-                });
-            });
-
-
-
-
-            $("body").on('change','#dependente_individual',function(){
-                if($(this).is(':checked')) {
-                    $("#container_responsavel").removeClass('d-none');
-                } else {
-                    $("#container_responsavel").addClass('d-none');
-                }
-            });
-            
-            $("body").on('change','#dependente_coletivo',function(){
-               if($(this).is(':checked')) {
-                    $("#container_responsavel_coletivo").removeClass('d-none');
-                } else {
-                    $("#container_responsavel_coletivo").addClass('d-none');
-                } 
-            });
 
             $(".list_abas li").on('click',function(){
                 $('li').removeClass('ativo');
@@ -942,25 +1151,39 @@
                 let id = $(this).attr('data-id');
                 $('.conteudo_abas main').addClass('ocultar');
                 $('#'+id).removeClass('ocultar');
-                limparTudo();
+                $('.next').attr('data-cliente','');
+                $('.next').attr('data-contrato','');
+                $('tr').removeClass('textoforte');
+                table.ajax.url("{{ route('financeiro.coletivo.em_analise') }}").load();
+                table_individual.ajax.url("{{ route('financeiro.individual.em_analise') }}").load();
+                $('#title_coletivo_por_adesao_table').html("<h4>Em Análise</h4>");
+                $('#title_individual').html("<h4>Em Análise</h4>");
+                //limparTudo();
             });
 
-            $('#cnpj').mask('00.000.000/0000-00');
-            $('#telefone_individual').mask('0000-0000');
-            $('#celular_individual').mask('(00) 0 0000-0000');
-            $('#celular').mask('(00) 0 0000-0000');
-            $('#taxa_adesao').mask("#.##0,00", {reverse: true});
-            $('#valor_plano').mask("#.##0,00", {reverse: true});
-            $('#valor_total').mask("#.##0,00", {reverse: true});
-            $('#valor_boleto').mask("#.##0,00", {reverse: true});
-            $('#valor_plano_saude').mask("#.##0,00", {reverse: true});
-            $('#valor_plano_saude').mask("#.##0,00", {reverse: true});
-            $('#valor_plano_odonto').mask("#.##0,00", {reverse: true});
-            $('#cpf_individual').mask('000.000.000-00');
-            $('#cpf_financeiro_individual_cadastro').mask('000.000.000-00');            
-            $('#cpf_coletivo').mask('000.000.000-00');  
-            $('#cep_individual').mask('00000-000');          
-            $('#cep_coletivo').mask('00000-000');          
+
+            $('.editar_btn').on('click',function(){
+                let params = $("#cliente_coletivo_view").prop('readonly');
+                if(!params) {
+                    adicionarReadonly();
+                } else {
+                    removeReadonly();
+                }             
+            });
+
+            $("body").on('change','.editar_campo',function(){
+                let alvo = $(this).attr('id');
+                let valor = $("#"+alvo).val();
+                let id_cliente = $("#cliente_id_alvo").val();
+                $.ajax({
+                    url:"{{route('financeiro.editar.campoIndividualmente')}}",
+                    method:"POST",
+                    data:"alvo="+alvo+"&valor="+valor+"&id_cliente="+id_cliente,
+                    success:function(res) {
+                        table.ajax.reload();
+                    }
+                });
+            });
             
             $.ajaxSetup({
                 headers: {
@@ -968,6 +1191,85 @@
                 }
             });    
 
+            $("form[name='data_da_baixa']").on('submit',function(){
+                let id_cliente = $('.next').attr('data-cliente');
+                let id_contrato = $('.next').attr('data-contrato');
+                $.ajax({
+                    url:"{{route('financeiro.baixa.data')}}",
+                    method:"POST",
+                    data: {
+                        "id_cliente": id_cliente,
+                        "id_contrato": id_contrato,
+                        "data_baixa": $("#data_baixa").val(),
+                        "comissao_id": $("#comissao_id_baixa").val()
+                    },  
+                    beforeSend:function() {
+                        if($("#data_baixa").val() == "") {
+                            $("#error_data_baixa").html('<p class="alert alert-danger">O campo data é campo obrigatório</p>');
+                            return false;
+                        } else {
+                            $("#error_data_baixa").html('');
+                        }
+                    },
+                    success:function(res) {
+                        $(".coletivo_quantidade_em_analise").html(res.qtd_coletivo_em_analise);    
+                        $(".coletivo_quantidade_emissao_boleto").html(res.qtd_coletivo_emissao_boleto);
+                        $(".coletivo_quantidade_pagamento_adesao").html(res.qtd_coletivo_pg_adesao);
+                        $(".coletivo_quantidade_pagamento_vigencia").html(res.qtd_coletivo_pg_vigencia);
+                        $(".coletivo_quantidade_segunda_parcela").html(res.qtd_coletivo_02_parcela);
+                        $(".coletivo_quantidade_terceira_parcela").html(res.qtd_coletivo_03_parcela);
+                        $(".coletivo_quantidade_quarta_parcela").html(res.qtd_coletivo_04_parcela);
+                        $(".coletivo_quantidade_quinta_parcela").html(res.qtd_coletivo_05_parcela);
+                        $(".coletivo_quantidade_sexta_parcela").html(res.qtd_coletivo_06_parcela);
+                        $(".quantidade_coletivo_finalizado").html(res.qtd_coletivo_finalizado);
+                        table.ajax.reload();
+                        limparFormulario();
+                        $('#dataBaixaModal').modal('hide');
+                        $('#data_baixa').val('');
+                    }
+                })
+                return false;
+            });
+
+            $("form[name='data_da_baixa_individual']").on('submit',function(){
+                let id_cliente = $('.next_individual').attr('data-cliente');
+                let id_contrato = $('.next_individual').attr('data-contrato');                
+                $.ajax({
+                    url:"{{route('financeiro.baixa.data.individual')}}",
+                    method:"POST",
+                    data: {
+                        "id_cliente": id_cliente,
+                        "id_contrato": id_contrato,
+                        "data_baixa": $("#date_baixa_individual").val(),
+                        "comissao_id": $("#comissao_id_baixa_individual").val()
+                    },  
+                    beforeSend:function() {
+                        // if($("#data_baixa").val() == "") {
+                        //     $("#error_data_baixa").html('<p class="alert alert-danger">O campo data é campo obrigatório</p>');
+                        //     return false;
+                        // } else {
+                        //     $("#error_data_baixa").html('');
+                        // }
+                    },
+                    success:function(res) {
+                        
+                        $('#dataBaixaIndividualModal').modal('hide');
+                        $(".individual_quantidade_em_analise").html(res.qtd_individual_em_analise);    
+                        $(".individual_quantidade_1_parcela").html(res.qtd_individual_01_parcela);
+                        $(".individual_quantidade_2_parcela").html(res.qtd_individual_02_parcela);
+                        $(".individual_quantidade_3_parcela").html(res.qtd_individual_03_parcela);
+                        $(".individual_quantidade_4_parcela").html(res.qtd_individual_04_parcela);
+                        $(".individual_quantidade_5_parcela").html(res.qtd_individual_05_parcela);
+                        $(".individual_quantidade_6_parcela").html(res.qtd_individual_06_parcela);
+                        $(".individual_quantidade_finalizado").html(res.qtd_individual_finalizado);
+                        table_individual.ajax.reload();
+                        limparFormulario();
+                        $('#dataBaixaIndividualModal').modal('hide');
+                        $('#date_baixa_individual').val('');
+                    }
+                });
+                return false;
+            });
 
             var taindividual = $(".listarindividual").DataTable({
                 dom: '<"d-flex justify-content-between"<"#title_individual">ft><t><"d-flex justify-content-between"lp>',
@@ -975,7 +1277,7 @@
                     "url": "{{asset('traducao/pt-BR.json')}}"
                 },
                 ajax: {
-                    "url":"{{ route('contratos.listarIndividual') }}",
+                    "url":"{{ route('financeiro.individual.em_analise') }}",
                     "dataSrc": ""
                 },
                 "lengthMenu": [50,100,150,200,300,500],
@@ -994,7 +1296,6 @@
                 ],
                 "columnDefs": [
                     {
-                        /** Data*/
                         "targets": 0,
                         "createdCell": function (td, cellData, rowData, row, col) {
                             let datas = cellData.split("T")[0]
@@ -1003,7 +1304,6 @@
                         },
                         "width":"8%"
                     },
-                   
                     {
                         "targets": 1,
                         "width":"20%",
@@ -1018,7 +1318,6 @@
                         "targets": 2,
                         "width":"35%",
                         "createdCell":function(td,cellData,rowData,row,col) {
-                            //let palavra = capitalizeFirstLetter(cellData);
                             let palavras = cellData.ucWords();
                             $(td).html(palavras)
                         }
@@ -1027,21 +1326,39 @@
                         "targets": 3,
                         "width":"15%",
                         "createdCell": function (td, cellData, rowData, row, col) {
-                            
                             let alvo = cellData.split("-").reverse().join("/");
                             $(td).html(alvo);
-                        }
-                            
+                        }                            
                     },
                     {
                         "targets": 4,
-                        "width":"15%"
+                        "width":"15%",
+                        "createdCell": function (td, cellData, rowData, row, col) {
+                            
+                            if(cellData == "Pagamento 1º Parcela") {
+                                $(td).html("Pag. 1º Parcela");        
+                            }
+                            if(cellData == "Pagamento 2º Parcela") {
+                                $(td).html("Pag. 2º Parcela");        
+                            }
+                            if(cellData == "Pagamento 3º Parcela") {
+                                $(td).html("Pag. 3º Parcela");        
+                            }
+                            if(cellData == "Pagamento 4º Parcela") {
+                                $(td).html("Pag. 4º Parcela");        
+                            }
+                            if(cellData == "Pagamento 5º Parcela") {
+                                $(td).html("Pag. 5º Parcela");        
+                            }
+                            if(cellData == "Pagamento 6º Parcela") {
+                                $(td).html("Pag. 6º Parcela");        
+                            }
+                        },
                     }
                ],
                 
                 "initComplete": function( settings, json ) {
-                    $('#title_individual').html("<h4>Individual</h4>");
-
+                    $('#title_individual').html("<h4>Em Análise</h4>");
                      this.api()
                        .columns([1])
                        .every(function () {
@@ -1054,10 +1371,8 @@
                                 } else {
                                     var val = "";
                                     column.search(val ? '^' + val + '$' : '', true, false).draw();
-                                }
-                                
+                                }                               
                             });
-
                             column.data().unique().sort().each(function (d, j) {
                                 selectUsuarioIndividual.append('<option value="' + d + '">' + d + '</option>');
                             });
@@ -1071,7 +1386,7 @@
                     "url": "{{asset('traducao/pt-BR.json')}}"
                 },
                 ajax: {
-                    "url":"{{ route('contratos.listarColetivoPorAdesao') }}",
+                    "url":"{{ route('financeiro.coletivo.em_analise') }}",
                     "dataSrc": ""
                 },
                 "lengthMenu": [50,100,150,200,300,500],
@@ -1087,20 +1402,20 @@
                     {data:"administradora.nome",name:"administradora"},
                     {data:"clientes.nome",name:"cliente"},
                     {data:"data_boleto",name:"Vencimento"},
-                    {data:"financeiro.nome",name:"administradora"},
+                    {data:"financeiro.nome",name:"administradora"}
+                    
                 ],
                 "columnDefs": [
                     {
-                        /** Data*/
+                        /**Data*/
                         "targets": 0,
                         "createdCell": function (td, cellData, rowData, row, col) {
                             let datas = cellData.split("T")[0]
                             let alvo = datas.split("-").reverse().join("/")
                             $(td).html(alvo)    
                         }
-                        
                     },
-                    /*Corretor*/
+                    /**Corretor*/
                     {
                         "targets": 1,
                         "width":"30%",
@@ -1118,8 +1433,7 @@
                     /*Cliente*/
                     {
                         "targets": 3,
-                        "width":"30%"
-                        
+                        "width":"30%"                
                     },
                     /*Vencimento*/
                     {
@@ -1129,19 +1443,41 @@
                                 let alvo = cellData.split("-").reverse().join("/");
                                 $(td).html(alvo);        
                             }
-                            
                         },
                     },
                     /*Status*/
                     {
                         "targets": 5,
-                        "width":"28%"
-                    },
-               ],              
+                        "width":"28%",
+                        "createdCell": function (td, cellData, rowData, row, col) {
+                            if(cellData == "Pagamento Adesão") {
+                                $(td).html("Pag. Adesão");        
+                            }
+                            if(cellData == "Pagamento Vigência") {
+                                $(td).html("Pag. Vigência");        
+                            }
+                            if(cellData == "Pagamento 2º Parcela") {
+                                $(td).html("Pag. 2º Parcela");        
+                            }
+                            if(cellData == "Pagamento 3º Parcela") {
+                                $(td).html("Pag. 3º Parcela");        
+                            }
+                            if(cellData == "Pagamento 4º Parcela") {
+                                $(td).html("Pag. 4º Parcela");        
+                            }
+                            if(cellData == "Pagamento 5º Parcela") {
+                                $(td).html("Pag. 5º Parcela");        
+                            }
+                            if(cellData == "Pagamento 6º Parcela") {
+                                $(td).html("Pag. 6º Parcela");        
+                            }
+                        },
+                    }
+                ],              
                 "initComplete": function( settings, json ) {
                     $('#title_coletivo_por_adesao_table').html("<h4>Em Análise</h4>");
                     this.api()
-                       .columns([3])
+                       .columns([1])
                        .every(function () {
                             var column = this;
                             var selectUsuario = $("#select_usuario");
@@ -1152,16 +1488,13 @@
                                 } else {
                                     var val = "";
                                     column.search(val ? '^' + val + '$' : '', true, false).draw();
-                                }
-                                
+                                }             
                             });
 
                             column.data().unique().sort().each(function (d, j) {
                                 selectUsuario.append('<option value="' + d + '">' + d + '</option>');
                             });
                        })
-
-
                     this.api()
                        .columns([2])
                        .every(function () {
@@ -1175,15 +1508,11 @@
                                     var val = "";
                                     column.search(val ? '^' + val + '$' : '', true, false).draw();
                                 }
-                                
                             });
-
                             column.data().unique().sort().each(function (d, j) {
                                 selectAdministradora.append('<option value="' + d + '">' + d + '</option>');
                             });
                        })
-
-
                 }
             });
 
@@ -1192,14 +1521,17 @@
                 table.$('tr').removeClass('textoforte');
                 $(this).closest('tr').addClass('textoforte');
                 let data = table.row(this).data();
-                
+                $('#comissao_id_cancelado').val(data.comissao.id);
                 $(".next").attr('data-cliente',data.clientes.id).attr('data-contrato',data.id);
+                $("#cliente_id_alvo").val(data.clientes.id);
+                $("#comissao_id_baixa").val(data.comissao.id);
+
+                $(".excluir_coletivo").attr('data-cliente-excluir',data.clientes.id);
 
                 let acomodacao_individual = data.acomodacao.nome;
                 let coparticipacao_individual = data.coparticipacao;
                 let odonto_individual = data.odonto;
                 let texto = "";
-
                 if(acomodacao_individual == "Apartamento" && coparticipacao_individual == 1 && odonto_individual == 1) {
                     texto = "Apartamento C/Copart + Odonto";
                 } else if(acomodacao_individual == "Apartamento" && coparticipacao_individual == 1 && odonto_individual == 0) {
@@ -1216,7 +1548,6 @@
                     texto = "";
                 }
                 $("#texto_descricao_coletivo_view").val(texto);
-
                 if(data.clientes.dependente) {
                     $("#responsavel_financeiro_coletivo").val(data.clientes.dependentes.nome);
                     $("#cpf_financeiro_coletivo_view").val(data.clientes.dependentes.cpf);
@@ -1224,9 +1555,6 @@
                     $("#responsavel_financeiro_coletivo").val('');
                     $("#cpf_financeiro_coletivo_view").val('');
                 }
-
-
-
                 let criacao = data.created_at.split("T")[0].split("-").reverse().join("/");                
                 let nascimento = data.clientes.data_nascimento.split("T")[0].split("-").reverse().join("/");
                 let data_vigencia = data.data_vigencia.split("T")[0].split("-").reverse().join("/");
@@ -1278,8 +1606,10 @@
                 table_individual.$('tr').removeClass('textoforte');
                 $(this).closest('tr').addClass('textoforte');
                 let data = table_individual.row(this).data();   
-                console.log(data);
-
+                $('#comissao_id_cancelado').val(data.comissao.id);
+                $(".excluir_individual").attr('data-cliente-excluir-individual',data.clientes.id);
+                $(".next_individual").attr('data-cliente',data.clientes.id).attr('data-contrato',data.id);
+                $('#comissao_id_baixa_individual').val(data.comissao.id);
                 let acomodacao_individual = data.acomodacao.nome;
                 let coparticipacao_individual = data.coparticipacao;
                 let odonto_individual = data.odonto;
@@ -1302,8 +1632,6 @@
                 }
                 $("#texto_descricao_individual_view").val(texto)
 
-
-
                 if(data.clientes.dependente) {
                     $("#responsavel_financeiro").val(data.clientes.dependentes.nome);
                     $("#cpf_financeiro").val(data.clientes.dependentes.cpf);
@@ -1311,7 +1639,6 @@
                     $("#responsavel_financeiro").val('');
                     $("#cpf_financeiro").val('');
                 }
-
 
                 $('.div_info').attr('data-id',data.id);
                 $('.container_div_info').hide();
@@ -1366,12 +1693,12 @@
             
 
             $(".listarempresarial").DataTable({
-                dom: '<"d-flex justify-content-between"<"#title_ladingpage">ft><t><"d-flex justify-content-between"lp>',
+                dom: '<"d-flex justify-content-between"<"#title_empresarial">ft><t><"d-flex justify-content-between"lp>',
                 "language": {
                     "url": "{{asset('traducao/pt-BR.json')}}"
                 },
                 ajax: {
-                    "url":"{{ route('contratos.listarEmpresarial') }}",
+                    "url":"{{ route('contratos.listarEmpresarial.analise') }}",
                     "dataSrc": ""
                 },
                 "lengthMenu": [50,100,150,200,300,500],
@@ -1392,13 +1719,10 @@
                         "targets": 0,
                         "width":"30%"
                     },
-
                     {
                         "targets": 0,
                         "width":"30%"
                     },
-
-
                     {
                         "targets": 2,
                         "width":"20%",
@@ -1413,15 +1737,13 @@
                         "targets": 3,
                         "width":"20%",
                         "createdCell": function (td, cellData, rowData, row, col) {
-                            
                             let alvo = cellData.split("-").reverse().join("/")
                             $(td).html(alvo);
                         }
                     },
                ],
-                
                 "initComplete": function( settings, json ) {
-                    $('#title_ladingpage').html("<h4>Listagem Empresarial</h4>");
+                    $('#title_empresarial').html("<h4>Em Analise</h4>");
                      this.api()
                        .columns([0])
                        .every(function () {
@@ -1445,19 +1767,421 @@
                 }
             });
 
-            $(".next").on('click',function(){
-                let id_cliente = $(this).attr('data-cliente');
-                let id_contrato = $(this).attr('data-contrato');
-                $.ajax({
-                    url:"{{route('financeiro.mudarStatusColetivo')}}",
-                    data:"id_cliente="+id_cliente+"&id_contrato="+id_contrato,
-                    method:"POST",
-                    success:function(res) {
-                        console.log(res);
-                    }
-                });
 
+          
+
+            $("body").on('click','.next',function(){
+                if($(this).attr('data-cliente') && $(this).attr('data-contrato')) {
+                    let id_cliente = $(this).attr('data-cliente');
+                    let id_contrato = $(this).attr('data-contrato');
+                    $.ajax({
+                        url:"{{route('financeiro.mudarStatusColetivo')}}",
+                        data:"id_cliente="+id_cliente+"&id_contrato="+id_contrato,
+                        method:"POST",
+                        success:function(res) {
+                            
+                            if(res == "abrir_modal") {
+                                $('#dataBaixaModal').modal('show');                      
+                            } else {
+                                $(".coletivo_quantidade_em_analise").html(res.qtd_coletivo_em_analise);    
+                                $(".coletivo_quantidade_emissao_boleto").html(res.qtd_coletivo_emissao_boleto);
+                                $(".coletivo_quantidade_pagamento_adesao").html(res.qtd_coletivo_pg_adesao);
+                                $(".coletivo_quantidade_pagamento_vigencia").html(res.qtd_coletivo_pg_vigencia);
+                                $(".coletivo_quantidade_segunda_parcela").html(res.qtd_coletivo_02_parcela);
+                                $(".coletivo_quantidade_terceira_parcela").html(res.qtd_coletivo_03_parcela);
+                                $(".coletivo_quantidade_quarta_parcela").html(res.qtd_coletivo_04_parcela);
+                                $(".coletivo_quantidade_quinta_parcela").html(res.qtd_coletivo_05_parcela);
+                                $(".coletivo_quantidade_sexta_parcela").html(res.qtd_coletivo_06_parcela);
+                                $(".quantidade_coletivo_finalizado").html(res.qtd_coletivo_finalizado);
+                                                                              
+                                table.ajax.reload();
+                                limparFormulario();
+                            }
+                        }
+                    });
+                } else {                     
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        type: "error",
+                        width: '400px',
+                        html: "Tem que selecionar um item da tabela, para mudar de status"
+                    })
+                }
             });
+
+            $("body").on('click','.next_individual',function(){
+                
+                if($(this).attr('data-cliente') && $(this).attr('data-contrato')) {
+                    
+                    let id_cliente = $(this).attr('data-cliente');
+                    let id_contrato = $(this).attr('data-contrato');
+
+                    $.ajax({
+                        url:"{{route('financeiro.mudarStatusIndividual')}}",
+                        data:"id_cliente="+id_cliente+"&id_contrato="+id_contrato,
+                        method:"POST",
+                        success:function(res) {
+                            
+                            if(res == "abrir_modal_individual") {
+                                //$('#dataBaixaModal').modal('show');                      
+                                $("#dataBaixaIndividualModal").modal('show');
+                            } else {
+                                
+                                $(".individual_quantidade_em_analise").html(res.qtd_individual_em_analise);    
+                                $(".individual_quantidade_1_parcela").html(res.qtd_individual_01_parcela);
+                                $(".individual_quantidade_2_parcela").html(res.qtd_individual_02_parcela);
+                                $(".individual_quantidade_3_parcela").html(res.qtd_individual_03_parcela);
+                                $(".individual_quantidade_4_parcela").html(res.qtd_individual_04_parcela);
+                                $(".individual_quantidade_5_parcela").html(res.qtd_individual_05_parcela);
+                                $(".individual_quantidade_6_parcela").html(res.qtd_individual_06_parcela);
+                                $(".individual_quantidade_finalizado").html(res.qtd_individual_finalizado);
+                                
+                                taindividual.ajax.reload();
+                                limparFormulario();
+                            }
+                        }
+                    });
+                } else {                     
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        type: "error",
+                        width: '400px',
+                        html: "Tem que selecionar um item da tabela, para mudar de status"
+                    })
+                }
+            });
+
+
+
+
+
+
+
+            $("ul#listar li.coletivo").on('click',function(){
+                let id_lista = $(this).attr('id');
+                
+                if(id_lista == "em_analise_coletivo") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Em Análise</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.em_analise') }}").load();
+                    $('.buttons').empty().html(
+                        '<button class="btn btn-danger w-50 mr-2 excluir_coletivo">Excluir</button>'+
+                        '<button class="btn btn-success w-50 next">Conferido</button>'
+                    );   
+                    $(".container_edit").removeClass('ocultar')
+                    limparFormulario()
+
+                } else if(id_lista == "emissao_boleto_coletivo") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Emissão Boleto</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.emissao_boleto') }}").load();
+
+                    $('.buttons').empty().html(
+                        '<button class="btn btn-danger w-50 mr-2 excluir_coletivo">Excluir</button>'+
+                        '<button class="btn btn-success w-50 next">Emitiu Boleto</button>'
+                    );   
+                    
+                    $(".container_edit").addClass('ocultar')
+                    adicionarReadonly();
+                    limparFormulario();
+                } else if(id_lista == "pagamento_adesao_coletivo") {
+
+                    $('#title_coletivo_por_adesao_table').html("<h4>Pagamento Adesão</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.pagamento_adesao') }}").load();
+                    $('.buttons').empty().html(
+                        '<button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>'+
+                        '<button class="btn btn-success w-50 pagamento_adesao next">Pagou Adesão</button>'
+                    );
+                    $(".container_edit").addClass('ocultar')
+                    adicionarReadonly();
+                    limparFormulario();
+
+                } else if(id_lista == "pagamento_vigencia_coletivo") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Pagamento Vigência</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.pagamento_vigencia') }}").load();
+                    $('.buttons').empty().html(
+                        '<button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>'+
+                        '<button class="btn btn-success w-50 pagamento_vegencia next">Pagou Vigência</button>'
+                    );
+                    $(".container_edit").addClass('ocultar')
+                    adicionarReadonly();
+                    limparFormulario();
+                } else if(id_lista == "pagamento_segunda_parcela") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Pagamento 2º Parcela</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.pagamento_segunda_parcela') }}").load();
+                    $('.buttons').empty().html(
+                        '<button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>'+
+                        '<button class="btn btn-success w-50 pagamento_segunda_parcela next">2º Parcela Paga</button>'
+                    );
+                    $(".container_edit").addClass('ocultar')
+                    adicionarReadonly();
+                    limparFormulario();
+                } else if(id_lista == "pagamento_terceira_parcela") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Pagamento 3º Parcela</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.pagamento_terceira_parcela') }}").load();
+                    $('.buttons').empty().html(
+                        '<button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>'+
+                        '<button class="btn btn-success w-50 pagamento_terceira_parcela next">3º Parcela Paga</button>'
+                    );
+                    $(".container_edit").addClass('ocultar')
+                    adicionarReadonly();
+                    limparFormulario();
+                } else if(id_lista == "pagamento_quarta_parcela") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Pagamento 4º Parcela</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.pagamento_quarta_parcela') }}").load();
+                    $('.buttons').empty().html(
+                        '<button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>'+
+                        '<button class="btn btn-success w-50 pagamento_quarta_parcela next">4º Parcela Paga</button>'
+                    );
+                    $(".container_edit").addClass('ocultar')
+                    adicionarReadonly();
+                    limparFormulario();
+                } else if(id_lista == "pagamento_quinta_parcela") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Pagamento 5º Parcela</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.pagamento_quinta_parcela') }}").load();
+                    $('.buttons').empty().html(
+                        '<button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>'+
+                        '<button class="btn btn-success w-50 pagamento_quinta_parcela next">5º Parcela Paga</button>'
+                    );
+                    $(".container_edit").addClass('ocultar')
+                    adicionarReadonly();
+                    limparFormulario();
+                } else if(id_lista == "pagamento_sexta_parcela") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Pagamento 6º Parcela</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.pagamento_sexta_parcela') }}").load();
+                    $('.buttons').empty().html(
+                        '<button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>'+
+                        '<button class="btn btn-success w-50 pagamento_sexta_parcela next">6º Parcela Paga</button>'
+                    );
+                    $(".container_edit").addClass('ocultar')
+                    adicionarReadonly();
+                    limparFormulario();
+                } else if(id_lista == "finalizado_coletivo") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Finalizado</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.pagamento_sexta_parcela') }}").load();
+                    $('.buttons').empty().html();
+                    $(".container_edit").addClass('ocultar')
+                    adicionarReadonly();
+                    limparFormulario();
+
+                } else if(id_lista == "cancelado_coletivo") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Cancelado</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.pagamento_sexta_parcela') }}").load();
+                    $('.buttons').empty().html();
+                    $(".container_edit").addClass('ocultar')
+                    adicionarReadonly();
+                    limparFormulario();
+                }
+                else {
+
+                }
+            });  
+
+
+            $("ul#listar_individual li.individual").on('click',function(){
+                let id_lista = $(this).attr('id');
+                if(id_lista == "aguardando_em_analise_individual") {
+                    $('#title_individual').html("<h4>Em Análise</h4>");
+                    table_individual.ajax.url("{{ route('financeiro.individual.em_analise') }}").load();
+                    $('.button_individual').empty().html(
+
+                        '<button class="btn btn-danger w-50 mr-2 excluir_individual">Excluir</button>'+
+                        '<button class="btn btn-success w-50 next_individual">Conferido</button>'
+
+                        
+                    );                      
+                    $(".container_edit").removeClass('ocultar')
+                    limparFormulario()
+                } else if(id_lista == "aguardando_pagamento_1_parcela_individual") {
+                    $('#title_individual').html("<h4>Pag. 1º Parcela</h4>");
+                    table_individual.ajax.url("{{ route('financeiro.individual.pagamento_primeira_parcela') }}").load();
+                    $('.button_individual').empty().html(
+                        '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
+                        '<button class="btn btn-success w-50 emissao_boleto next_individual">Pag. 1º Parcela</button>'
+                    );                      
+                    $(".container_edit").addClass('ocultar')
+                    adicionarReadonly();
+                    limparFormulario();
+                } else if(id_lista == "aguardando_pagamento_2_parcela_individual") {
+                    $('#title_individual').html("<h4>Pag. 2º Parcela</h4>");
+                    table_individual.ajax.url("{{ route('financeiro.individual.pagamento_segunda_parcela') }}").load();
+                    $('.button_individual').empty().html(
+                        '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
+                        '<button class="btn btn-success w-50 pagamento_adesao next_individual">Pag. 2º Parcela</button>'
+                    );
+                    $(".container_edit").addClass('ocultar')
+                    adicionarReadonly();
+                    limparFormulario();
+                } else if(id_lista == "aguardando_pagamento_3_parcela_individual") {
+                    $('#title_individual').html("<h4>Pag. 3º Parcela</h4>");
+                    table_individual.ajax.url("{{ route('financeiro.individual.pagamento_terceira_parcela') }}").load();
+                    $('.button_individual').empty().html(
+                        '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
+                        '<button class="btn btn-success w-50 pagamento_vegencia next_individual">Pag. 3º Parcela</button>'
+                    );
+                    $(".container_edit").addClass('ocultar')
+                    adicionarReadonly();
+                    limparFormulario();
+                } else if(id_lista == "aguardando_pagamento_4_parcela_individual") {
+                    $('#title_individual').html("<h4>Pag. 4º Parcela</h4>");
+                    table_individual.ajax.url("{{ route('financeiro.individual.pagamento_quarta_parcela') }}").load();
+                    $('.button_individual').empty().html(
+                        '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
+                        '<button class="btn btn-success w-50 pagamento_segunda_parcela next_individual">Pag. 4º Parcela</button>'
+                    );
+                    $(".container_edit").addClass('ocultar')
+                    adicionarReadonly();
+                    limparFormulario();
+                } else if(id_lista == "aguardando_pagamento_5_parcela_individual") {
+                    $('#title_individual').html("<h4>Pag. 5º Parcela</h4>");
+                    table_individual.ajax.url("{{ route('financeiro.individual.pagamento_quinta_parcela') }}").load();
+                    $('.button_individual').empty().html(
+                        '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
+                        '<button class="btn btn-success w-50 pagamento_terceira_parcela next_individual">Pag. 5º Parcela</button>'
+                    );
+                    $(".container_edit").addClass('ocultar')
+                    adicionarReadonly();
+                    limparFormulario();
+                } else if(id_lista == "aguardando_pagamento_6_parcela_individual") {
+                    $('#title_individual').html("<h4>Pag. 6º Parcela</h4>");
+                    table_individual.ajax.url("{{ route('financeiro.individual.pagamento_sexta_parcela') }}").load();
+                    $('.button_individual').empty().html(
+                        '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
+                        '<button class="btn btn-success w-50 pagamento_quarta_parcela next_individual">Pag. 6º Parcela</button>'
+                    );
+                    $(".container_edit").addClass('ocultar')
+                    adicionarReadonly();
+                    limparFormulario();
+                }  else {
+
+                }
+            });  
+
+
+
+
+
+
+
+
+
+
+
+            $("ul#grupo_finalizados li.coletivo").on('click',function(){
+                let id_lista = $(this).attr('id');
+                if(id_lista == "finalizado_coletivo") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Finalizado</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.finalizado') }}").load();
+
+                    $('.buttons').empty().html();
+
+                    $(".container_edit").addClass('ocultar')
+                    adicionarReadonly();
+                    limparFormulario();
+
+                } else if(id_lista == "cancelado_coletivo") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Cancelado</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.cancelado') }}").load();
+
+                    $('.buttons').empty().html();
+
+                    $(".container_edit").addClass('ocultar')
+                    adicionarReadonly();
+                    limparFormulario();
+
+                } else {
+
+                }
+            });
+
+            $("ul#grupo_finalizados_individual li.individual").on('click',function(){
+                let id_lista = $(this).attr('id');
+                
+                if(id_lista == "finalizado_individual") {
+                    $('#title_individual').html("<h4>Finalizado</h4>");
+                    table_individual.ajax.url("{{ route('financeiro.individual.finalizado') }}").load();
+                    $('.button_individual').empty().html('');
+                    $(".container_edit").addClass('ocultar')
+                    adicionarReadonly();
+                    limparFormulario();
+                } else if(id_lista == "cancelado_individual") {
+                    $('#title_individual').html("<h4>Cancelado</h4>");
+                    table_individual.ajax.url("{{ route('financeiro.individual.cancelado') }}").load();
+                    $('.button_individual').empty().html('');
+                    $(".container_edit").addClass('ocultar')
+                    adicionarReadonly();
+                    limparFormulario();
+                } else {
+
+
+                }
+
+
+
+                // if(id_lista == "finalizado_coletivo") {
+                //     $('#title_coletivo_por_adesao_table').html("<h4>Finalizado</h4>");
+                //     table.ajax.url("{{ route('financeiro.coletivo.finalizado') }}").load();
+
+                //     $('.buttons').empty().html();
+
+                //     $(".container_edit").addClass('ocultar')
+                //     adicionarReadonly();
+                //     limparFormulario();
+
+                // } else if(id_lista == "cancelado_coletivo") {
+                //     $('#title_coletivo_por_adesao_table').html("<h4>Cancelado</h4>");
+                //     table.ajax.url("{{ route('financeiro.coletivo.cancelado') }}").load();
+
+                //     $('.buttons').empty().html();
+
+                //     $(".container_edit").addClass('ocultar')
+                //     adicionarReadonly();
+                //     limparFormulario();
+
+                // } else {
+
+                // }
+            });
+
+            $("ul#listar_empresarial li.empresarial").on('click',function(){
+                let id_lista = $(this).attr('id');
+                console.log(id_lista);
+                if(id_lista == "aguardando_em_analise_empresarial") {
+                    $("#title_empresarial").html("<h4>Em Análise</h4>");
+                    tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.analise")}}').load();
+                } else if(id_lista == "aguardando_pagamento_1_parcela_empresarial") {
+                    $("#title_empresarial").html("<h4>Pagamento 1º Parcela</h4>");
+                    tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.primeiraparcela")}}').load();
+                } else if(id_lista == "aguardando_pagamento_2_parcela_empresarial") {
+                    $("#title_empresarial").html("<h4>Pagamento 2º Parcela</h4>");
+                    tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.segundaparcela")}}').load();
+                } else if(id_lista == "aguardando_pagamento_3_parcela_empresarial") {
+                    $("#title_empresarial").html("<h4>Pagamento 3º Parcela</h4>");
+                    tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.terceiraparcela")}}').load();
+                } else if(id_lista == "aguardando_pagamento_4_parcela_empresarial") {
+                    $("#title_empresarial").html("<h4>Pagamento 4º Parcela</h4>");
+                    tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.quartaparcela")}}').load();
+                } else if(id_lista == "aguardando_pagamento_5_parcela_empresarial") {
+                    $("#title_empresarial").html("<h4>Pagamento 5º Parcela</h4>");
+                    tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.quintaparcela")}}').load();
+                } else if(id_lista == "aguardando_pagamento_6_parcela_empresarial") {
+                    $("#title_empresarial").html("<h4>Pagamento 6º Parcela</h4>");
+                    tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.sextaparcela")}}').load();
+                } else if(id_lista == "aguardando_finalizado_empresarial") {
+                    $("#title_empresarial").html("<h4>Finalizado</h4>");
+                    tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.finalizado")}}').load();
+                } else if(id_lista == "aguardando_cancelado_empresarial") {
+                    $("#title_empresarial").html("<h4>Cancelado</h4>");
+                    tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.cancelado")}}').load();
+                } else {
+
+                }
+
+
+
+                
+            });
+
 
 
 
@@ -1476,13 +2200,15 @@
                 let valor_plano_saude = Number(data.valor_plano_saude).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
                 let valor_plano_odonto = Number(data.valor_plano_odonto).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
                 let vencimento_boleto = data.vencimento_boleto.split("-").reverse().join("/");
-                let data_boleto = data.data_boleto.split("-").reverse().join("/");    
+                let data_boleto = data.data_boleto.split("-").reverse().join("/");   
+
                 $("#nome_corretor_view_empresarial").val(data.responsavel);
                 $("#cidade_saude_view_empresarial").val(data.cidade);
                 $("#email_odonto_view_empresarial").val(data.email);
                 $("#uf_saude_view_empresarial").val(data.uf);
                 $("#telefone_corretor_view_empresarial").val(data.telefone)
                 $("#celular_corretor_view_empresarial").val(data.celular)
+
                 let texto_empresarial = "";
                 if(data.plano_contrado == 1) {
                     texto_empresarial = "C/ Copart + Odonto"
@@ -1496,10 +2222,6 @@
                 } else {
                     texto_empresarial = "";
                 }
-
-                
-
-
                 $("#plano_contratado_corretor_view_empresarial").val(texto_empresarial)
                 $("#uf_cliente_view_empresarial").val(data.uf);
                 $("#codigo_vendedor_empresarial_view").val(data.codigo_vendedor);
@@ -1515,18 +2237,14 @@
                 $("#vendedor_view_empresarial").val(data.usuario)
                 $("#vencimento_boleto_view_empresarial").val(vencimento_boleto);
                 $("#dia_vencimento_view_empresarial").val(data.dia_vencimento);
-
                 $("#valor_plano_saude_view").val(valor_plano_saude);
-                $("#valor_plano_odonto_view").val(valor_plano_odonto);
-                
+                $("#valor_plano_odonto_view").val(valor_plano_odonto);               
                 $("#cod_corretora_view_empresarial").val(data.codigo_corretora);
                 $("#cod_saude_view_empresarial").val(data.codigo_saude);
                 $("#cod_odonto_view_empresarial").val(data.codigo_odonto);
                 $("#senha_cliente_view_empresarial").val(data.senha_cliente);
-
                 $("#plano_adesao_view_empresarial").val(valor_total);
                 $("#valor_boleto_view_empresarial").val(valor_boleto);
-
                 $("#data_boleto_view_empresarial").val(data_boleto);
             });
 
@@ -1544,1490 +2262,99 @@
                 return false;
             });
 
-            //  $("select[name='mudar_user_empresarial']").on('change',function(e){
-            //     let user = $(this).val();
-            //     $.ajax({
-            //         url:"{{route('contratos.listarEmpresarialPorUser')}}",
-            //         method:"POST",
-            //         data:"user="+user,
-            //         success:function(res) {
-            //             tableempresarial.ajax.url(res).load();
-            //         }
-            //     });      
-                
-            // });
-
-            $('.estilo_btn_plus_coletivo').on('click',function(){
-                $('#cadastrarContratoModal').modal('show');
-            });
-
-            $('.estilo_btn_plus_individual').on('click',function(){
-                $("#cadastrarIndividualModal").modal('show');
-            });
-
-            $('.estilo_btn_plus_ss').on('click',function(){
-                $("#cadastrarEmpresarial").modal('show'); 
-            });
-
-           
-
-
-            
-
-
-
-
-                  
-            //$('#valor_adesao').mask("#.##0,00", {reverse: true});
-            $("#cpf").on('change',function(){
-                if($(this).val != "" && TestaCPF($(this).val())) {
-                    $('.errorcpf').html("");
-                }
-            });
-            
-            $("#data_nascimento").on('change',function(){
-                if($(this).val() != "") {
-                    $('.errordatanascimento').html("");
-                }
-            });
-
-            $("#operadora").on('change',function(){
-                if($(this).val() != "") {
-                    $(".erroroperadora").html("");
-                } 
-            });
-
-            $("#administradora").on('change',function(){
-                if($(this).val() != "") {
-                    $(".erroradministradora").html("");
-                }
-            })
-           
-            
-            /** Quando clicar no card pegar os campos valor do plano e tipo(Apartamento,Enfermaria...) */
-            $('body').on('click','.valores-acomodacao',function(e){
-                let valor_plano = $(this).find('.valor_plano').text().replace("R$ ","");
-                let tipo = $(this).find('.tipo').text();
-                $("#valor").val(valor_plano);
-                $("#acomodacao").val(tipo);
-                if(!$(this).hasClass('destaque')) {
-                    $('#data_vigencia').val('')
-                    $('#data_boleto').val('');
-                    $('#valor_adesao').val('');
-                }
-                $(".valores-acomodacao").removeClass('destaque');
-                $(this).addClass('destaque');
-                $('#animate').animate({
-                    scrollTop:$(window).scrollTop() + $(window).height(),
-                },1500);
-                $("#btn_submit").html("<button type='submit' class='btn btn-block btn-light my-4 salvar_contrato'>Salvar Contrato</button>")
-                $('.valores-acomodacao').not('.destaque').each(function(i,e){
-                    $(e).find('.vigente').val('')
-                    $(e).find('.boleto').val('')
-                    $(e).find('.valor_adesao').val('')
-                });
-                if($(e.target).is('.form-control')) {
-                    return;
-                } 
-            });
-
-
-            
-
-            $("#administradora").on('change',function(){
-               let id = $(this).val();
-               $.ajax({
-                    url:"",
-                    data:"administradora="+id,
-                    method:"POST",
-                    success:function(res) {
-                        if(res.planos.length >= 1) {
-                            let selecionado = null;
-                            if($("#plano").val()) {
-                                selecionado = $("#plano").val();
-                            } 
-                            $("#plano").html("");
-                            $("#plano").prepend("<option value=''>--Escolher um Plano--</option>");
-                            $(res.planos).each(function(index,value){
-                                $("#plano").append($(`<option ${value.id == selecionado ? 'selected' : ''}>`).val(value.id).text(value.nome));
-                            });
-                        } else {
-                            $("#plano").html("");
-                            $("#plano").append('<option value="">--Esta administradora não possui planos cadastradas--</option>');
-                        }
-                    }    
-               });
-            });
-
-           
-                       
-            
-
-            
-            $('body').on('click','#coparticipacao_sim > #coparticipacao_radio_sim',function(){
-                $("#change_coparticipacao").val($(this).val()).trigger('change');
-            });
-            $('body').on('click','#coparticipacao_nao > #coparticipacao_radio_nao',function(){
-                $("#change_coparticipacao").val($(this).val()).trigger('change');
-            });
-            $('body').on('click','#odonto_sim > #odonto_radio_sim',function(){
-                $("#change_odonto").val($(this).val()).trigger('change');
-            });
-            $('body').on('click','#odonto_nao > #odonto_radio_nao',function(){
-                $("#change_odonto").val($(this).val()).trigger('change');
-            });    
-
-
-
-            /****Mostrar Plano Inidividual****/
-
-            $("body").find('form[name="cadastrar_pessoa_fisica_formulario_individual"]').on("click","#mostrar_plano_individual",function(){
-
-                if($("#users_individual").val() == "") {
-                    toastr["error"]("Corretor é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                }
-
-                if($("#tabela_origem_individual").val() == "") {
-                    toastr["error"]("Tabela Origem é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                }
-
-
-
-                if($("#nome_individual").val() == "") {
-                    toastr["error"]("Titular é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#cpf_individual").val() == "") {
-                    toastr["error"]("CPF é obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#data_nascimento_individual").val() == "") {
-                    toastr["error"]("Data Nascimento campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#email_individual").val() == "") {
-                    toastr["error"]("Email campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#telefone_individual").val() == "") {
-                    toastr["error"]("Celular é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                }
-
-                if($("#tabela_origem_individual").val() == "") {
-                    toastr["error"]("Tabela Origem campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-                
-                 
-                 if($("#cep_individual").val() == "") {
-                    toastr["error"]("Cep é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                  if($("#bairro_individual").val() == "") {
-                    toastr["error"]("Bairro é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#rua_individual").val() == "") {
-                    toastr["error"]("Rua é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                  if($("#cidade_origem_individual").val() == "") {
-                    toastr["error"]("Cidade é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#uf_individual").val() == "") {
-                    toastr["error"]("UF é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#codigo_externo_individual_cadastrar").val() == "") {
-                    toastr["error"]("Codigo Externo é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                if(!$('input:radio[name=coparticipacao_individual]').is(':checked')) {
-                    toastr["error"]("Coparticipação é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;  
-                } 
-
-                if(!$('input:radio[name=odonto_individual]').is(':checked')) {
-                    toastr["error"]("Odonto é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;  
-                } 
-
-                if(
-                    $("#faixa-input-0-18_individual").val() == "" && 
-                    $("#faixa-input-19-23_individual").val() == "" && 
-                    $("#faixa-input-24-28_individual").val() == "" && 
-                    $("#faixa-input-29-33_individual").val() == "" && 
-                    $("#faixa-input-34-38_individual").val() == "" && 
-                    $("#faixa-input-39-43_individual").val() == "" && 
-                    $("#faixa-input-44-48_individual").val() == "" && 
-                    $("#faixa-input-49-53_individual").val() == "" && 
-                    $("#faixa-input-54-58_individual").val() == "" && 
-                    $("#faixa-input-59_individual").val() == ""
-                ) {
-                    toastr["error"]("Preencher pelo menos 1 faixa etaria")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;  
-                }    
-
-                let data = {
-                    user:$("#users_individual").val(),
-                    tabela_origens_id:$("#tabela_origem_individual").val(),
-                    nome:$("#nome_individual").val(),
-                    cpf:$("#cpf_individual").val(),
-                    data_nascimento:$("#data_nascimento_individual").val(),
-                    email:$("#email_individual").val(),
-                    celular:$('#telefone_individual').val(),
-                    cep:$("#cep_individual").val(),
-                    cidade:$("#cidade_origem_individual").val(),
-                    bairro:$("#bairro_individual").val(),
-                    rua:$("#rua_individual").val(),
-                    complemento:$("#complemento_individual").val(),
-                    uf:$("#uf_individual").val(),
-                    dependente:$('#dependente_individual').is(':checked'),
-                    responsavel_financeiro:$("#responsavel_financeiro_individual_cadastro").val(),
-                    cpf_responsavel_financeiro:$("#cpf_financeiro_individual_cadastro").val(),
-                    codigo_externo:$("#codigo_externo_individual_cadastrar").val(),
-                    coparticipacao: $("input:radio[name=coparticipacao_individual]:checked").val(),
-                    odonto: $('input:radio[name=odonto_individual]:checked').val(), 
-                    faixas: {'1': $("#faixa-input-0-18_individual").val(), '2': $("#faixa-input-19-23_individual").val(),'3': $("#faixa-input-24-28_individual").val(),'4': $("#faixa-input-29-33_individual").val(),'5': $("#faixa-input-34-38_individual").val(),'6': $("#faixa-input-39-43_individual").val(),'7': $("#faixa-input-44-48_individual").val(),'8': $("#faixa-input-49-53_individual").val(),'9': $("#faixa-input-54-58_individual").val(),'10': $("#faixa-input-59_individual").val()}
-                };
-                montarValoresIndividual(data);
-                return false;
-            });
-
-            /****Fim Mostrar Plano Inidividual****/
-
-            $("body").find('form[name="cadastrar_pessoa_fisica_formulario_modal_coletivo"]').on("click","#mostrar_plano_coletivo",function(){
-                 if($("#nome_coletivo").val() == "") {
-                    toastr["error"]("Titular é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#cpf_coletivo").val() == "") {
-                    toastr["error"]("CPF é obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#data_nascimento_coletivo").val() == "") {
-                    toastr["error"]("Data Nascimento campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#email_coletivo").val() == "") {
-                    toastr["error"]("Email campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#tabela_origem_coletivo").val() == "") {
-                    toastr["error"]("Tabela Origem campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-
-                 if($("#administradora_coletivo").val() == "") {
-                    toastr["error"]("Administradora é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                if($("#plano_coletivo").val() == "") {
-                    toastr["error"]("Plano é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-                 
-                 if($("#cep_coletivo").val() == "") {
-                    toastr["error"]("Cep é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                  if($("#bairro_coletivo").val() == "") {
-                    toastr["error"]("Bairro é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#rua_coletivo").val() == "") {
-                    toastr["error"]("Rua é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                  if($("#cidade_coletivo").val() == "") {
-                    toastr["error"]("Cidade é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#uf_coletivo").val() == "") {
-                    toastr["error"]("UF é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#codigo_externo_coletivo").val() == "") {
-                    toastr["error"]("Codigo Externo é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                if(!$('input:radio[name=coparticipacao_coletivo]').is(':checked')) {
-                    toastr["error"]("Coparticipação é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;  
-                } 
-
-                if(!$('input:radio[name=odonto_coletivo]').is(':checked')) {
-                    toastr["error"]("Odonto é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;  
-                } 
-
-                if(
-                    $("#faixa-input-0-18_coletivo").val() == "" && 
-                    $("#faixa-input-19-23_coletivo").val() == "" && 
-                    $("#faixa-input-24-28_coletivo").val() == "" && 
-                    $("#faixa-input-29-33_coletivo").val() == "" && 
-                    $("#faixa-input-34-38_coletivo").val() == "" && 
-                    $("#faixa-input-39-43_coletivo").val() == "" && 
-                    $("#faixa-input-44-48_coletivo").val() == "" && 
-                    $("#faixa-input-49-53_coletivo").val() == "" && 
-                    $("#faixa-input-54-58_coletivo").val() == "" && 
-                    $("#faixa-input-59_coletivo").val() == ""
-                ) {
-                    toastr["error"]("Preencher pelo menos 1 faixa etaria")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;  
-                }    
-
-                let data = {
-                    user:$("#usuario_coletivo_switch").val(),
-                    administradora: $("#administradora_coletivo :checked").val(),
-                    tabela_origens_id:$("#tabela_origem_coletivo").val(),
-                    nome:$("#nome_coletivo").val(),
-                    cpf:$("#cpf_coletivo").val(),
-                    data_nascimento:$("#data_nascimento_coletivo").val(),
-                    email:$("#email_coletivo").val(),
-                    celular:$("#celular").val(),
-                    cep:$("#cep_coletivo").val(),
-                    cidade:$("#cidade_origem_coletivo").val(),
-                    bairro:$("#bairro_coletivo").val(),
-                    rua:$("#rua_coletivo").val(),
-                    complemento:$("#complemento_coletivo").val(),
-                    uf: $("#uf_coletivo").val(),
-                    codigo_externo:$("#codigo_externo_coletivo").val(),
-                    dependente:$('#dependente_coletivo').is(':checked'),
-                    responsavel_nome:$("#responsavel_financeiro_coletivo_cadastrar_nome").val(),
-                    responsavel_cpf:$("#responsavel_financeiro_coletivo_cadastrar_cpf").val(),   
-                    coparticipacao: $("input:radio[name=coparticipacao_coletivo]:checked").val(),
-                    odonto: $('input:radio[name=odonto_coletivo]:checked').val(), 
-                    plano:$("#plano_coletivo").val(),
-                    faixas: {'1': $("#faixa-input-0-18_coletivo").val(), '2': $("#faixa-input-19-23_coletivo").val(),'3': $("#faixa-input-24-28_coletivo").val(),'4': $("#faixa-input-29-33_coletivo").val(),'5': $("#faixa-input-34-38_coletivo").val(),'6': $("#faixa-input-39-43_coletivo").val(),'7': $("#faixa-input-44-48_coletivo").val(),'8': $("#faixa-input-49-53_coletivo").val(),'9': $("#faixa-input-54-58_coletivo").val(),'10': $("#faixa-input-59_coletivo").val()}
-                };
- 
-                //console.log(data);
-                montarValores(data);
-
-                 
-                 
-
-
-
-            //     $("#change_plano").val($(this).val());
-
-            //     if($("#nome").val() == "") {
-            //         $("#change_plano").val($(this).val())
-                    
-            //         toastr["error"]("Nome do Titular e campo obrigatório")
-            //             toastr.options = {
-            //                 "closeButton": false,
-            //                 "debug": false,
-            //                 "newestOnTop": false,
-            //                 "progressBar": false,
-            //                 "positionClass": "toast-top-right",
-            //                 "preventDuplicates": false,
-            //                 "onclick": null,
-            //                 "showDuration": "300",
-            //                 "hideDuration": "1000",
-            //                 "timeOut": "5000",
-            //                 "extendedTimeOut": "1000",
-            //                 "showEasing": "swing",
-            //                 "hideEasing": "linear",
-            //                 "showMethod": "fadeIn",
-            //                 "hideMethod": "fadeOut"
-            //             }
-            //             return false;
-
-
-            //         return false;
-            //     } else {
-            //         $('.errorcliente').html("");
-            //     }
-                
-            //     if($("#cpf").val() == "") {
-            //         $("#change_plano").val($(this).val())
-            //         $('.errorcpf').html("<p class='alert alert-danger'>CPF é obrigatório<p>");
-            //         return false;
-            //     } else {
-            //         $('.errorcpf').html("");
-            //     }             
-                
-            //     // if(!TestaCPF($("#cpf").val())) {
-            //     //     $("#change_plano").val($(this).val())
-            //     //     $('.errorcpf').html("<p class='alert alert-danger'>CPF Invalido<p>");
-            //     //     return false;
-            //     // } else {
-            //     //     $('.errorcpf').html("");            
-            //     // }
-
-            //     if($("#data_nascimento").val() == "") {
-            //         $("#change_plano").val($(this).val())
-            //         //$(this).val('');
-            //         $('.errordatanascimento').html("<p class='alert alert-danger'>Data é obrigatório<p>");
-            //         return false;
-            //     } else {
-            //         $('.errordatanascimento').html("");
-            //     }
-
-            //     if($("#email").val() == "") {
-            //         $("#change_plano").val($(this).val())
-            //         //$(this).val('');
-            //         $('.erroremail').html("<p class='alert alert-danger'>Email é obrigatório</p>")
-            //         return false;
-            //     } else {
-            //         $(".erroremail").html("");
-            //     }
-
-            //     if($("#cidade").val() == "") {
-            //         $("#change_plano").val($(this).val())
-            //         //$(this).val('');
-            //         $('.errorcidade').html("<p class='alert alert-danger'>Cidade é obrigatório<p>");
-            //         return false;
-            //     } else {
-            //         $('.change_cidade').val($("#cidade").val());
-            //         $(".errorcidade").html("");
-            //     }
-
-                
-
-            //     if($("#administradora").val() == "") {
-            //         $("#change_plano").val($(this).val())
-            //         //$(this).val('');
-            //         $('.erroradministradora').html("<p class='alert alert-danger' style='font-size:0.8em;'>Administradora é obrigatório<p>");
-            //         return false;
-            //     } else {
-            //         $('#change_administradora').val($("#administradora").val());
-            //         $('.erroradministradora').html("");
-            //     }
-
-            //     // if($("#responsavel_financeiro").val() == "") {
-            //     //     $("#change_plano").val($(this).val())
-            //     //     //$(this).val('');
-            //     //     $('.errorresponsavelfinanceiro').html("<p class='alert alert-danger'>Este e campo obrigatório</p>")
-            //     //     return false;
-            //     // } else {
-            //     //     $(".errorresponsavelfinanceiro").html("");
-            //     // }
-
-            //     // if($("#cpf_financeiro").val() == "") {
-            //     //     $("#change_plano").val($(this).val())
-            //     //     //$(this).val('');
-            //     //     $('.errorcpfresponsavelfinanceiro').html("<p class='alert alert-danger'>Este e campo obrigatório</p>")
-            //     //     return false;
-            //     // } else {
-            //     //     $(".errorcpfresponsavelfinanceiro").html("");
-            //     // }
-
-            //     if($("#cep").val() == "") {
-                    
-            //         $('.errorcep').html("<p class='alert alert-danger'>CEP é obrigatório</p>")
-            //         return false;
-            //     } else {
-            //         $(".errorcep").html("");
-            //     }
-
-            //     if($("#bairro").val() == "") {
-                    
-            //         $('.errorbairro').html("<p class='alert alert-danger'>Bairro é obrigatório</p>")
-            //         return false;
-            //     } else {
-            //         $(".errorbairro").html("");
-            //     }
-
-            //     if($("#rua").val() == "") {
-            //         $('.errorlogradouro').html("<p class='alert alert-danger'>Rua é obrigatório</p>")
-            //         return false;
-            //     } else {
-            //         $(".errorlogradouro").html("");
-            //     }
-
-            //     if($("#rua").val() == "") {
-            //         $('.errorlogradouro').html("<p class='alert alert-danger'>Rua é obrigatório</p>")
-            //         return false;
-            //     } else {
-            //         $(".errorlogradouro").html("");
-            //     }
-
-            //     if($("#uf").val() == "") {
-            //         $('.erroruf').html("<p class='alert alert-danger'>UF é obrigatório</p>")
-            //         return false;
-            //     } else {
-            //         $(".erroruf").html("");
-            //     }
-
-            //     if($("#plano").val() == "") {
-            //         //$("#change_plano").val($(this).val())
-            //         //$(this).val('');
-            //         $('.errorplano').html("<p class='alert alert-danger'>Plano é obrigatório</p>")
-            //         return false;
-            //     } else {
-            //         $(".errorplano").html("");
-            //     }
-
-                
-
-                
-
-            //     if($("#codigo_externo").val() == "") {
-            //         $("#change_plano").val($(this).val())
-            //         //$(this).val('');
-            //         $('.errorcodigo').html("<p class='alert alert-danger'>Código é obrigatório<p>");
-            //         return false;
-            //     } else {
-            //         $('.errorcodigo').html('');
-            //     }
-
-            //     if(
-            //         $("#faixa-input-0-18").val() == "" && 
-            //         $("#faixa-input-19-23").val() == "" && 
-            //         $("#faixa-input-24-28").val() == "" && 
-            //         $("#faixa-input-29-33").val() == "" && 
-            //         $("#faixa-input-34-38").val() == "" && 
-            //         $("#faixa-input-39-43").val() == "" && 
-            //         $("#faixa-input-44-48").val() == "" && 
-            //         $("#faixa-input-49-53").val() == "" && 
-            //         $("#faixa-input-54-58").val() == "" && 
-            //         $("#faixa-input-59").val() == ""
-            //     ) {
-            //         $("#change_plano").val($(this).val())
-            //         //$(this).val('');
-            //         $('.errorfaixas').html("<p class='alert alert-danger'>Pelo Menos 1 faixa etária deve ser preenchida</p>")
-            //         return false;
-            //     } else {
-            //         $("#change_faixa_0_18").val($("#faixa-input-0-18").val())    
-            //         $("#change_faixa_19_23").val($("#faixa-input-19-23").val())    
-            //         $("#change_faixa_24_28").val($("#faixa-input-24-28").val())    
-            //         $("#change_faixa_29_33").val($("#faixa-input-29-33").val())    
-            //         $("#change_faixa_34_38").val($("#faixa-input-34-38").val())    
-            //         $("#change_faixa_39_43").val($("#faixa-input-39-43").val())    
-            //         $("#change_faixa_44_48").val($("#faixa-input-44-48").val())    
-            //         $("#change_faixa_49_53").val($("#faixa-input-49-53").val())    
-            //         $("#change_faixa_54_58").val($("#faixa-input-54-58").val())    
-            //         $("#change_faixa_59").val($("#faixa-input-59").val())    
-            //         $('.errorfaixas').html("");
-            //     }
-
-
-            //     if(!$('input:radio[name=coparticipacao]').is(':checked')) {
-            //         $("#change_plano").val($(this).val())
-            //         //$(this).val('');
-            //         $('.errorcoparticipacao').html("<p class='alert alert-danger'>Marque Sim/Não Coparticipaão</p>")
-            //         return false;
-            //     } else {                    
-            //         $('.errorcoparticipacao').html("");
-            //     }
-
-            //     if(!$('input:radio[name=odonto]').is(':checked')) {
-            //         $("#change_plano").val($(this).val())
-            //         $('.errorodonto').html("<p class='alert alert-danger'>Marque Sim/Não Odonto</p>");
-            //         return false;
-            //     } else {
-            //         $('.errorodonto').html("");
-            //     }
-
-            //     let data = {
-            //         cliente_id:$("#cliente_id").val(),
-            //         data_boleto:$("#data_boleto").val(),
-            //         data_vigencia:$("#data_vigente").val(),
-            //         uf: $("#uf").val(),
-            //         cidade:$("#cidade").val(),
-            //         operadora: $("#operadora").val(),
-            //         administradora: $("#administradora").val(),
-            //         coparticipacao: $("input:radio[name=coparticipacao]:checked").val(),
-            //         odonto: $('input:radio[name=odonto]:checked').val(), 
-            //         plano:$("#plano").val(),
-            //         faixas: {'1': $("#faixa-input-0-18").val(), '2': $("#faixa-input-19-23").val(),'3': $("#faixa-input-24-28").val(),'4': $("#faixa-input-29-33").val(),'5': $("#faixa-input-34-38").val(),'6': $("#faixa-input-39-43").val(),'7': $("#faixa-input-44-48").val(),'8': $("#faixa-input-49-53").val(),'9': $("#faixa-input-54-58").val(),'10': $("#faixa-input-59").val()}
-            //     };
-            //     //console.log(data);
-            //     montarValores(data);
-
-            //     $("#vigente").datepicker({
-            //     dateFormat: "dd/mm/yy",
-            //     beforeShowDay: function (d) {
-            //         var day = d.getDate();
-            //         return [day == 5 || day == 10 || day == 15];
-            //     },
-            // });  
-
-
-
-                return false;
-            });
-
-
-            // $("body").on('change','#acomodacao',function(){
-            //     let valor = $(this).attr('data-valor');
-            //     let atual = $(this);                
-            //     if(atual.closest('.valores-acomodacao').find('#vigente').val() == "") {
-            //         $("#change_plano").val($(this).val())
-            //         atual.closest('.valores-acomodacao').find('.errordatavigente').html("<p class='alert alert-danger' style='font-size:0.79em;'>Este e campo obrigatório</p>");
-            //         atual.prop('checked', false);
-            //         return false;
-            //     } else {
-            //         atual.closest('.valores-acomodacao').find(".errordatavigente").html("");
-            //     }
-
-            //     if(atual.closest('.valores-acomodacao').find('#boleto').val() == "") {
-            //         $("#change_plano").val($(this).val())
-            //         atual.closest('.valores-acomodacao').find('.errordataboleto').html("<p class='alert alert-danger' style='font-size:0.79em;'>Este e campo obrigatório</p>");
-            //         atual.prop('checked', false);
-            //         return false;
-            //     } else {
-            //         atual.closest('.valores-acomodacao').find('.errordataboleto').html("");
-            //     }
-
-            //     if(atual.closest('.valores-acomodacao').find("#adesao").val() == "") {
-            //         $("#change_plano").val($(this).val())
-            //         atual.closest('.valores-acomodacao').find('.errorvaloradesao').html("<p class='alert alert-danger'>Este e campo obrigatório</p>");
-            //         atual.prop('checked', false);
-            //         return false;
-            //     } else {
-            //         atual.closest('.valores-acomodacao').find(".errorvaloradesao").html("");
-            //     }
-
-
-            //     $("#valor").val(valor);
-            //     $('body,html').animate({
-            //         scrollTop:"900px"
-            //     },1000);
-            //     $('.valores-acomodacao').css({"box-shadow":"none"});
-            //     $(this).closest('.valores-acomodacao').css({"box-shadow": "10px 5px 5px black"})
-            //     $("#btn_submit").html("<button type='submit' class='btn btn-block btn-outline-secondary my-4 salvar_contrato'>Salvar Contrato</button>")
-            // }); 
-            
-            
-
-
-            // $("body").on('change','#vigente',function(){                
-            //     let data_vigencia = $(this).val();
-            //     $("#data_vigencia").val(data_vigencia);
-            // });
-
-            $("body").on('change','input[name="boleto"]',function(){
-                let data_boleto = $(this).val();
-                
-                $(this).closest('form').find('#data_boleto').val(data_boleto);
-
-                //$("#data_boleto").val(data_boleto);
-            });
-
-            $("body").on('change','input[name="adesao"]',function(){
-                let valor_adesao = $(this).val();
-                $(this).closest('form').find('#valor_adesao').val(valor_adesao);
-                
-            });
-
-
-            // $('body').on('change','.change_valores',function(){
-            //     let data = {
-            //         cliente_id:$("#cliente_id").val(),
-            //         data_boleto:$("#data_boleto").val(),
-            //         data_vigencia:$("#data_vigente").val(),
-            //         cidade:$("#cidade").val(),
-            //         operadora: $("#operadora").val(),
-            //         administradora: $("#administradora").val(),
-            //         coparticipacao: $("input[name='change_coparticipacao']").val(),
-            //         odonto: $("input[name='change_odonto']").val(), 
-            //         plano:$("#plano").val(),
-            //         faixas: {'1': $("#faixa-input-0-18").val(), '2': $("#faixa-input-19-23").val(),'3': $("#faixa-input-24-28").val(),'4': $("#faixa-input-29-33").val(),'5': $("#faixa-input-34-38").val(),'6': $("#faixa-input-39-43").val(),'7': $("#faixa-input-44-48").val(),'8': $("#faixa-input-49-53").val(),'9': $("#faixa-input-54-58").val(),'10': $("#faixa-input-59").val()}
-            //     };
-            //     montarValores(data);
-            // });
-
-            // $('body').on('change','.change_plano',function(){
-            //     let data = {
-            //         cliente_id:$("#cliente_id").val(),
-            //         data_boleto:$("#data_boleto").val(),
-            //         data_vigencia:$("#data_vigente").val(),
-            //         cidade:$("#cidade").val(),
-            //         operadora: $("#operadora").val(),
-            //         administradora: $("#administradora").val(),
-            //         coparticipacao: $("input[name='change_coparticipacao']").val(),
-            //         odonto: $("input[name='change_odonto']").val(), 
-            //         plano:$("#plano").val(),
-            //         faixas: {'1': $("#faixa-input-0-18").val(), '2': $("#faixa-input-19-23").val(),'3': $("#faixa-input-24-28").val(),'4': $("#faixa-input-29-33").val(),'5': $("#faixa-input-34-38").val(),'6': $("#faixa-input-39-43").val(),'7': $("#faixa-input-44-48").val(),'8': $("#faixa-input-49-53").val(),'9': $("#faixa-input-54-58").val(),'10': $("#faixa-input-59").val()}
-            //     };
-            //     montarValores(data);
-            // });
-
-            // $('body').on('change','.mudar_coparticipacao',function(){
-            //     let data = {
-            //         cliente_id:$("#cliente_id").val(),
-            //         data_boleto:$("#data_boleto").val(),
-            //         data_vigencia:$("#data_vigente").val(),
-            //         cidade:$("#cidade").val(),
-            //         operadora: $("#operadora").val(),
-            //         administradora: $("#administradora").val(),
-            //         coparticipacao: $("input[name='change_coparticipacao']").val(),
-            //         odonto: $("input[name='change_odonto']").val(), 
-            //         plano:$("#plano").val(),
-            //         faixas: {
-            //             '1': $("#faixa-input-0-18").val(), 
-            //             '2': $("#faixa-input-19-23").val(),
-            //             '3': $("#faixa-input-24-28").val(),
-            //             '4': $("#faixa-input-29-33").val(),
-            //             '5': $("#faixa-input-34-38").val(),
-            //             '6': $("#faixa-input-39-43").val(),
-            //             '7': $("#faixa-input-44-48").val(),
-            //             '8': $("#faixa-input-49-53").val(),
-            //             '9': $("#faixa-input-54-58").val(),
-            //             '10': $("#faixa-input-59").val()}
-            //     };
-            //     montarValores(data);             
-            // });
-
-            // $('body').on('change','.mudar_odonto',function(){
-            //     let data = {
-            //         cliente_id:$("#cliente_id").val(),
-            //         data_boleto:$("#data_boleto").val(),
-            //         data_vigencia:$("#data_vigente").val(),
-            //         cidade:$("#cidade").val(),
-            //         operadora: $("#operadora").val(),
-            //         administradora: $("#administradora").val(),
-            //         coparticipacao: $("input[name='change_coparticipacao']").val(),
-            //         odonto: $("input[name='change_odonto']").val(), 
-            //         plano:$("#plano").val(),
-            //         faixas: {'1': $("#faixa-input-0-18").val(), '2': $("#faixa-input-19-23").val(),'3': $("#faixa-input-24-28").val(),'4': $("#faixa-input-29-33").val(),'5': $("#faixa-input-34-38").val(),'6': $("#faixa-input-39-43").val(),'7': $("#faixa-input-44-48").val(),'8': $("#faixa-input-49-53").val(),'9': $("#faixa-input-54-58").val(),'10': $("#faixa-input-59").val()}
-            //     };
-            //     montarValores(data);             
-            // });
-
-            /*********************************************************** */
-            // $('body').on('click','.change_valores_faixas',function(){
-            //     let campo = $(this).closest(".content").find('input[type="tel"]').attr('data-change');
-            //     let valor = $(this).closest(".content").find('input[type="tel"]').val();
-            //     if(valor>0) {
-            //         $('input[name="'+campo+'"]').val(valor);
-            //     } else {
-            //         $('input[name="'+campo+'"]').val('');
-            //     }
-            //     let data = {
-            //         cliente_id:$("#cliente_id").val(),
-            //         data_boleto:$("#data_boleto").val(),
-            //         data_vigencia:$("#data_vigente").val(),
-            //         cidade:$("#cidade").val(),
-            //         operadora: $("#operadora").val(),
-            //         administradora: $("#administradora").val(),
-            //         coparticipacao: $("input[name='change_coparticipacao']").val(),
-            //         odonto: $("input[name='change_odonto']").val(), 
-            //         plano:$("#plano").val(),
-            //         faixas: {'1': $("#change_faixa_0_18").val(), '2': $("#change_faixa_19_23").val(),'3': $("#change_faixa_24_28").val(),'4': $("#change_faixa_29_33").val(),'5': $("#change_faixa_34_38").val(),'6': $("#change_faixa_39_43").val(),'7': $("#change_faixa_44_48").val(),'8': $("#change_faixa_49_53").val(),'9': $("#change_faixa_54_58").val(),'10': $("#change_faixa_59").val()}
-            //     };
-            //     montarValores(data);      
-            // });
-
-            function adicionaZero(numero){
-                if (numero <= 9) 
-                    return "0" + numero;
-                else
-                    return numero; 
+            function limparFormulario() {
+                $("#administradora_coletivo_view").val('');
+                $("#tipo_plano_coletivo_view").val('');
+                $("#estagio_contrato_coletivo_view").val('');
+                $("#cliente_coletivo_view").val('');
+                $("#data_nascimento_coletivo_view").val('');
+                $("#codigo_externo_coletivo_view").val('');
+                $("#cpf_coletivo_view").val('');
+                $("#responsavel_financeiro_coletivo").val('');
+                $("#cpf_financeiro_coletivo_view").val('');
+                $("#celular_coletivo_view").val('');
+                $("#telefone_coletivo_view").val('');
+                $("#email_coletivo_view").val('');
+                $("#cep_coletivo_view").val('');
+                $("#cidade_coletivo_view").val('');
+                $("#uf_coletivo_view").val('');
+                $("#bairro_coletivo_view").val('');
+                $("#rua_coletivo_view").val('');
+                $("#complemento_coletivo_view").val('');
+                $("#data_contrato_coletivo_view").val('');
+                $("#valor_contrato_coletivo_view").val('');
+                $("#valor_adesao_coletivo_view").val('');
+                $("#quantidade_vidas_coletivo_cadastrar").val('');
+                $("#data_boleto_coletivo_view").val('');
+                $("#data_vigencia_coletivo_view").val('');
+                $("#texto_descricao_coletivo_view").val('');
             }
 
-            function montarValoresIndividual(data) {
+            function removeReadonly() {
+                $("#cliente_coletivo_view").removeAttr('readonly').addClass('editar_campo');
+                $("#data_nascimento_coletivo_view").removeAttr('readonly').addClass('editar_campo');
+                $("#cpf_coletivo_view").removeAttr('readonly').addClass('editar_campo')
+                $("#responsavel_financeiro_coletivo").removeAttr('readonly').addClass('editar_campo');
+                $("#cpf_financeiro_coletivo_view").removeAttr('readonly').addClass('editar_campo');
+                $("#celular_coletivo_view").removeAttr('readonly').addClass('editar_campo');
+                $("#telefone_coletivo_view").removeAttr('readonly').addClass('editar_campo');
+                $("#email_coletivo_view").removeAttr('readonly').addClass('editar_campo');
+                $("#cep_coletivo_view").removeAttr('readonly').addClass('editar_campo');
+                $("#cidade_coletivo_view").removeAttr('readonly').addClass('editar_campo');
+                $("#uf_coletivo_view").removeAttr('readonly').addClass('editar_campo');
+                $("#bairro_coletivo_view").removeAttr('readonly').addClass('editar_campo');
+                $("#rua_coletivo_view").removeAttr('readonly').addClass('editar_campo');
+                $("#complemento_coletivo_view").removeAttr('readonly').addClass('editar_campo');
+            }
+
+            function adicionarReadonly() {
                 
-                $.ajax({
-                    url:"{{route('contratos.montarPlanosIndividual')}}",
-                    method:"POST",
-                    data: data,
-                    success(res) {
-                        $("#resultado_individual").slideUp().html(res).delay(100).slideToggle(100,function(){
-                            $('#cadastrarIndividualModal').animate({
-                                scrollTop:$(window).scrollTop() + $(window).height(),
-                            },1500);
-                        });
+                $("#cliente_coletivo_view").attr('readonly',true).removeClass('editar_campo');
+                $("#data_nascimento_coletivo_view").attr('readonly',true).removeClass('editar_campo');
+                $("#cpf_coletivo_view").attr('readonly',true).removeClass('editar_campo');
+                $("#responsavel_financeiro_coletivo").attr('readonly',true).removeClass('editar_campo');
+                $("#cpf_financeiro_coletivo_view").attr('readonly',true).removeClass('editar_campo');
+                $("#celular_coletivo_view").attr('readonly',true).removeClass('editar_campo');
+                $("#telefone_coletivo_view").attr('readonly',true).removeClass('editar_campo');
+                $("#email_coletivo_view").attr('readonly',true).removeClass('editar_campo')
+                $("#cep_coletivo_view").attr('readonly',true).removeClass('editar_campo')
+                $("#cidade_coletivo_view").attr('readonly',true).removeClass('editar_campo');
+                $("#uf_coletivo_view").attr('readonly',true).removeClass('editar_campo')
+                $("#bairro_coletivo_view").attr('readonly',true).removeClass('editar_campo')
+                $("#rua_coletivo_view").attr('readonly',true).removeClass('editar_campo')
+                $("#complemento_coletivo_view").attr('readonly',true).removeClass('editar_campo')
+            }
 
-                        $("body").find('.vigente').datepicker({
-                            onSelect: function() { 
-                                var dateObject = $(this).datepicker('getDate'); 
-                                let dataFormatada = (dateObject.getFullYear() + "-" + adicionaZero(((dateObject.getMonth() + 1))) + "-" + adicionaZero((dateObject.getDate()))) ;     
-                                $("form[name='cadastrar_pessoa_fisica_formulario_individual']").find("#data_vigencia").attr("value",dataFormatada);   
-                            }
-                        });
-
-                    }
-                });    
+            function limparFormularioIndividual() {
+                $("#administradora_individual").val('');
+                $("#tipo_plano_individual").val('');
+                $("#status_individual_view").val('');
+                $("#cliente").val('');
+                $("#data_nascimento").val('');
+                $("#codigo_externo_individual").val('');
+                $("#cpf").val('');
+                $("#responsavel_financeiro").val('');
+                $("#cpf_financeiro").val('');
+                $("#celular_individual_view_input").val('');
+                $("#telefone_individual_view_input").val('');
+                $("#email").val('');
+                $("#cep_individual_cadastro").val('');
+                $("#cidade").val('');
+                $("#uf").val('');
+                $("#bairro_individual_cadastro").val('');
+                $("#rua_individual_cadastro").val('');
+                $("#complemento_individual_cadastro").val('');
+                $("#data_contrato").val('');
+                $("#valor_contrato").val('');
+                $("#valor_adesao").val('');
+                $("#quantidade_vidas_individual_cadastrar").val('');
+                $("#data_boleto").val('');
+                $("#data_vigencia").val('');
+                $("#texto_descricao_individual_view").val('');
             }
 
 
 
-
-            function montarValores(data) {
-                
-                $.ajax({
-                    url:"{{route('contratos.montarPlanos')}}",
-                    method:"POST",
-                    data: data,
-                    success(res) {
-                           
-                        $("#resultado_coletivo").slideUp().html(res).delay(100).slideToggle(100,function(){
-                            $('body,html').animate({
-                                scrollTop:$(window).scrollTop() + $(window).height(),
-                            },1500);
-                        });
-
-                        $("body").find('.vigente').datepicker({
-                            onSelect: function() { 
-                                var dateObject = $(this).datepicker('getDate'); 
-                                let dataFormatada = (dateObject.getFullYear() + "-" + adicionaZero(((dateObject.getMonth() + 1))) + "-" + adicionaZero((dateObject.getDate()))) ;     
-                                $("form[name='cadastrar_pessoa_fisica_formulario_modal_coletivo']").find("#data_vigencia").attr("value",dataFormatada);   
-                            }
-                        });
-
-
-                //         // if(data.plano == "3" || data.plano == "4") {
-                //         //     if(data.uf == "GO") {
-                //         //         $("body").find('.vigente').datepicker({
-                //         //             beforeShowDay: function (d) {
-                //         //                 var day = d.getDate();
-                //         //                 return [day == 5 || day == 10 || day == 15];
-                //         //             }
-                //         //         })
-                //         //     } else if(data.uf == "MT") {
-                //         //         $("body").find('.vigente').datepicker({
-                //         //             beforeShowDay: function (d) {
-                //         //                 var day = d.getDate();
-                //         //                 return [day == 1 || day == 10 || day == 20];
-                //         //             }
-                //         //         })
-                //         //     } else {
-                //         //         $("body").find('.vigente').datepicker({
-                //         //             beforeShowDay: function (d) {
-                //         //                 var day = d.getDate();
-                //         //                 return [day == 5 || day == 10 || day == 15];
-                //         //             }
-                //         //         })
-                //         //     }
-                //         // } else {
-                //         //     $("body").find('.vigente').datepicker()
-                //         // }
-                        
-                        
-                        
-
-
-
-                    }
-                });
-                return false;
-            }
-
-            function limparTudo() {
-                $('.coluna-right').find("input[type='text']").val('');
-                $('tr').removeClass('textoforte');
-                $('li').prop('data-id','');
-                $('select').prop('selectedIndex',0);
-                //table.ajax.reload();
-
-                //table_individual.ajax.reload();
-                //taindividual.ajax.reload();
-
-                //table_individual.api().ajax.reload();
-                //table_individual.api().ajax.reload();
-                //taindividual.ajax.reload();    
-                //table_individual.ajax.reload();
-
-                // $('#tabela_individual').DataTable().ajax.reload();
-                // $('#tabela_individual').DataTable().ajax.reload()
-
-                // $('#tabela_individual').dataTable().api().ajax.reload();
-
-                // taindividual.ajax.reload( null, false );
-                // table_individual.ajax.reload( null, false );
-
-                // $('#tabela_individual').DataTable().ajax.url("{{route('contratos.listarIndividual')}}").load();
-                $('.listarindividual').DataTable().ajax.url("{{route('contratos.listarIndividual')}}").load();
-
-                //table.ajax.url("{{route('contratos.listarIndividual')}}").load();
-                //table_individual.ajax.url("{{route('contratos.listarIndividual')}}").load();
-
-                //taindividual.ajax.url("{{route('contratos.listarIndividual')}}").load();
-                
-                //tableempresarial.ajax.reload();
-            }
 
 
 
@@ -3042,6 +2369,21 @@
 
 @section('css')
     <style>
+
+        #container_mostrar_comissao {
+            width:439px;
+            height:555px;
+            background-color: #123449;
+            position: absolute;
+            right:5px;
+            border-radius: 5px;
+        }
+
+
+
+        .container_edit {
+            display:flex;justify-content:end;
+        }
         .ativo {background-color:#FFF !important;color: #000 !important;}
         .ocultar {display: none;}
         .list_abas {list-style: none;display: flex;border-bottom: 1px solid white;margin: 0;padding: 0;}
@@ -3066,6 +2408,9 @@
         .buttons {
             display: flex;
 
+        }
+        .button_individual {
+            display:flex;
         }
 
 

@@ -10,9 +10,11 @@ class ContratoEmpresarial extends Model
     use HasFactory;
     protected $table = "contrato_empresarial";
     protected $fillable = [
-            "plano_empresarial_id",
+            "plano_id",
             "tabela_origens_id",
-            "user_id","data",
+            "user_id",
+            "financeiro_id",
+            "data",
             "codigo_corretora",
             "codigo_vendedor",
             "cnpj",

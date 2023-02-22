@@ -57,49 +57,50 @@
                     <div style="margin:0 0 20px 0;padding:0;background-color:#123449;border-radius:5px;">
                         <h5 class="text-center d-flex align-items-center justify-content-center py-2 border-bottom">Pendentes</h5>
 
-
-
-
-
-                        <ul style="margin:0;padding:0;list-style:none;" id="listar">
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                        <ul style="margin:0;padding:0;list-style:none;" id="listar_individual">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_em_analise_individual" class="individual">
                                 <span>Em Análise</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">1</span>                        
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_em_analise}}</span>                        
                             </li>
 
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_1_parcela_individual" class="individual">
                                 <span>Pagamento 1º Parcela</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">100</span>                        
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_parcela_01}}</span>                        
                             </li>
 
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_2_parcela_individual" class="individual">
                                <span>Pagamento 2º Parcela</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">1000</span>                        
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_parcela_02}}</span>                        
                             </li>
 
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_3_parcela_individual" class="individual">
                                <span>Pagamento 3º Parcela</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">10000</span>                        
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_parcela_03}}</span>                        
                             </li>
 
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_4_parcela_individual" class="individual">
                                <span>Pagamento 4º Parcela</span>
                                <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_parcela_04}}</span>                        
                             </li>
 
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_5_parcela_individual" class="individual">
                                <span>Pagamento 5º Parcela</span>
                                <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_parcela_05}}</span>                        
                             </li>
 
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_6_parcela_individual" class="individual">
                                <span>Pagamento 6º Parcela</span>
                                <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_parcela_06}}</span>                        
                             </li>
 
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="finalizado_individual" class="individual">
                                <span>Finalizado</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">0</span>                        
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_finalizado}}</span>                        
+                            </li>
+
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="cancelado_individual" class="individual">
+                               <span>Cancelado</span>
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_cancelado}}</span>                        
                             </li>
                         </ul>
                     </div>
@@ -317,45 +318,49 @@
                     <div style="margin:0 0 20px 0;padding:0;background-color:#123449;border-radius:5px;">
                         <h5 class="text-center d-flex align-items-center justify-content-center py-2 border-bottom">Pendentes</h5>
                         <ul style="margin:0;padding:0;list-style:none;" id="listar">
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="em_analise_coletivo" class="coletivo">
                                 <span>Em Analise</span>
-                                <span class="badge badge-light" style="width:45px;text-align:right;vertical-align: middle;">10</span>                        
+                                <span class="badge badge-light" style="width:45px;text-align:right;vertical-align: middle;">{{$qtd_coletivo_em_analise}}</span>                        
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_adesao_coletivo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="emissao_boleto_coletivo" class="coletivo">
                                 <span>Emissão Boleto</span>
-                                <span class="badge badge-light" style="width:45px;text-align:right;">20</span>
+                                <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_coletivo_emissao_boleto}}</span>
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_vigencia">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_adesao_coletivo" class="coletivo">
                                 <span>Pagamento Adesão</span>
-                                <span class="badge badge-light" style="width:45px;text-align:right;">30</span>
+                                <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_coletivo_pg_adesao}}</span>
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_vigencia">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_vigencia_coletivo" class="coletivo">
                                 <span>Pagamento Vigência</span>
-                                <span class="badge badge-light" style="width:45px;text-align:right;">30</span>
+                                <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_coletivo_pg_vigencia}}</span>
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_vigencia">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_segunda_parcela" class="coletivo">
                                 <span>Pagamento 2º Parcela</span>
-                                <span class="badge badge-light" style="width:45px;text-align:right;">30</span>
+                                <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_coletivo_02_parcela}}</span>
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_vigencia">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_terceira_parcela" class="coletivo">
                                 <span>Pagamento 3º Parcela</span>
-                                <span class="badge badge-light" style="width:45px;text-align:right;">30</span>
+                                <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_coletivo_03_parcela}}</span>
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_vigencia">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_quarta_parcela" class="coletivo">
                                 <span>Pagamento 4º Parcela</span>
-                                <span class="badge badge-light" style="width:45px;text-align:right;">30</span>
+                                <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_coletivo_04_parcela}}</span>
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_vigencia">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_quinta_parcela" class="coletivo">
                                 <span>Pagamento 5º Parcela</span>
-                                <span class="badge badge-light" style="width:45px;text-align:right;">30</span>
+                                <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_coletivo_05_parcela}}</span>
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_vigencia">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_sexta_parcela" class="coletivo">
                                 <span>Pagamento 6º Parcela</span>
-                                <span class="badge badge-light" style="width:45px;text-align:right;">30</span>
+                                <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_coletivo_06_parcela}}</span>
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="finalizado_coletivo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="finalizado_coletivo" class="coletivo">
                                 <span>Finalizado</span>
-                                <span class="badge badge-light" style="width:45px;text-align:right;">30</span>
+                                <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_coletivo_finalizados}}</span>
+                            </li>
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="cancelado_coletivo" class="coletivo">
+                                <span>Cancelados</span>
+                                <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_coletivo_cancelados}}</span>
                             </li>
                         </ul>
                     </div>
@@ -588,39 +593,43 @@
 
 
 
-                        <ul style="margin:0;padding:0;list-style:none;" id="listar">
+                        <ul style="margin:0;padding:0;list-style:none;" id="listar_empresarial">
                             
-                           <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo"  style="">
+                           <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_em_analise_empresarial"  class="empresarial">
                                 <span>Em Análise</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">1</span>                        
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_empresarial_em_analise}}</span>                        
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
-                                <span>Pagamento Adesão</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">100</span>                        
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_1_parcela_empresarial" class="empresarial">
+                                <span>Pagamento 1º Parcela</span>
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_empresarial_parcela_01}}</span>                        
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_2_parcela_empresarial" class="empresarial">
                                <span>Pagamento 2º Parcela</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">1000</span>                        
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_empresarial_parcela_02}}</span>                        
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_3_parcela_empresarial" class="empresarial">
                                <span>Pagamento 3º Parcela</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">10000</span>                        
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_empresarial_parcela_03}}</span>                        
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_4_parcela_empresarial" class="empresarial">
                                <span>Pagamento 4º Parcela</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_parcela_04}}</span>                        
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_empresarial_parcela_04}}</span>                        
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_5_parcela_empresarial" class="empresarial">
                                <span>Pagamento 5º Parcela</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_parcela_05}}</span>                        
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_empresarial_parcela_05}}</span>                        
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_6_parcela_empresarial" class="empresarial">
                                <span>Pagamento 6º Parcela</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_parcela_06}}</span>                        
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_empresarial_parcela_06}}</span>                        
                             </li>
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_boleto_coletivo" class="fundo">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_finalizado_empresarial" class="empresarial">
                                <span>Finalizado</span>
-                               <span class="badge badge-light" style="width:45px;text-align:right;">0</span>                        
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_empresarial_finalizado}}</span>                        
+                            </li>
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_cancelado_empresarial" class="empresarial">
+                               <span>Cancelado</span>
+                               <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_empresarial_cancelado}}</span>                        
                             </li>
                         </ul>
                     </div>
@@ -983,7 +992,7 @@
                     "url": "{{asset('traducao/pt-BR.json')}}"
                 },
                 ajax: {
-                    "url":"{{ route('contratos.listarIndividual') }}",
+                    "url":"{{ route('financeiro.individual.em_analise') }}",
                     "dataSrc": ""
                 },
                 "lengthMenu": [50,100,150,200,300,500],
@@ -1043,7 +1052,28 @@
                     },
                     {
                         "targets": 4,
-                        "width":"15%"
+                        "width":"15%",
+                        "createdCell": function (td, cellData, rowData, row, col) {
+                            
+                            if(cellData == "Pagamento 1º Parcela") {
+                                $(td).html("Pag. 1º Parcela");        
+                            }
+                            if(cellData == "Pagamento 2º Parcela") {
+                                $(td).html("Pag. 2º Parcela");        
+                            }
+                            if(cellData == "Pagamento 3º Parcela") {
+                                $(td).html("Pag. 3º Parcela");        
+                            }
+                            if(cellData == "Pagamento 4º Parcela") {
+                                $(td).html("Pag. 4º Parcela");        
+                            }
+                            if(cellData == "Pagamento 5º Parcela") {
+                                $(td).html("Pag. 5º Parcela");        
+                            }
+                            if(cellData == "Pagamento 6º Parcela") {
+                                $(td).html("Pag. 6º Parcela");        
+                            }
+                        },
                     }
                ],
                 
@@ -1149,7 +1179,7 @@
                 "initComplete": function( settings, json ) {
                     $('#title_coletivo_por_adesao_table').html("<h4>Coletivo Por Adesão</h4>");
                     this.api()
-                       .columns([3])
+                       .columns([1])
                        .every(function () {
                             var column = this;
                             var selectUsuario = $("#select_usuario");
@@ -1284,8 +1314,7 @@
                 table_individual.$('tr').removeClass('textoforte');
                 $(this).closest('tr').addClass('textoforte');
                 let data = table_individual.row(this).data();   
-                console.log(data);
-
+                
                 let acomodacao_individual = data.acomodacao.nome;
                 let coparticipacao_individual = data.coparticipacao;
                 let odonto_individual = data.odonto;
@@ -1308,8 +1337,6 @@
                 }
                 $("#texto_descricao_individual_view").val(texto)
 
-
-
                 if(data.clientes.dependente) {
                     $("#responsavel_financeiro").val(data.clientes.dependentes.nome);
                     $("#cpf_financeiro").val(data.clientes.dependentes.cpf);
@@ -1317,7 +1344,6 @@
                     $("#responsavel_financeiro").val('');
                     $("#cpf_financeiro").val('');
                 }
-
 
                 $('.div_info').attr('data-id',data.id);
                 $('.container_div_info').hide();
@@ -1372,12 +1398,12 @@
             
 
             $(".listarempresarial").DataTable({
-                dom: '<"d-flex justify-content-between"<"#title_ladingpage">ft><t><"d-flex justify-content-between"lp>',
+                dom: '<"d-flex justify-content-between"<"#title_empresarial">ft><t><"d-flex justify-content-between"lp>',
                 "language": {
                     "url": "{{asset('traducao/pt-BR.json')}}"
                 },
                 ajax: {
-                    "url":"{{ route('contratos.listarEmpresarial') }}",
+                    "url":"{{ route('contratos.listarEmpresarial.analise') }}",
                     "dataSrc": ""
                 },
                 "lengthMenu": [50,100,150,200,300,500],
@@ -1427,7 +1453,7 @@
                ],
                 
                 "initComplete": function( settings, json ) {
-                    $('#title_ladingpage').html("<h4>Listagem Empresarial</h4>");
+                    $('#title_empresarial').html("<h4>Empresarial</h4>");
                      this.api()
                        .columns([0])
                        .every(function () {
@@ -1484,10 +1510,6 @@
                 } else {
                     texto_empresarial = "";
                 }
-
-                
-
-
                 $("#plano_contratado_corretor_view_empresarial").val(texto_empresarial)
                 $("#uf_cliente_view_empresarial").val(data.uf);
                 $("#codigo_vendedor_empresarial_view").val(data.codigo_vendedor);
@@ -1503,18 +1525,14 @@
                 $("#vendedor_view_empresarial").val(data.usuario)
                 $("#vencimento_boleto_view_empresarial").val(vencimento_boleto);
                 $("#dia_vencimento_view_empresarial").val(data.dia_vencimento);
-
                 $("#valor_plano_saude_view").val(valor_plano_saude);
-                $("#valor_plano_odonto_view").val(valor_plano_odonto);
-                
+                $("#valor_plano_odonto_view").val(valor_plano_odonto);               
                 $("#cod_corretora_view_empresarial").val(data.codigo_corretora);
                 $("#cod_saude_view_empresarial").val(data.codigo_saude);
                 $("#cod_odonto_view_empresarial").val(data.codigo_odonto);
                 $("#senha_cliente_view_empresarial").val(data.senha_cliente);
-
                 $("#plano_adesao_view_empresarial").val(valor_total);
                 $("#valor_boleto_view_empresarial").val(valor_boleto);
-
                 $("#data_boleto_view_empresarial").val(data_boleto);
             });
 
@@ -1545,1443 +1563,201 @@
                 
             // });
 
-            $('.estilo_btn_plus_coletivo').on('click',function(){
-                $('#cadastrarContratoModal').modal('show');
-            });
+            $("ul#listar li.coletivo").on('click',function(){
+                let id_lista = $(this).attr('id');
+                console.log(id_lista);
+                if(id_lista == "em_analise_coletivo") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Em Análise</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.em_analise') }}").load();
+                    //limparFormulario()
+                } else if(id_lista == "emissao_boleto_coletivo") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Emissão Boleto</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.emissao_boleto') }}").load();
+                    //limparFormulario();
+                } else if(id_lista == "pagamento_adesao_coletivo") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Pagamento Adesão</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.pagamento_adesao') }}").load();
+                    //limparFormulario();
+                  
+                } else if(id_lista == "pagamento_vigencia_coletivo") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Pagamento Vigência</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.pagamento_vigencia') }}").load();
+                    
+                //     limparFormulario();
+                } else if(id_lista == "pagamento_segunda_parcela") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Pagamento 2º Parcela</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.pagamento_segunda_parcela') }}").load();
+                    
+                //     limparFormulario();
+                } else if(id_lista == "pagamento_terceira_parcela") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Pagamento 3º Parcela</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.pagamento_terceira_parcela') }}").load();
+                    
+                    
+                //     limparFormulario();
+                } else if(id_lista == "pagamento_quarta_parcela") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Pagamento 4º Parcela</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.pagamento_quarta_parcela') }}").load();
+                   
+                    
+                //     limparFormulario();
+                } else if(id_lista == "pagamento_quinta_parcela") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Pagamento 5º Parcela</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.pagamento_quinta_parcela') }}").load();
+                    
+                //     limparFormulario();
+                } else if(id_lista == "pagamento_sexta_parcela") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Pagamento 6º Parcela</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.pagamento_sexta_parcela') }}").load();
+                    
+                    
+                //     limparFormulario();
+                } else if(id_lista == "finalizado_coletivo") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Finalizado</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.pagamento_sexta_parcela') }}").load();
+                    
+                //     limparFormulario();
 
-            $('.estilo_btn_plus_individual').on('click',function(){
-                $("#cadastrarIndividualModal").modal('show');
-            });
+                } else if(id_lista == "cancelado_coletivo") {
+                    $('#title_coletivo_por_adesao_table').html("<h4>Cancelado</h4>");
+                    table.ajax.url("{{ route('financeiro.coletivo.pagamento_sexta_parcela') }}").load();
+                    
+                //     limparFormulario();
+                // }
+                } else {
 
-            $('.estilo_btn_plus_ss').on('click',function(){
-                $("#cadastrarEmpresarial").modal('show'); 
-            });
+                }
+            });      
 
+
+            $("ul#listar_individual li.individual").on('click',function(){
+                let id_lista = $(this).attr('id');
+                
+                if(id_lista == "aguardando_em_analise_individual") {
+                    $('#title_individual').html("<h4>Em Análise</h4>");
+                    table_individual.ajax.url("{{ route('financeiro.individual.em_analise') }}").load();
+                    
+                    //limparFormulario()
+                } else if(id_lista == "aguardando_pagamento_1_parcela_individual") {
+                    $('#title_individual').html("<h4>Pag. 1º Parcela</h4>");
+                    table_individual.ajax.url("{{ route('financeiro.individual.pagamento_primeira_parcela') }}").load();
+                    // $('.button_individual').empty().html(
+                    //     '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
+                    //     '<button class="btn btn-success w-50 emissao_boleto next_individual">Pag. 1º Parcela</button>'
+                    // );                      
+                    // $(".container_edit").addClass('ocultar')
+                    // adicionarReadonly();
+                    // limparFormulario();
+                } else if(id_lista == "aguardando_pagamento_2_parcela_individual") {
+                    $('#title_individual').html("<h4>Pag. 2º Parcela</h4>");
+                    table_individual.ajax.url("{{ route('financeiro.individual.pagamento_segunda_parcela') }}").load();
+                    // $('.button_individual').empty().html(
+                    //     '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
+                    //     '<button class="btn btn-success w-50 pagamento_adesao next_individual">Pag. 2º Parcela</button>'
+                    // );
+                    // $(".container_edit").addClass('ocultar')
+                    // adicionarReadonly();
+                    // limparFormulario();
+                } else if(id_lista == "aguardando_pagamento_3_parcela_individual") {
+                    $('#title_individual').html("<h4>Pag. 3º Parcela</h4>");
+                    table_individual.ajax.url("{{ route('financeiro.individual.pagamento_terceira_parcela') }}").load();
+                    // $('.button_individual').empty().html(
+                    //     '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
+                    //     '<button class="btn btn-success w-50 pagamento_vegencia next_individual">Pag. 3º Parcela</button>'
+                    // );
+                    // $(".container_edit").addClass('ocultar')
+                    // adicionarReadonly();
+                    // limparFormulario();
+                } else if(id_lista == "aguardando_pagamento_4_parcela_individual") {
+                    $('#title_individual').html("<h4>Pag. 4º Parcela</h4>");
+                    table_individual.ajax.url("{{ route('financeiro.individual.pagamento_quarta_parcela') }}").load();
+                    // $('.button_individual').empty().html(
+                    //     '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
+                    //     '<button class="btn btn-success w-50 pagamento_segunda_parcela next_individual">Pag. 4º Parcela</button>'
+                    // );
+                    // $(".container_edit").addClass('ocultar')
+                    // adicionarReadonly();
+                    // limparFormulario();
+                } else if(id_lista == "aguardando_pagamento_5_parcela_individual") {
+                    $('#title_individual').html("<h4>Pag. 5º Parcela</h4>");
+                    table_individual.ajax.url("{{ route('financeiro.individual.pagamento_quinta_parcela') }}").load();
+                    // $('.button_individual').empty().html(
+                    //     '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
+                    //     '<button class="btn btn-success w-50 pagamento_terceira_parcela next_individual">Pag. 5º Parcela</button>'
+                    // );
+                    // $(".container_edit").addClass('ocultar')
+                    // adicionarReadonly();
+                    // limparFormulario();
+                } else if(id_lista == "aguardando_pagamento_6_parcela_individual") {
+                    $('#title_individual').html("<h4>Pag. 6º Parcela</h4>");
+                    table_individual.ajax.url("{{ route('financeiro.individual.pagamento_sexta_parcela') }}").load();
+                    // $('.button_individual').empty().html(
+                    //     '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
+                    //     '<button class="btn btn-success w-50 pagamento_quarta_parcela next_individual">Pag. 6º Parcela</button>'
+                    // );
+                    // $(".container_edit").addClass('ocultar')
+                    // adicionarReadonly();
+                    // limparFormulario();
+                } else if(id_lista == "finalizado_individual") {
+                    $('#title_individual').html("<h4>Finalizado</h4>");
+                    table_individual.ajax.url("{{ route('financeiro.individual.finalizado') }}").load();
+                } else if(id_lista == "cancelado_individual") {
+                    $('#title_individual').html("<h4>Cancelado</h4>");
+                    table_individual.ajax.url("{{ route('financeiro.individual.cancelado') }}").load();
+                } else {
+
+                }
+            });  
            
 
+            $("ul#listar_empresarial li.empresarial").on('click',function(){
+                let id_lista = $(this).attr('id');
 
+                if(id_lista == "aguardando_em_analise_empresarial") {
+                    $("#title_empresarial").html("<h4>Em Análise</h4>");
+                    tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.analise")}}').load();
+                } else if(id_lista == "aguardando_pagamento_1_parcela_empresarial") {
+                    $("#title_empresarial").html("<h4>Pagamento 1º Parcela</h4>");
+                    tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.primeiraparcela")}}').load();
+                } else if(id_lista == "aguardando_pagamento_2_parcela_empresarial") {
+                    $("#title_empresarial").html("<h4>Pagamento 2º Parcela</h4>");
+                    tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.segundaparcela")}}').load();
+                } else if(id_lista == "aguardando_pagamento_3_parcela_empresarial") {
+                    $("#title_empresarial").html("<h4>Pagamento 3º Parcela</h4>");
+                    tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.terceiraparcela")}}').load();
+                } else if(id_lista == "aguardando_pagamento_4_parcela_empresarial") {
+                    $("#title_empresarial").html("<h4>Pagamento 4º Parcela</h4>");
+                    tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.quartaparcela")}}').load();
+                } else if(id_lista == "aguardando_pagamento_5_parcela_empresarial") {
+                    $("#title_empresarial").html("<h4>Pagamento 5º Parcela</h4>");
+                    tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.quintaparcela")}}').load();
+                } else if(id_lista == "aguardando_pagamento_6_parcela_empresarial") {
+                    $("#title_empresarial").html("<h4>Pagamento 6º Parcela</h4>");
+                    tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.sextaparcela")}}').load();
+                } else if(id_lista == "aguardando_finalizado_empresarial") {
+                    $("#title_empresarial").html("<h4>Finalizado</h4>");
+                    tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.finalizado")}}').load();
+                } else if(id_lista == "aguardando_cancelado_empresarial") {
+                    $("#title_empresarial").html("<h4>Cancelado</h4>");
+                    tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.cancelado")}}').load();
+                } else {
+
+                }
+
+
+
+                
+            });
             
 
 
 
 
                   
-            //$('#valor_adesao').mask("#.##0,00", {reverse: true});
-            $("#cpf").on('change',function(){
-                if($(this).val != "" && TestaCPF($(this).val())) {
-                    $('.errorcpf').html("");
-                }
-            });
             
-            $("#data_nascimento").on('change',function(){
-                if($(this).val() != "") {
-                    $('.errordatanascimento').html("");
-                }
-            });
-
-            $("#operadora").on('change',function(){
-                if($(this).val() != "") {
-                    $(".erroroperadora").html("");
-                } 
-            });
-
-            $("#administradora").on('change',function(){
-                if($(this).val() != "") {
-                    $(".erroradministradora").html("");
-                }
-            })
            
             
-            /** Quando clicar no card pegar os campos valor do plano e tipo(Apartamento,Enfermaria...) */
-            $('body').on('click','.valores-acomodacao',function(e){
-                let valor_plano = $(this).find('.valor_plano').text().replace("R$ ","");
-                let tipo = $(this).find('.tipo').text();
-                $("#valor").val(valor_plano);
-                $("#acomodacao").val(tipo);
-                if(!$(this).hasClass('destaque')) {
-                    $('#data_vigencia').val('')
-                    $('#data_boleto').val('');
-                    $('#valor_adesao').val('');
-                }
-                $(".valores-acomodacao").removeClass('destaque');
-                $(this).addClass('destaque');
-                $('#animate').animate({
-                    scrollTop:$(window).scrollTop() + $(window).height(),
-                },1500);
-                $("#btn_submit").html("<button type='submit' class='btn btn-block btn-light my-4 salvar_contrato'>Salvar Contrato</button>")
-                $('.valores-acomodacao').not('.destaque').each(function(i,e){
-                    $(e).find('.vigente').val('')
-                    $(e).find('.boleto').val('')
-                    $(e).find('.valor_adesao').val('')
-                });
-                if($(e.target).is('.form-control')) {
-                    return;
-                } 
-            });
 
-
-            
-
-            $("#administradora").on('change',function(){
-               let id = $(this).val();
-               $.ajax({
-                    url:"",
-                    data:"administradora="+id,
-                    method:"POST",
-                    success:function(res) {
-                        if(res.planos.length >= 1) {
-                            let selecionado = null;
-                            if($("#plano").val()) {
-                                selecionado = $("#plano").val();
-                            } 
-                            $("#plano").html("");
-                            $("#plano").prepend("<option value=''>--Escolher um Plano--</option>");
-                            $(res.planos).each(function(index,value){
-                                $("#plano").append($(`<option ${value.id == selecionado ? 'selected' : ''}>`).val(value.id).text(value.nome));
-                            });
-                        } else {
-                            $("#plano").html("");
-                            $("#plano").append('<option value="">--Esta administradora não possui planos cadastradas--</option>');
-                        }
-                    }    
-               });
-            });
-
-           
-                       
-            
-
-            
-            $('body').on('click','#coparticipacao_sim > #coparticipacao_radio_sim',function(){
-                $("#change_coparticipacao").val($(this).val()).trigger('change');
-            });
-            $('body').on('click','#coparticipacao_nao > #coparticipacao_radio_nao',function(){
-                $("#change_coparticipacao").val($(this).val()).trigger('change');
-            });
-            $('body').on('click','#odonto_sim > #odonto_radio_sim',function(){
-                $("#change_odonto").val($(this).val()).trigger('change');
-            });
-            $('body').on('click','#odonto_nao > #odonto_radio_nao',function(){
-                $("#change_odonto").val($(this).val()).trigger('change');
-            });    
-
-
-
-            /****Mostrar Plano Inidividual****/
-
-            $("body").find('form[name="cadastrar_pessoa_fisica_formulario_individual"]').on("click","#mostrar_plano_individual",function(){
-
-                if($("#users_individual").val() == "") {
-                    toastr["error"]("Corretor é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                }
-
-                if($("#tabela_origem_individual").val() == "") {
-                    toastr["error"]("Tabela Origem é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                }
-
-
-
-                if($("#nome_individual").val() == "") {
-                    toastr["error"]("Titular é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#cpf_individual").val() == "") {
-                    toastr["error"]("CPF é obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#data_nascimento_individual").val() == "") {
-                    toastr["error"]("Data Nascimento campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#email_individual").val() == "") {
-                    toastr["error"]("Email campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#telefone_individual").val() == "") {
-                    toastr["error"]("Celular é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                }
-
-                if($("#tabela_origem_individual").val() == "") {
-                    toastr["error"]("Tabela Origem campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-                
-                 
-                 if($("#cep_individual").val() == "") {
-                    toastr["error"]("Cep é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                  if($("#bairro_individual").val() == "") {
-                    toastr["error"]("Bairro é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#rua_individual").val() == "") {
-                    toastr["error"]("Rua é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                  if($("#cidade_origem_individual").val() == "") {
-                    toastr["error"]("Cidade é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#uf_individual").val() == "") {
-                    toastr["error"]("UF é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#codigo_externo_individual_cadastrar").val() == "") {
-                    toastr["error"]("Codigo Externo é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                if(!$('input:radio[name=coparticipacao_individual]').is(':checked')) {
-                    toastr["error"]("Coparticipação é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;  
-                } 
-
-                if(!$('input:radio[name=odonto_individual]').is(':checked')) {
-                    toastr["error"]("Odonto é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;  
-                } 
-
-                if(
-                    $("#faixa-input-0-18_individual").val() == "" && 
-                    $("#faixa-input-19-23_individual").val() == "" && 
-                    $("#faixa-input-24-28_individual").val() == "" && 
-                    $("#faixa-input-29-33_individual").val() == "" && 
-                    $("#faixa-input-34-38_individual").val() == "" && 
-                    $("#faixa-input-39-43_individual").val() == "" && 
-                    $("#faixa-input-44-48_individual").val() == "" && 
-                    $("#faixa-input-49-53_individual").val() == "" && 
-                    $("#faixa-input-54-58_individual").val() == "" && 
-                    $("#faixa-input-59_individual").val() == ""
-                ) {
-                    toastr["error"]("Preencher pelo menos 1 faixa etaria")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;  
-                }    
-
-                let data = {
-                    user:$("#users_individual").val(),
-                    tabela_origens_id:$("#tabela_origem_individual").val(),
-                    nome:$("#nome_individual").val(),
-                    cpf:$("#cpf_individual").val(),
-                    data_nascimento:$("#data_nascimento_individual").val(),
-                    email:$("#email_individual").val(),
-                    celular:$('#telefone_individual').val(),
-                    cep:$("#cep_individual").val(),
-                    cidade:$("#cidade_origem_individual").val(),
-                    bairro:$("#bairro_individual").val(),
-                    rua:$("#rua_individual").val(),
-                    complemento:$("#complemento_individual").val(),
-                    uf:$("#uf_individual").val(),
-                    dependente:$('#dependente_individual').is(':checked'),
-                    responsavel_financeiro:$("#responsavel_financeiro_individual_cadastro").val(),
-                    cpf_responsavel_financeiro:$("#cpf_financeiro_individual_cadastro").val(),
-                    codigo_externo:$("#codigo_externo_individual_cadastrar").val(),
-                    coparticipacao: $("input:radio[name=coparticipacao_individual]:checked").val(),
-                    odonto: $('input:radio[name=odonto_individual]:checked').val(), 
-                    faixas: {'1': $("#faixa-input-0-18_individual").val(), '2': $("#faixa-input-19-23_individual").val(),'3': $("#faixa-input-24-28_individual").val(),'4': $("#faixa-input-29-33_individual").val(),'5': $("#faixa-input-34-38_individual").val(),'6': $("#faixa-input-39-43_individual").val(),'7': $("#faixa-input-44-48_individual").val(),'8': $("#faixa-input-49-53_individual").val(),'9': $("#faixa-input-54-58_individual").val(),'10': $("#faixa-input-59_individual").val()}
-                };
-                montarValoresIndividual(data);
-                return false;
-            });
-
-            /****Fim Mostrar Plano Inidividual****/
-
-            $("body").find('form[name="cadastrar_pessoa_fisica_formulario_modal_coletivo"]').on("click","#mostrar_plano_coletivo",function(){
-                 if($("#nome_coletivo").val() == "") {
-                    toastr["error"]("Titular é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#cpf_coletivo").val() == "") {
-                    toastr["error"]("CPF é obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#data_nascimento_coletivo").val() == "") {
-                    toastr["error"]("Data Nascimento campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#email_coletivo").val() == "") {
-                    toastr["error"]("Email campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#tabela_origem_coletivo").val() == "") {
-                    toastr["error"]("Tabela Origem campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-
-                 if($("#administradora_coletivo").val() == "") {
-                    toastr["error"]("Administradora é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                if($("#plano_coletivo").val() == "") {
-                    toastr["error"]("Plano é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-                 
-                 if($("#cep_coletivo").val() == "") {
-                    toastr["error"]("Cep é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                  if($("#bairro_coletivo").val() == "") {
-                    toastr["error"]("Bairro é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#rua_coletivo").val() == "") {
-                    toastr["error"]("Rua é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                  if($("#cidade_coletivo").val() == "") {
-                    toastr["error"]("Cidade é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#uf_coletivo").val() == "") {
-                    toastr["error"]("UF é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                 if($("#codigo_externo_coletivo").val() == "") {
-                    toastr["error"]("Codigo Externo é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
-
-                if(!$('input:radio[name=coparticipacao_coletivo]').is(':checked')) {
-                    toastr["error"]("Coparticipação é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;  
-                } 
-
-                if(!$('input:radio[name=odonto_coletivo]').is(':checked')) {
-                    toastr["error"]("Odonto é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;  
-                } 
-
-                if(
-                    $("#faixa-input-0-18_coletivo").val() == "" && 
-                    $("#faixa-input-19-23_coletivo").val() == "" && 
-                    $("#faixa-input-24-28_coletivo").val() == "" && 
-                    $("#faixa-input-29-33_coletivo").val() == "" && 
-                    $("#faixa-input-34-38_coletivo").val() == "" && 
-                    $("#faixa-input-39-43_coletivo").val() == "" && 
-                    $("#faixa-input-44-48_coletivo").val() == "" && 
-                    $("#faixa-input-49-53_coletivo").val() == "" && 
-                    $("#faixa-input-54-58_coletivo").val() == "" && 
-                    $("#faixa-input-59_coletivo").val() == ""
-                ) {
-                    toastr["error"]("Preencher pelo menos 1 faixa etaria")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;  
-                }    
-
-                let data = {
-                    user:$("#usuario_coletivo_switch").val(),
-                    administradora: $("#administradora_coletivo :checked").val(),
-                    tabela_origens_id:$("#tabela_origem_coletivo").val(),
-                    nome:$("#nome_coletivo").val(),
-                    cpf:$("#cpf_coletivo").val(),
-                    data_nascimento:$("#data_nascimento_coletivo").val(),
-                    email:$("#email_coletivo").val(),
-                    celular:$("#celular").val(),
-                    cep:$("#cep_coletivo").val(),
-                    cidade:$("#cidade_origem_coletivo").val(),
-                    bairro:$("#bairro_coletivo").val(),
-                    rua:$("#rua_coletivo").val(),
-                    complemento:$("#complemento_coletivo").val(),
-                    uf: $("#uf_coletivo").val(),
-                    codigo_externo:$("#codigo_externo_coletivo").val(),
-                    dependente:$('#dependente_coletivo').is(':checked'),
-                    responsavel_nome:$("#responsavel_financeiro_coletivo_cadastrar_nome").val(),
-                    responsavel_cpf:$("#responsavel_financeiro_coletivo_cadastrar_cpf").val(),   
-                    coparticipacao: $("input:radio[name=coparticipacao_coletivo]:checked").val(),
-                    odonto: $('input:radio[name=odonto_coletivo]:checked').val(), 
-                    plano:$("#plano_coletivo").val(),
-                    faixas: {'1': $("#faixa-input-0-18_coletivo").val(), '2': $("#faixa-input-19-23_coletivo").val(),'3': $("#faixa-input-24-28_coletivo").val(),'4': $("#faixa-input-29-33_coletivo").val(),'5': $("#faixa-input-34-38_coletivo").val(),'6': $("#faixa-input-39-43_coletivo").val(),'7': $("#faixa-input-44-48_coletivo").val(),'8': $("#faixa-input-49-53_coletivo").val(),'9': $("#faixa-input-54-58_coletivo").val(),'10': $("#faixa-input-59_coletivo").val()}
-                };
- 
-                //console.log(data);
-                montarValores(data);
-
-                 
-                 
-
-
-
-            //     $("#change_plano").val($(this).val());
-
-            //     if($("#nome").val() == "") {
-            //         $("#change_plano").val($(this).val())
-                    
-            //         toastr["error"]("Nome do Titular e campo obrigatório")
-            //             toastr.options = {
-            //                 "closeButton": false,
-            //                 "debug": false,
-            //                 "newestOnTop": false,
-            //                 "progressBar": false,
-            //                 "positionClass": "toast-top-right",
-            //                 "preventDuplicates": false,
-            //                 "onclick": null,
-            //                 "showDuration": "300",
-            //                 "hideDuration": "1000",
-            //                 "timeOut": "5000",
-            //                 "extendedTimeOut": "1000",
-            //                 "showEasing": "swing",
-            //                 "hideEasing": "linear",
-            //                 "showMethod": "fadeIn",
-            //                 "hideMethod": "fadeOut"
-            //             }
-            //             return false;
-
-
-            //         return false;
-            //     } else {
-            //         $('.errorcliente').html("");
-            //     }
-                
-            //     if($("#cpf").val() == "") {
-            //         $("#change_plano").val($(this).val())
-            //         $('.errorcpf').html("<p class='alert alert-danger'>CPF é obrigatório<p>");
-            //         return false;
-            //     } else {
-            //         $('.errorcpf').html("");
-            //     }             
-                
-            //     // if(!TestaCPF($("#cpf").val())) {
-            //     //     $("#change_plano").val($(this).val())
-            //     //     $('.errorcpf').html("<p class='alert alert-danger'>CPF Invalido<p>");
-            //     //     return false;
-            //     // } else {
-            //     //     $('.errorcpf').html("");            
-            //     // }
-
-            //     if($("#data_nascimento").val() == "") {
-            //         $("#change_plano").val($(this).val())
-            //         //$(this).val('');
-            //         $('.errordatanascimento').html("<p class='alert alert-danger'>Data é obrigatório<p>");
-            //         return false;
-            //     } else {
-            //         $('.errordatanascimento').html("");
-            //     }
-
-            //     if($("#email").val() == "") {
-            //         $("#change_plano").val($(this).val())
-            //         //$(this).val('');
-            //         $('.erroremail').html("<p class='alert alert-danger'>Email é obrigatório</p>")
-            //         return false;
-            //     } else {
-            //         $(".erroremail").html("");
-            //     }
-
-            //     if($("#cidade").val() == "") {
-            //         $("#change_plano").val($(this).val())
-            //         //$(this).val('');
-            //         $('.errorcidade').html("<p class='alert alert-danger'>Cidade é obrigatório<p>");
-            //         return false;
-            //     } else {
-            //         $('.change_cidade').val($("#cidade").val());
-            //         $(".errorcidade").html("");
-            //     }
-
-                
-
-            //     if($("#administradora").val() == "") {
-            //         $("#change_plano").val($(this).val())
-            //         //$(this).val('');
-            //         $('.erroradministradora').html("<p class='alert alert-danger' style='font-size:0.8em;'>Administradora é obrigatório<p>");
-            //         return false;
-            //     } else {
-            //         $('#change_administradora').val($("#administradora").val());
-            //         $('.erroradministradora').html("");
-            //     }
-
-            //     // if($("#responsavel_financeiro").val() == "") {
-            //     //     $("#change_plano").val($(this).val())
-            //     //     //$(this).val('');
-            //     //     $('.errorresponsavelfinanceiro').html("<p class='alert alert-danger'>Este e campo obrigatório</p>")
-            //     //     return false;
-            //     // } else {
-            //     //     $(".errorresponsavelfinanceiro").html("");
-            //     // }
-
-            //     // if($("#cpf_financeiro").val() == "") {
-            //     //     $("#change_plano").val($(this).val())
-            //     //     //$(this).val('');
-            //     //     $('.errorcpfresponsavelfinanceiro').html("<p class='alert alert-danger'>Este e campo obrigatório</p>")
-            //     //     return false;
-            //     // } else {
-            //     //     $(".errorcpfresponsavelfinanceiro").html("");
-            //     // }
-
-            //     if($("#cep").val() == "") {
-                    
-            //         $('.errorcep').html("<p class='alert alert-danger'>CEP é obrigatório</p>")
-            //         return false;
-            //     } else {
-            //         $(".errorcep").html("");
-            //     }
-
-            //     if($("#bairro").val() == "") {
-                    
-            //         $('.errorbairro').html("<p class='alert alert-danger'>Bairro é obrigatório</p>")
-            //         return false;
-            //     } else {
-            //         $(".errorbairro").html("");
-            //     }
-
-            //     if($("#rua").val() == "") {
-            //         $('.errorlogradouro').html("<p class='alert alert-danger'>Rua é obrigatório</p>")
-            //         return false;
-            //     } else {
-            //         $(".errorlogradouro").html("");
-            //     }
-
-            //     if($("#rua").val() == "") {
-            //         $('.errorlogradouro').html("<p class='alert alert-danger'>Rua é obrigatório</p>")
-            //         return false;
-            //     } else {
-            //         $(".errorlogradouro").html("");
-            //     }
-
-            //     if($("#uf").val() == "") {
-            //         $('.erroruf').html("<p class='alert alert-danger'>UF é obrigatório</p>")
-            //         return false;
-            //     } else {
-            //         $(".erroruf").html("");
-            //     }
-
-            //     if($("#plano").val() == "") {
-            //         //$("#change_plano").val($(this).val())
-            //         //$(this).val('');
-            //         $('.errorplano').html("<p class='alert alert-danger'>Plano é obrigatório</p>")
-            //         return false;
-            //     } else {
-            //         $(".errorplano").html("");
-            //     }
-
-                
-
-                
-
-            //     if($("#codigo_externo").val() == "") {
-            //         $("#change_plano").val($(this).val())
-            //         //$(this).val('');
-            //         $('.errorcodigo').html("<p class='alert alert-danger'>Código é obrigatório<p>");
-            //         return false;
-            //     } else {
-            //         $('.errorcodigo').html('');
-            //     }
-
-            //     if(
-            //         $("#faixa-input-0-18").val() == "" && 
-            //         $("#faixa-input-19-23").val() == "" && 
-            //         $("#faixa-input-24-28").val() == "" && 
-            //         $("#faixa-input-29-33").val() == "" && 
-            //         $("#faixa-input-34-38").val() == "" && 
-            //         $("#faixa-input-39-43").val() == "" && 
-            //         $("#faixa-input-44-48").val() == "" && 
-            //         $("#faixa-input-49-53").val() == "" && 
-            //         $("#faixa-input-54-58").val() == "" && 
-            //         $("#faixa-input-59").val() == ""
-            //     ) {
-            //         $("#change_plano").val($(this).val())
-            //         //$(this).val('');
-            //         $('.errorfaixas').html("<p class='alert alert-danger'>Pelo Menos 1 faixa etária deve ser preenchida</p>")
-            //         return false;
-            //     } else {
-            //         $("#change_faixa_0_18").val($("#faixa-input-0-18").val())    
-            //         $("#change_faixa_19_23").val($("#faixa-input-19-23").val())    
-            //         $("#change_faixa_24_28").val($("#faixa-input-24-28").val())    
-            //         $("#change_faixa_29_33").val($("#faixa-input-29-33").val())    
-            //         $("#change_faixa_34_38").val($("#faixa-input-34-38").val())    
-            //         $("#change_faixa_39_43").val($("#faixa-input-39-43").val())    
-            //         $("#change_faixa_44_48").val($("#faixa-input-44-48").val())    
-            //         $("#change_faixa_49_53").val($("#faixa-input-49-53").val())    
-            //         $("#change_faixa_54_58").val($("#faixa-input-54-58").val())    
-            //         $("#change_faixa_59").val($("#faixa-input-59").val())    
-            //         $('.errorfaixas').html("");
-            //     }
-
-
-            //     if(!$('input:radio[name=coparticipacao]').is(':checked')) {
-            //         $("#change_plano").val($(this).val())
-            //         //$(this).val('');
-            //         $('.errorcoparticipacao').html("<p class='alert alert-danger'>Marque Sim/Não Coparticipaão</p>")
-            //         return false;
-            //     } else {                    
-            //         $('.errorcoparticipacao').html("");
-            //     }
-
-            //     if(!$('input:radio[name=odonto]').is(':checked')) {
-            //         $("#change_plano").val($(this).val())
-            //         $('.errorodonto').html("<p class='alert alert-danger'>Marque Sim/Não Odonto</p>");
-            //         return false;
-            //     } else {
-            //         $('.errorodonto').html("");
-            //     }
-
-            //     let data = {
-            //         cliente_id:$("#cliente_id").val(),
-            //         data_boleto:$("#data_boleto").val(),
-            //         data_vigencia:$("#data_vigente").val(),
-            //         uf: $("#uf").val(),
-            //         cidade:$("#cidade").val(),
-            //         operadora: $("#operadora").val(),
-            //         administradora: $("#administradora").val(),
-            //         coparticipacao: $("input:radio[name=coparticipacao]:checked").val(),
-            //         odonto: $('input:radio[name=odonto]:checked').val(), 
-            //         plano:$("#plano").val(),
-            //         faixas: {'1': $("#faixa-input-0-18").val(), '2': $("#faixa-input-19-23").val(),'3': $("#faixa-input-24-28").val(),'4': $("#faixa-input-29-33").val(),'5': $("#faixa-input-34-38").val(),'6': $("#faixa-input-39-43").val(),'7': $("#faixa-input-44-48").val(),'8': $("#faixa-input-49-53").val(),'9': $("#faixa-input-54-58").val(),'10': $("#faixa-input-59").val()}
-            //     };
-            //     //console.log(data);
-            //     montarValores(data);
-
-            //     $("#vigente").datepicker({
-            //     dateFormat: "dd/mm/yy",
-            //     beforeShowDay: function (d) {
-            //         var day = d.getDate();
-            //         return [day == 5 || day == 10 || day == 15];
-            //     },
-            // });  
-
-
-
-                return false;
-            });
-
-
-            // $("body").on('change','#acomodacao',function(){
-            //     let valor = $(this).attr('data-valor');
-            //     let atual = $(this);                
-            //     if(atual.closest('.valores-acomodacao').find('#vigente').val() == "") {
-            //         $("#change_plano").val($(this).val())
-            //         atual.closest('.valores-acomodacao').find('.errordatavigente').html("<p class='alert alert-danger' style='font-size:0.79em;'>Este e campo obrigatório</p>");
-            //         atual.prop('checked', false);
-            //         return false;
-            //     } else {
-            //         atual.closest('.valores-acomodacao').find(".errordatavigente").html("");
-            //     }
-
-            //     if(atual.closest('.valores-acomodacao').find('#boleto').val() == "") {
-            //         $("#change_plano").val($(this).val())
-            //         atual.closest('.valores-acomodacao').find('.errordataboleto').html("<p class='alert alert-danger' style='font-size:0.79em;'>Este e campo obrigatório</p>");
-            //         atual.prop('checked', false);
-            //         return false;
-            //     } else {
-            //         atual.closest('.valores-acomodacao').find('.errordataboleto').html("");
-            //     }
-
-            //     if(atual.closest('.valores-acomodacao').find("#adesao").val() == "") {
-            //         $("#change_plano").val($(this).val())
-            //         atual.closest('.valores-acomodacao').find('.errorvaloradesao').html("<p class='alert alert-danger'>Este e campo obrigatório</p>");
-            //         atual.prop('checked', false);
-            //         return false;
-            //     } else {
-            //         atual.closest('.valores-acomodacao').find(".errorvaloradesao").html("");
-            //     }
-
-
-            //     $("#valor").val(valor);
-            //     $('body,html').animate({
-            //         scrollTop:"900px"
-            //     },1000);
-            //     $('.valores-acomodacao').css({"box-shadow":"none"});
-            //     $(this).closest('.valores-acomodacao').css({"box-shadow": "10px 5px 5px black"})
-            //     $("#btn_submit").html("<button type='submit' class='btn btn-block btn-outline-secondary my-4 salvar_contrato'>Salvar Contrato</button>")
-            // }); 
-            
-            
-
-
-            // $("body").on('change','#vigente',function(){                
-            //     let data_vigencia = $(this).val();
-            //     $("#data_vigencia").val(data_vigencia);
-            // });
-
-            $("body").on('change','input[name="boleto"]',function(){
-                let data_boleto = $(this).val();
-                
-                $(this).closest('form').find('#data_boleto').val(data_boleto);
-
-                //$("#data_boleto").val(data_boleto);
-            });
-
-            $("body").on('change','input[name="adesao"]',function(){
-                let valor_adesao = $(this).val();
-                $(this).closest('form').find('#valor_adesao').val(valor_adesao);
-                
-            });
-
-
-            // $('body').on('change','.change_valores',function(){
-            //     let data = {
-            //         cliente_id:$("#cliente_id").val(),
-            //         data_boleto:$("#data_boleto").val(),
-            //         data_vigencia:$("#data_vigente").val(),
-            //         cidade:$("#cidade").val(),
-            //         operadora: $("#operadora").val(),
-            //         administradora: $("#administradora").val(),
-            //         coparticipacao: $("input[name='change_coparticipacao']").val(),
-            //         odonto: $("input[name='change_odonto']").val(), 
-            //         plano:$("#plano").val(),
-            //         faixas: {'1': $("#faixa-input-0-18").val(), '2': $("#faixa-input-19-23").val(),'3': $("#faixa-input-24-28").val(),'4': $("#faixa-input-29-33").val(),'5': $("#faixa-input-34-38").val(),'6': $("#faixa-input-39-43").val(),'7': $("#faixa-input-44-48").val(),'8': $("#faixa-input-49-53").val(),'9': $("#faixa-input-54-58").val(),'10': $("#faixa-input-59").val()}
-            //     };
-            //     montarValores(data);
-            // });
-
-            // $('body').on('change','.change_plano',function(){
-            //     let data = {
-            //         cliente_id:$("#cliente_id").val(),
-            //         data_boleto:$("#data_boleto").val(),
-            //         data_vigencia:$("#data_vigente").val(),
-            //         cidade:$("#cidade").val(),
-            //         operadora: $("#operadora").val(),
-            //         administradora: $("#administradora").val(),
-            //         coparticipacao: $("input[name='change_coparticipacao']").val(),
-            //         odonto: $("input[name='change_odonto']").val(), 
-            //         plano:$("#plano").val(),
-            //         faixas: {'1': $("#faixa-input-0-18").val(), '2': $("#faixa-input-19-23").val(),'3': $("#faixa-input-24-28").val(),'4': $("#faixa-input-29-33").val(),'5': $("#faixa-input-34-38").val(),'6': $("#faixa-input-39-43").val(),'7': $("#faixa-input-44-48").val(),'8': $("#faixa-input-49-53").val(),'9': $("#faixa-input-54-58").val(),'10': $("#faixa-input-59").val()}
-            //     };
-            //     montarValores(data);
-            // });
-
-            // $('body').on('change','.mudar_coparticipacao',function(){
-            //     let data = {
-            //         cliente_id:$("#cliente_id").val(),
-            //         data_boleto:$("#data_boleto").val(),
-            //         data_vigencia:$("#data_vigente").val(),
-            //         cidade:$("#cidade").val(),
-            //         operadora: $("#operadora").val(),
-            //         administradora: $("#administradora").val(),
-            //         coparticipacao: $("input[name='change_coparticipacao']").val(),
-            //         odonto: $("input[name='change_odonto']").val(), 
-            //         plano:$("#plano").val(),
-            //         faixas: {
-            //             '1': $("#faixa-input-0-18").val(), 
-            //             '2': $("#faixa-input-19-23").val(),
-            //             '3': $("#faixa-input-24-28").val(),
-            //             '4': $("#faixa-input-29-33").val(),
-            //             '5': $("#faixa-input-34-38").val(),
-            //             '6': $("#faixa-input-39-43").val(),
-            //             '7': $("#faixa-input-44-48").val(),
-            //             '8': $("#faixa-input-49-53").val(),
-            //             '9': $("#faixa-input-54-58").val(),
-            //             '10': $("#faixa-input-59").val()}
-            //     };
-            //     montarValores(data);             
-            // });
-
-            // $('body').on('change','.mudar_odonto',function(){
-            //     let data = {
-            //         cliente_id:$("#cliente_id").val(),
-            //         data_boleto:$("#data_boleto").val(),
-            //         data_vigencia:$("#data_vigente").val(),
-            //         cidade:$("#cidade").val(),
-            //         operadora: $("#operadora").val(),
-            //         administradora: $("#administradora").val(),
-            //         coparticipacao: $("input[name='change_coparticipacao']").val(),
-            //         odonto: $("input[name='change_odonto']").val(), 
-            //         plano:$("#plano").val(),
-            //         faixas: {'1': $("#faixa-input-0-18").val(), '2': $("#faixa-input-19-23").val(),'3': $("#faixa-input-24-28").val(),'4': $("#faixa-input-29-33").val(),'5': $("#faixa-input-34-38").val(),'6': $("#faixa-input-39-43").val(),'7': $("#faixa-input-44-48").val(),'8': $("#faixa-input-49-53").val(),'9': $("#faixa-input-54-58").val(),'10': $("#faixa-input-59").val()}
-            //     };
-            //     montarValores(data);             
-            // });
-
-            /*********************************************************** */
-            // $('body').on('click','.change_valores_faixas',function(){
-            //     let campo = $(this).closest(".content").find('input[type="tel"]').attr('data-change');
-            //     let valor = $(this).closest(".content").find('input[type="tel"]').val();
-            //     if(valor>0) {
-            //         $('input[name="'+campo+'"]').val(valor);
-            //     } else {
-            //         $('input[name="'+campo+'"]').val('');
-            //     }
-            //     let data = {
-            //         cliente_id:$("#cliente_id").val(),
-            //         data_boleto:$("#data_boleto").val(),
-            //         data_vigencia:$("#data_vigente").val(),
-            //         cidade:$("#cidade").val(),
-            //         operadora: $("#operadora").val(),
-            //         administradora: $("#administradora").val(),
-            //         coparticipacao: $("input[name='change_coparticipacao']").val(),
-            //         odonto: $("input[name='change_odonto']").val(), 
-            //         plano:$("#plano").val(),
-            //         faixas: {'1': $("#change_faixa_0_18").val(), '2': $("#change_faixa_19_23").val(),'3': $("#change_faixa_24_28").val(),'4': $("#change_faixa_29_33").val(),'5': $("#change_faixa_34_38").val(),'6': $("#change_faixa_39_43").val(),'7': $("#change_faixa_44_48").val(),'8': $("#change_faixa_49_53").val(),'9': $("#change_faixa_54_58").val(),'10': $("#change_faixa_59").val()}
-            //     };
-            //     montarValores(data);      
-            // });
-
-            function adicionaZero(numero){
-                if (numero <= 9) 
-                    return "0" + numero;
-                else
-                    return numero; 
-            }
-
-            function montarValoresIndividual(data) {
-                
-                $.ajax({
-                    url:"{{route('contratos.montarPlanosIndividual')}}",
-                    method:"POST",
-                    data: data,
-                    success(res) {
-                        $("#resultado_individual").slideUp().html(res).delay(100).slideToggle(100,function(){
-                            $('#cadastrarIndividualModal').animate({
-                                scrollTop:$(window).scrollTop() + $(window).height(),
-                            },1500);
-                        });
-
-                        $("body").find('.vigente').datepicker({
-                            onSelect: function() { 
-                                var dateObject = $(this).datepicker('getDate'); 
-                                let dataFormatada = (dateObject.getFullYear() + "-" + adicionaZero(((dateObject.getMonth() + 1))) + "-" + adicionaZero((dateObject.getDate()))) ;     
-                                $("form[name='cadastrar_pessoa_fisica_formulario_individual']").find("#data_vigencia").attr("value",dataFormatada);   
-                            }
-                        });
-
-                    }
-                });    
-            }
-
-
-
-
-            function montarValores(data) {
-                
-                $.ajax({
-                    url:"{{route('contratos.montarPlanos')}}",
-                    method:"POST",
-                    data: data,
-                    success(res) {
-                           
-                        $("#resultado_coletivo").slideUp().html(res).delay(100).slideToggle(100,function(){
-                            $('body,html').animate({
-                                scrollTop:$(window).scrollTop() + $(window).height(),
-                            },1500);
-                        });
-
-                        $("body").find('.vigente').datepicker({
-                            onSelect: function() { 
-                                var dateObject = $(this).datepicker('getDate'); 
-                                let dataFormatada = (dateObject.getFullYear() + "-" + adicionaZero(((dateObject.getMonth() + 1))) + "-" + adicionaZero((dateObject.getDate()))) ;     
-                                $("form[name='cadastrar_pessoa_fisica_formulario_modal_coletivo']").find("#data_vigencia").attr("value",dataFormatada);   
-                            }
-                        });
-
-
-                //         // if(data.plano == "3" || data.plano == "4") {
-                //         //     if(data.uf == "GO") {
-                //         //         $("body").find('.vigente').datepicker({
-                //         //             beforeShowDay: function (d) {
-                //         //                 var day = d.getDate();
-                //         //                 return [day == 5 || day == 10 || day == 15];
-                //         //             }
-                //         //         })
-                //         //     } else if(data.uf == "MT") {
-                //         //         $("body").find('.vigente').datepicker({
-                //         //             beforeShowDay: function (d) {
-                //         //                 var day = d.getDate();
-                //         //                 return [day == 1 || day == 10 || day == 20];
-                //         //             }
-                //         //         })
-                //         //     } else {
-                //         //         $("body").find('.vigente').datepicker({
-                //         //             beforeShowDay: function (d) {
-                //         //                 var day = d.getDate();
-                //         //                 return [day == 5 || day == 10 || day == 15];
-                //         //             }
-                //         //         })
-                //         //     }
-                //         // } else {
-                //         //     $("body").find('.vigente').datepicker()
-                //         // }
-                        
-                        
-                        
-
-
-
-                    }
-                });
-                return false;
-            }
 
             function limparTudo() {
                 $('.coluna-right').find("input[type='text']").val('');
@@ -3006,13 +1782,7 @@
                 // taindividual.ajax.reload( null, false );
                 // table_individual.ajax.reload( null, false );
 
-                // $('#tabela_individual').DataTable().ajax.url("{{route('contratos.listarIndividual')}}").load();
-                $('.listarindividual').DataTable().ajax.url("{{route('contratos.listarIndividual')}}").load();
-
-                //table.ajax.url("{{route('contratos.listarIndividual')}}").load();
-                //table_individual.ajax.url("{{route('contratos.listarIndividual')}}").load();
-
-                //taindividual.ajax.url("{{route('contratos.listarIndividual')}}").load();
+                
                 
                 //tableempresarial.ajax.reload();
             }
