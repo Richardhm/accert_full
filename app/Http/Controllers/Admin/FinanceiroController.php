@@ -218,6 +218,17 @@ class FinanceiroController extends Controller
         return $contratos;
     }
 
+    public function coletivoEmGeral(Request $request)
+    {
+        $contratos = Contrato
+            ::where("plano_id",3)        
+            // ->where("financeiro_id",1)
+            ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
+            ->orderBy("id","desc")
+            ->get();
+        return $contratos;
+    }
+
     public function emAnaliseIndividual(Request $request)
     {
         $contratos = Contrato
@@ -228,6 +239,20 @@ class FinanceiroController extends Controller
             ->get();
         return $contratos;
     }
+
+    public function geralIndividualPendentes(Request $request)
+    {
+        $contratos = Contrato
+            ::where("plano_id",1)        
+            // ->where("financeiro_id",1)
+            ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
+            ->orderBy("id","desc")
+            ->get();
+        return $contratos;
+    }
+
+
+
 
     public function coletivoEmissaoBoleto(Request $request)
     {
@@ -481,6 +506,19 @@ class FinanceiroController extends Controller
         return $contratos;
     }
 
+    public function mudarDataVivenciaColetivo(Request $request) 
+    {
+        $data = implode("-",array_reverse(explode("/",$request->data)));
+
+        $contrato = Contrato::where("cliente_id",$request->cliente_id)->first();
+        $contrato->data_vigencia = $data;
+        if($contrato->save()) {
+            return "sucesso";
+        } else {
+            return "error";
+        }
+    }
+
 
     public function mudarEstadosColetivo(Request $request)
     {
@@ -519,14 +557,44 @@ class FinanceiroController extends Controller
         return $this->recalcularIndividual();
      }
 
+    public function mudarEstadosEmpresarial(Request $request)
+    {
+        
+        // $id_cliente = $request->id_cliente;
+        $id_contrato = $request->id_contrato;
+        $contrato = ContratoEmpresarial::where("id",$id_contrato)->first();
+        
+        switch ($contrato->financeiro_id) {
+            case 1:
+                $contrato->financeiro_id = 5;
+            break;
+            default:
+                return "abrir_modal_empresarial";     
+            break;    
+        }
+        $contrato->save();
+        return $this->recalcularEmpresarial();
+     }
+
 
 
 
 
     public function verContrato(Request $request)
     {   
-        $id_comissao = Comissoes::where("contrato_id",$request->contrato_id)->first()->id;
-        $comissoes = DB::table('comissoes_corretores_lancadas')
+
+        //return $request->all();
+
+        // if($request->financeiro_id == 1) {
+
+        // } else {
+
+        // }
+
+        if($request->janela != "aba_empresarial") {
+            $plano_id = Contrato::where("id",$request->contrato_id)->first()->plano_id;
+            $id_comissao = Comissoes::where("contrato_id",$request->contrato_id)->first()->id;
+            $comissoes = DB::table('comissoes_corretores_lancadas')
             ->selectRaw('parcela')
             ->selectRaw('DATA AS vencimento')
             ->selectRaw('data_baixa AS data_baixa')
@@ -536,9 +604,41 @@ class FinanceiroController extends Controller
             ->whereRaw("comissoes_id = ?",$id_comissao)
             ->get();
 
+
+
+        } else {
+            $plano_id = "";
+            $id_comissao = Comissoes::where("contrato_empresarial_id",$request->contrato_id)->first()->id;
+
+            $comissoes = DB::table('comissoes_corretores_lancadas')
+            ->selectRaw('parcela')
+            ->selectRaw('DATA AS vencimento')
+            ->selectRaw('data_baixa AS data_baixa')
+            ->selectRaw('(SELECT valor_plano FROM contrato_empresarial WHERE id = (SELECT contrato_empresarial_id FROM comissoes WHERE comissoes.id = comissoes_corretores_lancadas.comissoes_id)) AS valor')
+            ->selectRaw('DATEDIFF(data, data_baixa) as dias_faltando')
+            ->selectRaw('(SELECT responsavel FROM contrato_empresarial WHERE id = (SELECT contrato_empresarial_id FROM comissoes WHERE comissoes.id = comissoes_corretores_lancadas.comissoes_id)) AS cliente')
+            ->whereRaw("comissoes_id = ?",$id_comissao)
+            ->get();
+            
+            
+        }    
+
+        
+        
+        
+        
+        
+        
+
+        //return $comissoes;
+            
+
+
+
         return view('admin.pages.comissao.ver',[
             "comissoes" => $comissoes,
-            "cliente" => $comissoes[0]->cliente
+            "cliente" => $comissoes[0]->cliente,
+            "plano_id" => $plano_id
         ]);
     }
 
@@ -617,6 +717,22 @@ class FinanceiroController extends Controller
                 $d = Cliente::where("id",$id_cliente)->delete();
                 if($d) {
                     return $this->recalcularIndividual();
+                } else {
+                    return "error";
+                }
+            }
+        }
+        
+    }
+
+    public function excluirClienteEmpresarial(Request $request)
+    {
+        if($request->ajax()) {
+            $id_contrato = $request->id_contrato;
+            if($id_contrato != null) {
+                $d = ContratoEmpresarial::find($id_contrato);
+                if($d) {
+                    return $this->recalcularEmpresarial();
                 } else {
                     return "error";
                 }
@@ -852,6 +968,111 @@ class FinanceiroController extends Controller
         return $this->recalcularIndividual();
     }
 
+    public function baixaDaDataEmpresarial(Request $request)
+    {
+        $id_contrato = $request->id_contrato;
+        $contrato = ContratoEmpresarial::find($id_contrato);  
+        $comissao_id = Comissoes::where("contrato_empresarial_id",$contrato->id)->first()->id;
+        
+        switch ($contrato->financeiro_id) {
+            case 5:
+                
+                $contrato->financeiro_id = 6;
+                $contrato->data_baixa = $request->data_baixa;
+                $comissao = ComissoesCorretoresLancadas
+                    ::where("comissoes_id",$comissao_id)
+                    ->where("parcela",1)            
+                    ->first();
+                if($comissao) {                    
+                    $comissao->status_financeiro = 1;
+                    $comissao->data_baixa = $request->data_baixa;
+                    $comissao->save();
+                }    
+            break;
+
+            case 6:
+                $contrato->financeiro_id = 7;
+                $contrato->data_baixa = $request->data_baixa;
+                $comissao = ComissoesCorretoresLancadas
+                    ::where("comissoes_id",$comissao_id)
+                    ->where("parcela",2)            
+                    ->first();
+                if($comissao) {
+                    $comissao->status_financeiro = 1;
+                    $comissao->data_baixa = $request->data_baixa;
+                    $comissao->save();  
+                }    
+            break;    
+
+            case 7:
+                $contrato->financeiro_id = 8;
+                $contrato->data_baixa = $request->data_baixa;
+                $comissao = ComissoesCorretoresLancadas
+                    ::where("comissoes_id",$comissao_id)
+                    ->where("parcela",3)            
+                    ->first();
+                if($comissao) {
+                    $comissao->status_financeiro = 1;
+                    $comissao->data_baixa = $request->data_baixa;
+                    $comissao->save();   
+                }
+            break;
+
+            case 8:
+                $contrato->financeiro_id = 9;
+                $contrato->data_baixa = $request->data_baixa;
+                $comissao = ComissoesCorretoresLancadas
+                    ::where("comissoes_id",$comissao_id)
+                    ->where("parcela",4)            
+                    ->first();
+                if($comissao) {
+                    $comissao->status_financeiro = 1;
+                    $comissao->data_baixa = $request->data_baixa;
+                    $comissao->save();   
+                }
+            break;    
+
+            case 9:
+                $contrato->financeiro_id = 10;
+                $contrato->data_baixa = $request->data_baixa;
+                $comissao = ComissoesCorretoresLancadas
+                    ::where("comissoes_id",$comissao_id)
+                    ->where("parcela",5)            
+                    ->first();
+                if($comissao) {
+                    $comissao->status_financeiro = 1;
+                    $comissao->data_baixa = $request->data_baixa;
+                    $comissao->save();   
+                }
+            break;   
+            
+            case 10:
+                $contrato->financeiro_id = 11;
+                $contrato->data_baixa = $request->data_baixa;
+                $comissao = ComissoesCorretoresLancadas
+                    ::where("comissoes_id",$comissao_id)
+                    ->where("parcela",6)            
+                    ->first();
+                if($comissao) {
+                    $comissao->status_financeiro = 1;
+                    $comissao->data_baixa = $request->data_baixa;
+                    $comissao->save();   
+                }
+            break;    
+
+
+
+
+
+        }
+        $contrato->save();
+        return $this->recalcularEmpresarial();
+    }
+
+
+
+
+
 
     public function editarCampoIndividualmente(Request $request)
     {
@@ -970,6 +1191,123 @@ class FinanceiroController extends Controller
     }
 
 
+    public function editarIndividualCampoIndividualmente(Request $request)
+    {
+        $cliente = Cliente::where("id",$request->id_cliente)->first();
+        $dependente = Dependentes::where('cliente_id',$request->id_cliente)->first();
+
+        switch($request->alvo) {
+            
+            case "cliente":
+
+                $cliente->nome = $request->valor;
+                $cliente->save();
+
+            break;
+            
+            case "data_nascimento":
+
+                $data = implode("-",array_reverse(explode("/",$request->valor)));
+                $cliente->data_nascimento = $data;
+                $cliente->save();
+
+            break;
+
+            case "cpf":
+                
+                $cliente->cpf = $request->valor;
+                $cliente->save();
+
+            break;  
+
+            case "responsavel_financeiro":
+
+                $dependente->nome = $request->valor;
+                $dependente->save();
+
+            break;
+            
+            case "cpf_financeiro":
+
+                $dependente->cpf = $request->valor;
+                $dependente->save();
+
+            break;
+            
+            case "celular_individual_view_input":
+
+                $cliente->celular = $request->valor; 
+                $cliente->save();
+
+            break; 
+            
+            case "telefone_individual_view_input":
+
+                $cliente->telefone = $request->valor;
+                $cliente->save();
+
+            break;
+
+            case "cep_individual_cadastro":
+
+                $cliente->cep = $request->valor;
+                $cliente->save();
+
+            break;        
+
+            
+            case "email":
+
+                $cliente->email = $request->valor;
+                $cliente->save();
+
+            break;
+
+            case "cidade":
+
+                $cliente->cidade = $request->valor;
+                $cliente->save();
+
+            break;
+            
+            case "uf":
+
+                $cliente->uf = $request->valor;
+                $cliente->save();
+
+            break;  
+            
+            case "bairro_individual_cadastro":
+
+                $cliente->bairro = $request->valor;
+                $cliente->save();
+
+            break;
+            
+            case "rua_individual_cadastro":
+
+                $cliente->rua = $request->valor;
+                $cliente->save();
+
+            break;
+            
+            case "complemento_individual_cadastro":
+
+                $cliente->complemento = $request->valor;
+                $cliente->save();
+
+            break;    
+            
+            default:
+
+            break;
+
+            //$cliente->save();
+
+        }
+    }
+
+
 
 
     public function recalcularColetivo()
@@ -1033,8 +1371,6 @@ class FinanceiroController extends Controller
 
     public function recalcularIndividual()
     {
-        
-
         $qtd_individual_em_analise = Contrato::where("financeiro_id",1)->where("plano_id",1)->count();
         $qtd_individual_01_parcela = Contrato::where('financeiro_id',5)->where("plano_id",1)->count();  
         $qtd_individual_02_parcela = Contrato::where('financeiro_id',6)->where("plano_id",1)->count();
@@ -1056,12 +1392,32 @@ class FinanceiroController extends Controller
             "qtd_individual_finalizado" => $qtd_individual_finalizado,
             "qtd_individual_cancelado" => $qtd_individual_cancelado
         ];
-
-
-
-
     }
 
+    public function recalcularEmpresarial()
+    {
+        $qtd_empresarial_em_analise = ContratoEmpresarial::where("financeiro_id",1)->count();
+        $qtd_empresarial_01_parcela = ContratoEmpresarial::where('financeiro_id',5)->count();  
+        $qtd_empresarial_02_parcela = ContratoEmpresarial::where('financeiro_id',6)->count();
+        $qtd_empresarial_03_parcela = ContratoEmpresarial::where('financeiro_id',7)->count();
+        $qtd_empresarial_04_parcela = ContratoEmpresarial::where('financeiro_id',8)->count();
+        $qtd_empresarial_05_parcela = ContratoEmpresarial::where('financeiro_id',9)->count();
+        $qtd_empresarial_06_parcela = ContratoEmpresarial::where('financeiro_id',10)->count();
+        $qtd_empresarial_finalizado = ContratoEmpresarial::where('financeiro_id',11)->count();
+        $qtd_empresarial_cancelado = ContratoEmpresarial::where('financeiro_id',12)->count();
+       
+        return [
+            "qtd_empresarial_em_analise" => $qtd_empresarial_em_analise,
+            "qtd_empresarial_01_parcela" => $qtd_empresarial_01_parcela,
+            "qtd_empresarial_02_parcela" => $qtd_empresarial_02_parcela,
+            "qtd_empresarial_03_parcela" => $qtd_empresarial_03_parcela, 
+            "qtd_empresarial_04_parcela" => $qtd_empresarial_04_parcela,
+            "qtd_empresarial_05_parcela" => $qtd_empresarial_05_parcela,
+            "qtd_empresarial_06_parcela" => $qtd_empresarial_06_parcela,
+            "qtd_empresarial_finalizado" => $qtd_empresarial_finalizado,
+            "qtd_empresarial_cancelado" => $qtd_empresarial_cancelado
+        ];
+    }
 
 
 

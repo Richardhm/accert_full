@@ -59,6 +59,10 @@ Route::middleware('auth')->prefix("admin")->group(function(){
     Route::get('/financeiro',"App\Http\Controllers\Admin\FinanceiroController@index")->name('financeiro.index');
 
     Route::get('/financeiro/coletivo/em_analise',"App\Http\Controllers\Admin\FinanceiroController@coletivoEmAnalise")->name('financeiro.coletivo.em_analise');
+    Route::get('/financeiro/coletivo/em_geral',"App\Http\Controllers\Admin\FinanceiroController@coletivoEmGeral")->name('financeiro.coletivo.em_geral');
+
+
+
     Route::get('/financeiro/coletivo/emissao_boleto',"App\Http\Controllers\Admin\FinanceiroController@coletivoEmissaoBoleto")->name('financeiro.coletivo.emissao_boleto');
     Route::get('/financeiro/coletivo/pagamento_adesao',"App\Http\Controllers\Admin\FinanceiroController@coletivoPagamentoAdesao")->name('financeiro.coletivo.pagamento_adesao');
     Route::get('/financeiro/coletivo/pagamento_vigencia',"App\Http\Controllers\Admin\FinanceiroController@coletivoPagamentoVigencia")->name('financeiro.coletivo.pagamento_vigencia');
@@ -70,7 +74,7 @@ Route::middleware('auth')->prefix("admin")->group(function(){
     Route::get('/financeiro/coletivo/pagamento_coletivo_finalizado',"App\Http\Controllers\Admin\FinanceiroController@coletivoFinalizado")->name('financeiro.coletivo.finalizado');
     Route::get('/financeiro/coletivo/pagamento_coletivo_cancelado',"App\Http\Controllers\Admin\FinanceiroController@coletivoCancelados")->name('financeiro.coletivo.cancelado');
 
-    
+    Route::get("/financeiro/individual/em_geral","App\Http\Controllers\Admin\FinanceiroController@geralIndividualPendentes")->name('financeiro.individual.geralIndividualPendentes');
     Route::get('/financeiro/individual/em_analise',"App\Http\Controllers\Admin\FinanceiroController@emAnaliseIndividual")->name('financeiro.individual.em_analise');
     Route::get('/financeiro/individual/pagamento_primeira_parcela',"App\Http\Controllers\Admin\FinanceiroController@individualPagamentoPrimeiraParcela")->name('financeiro.individual.pagamento_primeira_parcela');
     Route::get('/financeiro/individual/pagamento_segunda_parcela',"App\Http\Controllers\Admin\FinanceiroController@individualPagamentoSegundaParcela")->name('financeiro.individual.pagamento_segunda_parcela');
@@ -84,20 +88,28 @@ Route::middleware('auth')->prefix("admin")->group(function(){
 
     Route::post('/financeiro/mudarEstadosColetivo',"App\Http\Controllers\Admin\FinanceiroController@mudarEstadosColetivo")->name('financeiro.mudarStatusColetivo');
     Route::post('/financeiro/mudarEstadosIndividual',"App\Http\Controllers\Admin\FinanceiroController@mudarEstadosIndividual")->name('financeiro.mudarStatusIndividual');
+    Route::post('/financeiro/mudarEstadosEmpresarial',"App\Http\Controllers\Admin\FinanceiroController@mudarEstadosEmpresarial")->name('financeiro.mudarStatusEmpresarial');
 
-
+    Route::post("/financeiro/mudarDataVigenciaColetivo","App\Http\Controllers\Admin\FinanceiroController@mudarDataVivenciaColetivo")->name('financeiro.mudarVigenciaColetivo');
 
     Route::post('/financeiro/baixaDaData',"App\Http\Controllers\Admin\FinanceiroController@baixaDaData")->name('financeiro.baixa.data');
     Route::post('/financeiro/baixaDaData/individual',"App\Http\Controllers\Admin\FinanceiroController@baixaDaDataIndividual")->name('financeiro.baixa.data.individual');
-
+    Route::post('/financeiro/baixaDaData/empresarial',"App\Http\Controllers\Admin\FinanceiroController@baixaDaDataEmpresarial")->name('financeiro.baixa.data.empresarial');
 
 
     Route::post('/financeiro/editarCampoIndividualmente',"App\Http\Controllers\Admin\FinanceiroController@editarCampoIndividualmente")->name('financeiro.editar.campoIndividualmente');
+    Route::post('/financeiro/editarIndividualCampoIndividualmente',"App\Http\Controllers\Admin\FinanceiroController@editarIndividualCampoIndividualmente")->name('financeiro.editar.individual.campoIndividualmente');
+
+
 
     Route::post('/financeiro/contratos',"App\Http\Controllers\Admin\FinanceiroController@verContrato")->name('financeiro.ver.contrato');
     Route::post('/financeiro/cancelados',"App\Http\Controllers\Admin\FinanceiroController@cancelarContrato")->name('financeiro.contrato.cancelados');
     Route::post('/financeiro/excluir',"App\Http\Controllers\Admin\FinanceiroController@excluirCliente")->name('financeiro.excluir.cliente');
     Route::post('/financeiro/excluir/individual',"App\Http\Controllers\Admin\FinanceiroController@excluirClienteIndividual")->name('financeiro.excluir.cliente.individual');
+
+    Route::post('/financeiro/excluir/empresarial',"App\Http\Controllers\Admin\FinanceiroController@excluirClienteEmpresarial")->name('financeiro.excluir.cliente.empresarial');
+
+
     /**Fim Financeiro*/
 
     /***Comissões*****/

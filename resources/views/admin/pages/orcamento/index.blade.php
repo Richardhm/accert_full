@@ -281,13 +281,10 @@
                 // let origem_cidade = $('select[name="origem_cidade"]').val();
                 var element = $('<div></div>');
                 var links = `
-                    
-                        
                         <a style="color:#FFF;margin-left:10px;display:flex;flex-basis:100%;align-items:center;justify-content: center;" class="border p-1 border-dark rounded enviar_mensagem bg-danger pdf" href="">
                             <span style="margin-right:15px;">Criar PDF</span>
                             <i class="fas fa-file-pdf"></i>
                         </a>
-                    
                     `
                 element.html(links);
                 element.addClass("cards_destaque_links")

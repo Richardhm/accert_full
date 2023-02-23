@@ -381,7 +381,7 @@
                 </section> 
                 <div class="form-row mt-3">
                     <div class="col-12 d-flex rounded">
-                        <button id="mostrar_plano_coletivo" class="w-100" style="">Mostrar Planos</button>
+                        <button id="mostrar_plano_coletivo" class="w-100">Mostrar Planos</button>
                     </div>
                 </div>
                 <div id="resultado_coletivo">
@@ -395,10 +395,40 @@
 @stop
 
 
+@section('css')
+    <style>
+        /* .botao:hover {background-color: rgba(0,0,0,0.5) !important;color:#FFF !important;} */
+        /* .valores-acomodacao {background-color:rgba(0,0,0,0.5);color:#FFF;width:32%;box-shadow:rgba(0,0,0,0.8) 0.6em 0.7em 5px;} */
+        /* .valores-acomodacao:hover {cursor:pointer;box-shadow: none;} */
+        /* .table thead tr {background-color:rgb(36,125,157);} */
+        /* .table tbody tr:nth-child(odd) {background-color: rgba(0,0,0,0.5);} */
+        /* .table tbody tr:nth-child(even) {background-color:rgb(36,125,157);} */
+        .destaque {border:5px solid rgba(36,125,157) !important;box-shadow: 5px -9px 3px #000 !important; }
+    </style>
+@stop
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @section('js')
 	<script src="{{asset('js/jquery.mask.min.js')}}"></script>  
 	<script>
 		$(function(){
+
+            $("#email_coletivo").on('keyup',(e) => {
+                $('#email_coletivo').val($('#email_coletivo').val().toLowerCase());
+            });
 
 			function adicionaZero(numero){
                 if (numero <= 9) 
@@ -407,10 +437,8 @@
                     return numero; 
             }
 
-
             $("#cep_coletivo").change(function(){
                 let cep = $(this).val().replace("-","");
-                
                 const url = `https://viacep.com.br/ws/${cep}/json`;
                 const options = {method: "GET",mode: "cors",
                     headers: {'content-type': 'application/json;charset=utf-8'}
@@ -429,12 +457,6 @@
                 }   
             });
 
-
-
-
-
-
-
             $('#cnpj').mask('00.000.000/0000-00');
             $('#telefone').mask('(00) 0000-0000');
             // $('#telefone_individual').mask('0000-0000');
@@ -449,7 +471,10 @@
             $('#valor_plano_saude').mask("#.##0,00", {reverse: true});
             $('#valor_plano_odonto').mask("#.##0,00", {reverse: true});
             $('#cpf_individual').mask('000.000.000-00');
-            $('#cpf_financeiro_individual_cadastro').mask('000.000.000-00');            
+            $('#cpf_financeiro_individual_cadastro').mask('000.000.000-00');   
+            $('#responsavel_financeiro_coletivo_cadastrar_cpf').mask('000.000.000-00');
+            
+
             $('#cpf_coletivo').mask('000.000.000-00');  
             $('#cep_individual').mask('00000-000');          
             $('#cep_coletivo').mask('00000-000');      
@@ -907,6 +932,12 @@
 
 
 			$('body').on('click','.valores-acomodacao',function(e){
+                $(".valores-acomodacao").removeClass('destaque');
+                $(this).addClass('destaque');
+
+                console.log($(this));
+
+
                 let valor_plano = $(this).find('.valor_plano').text().replace("R$ ","");
                 let tipo = $(this).find('.tipo').text();
                 $("#valor").val(valor_plano);
@@ -916,8 +947,7 @@
                     $('#data_boleto').val('');
                     $('#valor_adesao').val('');
                 }
-                $(".valores-acomodacao").removeClass('destaque');
-                $(this).addClass('destaque');
+                
                 $('#animate').animate({
                     scrollTop:$(window).scrollTop() + $(window).height(),
                 },1500);

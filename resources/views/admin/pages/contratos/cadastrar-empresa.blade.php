@@ -90,7 +90,7 @@
 	                <div style="flex-basis:10%;margin:0% 1%;">
 	                    <div>
 	                        <span for="telefone" class="text-white" style="font-size:0.875em;">Telefone:</span>
-	                        <input type="text" name="telefone" id="telefone" class="form-control  form-control-sm" placeholder="Telefone" required>         
+	                        <input type="text" name="telefone" id="telefone" class="form-control  form-control-sm" placeholder="Telefone">         
 	                    </div>
 	                </div>
 
@@ -226,6 +226,11 @@
 	<script src="{{asset('js/jquery.mask.min.js')}}"></script>
 	<script>
 		$(function(){
+
+            $("#email").on('keyup',(e) => {
+                $('#email').val($('#email').val().toLowerCase());
+            });
+
 			$.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

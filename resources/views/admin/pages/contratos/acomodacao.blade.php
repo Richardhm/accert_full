@@ -2,13 +2,13 @@
 <h4 class="py-2 text-white">Nossos Planos</h4>  
 <section class="d-flex justify-content-between">
     @foreach($valores as $v)
-    <div class="d-flex justify-content-center flex-column rounded valores-acomodacao mb-3 py-2 border" style="width:30%;color:white;box-shadow: 5px -9px 3px #000;">
+    <div class="d-flex justify-content-center flex-column rounded valores-acomodacao mb-3 py-2 border border-dark" style="width:30%;color:white;background-color:#C5D4EB;color:black;">
         
         <div class="d-flex">
-            <h4 class="text-center py-5 d-flex justify-content-center mx-auto align-items-center" style="background-color:rgba(255,2555,2555,0.4);border:2px solid rgb(44,108,206);width:100px;height:100px;">
-                <img src="{{asset($v->operadora)}}" class="p-2 d-flex align-self-center" alt="" width="80" height="50" align="center">
+            <h4 class="text-center w-25 d-flex ml-2" style="background-color:#fff;border:2px solid black;border-radius:5px;">
+                <img src="{{asset($v->operadora)}}" class="d-flex align-self-center p-1" alt="" width="100%" height="100%">
             </h4>
-            <div class="d-flex w-50 flex-column align-self-center align-items-end align-content-center flex-wrap">    
+            <div class="d-flex w-75 flex-column align-self-center align-items-end align-content-center flex-wrap">    
                 <div class="d-flex flex-column">
                     <p class="text-center" style="margin:0;padding:0;font-size:1.2em;">{{$v->plano}}</p> 
                     <p class="text-center tipo" style="margin:0;padding:0;font-size:1.2em;">{{$v->modelo}}</p>   
@@ -17,8 +17,8 @@
             </div>
         </div>
 
-        <div class="d-flex border-bottom border-top">
-            <div class="col-6 border-right">
+        <div class="d-flex border-bottom border-top border-dark">
+            <div class="col-6 border-right border-dark">
                 <p class="text-center h-100 my-auto py-2">{{$v->coparticipacao}}</p>
             </div>
             <div class="col-6">
@@ -55,7 +55,7 @@
         </div>
 
         <div class="d-flex align-items-center mx-auto mb-2" style="width:80%;border-radius:10px;">
-            <table class="table table-borderless" style="border-radius:10px;">
+            <table class="table table-sm table-borderless table-dark" style="border-radius:10px;">
                 <thead>
                     <tr>
                         <th>Faixas</th>
@@ -80,7 +80,7 @@
         </div>
         
         <div class="text-white py-2" style="clear: both;border-top:1px solid black;">
-            <p class="text-center valor_plano" style="font-weight:bold;margin:auto auto;">R$ {{number_format($v->total,2,",",".")}}</p>
+            <p class="text-center valor_plano" style="font-weight:bold;margin:auto auto;color:black;">R$ {{number_format($v->total,2,",",".")}}</p>
         </div>
     </div>
     @endforeach 

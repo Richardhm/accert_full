@@ -400,6 +400,10 @@
 	<script>
 		$(function(){
 
+            $("#email_individual").on('keyup',(e) => {
+                $('#email_individual').val($('#email_individual').val().toLowerCase());
+            });
+
 			function adicionaZero(numero){
                 if (numero <= 9) 
                     return "0" + numero;
@@ -461,7 +465,6 @@
                 let pai = alvo.closest('.content');
                 let input = $(pai).find('input');
                 let newValue = parseInt(input.val()) - 1;
-                
                 if(newValue >= 0) {
                     input.val(newValue);
                 }
@@ -469,9 +472,7 @@
 
             $("body").on('change','input[name="boleto"]',function(){
                 let data_boleto = $(this).val();
-                
                 $(this).closest('form').find('#data_boleto').val(data_boleto);
-
                 //$("#data_boleto").val(data_boleto);
             });
 
@@ -615,7 +616,7 @@
                     return false;
                  }
 
-                 if($("#telefone_individual").val() == "") {
+                 if($("#celular_individual").val() == "") {
                     toastr["error"]("Celular é campo obrigatório")
                     toastr.options = {
                         "closeButton": false,
@@ -658,8 +659,7 @@
                     }
                     return false;
                  }
-                
-                 
+                                 
                  if($("#cep_individual").val() == "") {
                     toastr["error"]("Cep é campo obrigatório")
                     toastr.options = {
@@ -876,7 +876,8 @@
                     cpf:$("#cpf_individual").val(),
                     data_nascimento:$("#data_nascimento_individual").val(),
                     email:$("#email_individual").val(),
-                    celular:$('#telefone_individual').val(),
+                    telefone:$('#telefone_individual').val(),
+                    celular:$('#celular_individual').val(),
                     cep:$("#cep_individual").val(),
                     cidade:$("#cidade_origem_individual").val(),
                     bairro:$("#bairro_individual").val(),
@@ -924,20 +925,17 @@
 
             $("#cep_individual").change(function(){
                 let   cep = $(this).val().replace("-","");
-                
                 const url = `https://viacep.com.br/ws/${cep}/json`;
                 const options = {method: "GET",mode: "cors",
                     headers: {'content-type': 'application/json;charset=utf-8'}
                 }
                 fetch(url,options).then(response => response.json()).then(
-
                     data => {       
                         $("#rua_individual").val(data.logradouro);
                         $("#bairro_individual").val(data.bairro);
                         $("#uf_individual").val(data.uf);
                         $("#cidade_origem_individual").val(data.localidade);
-                    }
-                    
+                    }                    
                 )
                 if($(this).val() != "") {
                     $(".errorcep").html('');
@@ -1028,11 +1026,6 @@
                 })
                 return false;
             });
-
-
-
-
-
 
 			 function montarValoresIndividual(data) {
                 

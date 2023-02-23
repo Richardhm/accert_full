@@ -543,7 +543,7 @@ class ContratoController extends Controller
                     ::selectRaw("(SELECT name FROM users WHERE users.id = contrato_empresarial.user_id) as usuario")
                     ->selectRaw("(SELECT nome FROM planos WHERE planos.id = contrato_empresarial.plano_id) as plano")
                     ->selectRaw("(SELECT nome FROM tabela_origens WHERE tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem")
-                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto")
+                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
                     ->where("financeiro_id",1)
                     ->get();
             }
@@ -558,7 +558,7 @@ class ContratoController extends Controller
                     ::selectRaw("(SELECT name FROM users WHERE users.id = contrato_empresarial.user_id) as usuario")
                     ->selectRaw("(SELECT nome FROM planos WHERE planos.id = contrato_empresarial.plano_id) as plano")
                     ->selectRaw("(SELECT nome FROM tabela_origens WHERE tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem")
-                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto")
+                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
                     ->where("financeiro_id",5)
                     ->get();
             }
@@ -573,7 +573,7 @@ class ContratoController extends Controller
                     ::selectRaw("(SELECT name FROM users WHERE users.id = contrato_empresarial.user_id) as usuario")
                     ->selectRaw("(SELECT nome FROM planos WHERE planos.id = contrato_empresarial.plano_id) as plano")
                     ->selectRaw("(SELECT nome FROM tabela_origens WHERE tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem")
-                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto")
+                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
                     ->where("financeiro_id",6)
                     ->get();
             }
@@ -588,7 +588,7 @@ class ContratoController extends Controller
                     ::selectRaw("(SELECT name FROM users WHERE users.id = contrato_empresarial.user_id) as usuario")
                     ->selectRaw("(SELECT nome FROM planos WHERE planos.id = contrato_empresarial.plano_id) as plano")
                     ->selectRaw("(SELECT nome FROM tabela_origens WHERE tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem")
-                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto")
+                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
                     ->where("financeiro_id",7)
                     ->get();
             }
@@ -603,7 +603,7 @@ class ContratoController extends Controller
                     ::selectRaw("(SELECT name FROM users WHERE users.id = contrato_empresarial.user_id) as usuario")
                     ->selectRaw("(SELECT nome FROM planos WHERE planos.id = contrato_empresarial.plano_id) as plano")
                     ->selectRaw("(SELECT nome FROM tabela_origens WHERE tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem")
-                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto")
+                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
                     ->where("financeiro_id",8)
                     ->get();
             }
@@ -618,7 +618,7 @@ class ContratoController extends Controller
                     ::selectRaw("(SELECT name FROM users WHERE users.id = contrato_empresarial.user_id) as usuario")
                     ->selectRaw("(SELECT nome FROM planos WHERE planos.id = contrato_empresarial.plano_id) as plano")
                     ->selectRaw("(SELECT nome FROM tabela_origens WHERE tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem")
-                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto")
+                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
                     ->where("financeiro_id",9)
                     ->get();
             }
@@ -633,7 +633,7 @@ class ContratoController extends Controller
                     ::selectRaw("(SELECT name FROM users WHERE users.id = contrato_empresarial.user_id) as usuario")
                     ->selectRaw("(SELECT nome FROM planos WHERE planos.id = contrato_empresarial.plano_id) as plano")
                     ->selectRaw("(SELECT nome FROM tabela_origens WHERE tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem")
-                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto")
+                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
                     ->where("financeiro_id",10)
                     ->get();
             }
@@ -648,7 +648,7 @@ class ContratoController extends Controller
                     ::selectRaw("(SELECT name FROM users WHERE users.id = contrato_empresarial.user_id) as usuario")
                     ->selectRaw("(SELECT nome FROM planos WHERE planos.id = contrato_empresarial.plano_id) as plano")
                     ->selectRaw("(SELECT nome FROM tabela_origens WHERE tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem")
-                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto")
+                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
                     ->where("financeiro_id",11)
                     ->get();
             }
@@ -663,7 +663,7 @@ class ContratoController extends Controller
                     ::selectRaw("(SELECT name FROM users WHERE users.id = contrato_empresarial.user_id) as usuario")
                     ->selectRaw("(SELECT nome FROM planos WHERE planos.id = contrato_empresarial.plano_id) as plano")
                     ->selectRaw("(SELECT nome FROM tabela_origens WHERE tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem")
-                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto")
+                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
                     ->where("financeiro_id",12)
                     ->get();
             }
