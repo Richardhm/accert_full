@@ -18,8 +18,11 @@ class CreateComissoesCorretoraLancadasTable extends Migration
             $table->unsignedBigInteger('comissoes_id');
             $table->integer("parcela");
             $table->date("data");
+            $table->date("data_baixa")->nullable();
             $table->decimal("valor",10,2);
-            $table->boolean("status");
+            $table->boolean("status_financeiro")->nullable()->default(0);
+            $table->boolean("status_gerente")->nullable()->default(0);
+            $table->boolean('cancelados')->nullable()->default(0);           
             $table->foreign('comissoes_id')->references('id')->on('comissoes')->onDelete('cascade');
             $table->timestamps();
         });

@@ -381,7 +381,7 @@
                 </section> 
                 <div class="form-row mt-3">
                     <div class="col-12 d-flex rounded">
-                        <button id="mostrar_plano_individual" class="w-100" style="">
+                        <button id="mostrar_plano_individual" class="w-100">
                         	Mostrar Planos
                         </button>
                     </div>
@@ -403,6 +403,8 @@
             $("#email_individual").on('keyup',(e) => {
                 $('#email_individual').val($('#email_individual').val().toLowerCase());
             });
+
+            
 
 			function adicionaZero(numero){
                 if (numero <= 9) 
@@ -483,7 +485,7 @@
             });
 
 			$("body").find('form[name="cadastrar_pessoa_fisica_formulario_individual"]').on("click","#mostrar_plano_individual",function(){
-
+                
                 if($("#users_individual").val() == "") {
                     toastr["error"]("Corretor é campo obrigatório")
                     toastr.options = {
@@ -869,36 +871,56 @@
                     return false;  
                 }    
 
-                let data = {
-                    user:$("#users_individual").val(),
-                    tabela_origens_id:$("#tabela_origem_individual").val(),
-                    nome:$("#nome_individual").val(),
-                    cpf:$("#cpf_individual").val(),
-                    data_nascimento:$("#data_nascimento_individual").val(),
-                    email:$("#email_individual").val(),
-                    telefone:$('#telefone_individual').val(),
-                    celular:$('#celular_individual').val(),
-                    cep:$("#cep_individual").val(),
-                    cidade:$("#cidade_origem_individual").val(),
-                    bairro:$("#bairro_individual").val(),
-                    rua:$("#rua_individual").val(),
-                    complemento:$("#complemento_individual").val(),
-                    uf:$("#uf_individual").val(),
-                    dependente:$('#dependente_individual').is(':checked'),
-                    responsavel_financeiro:$("#responsavel_financeiro_individual_cadastro").val(),
-                    cpf_responsavel_financeiro:$("#cpf_financeiro_individual_cadastro").val(),
-                    codigo_externo:$("#codigo_externo_individual_cadastrar").val(),
-                    coparticipacao: $("input:radio[name=coparticipacao_individual]:checked").val(),
-                    odonto: $('input:radio[name=odonto_individual]:checked').val(), 
-                    faixas: {'1': $("#faixa-input-0-18_individual").val(), '2': $("#faixa-input-19-23_individual").val(),'3': $("#faixa-input-24-28_individual").val(),'4': $("#faixa-input-29-33_individual").val(),'5': $("#faixa-input-34-38_individual").val(),'6': $("#faixa-input-39-43_individual").val(),'7': $("#faixa-input-44-48_individual").val(),'8': $("#faixa-input-49-53_individual").val(),'9': $("#faixa-input-54-58_individual").val(),'10': $("#faixa-input-59_individual").val()}
-                };
-                montarValoresIndividual(data);
+                    
+
+                $.ajax({
+                    url:"{{route('contratos.montarPlanosIndividual')}}",
+                    method:"POST",
+                    data:{
+                    	"tabela_origem": $("#tabela_origem_individual").val(),
+						"administradora_id":4,
+						"odonto":$('input:radio[name=odonto_individual]:checked').val(),
+                        "coparticipacao":$("input:radio[name=coparticipacao_individual]:checked").val(),
+                    	"faixas" : [{
+                            '1' : $('#faixa-input-0-18_individual').val(),
+                            '2' : $('#faixa-input-19-23_individual').val(),
+                            '3' : $('#faixa-input-24-28_individual').val(),
+                            '4' : $('#faixa-input-29-33_individual').val(),
+                            '5' : $('#faixa-input-34-38_individual').val(),
+                            '6' : $('#faixa-input-39-43_individual').val(),
+                            '7' : $('#faixa-input-44-48_individual').val(),
+                            '8' : $('#faixa-input-49-53_individual').val(),
+                            '9' : $('#faixa-input-54-58_individual').val(),
+                            '10' : $('#faixa-input-59_individual').val()
+                        }]
+                    },
+                    success:function(res) {
+                        
+                        $("#resultado_individual").slideUp().html(res).delay(100).slideToggle(100,function(){
+                            $('body,html').animate({
+                                scrollTop:$(window).scrollTop() + $(window).height(),
+                            },1500);
+                        });
+
+                        $("body").find('.vigente').datepicker({
+                            onSelect: function() { 
+                                var dateObject = $(this).datepicker('getDate'); 
+                                let dataFormatada = (dateObject.getFullYear() + "-" + adicionaZero(((dateObject.getMonth() + 1))) + "-" + adicionaZero((dateObject.getDate()))) ;     
+                                $("form[name='cadastrar_pessoa_fisica_formulario_individual']").find("#data_vigencia").attr("value",dataFormatada);   
+                            }
+                        });
+                    }  
+                });   
+
+
                 return false;
             });
 
 			 /** Quando clicar no card pegar os campos valor do plano e tipo(Apartamento,Enfermaria...) */
             $('body').on('click','.valores-acomodacao',function(e){
+                
                 let valor_plano = $(this).find('.valor_plano').text().replace("R$ ","");
+                
                 let tipo = $(this).find('.tipo').text();
                 $("#valor").val(valor_plano);
                 $("#acomodacao").val(tipo);
@@ -950,6 +972,7 @@
                     data:$(this).serialize(),
 
                     beforeSend:function() {
+
                         if($("#data_vigencia").val() == "") {
                             toastr["error"]("Preencher o campo data vigencia")
                             toastr.options = {
@@ -1018,8 +1041,9 @@
                     },
                     
                     success:function(res) {
+                        
                         if(res == "cadastrado") {
-                            $(location).prop('href','/admin/contratos?ac=individual');
+                            $(location).prop('href','/admin/contratos');
                             return true;
                         } 
                     }
@@ -1060,3 +1084,14 @@
 
 @stop
 
+@section('css')
+    <style>
+        /* .botao:hover {background-color: rgba(0,0,0,0.5) !important;color:#FFF !important;} */
+        /* .valores-acomodacao {background-color:rgba(0,0,0,0.5);color:#FFF;width:32%;box-shadow:rgba(0,0,0,0.8) 0.6em 0.7em 5px;} */
+        /* .valores-acomodacao:hover {cursor:pointer;box-shadow: none;} */
+        /* .table thead tr {background-color:rgb(36,125,157);} */
+        /* .table tbody tr:nth-child(odd) {background-color: rgba(0,0,0,0.5);} */
+        /* .table tbody tr:nth-child(even) {background-color:rgb(36,125,157);} */
+        .destaque {border:5px solid rgba(36,125,157) !important;box-shadow: 5px -9px 3px #000 !important; }
+    </style>
+@stop

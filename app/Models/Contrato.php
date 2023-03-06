@@ -21,7 +21,7 @@ class Contrato extends Model
 
     public function cidade()
     {
-        return $this->belongsTo(TabelaOrigens::class);
+        return $this->belongsTo(TabelaOrigens::class,'tabela_origens_id','id');
     }
 
     public function acomodacao()

@@ -47,7 +47,7 @@
                 <div style="flex-basis:13%;margin-right: 1%;">
                     <div class="form-group">
                         <span for="tabela_origem" class="text-white">Tabela Origem:</span>
-                        <select required id="tabela_origem_coletivo" class="form-control form-control-sm change_valores">
+                        <select required id="tabela_origem_coletivo" name="tabela_origem" class="form-control form-control-sm change_valores">
                             <option value="">--Tabela Origem--</option>
                             @foreach($cidades as $cc)
                                 <option value="{{$cc->id}}" {{old('cidade_id') == $cc->id ? 'selected' : ''}}>{{$cc->nome}}</option>
@@ -535,9 +535,79 @@
             });
 
 
+           
+
             $("body").find('form[name="cadastrar_pessoa_fisica_formulario_modal_coletivo"]').on("click","#mostrar_plano_coletivo",function(){
-                 
-            	if($("#nome_coletivo").val() == "") {
+
+                if($("#usuario_coletivo_switch").val() == "") {
+                    toastr["error"]("Vendedor é campo obrigatório")
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                    return false;
+                 }
+
+                 if($("#administradora_coletivo").val() == "") {
+                    toastr["error"]("Administradora é campo obrigatório")
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                    return false;
+                 }
+
+                 if($("#tabela_origem_coletivo").val() == "") {
+                    toastr["error"]("Tabela Origem campo obrigatório")
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                    return false;
+                 }
+
+
+
+                if($("#nome_coletivo").val() == "") {
                     toastr["error"]("Titular é campo obrigatório")
                     toastr.options = {
                         "closeButton": false,
@@ -625,8 +695,8 @@
                     return false;
                  }
 
-                 if($("#tabela_origem_coletivo").val() == "") {
-                    toastr["error"]("Tabela Origem campo obrigatório")
+                 if($("#celular").val() == "") {
+                    toastr["error"]("Celular é campo obrigatório")
                     toastr.options = {
                         "closeButton": false,
                         "debug": false,
@@ -648,49 +718,9 @@
                  }
 
 
-                 if($("#administradora_coletivo").val() == "") {
-                    toastr["error"]("Administradora é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
+                 
 
-                if($("#plano_coletivo").val() == "") {
-                    toastr["error"]("Plano é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
+                
                  
                  if($("#cep_coletivo").val() == "") {
                     toastr["error"]("Cep é campo obrigatório")
@@ -713,6 +743,31 @@
                     }
                     return false;
                  }
+
+                 if($("#cidade_coletivo").val() == "") {
+                    toastr["error"]("Cidade é campo obrigatório")
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                    return false;
+                 }
+
+
+
 
                   if($("#bairro_coletivo").val() == "") {
                     toastr["error"]("Bairro é campo obrigatório")
@@ -758,27 +813,7 @@
                     return false;
                  }
 
-                  if($("#cidade_coletivo").val() == "") {
-                    toastr["error"]("Cidade é campo obrigatório")
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    }
-                    return false;
-                 }
+                 
 
                  if($("#uf_coletivo").val() == "") {
                     toastr["error"]("UF é campo obrigatório")
@@ -901,32 +936,86 @@
                     return false;  
                 }    
 
-                let data = {
-                    user:$("#usuario_coletivo_switch").val(),
-                    administradora: $("#administradora_coletivo :checked").val(),
-                    tabela_origens_id:$("#tabela_origem_coletivo").val(),
-                    nome:$("#nome_coletivo").val(),
-                    cpf:$("#cpf_coletivo").val(),
-                    data_nascimento:$("#data_nascimento_coletivo").val(),
-                    email:$("#email_coletivo").val(),
-                    celular:$("#celular").val(),
-                    cep:$("#cep_coletivo").val(),
-                    cidade:$("#cidade_origem_coletivo").val(),
-                    bairro:$("#bairro_coletivo").val(),
-                    rua:$("#rua_coletivo").val(),
-                    complemento:$("#complemento_coletivo").val(),
-                    uf: $("#uf_coletivo").val(),
-                    codigo_externo:$("#codigo_externo_coletivo").val(),
-                    dependente:$('#dependente_coletivo').is(':checked'),
-                    responsavel_nome:$("#responsavel_financeiro_coletivo_cadastrar_nome").val(),
-                    responsavel_cpf:$("#responsavel_financeiro_coletivo_cadastrar_cpf").val(),   
-                    coparticipacao: $("input:radio[name=coparticipacao_coletivo]:checked").val(),
-                    odonto: $('input:radio[name=odonto_coletivo]:checked').val(), 
-                    plano:$("#plano_coletivo").val(),
-                    faixas: {'1': $("#faixa-input-0-18_coletivo").val(), '2': $("#faixa-input-19-23_coletivo").val(),'3': $("#faixa-input-24-28_coletivo").val(),'4': $("#faixa-input-29-33_coletivo").val(),'5': $("#faixa-input-34-38_coletivo").val(),'6': $("#faixa-input-39-43_coletivo").val(),'7': $("#faixa-input-44-48_coletivo").val(),'8': $("#faixa-input-49-53_coletivo").val(),'9': $("#faixa-input-54-58_coletivo").val(),'10': $("#faixa-input-59_coletivo").val()}
-                };
- 
-                montarValores(data);
+
+
+
+
+
+
+                $.ajax({
+                    url:"{{route('contratos.montarPlanos')}}",
+                    method:"POST",
+                    data:{
+                    	"tabela_origem": $("#tabela_origem_coletivo").val(),
+						"administradora_id":$("#administradora_coletivo").val(),
+						"coparticipacao":$('input:radio[name=coparticipacao_coletivo]:checked').val(),
+                        "odonto":$("input:radio[name=odonto_coletivo]:checked").val(),
+                    	"faixas" : [{
+                            '1' : $('#faixa-input-0-18_coletivo').val(),
+                            '2' : $('#faixa-input-19-23_coletivo').val(),
+                            '3' : $('#faixa-input-24-28_coletivo').val(),
+                            '4' : $('#faixa-input-29-33_coletivo').val(),
+                            '5' : $('#faixa-input-34-38_coletivo').val(),
+                            '6' : $('#faixa-input-39-43_coletivo').val(),
+                            '7' : $('#faixa-input-44-48_coletivo').val(),
+                            '8' : $('#faixa-input-49-53_coletivo').val(),
+                            '9' : $('#faixa-input-54-58_coletivo').val(),
+                            '10' : $('#faixa-input-59_coletivo').val()
+                        }]
+                    },
+                    success(res) {
+                        
+                        $("#resultado_coletivo").slideUp().html(res).delay(100).slideToggle(100,function(){
+                            $('body,html').animate({
+                                scrollTop:$(window).scrollTop() + $(window).height(),
+                            },1500);
+                        });
+
+                        $("body").find('.vigente').datepicker({
+                            onSelect: function() { 
+                                var dateObject = $(this).datepicker('getDate'); 
+                                let dataFormatada = (dateObject.getFullYear() + "-" + adicionaZero(((dateObject.getMonth() + 1))) + "-" + adicionaZero((dateObject.getDate()))) ;     
+                                $("form[name='cadastrar_pessoa_fisica_formulario_modal_coletivo']").find("#data_vigencia").attr("value",dataFormatada);   
+                            }
+                        });
+
+
+                //         // if(data.plano == "3" || data.plano == "4") {
+                //         //     if(data.uf == "GO") {
+                //         //         $("body").find('.vigente').datepicker({
+                //         //             beforeShowDay: function (d) {
+                //         //                 var day = d.getDate();
+                //         //                 return [day == 5 || day == 10 || day == 15];
+                //         //             }
+                //         //         })
+                //         //     } else if(data.uf == "MT") {
+                //         //         $("body").find('.vigente').datepicker({
+                //         //             beforeShowDay: function (d) {
+                //         //                 var day = d.getDate();
+                //         //                 return [day == 1 || day == 10 || day == 20];
+                //         //             }
+                //         //         })
+                //         //     } else {
+                //         //         $("body").find('.vigente').datepicker({
+                //         //             beforeShowDay: function (d) {
+                //         //                 var day = d.getDate();
+                //         //                 return [day == 5 || day == 10 || day == 15];
+                //         //             }
+                //         //         })
+                //         //     }
+                //         // } else {
+                //         //     $("body").find('.vigente').datepicker()
+                //         // }
+                        
+                        
+                        
+
+
+
+                    }
+                });
+            	
+
                 return false;
             });	
 
@@ -935,7 +1024,7 @@
                 $(".valores-acomodacao").removeClass('destaque');
                 $(this).addClass('destaque');
 
-                console.log($(this));
+                
 
 
                 let valor_plano = $(this).find('.valor_plano').text().replace("R$ ","");
@@ -1040,6 +1129,7 @@
                         }
                     },
                     success:function(res) {
+                        
                         if(res == "cadastrado") {
                             $(location).prop('href','/admin/contratos?ac=coletivo');
                             return true;
@@ -1065,20 +1155,20 @@
                     method:"POST",
                     data: data,
                     success(res) {
-                           
-                        $("#resultado_coletivo").slideUp().html(res).delay(100).slideToggle(100,function(){
-                            $('body,html').animate({
-                                scrollTop:$(window).scrollTop() + $(window).height(),
-                            },1500);
-                        });
+                         console.log(res);  
+                        // $("#resultado_coletivo").slideUp().html(res).delay(100).slideToggle(100,function(){
+                        //     $('body,html').animate({
+                        //         scrollTop:$(window).scrollTop() + $(window).height(),
+                        //     },1500);
+                        // });
 
-                        $("body").find('.vigente').datepicker({
-                            onSelect: function() { 
-                                var dateObject = $(this).datepicker('getDate'); 
-                                let dataFormatada = (dateObject.getFullYear() + "-" + adicionaZero(((dateObject.getMonth() + 1))) + "-" + adicionaZero((dateObject.getDate()))) ;     
-                                $("form[name='cadastrar_pessoa_fisica_formulario_modal_coletivo']").find("#data_vigencia").attr("value",dataFormatada);   
-                            }
-                        });
+                        // $("body").find('.vigente').datepicker({
+                        //     onSelect: function() { 
+                        //         var dateObject = $(this).datepicker('getDate'); 
+                        //         let dataFormatada = (dateObject.getFullYear() + "-" + adicionaZero(((dateObject.getMonth() + 1))) + "-" + adicionaZero((dateObject.getDate()))) ;     
+                        //         $("form[name='cadastrar_pessoa_fisica_formulario_modal_coletivo']").find("#data_vigencia").attr("value",dataFormatada);   
+                        //     }
+                        // });
 
 
                 //         // if(data.plano == "3" || data.plano == "4") {

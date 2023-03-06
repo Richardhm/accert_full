@@ -19,11 +19,17 @@ Route::middleware('auth')->prefix("admin")->group(function(){
     
     /* Home **/
     Route::get("/","App\Http\Controllers\Admin\HomeController@index");
+    Route::get("/tabela_preco","App\Http\Controllers\Admin\HomeController@search")->name('orcamento.search.home');
+
+    Route::get("/consultar","App\Http\Controllers\Admin\HomeController@consultar")->name('home.administrador.consultar');
+    Route::post("/consultar","App\Http\Controllers\Admin\HomeController@consultarCarteirnha")->name('consultar.carteirinha');
+
     /* Fim Home**/
 
     /**Orçamentos  */    
     Route::get('/orcamento',"App\Http\Controllers\Admin\OrcamentoController@index")->name('orcamento.index');
     Route::post("/orcamento","App\Http\Controllers\Admin\OrcamentoController@montarOrcamento")->name('orcamento.montarOrcamento');
+    Route::post("/orcamento/criarpdf","App\Http\Controllers\Admin\OrcamentoController@criarPDF")->name('orcamento.criarpdf');
     /**Fim Orçamentos */
 
     /**Contratos*/
@@ -37,6 +43,7 @@ Route::middleware('auth')->prefix("admin")->group(function(){
     //Route::get('/contratos/listarindividual',"App\Http\Controllers\Admin\ContratoController@listarIndividual")->name('contratos.listarIndividual');
     //Route::get('/contratos/listarempresas',"App\Http\Controllers\Admin\ContratoController@listarContratoEmpresarial")->name('contratos.listarEmpresarial');
 
+    Route::get('/contratos/listarempresas/emgeral',"App\Http\Controllers\Admin\ContratoController@listarEmpresarialEmGeral")->name('contratos.listarEmpresarial.emgeral');
     Route::get('/contratos/listarempresas/emanalise',"App\Http\Controllers\Admin\ContratoController@listarContratoEmAnalise")->name('contratos.listarEmpresarial.analise');
     Route::get('/contratos/listarempresas/aguardando_primeiro_parcela',"App\Http\Controllers\Admin\ContratoController@listarContratoPrimeiraParcela")->name('contratos.listarEmpresarial.primeiraparcela');
     Route::get('/contratos/listarempresas/aguardando_segunda_parcela',"App\Http\Controllers\Admin\ContratoController@listarContratoSegundaParcela")->name('contratos.listarEmpresarial.segundaparcela');
@@ -46,6 +53,7 @@ Route::middleware('auth')->prefix("admin")->group(function(){
     Route::get('/contratos/listarempresas/aguardando_sexta_parcela',"App\Http\Controllers\Admin\ContratoController@listarContratoSextaParcela")->name('contratos.listarEmpresarial.sextaparcela');
     Route::get('/contratos/listarempresas/finalizado',"App\Http\Controllers\Admin\ContratoController@listarContratoEmpresarialFinalizado")->name('contratos.listarEmpresarial.finalizado');
     Route::get('/contratos/listarempresas/cancelado',"App\Http\Controllers\Admin\ContratoController@listarContratoEmpresarialCancelado")->name('contratos.listarEmpresarial.cancelado');
+
 
 
     Route::post('/contratos/pegarEmpresarialPorUser',"App\Http\Controllers\Admin\ContratoController@listarEmpresarialPorUser")->name('contratos.listarEmpresarialPorUser');
@@ -60,7 +68,7 @@ Route::middleware('auth')->prefix("admin")->group(function(){
 
     Route::get('/financeiro/coletivo/em_analise',"App\Http\Controllers\Admin\FinanceiroController@coletivoEmAnalise")->name('financeiro.coletivo.em_analise');
     Route::get('/financeiro/coletivo/em_geral',"App\Http\Controllers\Admin\FinanceiroController@coletivoEmGeral")->name('financeiro.coletivo.em_geral');
-
+    Route::get('/financeiro/empresarial/em_geral',"App\Http\Controllers\Admin\FinanceiroController@empresarialEmGeral")->name('financeiro.empresarial.em_geral');
 
 
     Route::get('/financeiro/coletivo/emissao_boleto',"App\Http\Controllers\Admin\FinanceiroController@coletivoEmissaoBoleto")->name('financeiro.coletivo.emissao_boleto');
@@ -121,6 +129,29 @@ Route::middleware('auth')->prefix("admin")->group(function(){
     Route::get('/premiacao',"App\Http\Controllers\Admin\PremiacaoController@index")->name('premiacao.index');
     Route::get('/premiacao/listarindividual',"App\Http\Controllers\Admin\PremiacaoController@listarPremiacao")->name('premiacao.listar');
     /***Fim Premiação***/
+
+
+    /***Financeiro Gerente */
+    Route::get('/gerente',"App\Http\Controllers\Admin\GerenteController@index")->name('gerente.index');
+    Route::get('/gerente/listagem',"App\Http\Controllers\Admin\GerenteController@listagem")->name('gerente.listagem.em_geral');
+    Route::get('/gerente/listagem/areceber',"App\Http\Controllers\Admin\GerenteController@listagemRecebido")->name('gerente.listagem.recebido');
+
+    Route::get('/gerente/comissao/{id}',"App\Http\Controllers\Admin\GerenteController@listarComissao")->name('gerente.comissao.listar');
+
+
+    Route::get('/gerente/detalhe/{id_contrato}',"App\Http\Controllers\Admin\GerenteController@detalhe")->name('gerente.listagem.detalhe');
+    Route::get('/gerente/listar/comissao',"App\Http\Controllers\Admin\GerenteController@listarUserComissoesAll")->name('gerente.listagem.comissao');
+
+
+    Route::get('/gerente/listagem/comissao_mes_atual/{id}',"App\Http\Controllers\Admin\GerenteController@comissaoMesAtual")->name('gerente.listagem.comissao_mes_atual');
+    Route::get('/gerente/listagem/comissao_mes_diferente/{id}',"App\Http\Controllers\Admin\GerenteController@comissaoMesDiferente")->name('gerente.listagem.comissao_mes_diferente');
+
+
+
+    Route::post('/gerente/mudar_status',"App\Http\Controllers\Admin\GerenteController@mudarStatus")->name('gerente.mudar_status');
+
+    /***Fim Financeiro Gerente */
+
 
     /****************************************************************Configurações******************************************************************/
 

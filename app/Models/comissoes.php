@@ -11,8 +11,92 @@ class comissoes extends Model
 
     public function comissoesLancadas()
     {
-        return $this->hasMany(ComissoesCorretoresLancadas::class);
+        return $this->hasMany(ComissoesCorretoresLancadas::class)->selectRaw("
+            id,
+            comissoes_id,
+            parcela,
+            data,
+            valor,
+            status_financeiro,
+            status_gerente,
+            data_baixa,
+            data_baixa_gerente,
+            DATEDIFF(data_baixa,data) AS quantidade_dias
+            ");
     }
+
+    public function comissoesLancadasCorretora()
+    {
+        return $this->hasMany(ComissoesCorretoraLancadas::class)
+            ->selectRaw("
+                id,
+                comissoes_id,
+                parcela,
+                data,
+                valor,
+                status_financeiro,
+                status_gerente,
+                data_baixa,
+                data_baixa_gerente,
+                DATEDIFF(data_baixa_gerente,data) AS quantidade_dias,
+                (SELECT valor_plano FROM contratos WHERE id = (SELECT contrato_id FROM comissoes WHERE comissoes.id = comissoes_corretora_lancadas.comissoes_id)) AS valor_plano
+        ");
+        
+    }
+
+    public function comissaoAtual() 
+    {
+        return $this->hasOne(ComissoesCorretoresLancadas::class)->where('status_financeiro',1)->where('status_gerente',0);
+    }
+
+    public function comissaoAtualFinanceiro()
+    {
+        return $this->hasOne(ComissoesCorretoresLancadas::class)->where('status_financeiro',0)->where('status_gerente',0);
+    }
+
+    public function somarComissoesParcelasAtivas() 
+    {
+        return $this->hasMany(ComissoesCorretoresLancadas::class)
+        ->selectRaw("SUM(valor)")
+        ->where('status_financeiro',1)
+        ->where('status_gerente',1);
+    }
+
+    public function administradoras() 
+    {
+        // return $this->hasOne
+    }
+
+
+
+    public function comissaoAtualPagaLast() 
+    {
+        return $this->hasOne(ComissoesCorretoresLancadas::class)
+            ->where('status_financeiro',1)
+            ->where('status_gerente',1)
+            ->orderBy('id','desc')
+            ->take(1)
+            ->as('subscription');
+    }
+
+
+    public function comissoesLancadasCorretoraQuantidade()
+    {
+        // return ComissoesCorretoresLancadas::withCount(['comissoes' => function($query){
+        //     $query->where('status_financeiro',1);
+        //     $query->where('status_gerente',1);           
+        // }])->get();
+            
+        return $this->hasMany(ComissoesCorretoresLancadas::class,'comissoes_id')->where('status_financeiro',1)->where('status_gerente',1);
+        //return $this->hasManyThrough(ComissoesCorretoresLancadas::class,comissoes::class)->where('status_financeiro',1)->where('status_gerente',1);
+    }
+
+    public function comissoesAprovadasFinanceira()
+    {
+        return $this->hasMany(ComissoesCorretoresLancadas::class)->where('status_financeiro',1)->where('status_gerente',0);
+    }
+
+
 
     public function user()
     {

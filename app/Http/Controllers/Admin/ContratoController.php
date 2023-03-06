@@ -18,8 +18,6 @@ class ContratoController extends Controller
     public function index()
     {
         
-
-
         $cidades = TabelaOrigens::all();
         $administradoras = Administradoras::whereRaw("id != (SELECT id FROM administradoras WHERE nome LIKE '%hapvida%')")->get();
         
@@ -116,8 +114,22 @@ class ContratoController extends Controller
 
 
         $qtd_empresarial_em_analise = ContratoEmpresarial::where("financeiro_id",1)->count();
+
+        $qtd_empresarial_parcela_01 = ContratoEmpresarial
+        ::with("comissao")
+        ->whereHas('comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",0);
+            $query->where("status_gerente",0);
+            $query->where("parcela",1);
+            $query->whereRaw("data_baixa IS NULL");
+        })
+       
+        ->where("financeiro_id",5)
+        ->count();
         
-        $qtd_empresarial_parcela_01 = ContratoEmpresarial::where("financeiro_id",5)->count();
+       
+        
+        //$qtd_empresarial_parcela_01 = ContratoEmpresarial::where("financeiro_id",5)->count();
         $qtd_empresarial_parcela_02 = ContratoEmpresarial::where("financeiro_id",6)->count();
         $qtd_empresarial_parcela_03 = ContratoEmpresarial::where("financeiro_id",7)->count();
         $qtd_empresarial_parcela_04 = ContratoEmpresarial::where("financeiro_id",8)->count();
@@ -190,157 +202,193 @@ class ContratoController extends Controller
     public function montarPlanos(Request $request)
     {
         
-        $cliente = new Cliente();
-        $cliente->user_id = $request->user;
-        // $cliente->nome = $request->nome;
-        // $cliente->cidade = $request->cidade;
-        // $cliente->celular = $request->celular;
-        // $cliente->email = $request->email;
-        // $cliente->cpf = $request->cpf;
-        // $cliente->data_nascimento = date('Y-m-d',strtotime($request->data_nascimento));
-        // $cliente->cep = $request->cep;
-        // $cliente->rua = $request->rua;
-        // $cliente->bairro = $request->bairro;
-        // $cliente->complemento = $request->complemento;
-        // $cliente->uf = $request->uf;
-        // $cliente->pessoa_fisica = 1;
-        // $cliente->pessoa_juridica = 0;
-        // $cliente->dependente = ($request->dependente == "on" ? 1 : 0);    
-        $cliente->save();
-        // if($cliente->dependente == "true") {
-        //     $dependente = new Dependentes();
-        //     $dependente->cliente_id = $cliente->id;
-        //     $dependente->nome = $request->responsavel_nome; 
-        //     $dependente->cpf = $request->responsavel_cpf;
-        //     $dependente->save();
-        // }
-        $contrato = new Contrato();
-        $contrato->cliente_id = $cliente->id;
-        $contrato->administradora_id = $request->administradora;
-        $contrato->tabela_origens_id = $request->tabela_origens_id;
-        $contrato->plano_id = (!empty($request->plano) ? $request->plano : 3);
-        $contrato->financeiro_id = 1;
-        $contrato->coparticipacao = ($request->coparticipacao == "sim" ? 1 : 0);
-        $contrato->odonto = ($request->odonto == "sim" ? 1 : 0);
-        $contrato->codigo_externo = $request->codigo_externo;
-        $contrato->save();
-        $faixas = $request->faixas;
-        foreach($faixas as $k => $v) {
-            if($v != 0) {
-                $orcamentoFaixaEtaria = new CotacaoFaixaEtaria();
-                $orcamentoFaixaEtaria->contrato_id = $contrato->id;
-                $orcamentoFaixaEtaria->faixa_etaria_id = $k;
-                $orcamentoFaixaEtaria->quantidade = $v;
-                $orcamentoFaixaEtaria->save();
-            } 
+
+        $sql = "";
+        $chaves = [];
+        foreach($request->faixas[0] as $k => $v) {
+            if($v != null AND $v != 0) {
+                $sql .= "WHEN (SELECT id FROM faixa_etarias WHERE faixa_etarias.id = tabelas.faixa_etaria_id) = $k THEN $v ";
+                $chaves[] = $k; 
+            }
         }
 
-        $cot = $contrato;
-        $valores = DB::table("cotacao_faixa_etarias")
-        ->join("tabelas","tabelas.faixa_etaria_id","=","cotacao_faixa_etarias.faixa_etaria_id")
-        ->selectRaw("sum(valor * (SELECT quantidade FROM cotacao_faixa_etarias WHERE contrato_id = ".$cot->id." AND cotacao_faixa_etarias.faixa_etaria_id = tabelas.faixa_etaria_id)) AS total")
-        ->selectRaw("(SELECT id FROM acomodacoes WHERE tabelas.acomodacao_id = acomodacoes.id) AS id_acomodacao")
-        ->selectRaw("(SELECT nome FROM acomodacoes WHERE acomodacoes.id = tabelas.acomodacao_id) as modelo")
-        ->selectRaw("(SELECT nome FROM planos WHERE tabelas.plano_id = planos.id) AS plano")
-        ->selectRaw("if(coparticipacao = 0,'Sem Coparticipacao','Com Coparticipacao') AS coparticipacao")
-        ->selectRaw("if(odonto = 0,'Sem Odonto','Com Odonto') AS odonto")
-        ->selectRaw("(SELECT logo FROM administradoras WHERE administradoras.id = tabelas.administradora_id) AS operadora")
-        ->whereRaw("tabelas.tabela_origens_id = ".$request->tabela_origens_id." AND tabelas.administradora_id = ".$request->administradora." AND odonto = ".($request->odonto == "sim" ? 1 : 0)." AND coparticipacao = ".($request->coparticipacao == "sim" ? 1 : 0)." AND tabelas.plano_id = ".(!empty($request->plano) ? $request->plano : 3)." AND cotacao_faixa_etarias.contrato_id = ".$cot->id)
-        ->groupBy('acomodacao_id')
-        ->get();
-        
+        $administradora = $request->administradora_id;
 
-        $faixas_etarias = DB::table("cotacao_faixa_etarias")
-        ->join("tabelas","tabelas.faixa_etaria_id","=","cotacao_faixa_etarias.faixa_etaria_id")
-        ->selectRaw("(SELECT nome FROM faixa_etarias WHERE faixa_etarias.id = cotacao_faixa_etarias.faixa_etaria_id) AS faixas")
-        ->selectRaw("quantidade,valor")
-        ->selectRaw("(SELECT nome FROM acomodacoes WHERE acomodacoes.id = tabelas.acomodacao_id) as modelo")
-        ->selectRaw("(cotacao_faixa_etarias.quantidade * tabelas.valor) AS total")
-        ->whereRaw("contrato_id = ? AND administradora_id = ? AND tabela_origens_id = ? AND odonto = ? AND coparticipacao = ? AND plano_id = ?",[$cot->id,$request->administradora,$request->tabela_origens_id,($request->odonto == "sim" ? 1 : 0),($request->coparticipacao == "sim" ? 1 : 0),(!empty($request->plano) ? $request->plano : 3)])
-        ->get();
+        $chaves = implode(",",$chaves);
+
+        $cidade = $request->tabela_origem;
+
+        $odonto = $request->odonto == "sim" ? 1 : 0;
+        $coparticipacao = $request->coparticipacao == "sim" ? 1 : 0;
+        
+        $dados = DB::select("SELECT 
+            id,
+            (select logo from administradoras where administradoras.id = tabelas.administradora_id) as logo,
+            (select id from administradoras where administradoras.id = tabelas.administradora_id) as administradora,
+            tabela_origens_id,
+            (select nome from planos where planos.id = tabelas.plano_id) as planos,
+            (select nome from acomodacoes where acomodacoes.id = tabelas.acomodacao_id) as acomodacao,
+            
+            (select nome from faixa_etarias where faixa_etarias.id = tabelas.faixa_etaria_id) as faixa,
+            if(coparticipacao,'Com Coparticipação','Sem Coparticipação') as coparticipacao,
+            if(odonto,'Com Odonto','Sem Odonto') as odonto,
+        CASE
+            $sql 
+        ELSE 0
+        END AS quantidade,
+        valor,
+        CONCAT('card_',acomodacao_id) AS card
+        FROM tabelas 
+        WHERE faixa_etaria_id IN($chaves) AND tabela_origens_id =  $cidade AND administradora_id = $administradora AND odonto = $odonto AND coparticipacao = $coparticipacao");
 
         return view("admin.pages.contratos.acomodacao",[
-            "valores" => $valores,
-            "faixas" => $faixas_etarias,
-            "contrato" => $cot->id,
-            "user" => $request->user,
-            "tabela_origem" => $request->tabela_origens_id,
-            "administradora" => $request->administradora,
-            "cliente" => $cliente->id
-        ]);
+            "dados" => $dados,
+            "card_inicial" => $dados[0]->card,
+            "quantidade" => count($dados)
+        ]);  
+
+
+
+        // $cliente = new Cliente();
+        // $cliente->user_id = $request->user;
+        // // $cliente->nome = $request->nome;
+        // // $cliente->cidade = $request->cidade;
+        // // $cliente->celular = $request->celular;
+        // // $cliente->email = $request->email;
+        // // $cliente->cpf = $request->cpf;
+        // // $cliente->data_nascimento = date('Y-m-d',strtotime($request->data_nascimento));
+        // // $cliente->cep = $request->cep;
+        // // $cliente->rua = $request->rua;
+        // // $cliente->bairro = $request->bairro;
+        // // $cliente->complemento = $request->complemento;
+        // // $cliente->uf = $request->uf;
+        // // $cliente->pessoa_fisica = 1;
+        // // $cliente->pessoa_juridica = 0;
+        // // $cliente->dependente = ($request->dependente == "on" ? 1 : 0);    
+        // $cliente->save();
+        // // if($cliente->dependente == "true") {
+        // //     $dependente = new Dependentes();
+        // //     $dependente->cliente_id = $cliente->id;
+        // //     $dependente->nome = $request->responsavel_nome; 
+        // //     $dependente->cpf = $request->responsavel_cpf;
+        // //     $dependente->save();
+        // // }
+        // $contrato = new Contrato();
+        // $contrato->cliente_id = $cliente->id;
+        // $contrato->administradora_id = $request->administradora;
+        // $contrato->tabela_origens_id = $request->tabela_origens_id;
+        // $contrato->plano_id = (!empty($request->plano) ? $request->plano : 3);
+        // $contrato->financeiro_id = 1;
+        // $contrato->coparticipacao = ($request->coparticipacao == "sim" ? 1 : 0);
+        // $contrato->odonto = ($request->odonto == "sim" ? 1 : 0);
+        // $contrato->codigo_externo = $request->codigo_externo;
+        // $contrato->save();
+        // $faixas = $request->faixas;
+        // foreach($faixas as $k => $v) {
+        //     if($v != 0) {
+        //         $orcamentoFaixaEtaria = new CotacaoFaixaEtaria();
+        //         $orcamentoFaixaEtaria->contrato_id = $contrato->id;
+        //         $orcamentoFaixaEtaria->faixa_etaria_id = $k;
+        //         $orcamentoFaixaEtaria->quantidade = $v;
+        //         $orcamentoFaixaEtaria->save();
+        //     } 
+        // }
+
+        // $cot = $contrato;
+        // $valores = DB::table("cotacao_faixa_etarias")
+        // ->join("tabelas","tabelas.faixa_etaria_id","=","cotacao_faixa_etarias.faixa_etaria_id")
+        // ->selectRaw("sum(valor * (SELECT quantidade FROM cotacao_faixa_etarias WHERE contrato_id = ".$cot->id." AND cotacao_faixa_etarias.faixa_etaria_id = tabelas.faixa_etaria_id)) AS total")
+        // ->selectRaw("(SELECT id FROM acomodacoes WHERE tabelas.acomodacao_id = acomodacoes.id) AS id_acomodacao")
+        // ->selectRaw("(SELECT nome FROM acomodacoes WHERE acomodacoes.id = tabelas.acomodacao_id) as modelo")
+        // ->selectRaw("(SELECT nome FROM planos WHERE tabelas.plano_id = planos.id) AS plano")
+        // ->selectRaw("if(coparticipacao = 0,'Sem Coparticipacao','Com Coparticipacao') AS coparticipacao")
+        // ->selectRaw("if(odonto = 0,'Sem Odonto','Com Odonto') AS odonto")
+        // ->selectRaw("(SELECT logo FROM administradoras WHERE administradoras.id = tabelas.administradora_id) AS operadora")
+        // ->whereRaw("tabelas.tabela_origens_id = ".$request->tabela_origens_id." AND tabelas.administradora_id = ".$request->administradora." AND odonto = ".($request->odonto == "sim" ? 1 : 0)." AND coparticipacao = ".($request->coparticipacao == "sim" ? 1 : 0)." AND tabelas.plano_id = ".(!empty($request->plano) ? $request->plano : 3)." AND cotacao_faixa_etarias.contrato_id = ".$cot->id)
+        // ->groupBy('acomodacao_id')
+        // ->get();
+        
+
+        // $faixas_etarias = DB::table("cotacao_faixa_etarias")
+        // ->join("tabelas","tabelas.faixa_etaria_id","=","cotacao_faixa_etarias.faixa_etaria_id")
+        // ->selectRaw("(SELECT nome FROM faixa_etarias WHERE faixa_etarias.id = cotacao_faixa_etarias.faixa_etaria_id) AS faixas")
+        // ->selectRaw("quantidade,valor")
+        // ->selectRaw("(SELECT nome FROM acomodacoes WHERE acomodacoes.id = tabelas.acomodacao_id) as modelo")
+        // ->selectRaw("(cotacao_faixa_etarias.quantidade * tabelas.valor) AS total")
+        // ->whereRaw("contrato_id = ? AND administradora_id = ? AND tabela_origens_id = ? AND odonto = ? AND coparticipacao = ? AND plano_id = ?",[$cot->id,$request->administradora,$request->tabela_origens_id,($request->odonto == "sim" ? 1 : 0),($request->coparticipacao == "sim" ? 1 : 0),(!empty($request->plano) ? $request->plano : 3)])
+        // ->get();
+
+        // return view("admin.pages.contratos.acomodacao",[
+        //     "valores" => $valores,
+        //     "faixas" => $faixas_etarias,
+        //     "contrato" => $cot->id,
+        //     "user" => $request->user,
+        //     "tabela_origem" => $request->tabela_origens_id,
+        //     "administradora" => $request->administradora,
+        //     "cliente" => $cliente->id
+        // ]);
     }
 
 
     public function montarPlanosIndividual(Request $request)
     {
-        
-        $cliente = new Cliente();
-        $cliente->user_id = $request->user;
-        $cliente->save();
-        $contrato = new Contrato();
-        $contrato->cliente_id = $cliente->id;
-        $contrato->administradora_id = 4;
-        $contrato->tabela_origens_id = $request->tabela_origens_id;
-        $contrato->plano_id = 1;
-        $contrato->financeiro_id = 1;
-        $contrato->coparticipacao = ($request->coparticipacao == "sim" ? 1 : 0);
-        $contrato->odonto = ($request->odonto == "sim" ? 1 : 0);
-        $contrato->codigo_externo = $request->codigo_externo;
-        $contrato->save();
-        $faixas = $request->faixas;
-        foreach($faixas as $k => $v) {
-            if($v != 0) {
-                $orcamentoFaixaEtaria = new CotacaoFaixaEtaria();
-                $orcamentoFaixaEtaria->contrato_id = $contrato->id;
-                $orcamentoFaixaEtaria->faixa_etaria_id = $k;
-                $orcamentoFaixaEtaria->quantidade = $v;
-                $orcamentoFaixaEtaria->save();
-            } 
+        $sql = "";
+        $chaves = [];
+        foreach($request->faixas[0] as $k => $v) {
+            if($v != null AND $v != 0) {
+                $sql .= "WHEN (SELECT id FROM faixa_etarias WHERE faixa_etarias.id = tabelas.faixa_etaria_id) = $k THEN $v ";
+                $chaves[] = $k; 
+            }
         }
 
-        $cot = $contrato;
-        $valores = DB::table("cotacao_faixa_etarias")
-        ->join("tabelas","tabelas.faixa_etaria_id","=","cotacao_faixa_etarias.faixa_etaria_id")
-        ->selectRaw("sum(valor * (SELECT quantidade FROM cotacao_faixa_etarias WHERE contrato_id = ".$cot->id." AND cotacao_faixa_etarias.faixa_etaria_id = tabelas.faixa_etaria_id)) AS total")
-        ->selectRaw("(SELECT id FROM acomodacoes WHERE tabelas.acomodacao_id = acomodacoes.id) AS id_acomodacao")
-        ->selectRaw("(SELECT nome FROM acomodacoes WHERE acomodacoes.id = tabelas.acomodacao_id) as modelo")
-        ->selectRaw("(SELECT nome FROM planos WHERE tabelas.plano_id = planos.id) AS plano")
-        ->selectRaw("if(coparticipacao = 0,'Sem Coparticipacao','Com Coparticipacao') AS coparticipacao")
-        ->selectRaw("if(odonto = 0,'Sem Odonto','Com Odonto') AS odonto")
-        ->selectRaw("(SELECT logo FROM administradoras WHERE administradoras.id = tabelas.administradora_id) AS operadora")
-        ->whereRaw("tabelas.administradora_id = 4")
-        ->whereRaw("tabelas.tabela_origens_id = ".$request->tabela_origens_id." AND  odonto = ".($request->odonto == "sim" ? 1 : 0)." AND coparticipacao = ".($request->coparticipacao == "sim" ? 1 : 0)." AND tabelas.plano_id = ".(!empty($request->plano) ? $request->plano : 1)." AND cotacao_faixa_etarias.contrato_id = ".$cot->id)
-        ->groupBy('acomodacao_id')
-        ->get();
-        $faixas_etarias = DB::table("cotacao_faixa_etarias")
-        ->join("tabelas","tabelas.faixa_etaria_id","=","cotacao_faixa_etarias.faixa_etaria_id")
-        ->selectRaw("(SELECT nome FROM faixa_etarias WHERE faixa_etarias.id = cotacao_faixa_etarias.faixa_etaria_id) AS faixas")
-        ->selectRaw("quantidade,valor")
-        ->selectRaw("(SELECT nome FROM acomodacoes WHERE acomodacoes.id = tabelas.acomodacao_id) as modelo")
-        ->selectRaw("(cotacao_faixa_etarias.quantidade * tabelas.valor) AS total")
-        ->whereRaw("administradora_id = 4")
-        ->whereRaw("contrato_id = ? AND tabela_origens_id = ? AND odonto = ? AND coparticipacao = ? AND plano_id = ?",[$cot->id,$request->tabela_origens_id,($request->odonto == "sim" ? 1 : 0),($request->coparticipacao == "sim" ? 1 : 0),(!empty($request->plano) ? $request->plano : 1)])
-        ->get();
+
+        $chaves = implode(",",$chaves);
+
+        $cidade = $request->tabela_origem;
+
+        $odonto = $request->odonto == "sim" ? 1 : 0;
+        $coparticipacao = $request->coparticipacao == "sim" ? 1 : 0;
+        
+        $dados = DB::select("SELECT 
+            id,
+            (select logo from administradoras where administradoras.id = tabelas.administradora_id) as logo,
+            (select id from administradoras where administradoras.id = tabelas.administradora_id) as administradora,
+            tabela_origens_id,
+            (select nome from planos where planos.id = tabelas.plano_id) as planos,
+            (select nome from acomodacoes where acomodacoes.id = tabelas.acomodacao_id) as acomodacao,
+            
+            (select nome from faixa_etarias where faixa_etarias.id = tabelas.faixa_etaria_id) as faixa,
+            if(coparticipacao,'Com Coparticipação','Sem Coparticipação') as coparticipacao,
+            if(odonto,'Com Odonto','Sem Odonto') as odonto,
+        CASE
+            $sql 
+        ELSE 0
+        END AS quantidade,
+        valor,
+        CONCAT('card_',acomodacao_id) AS card
+        FROM tabelas 
+        WHERE faixa_etaria_id IN($chaves) AND tabela_origens_id =  $cidade AND administradora_id = 4 AND odonto = $odonto AND coparticipacao = $coparticipacao");
+
+
         return view("admin.pages.contratos.acomodacao",[
-            "valores" => $valores,
-            "faixas" => $faixas_etarias,
-            "contrato" => $cot->id,
-            "user" => $request->user,
-            "tabela_origem" => $request->tabela_origens_id,
-            "dependente" => ($request->dependente == "true" ? 1 : 0),
-            "cliente" => $cliente->id
-        ]);
+            "dados" => $dados,
+            "card_inicial" => $dados[0]->card,
+            "quantidade" => count($dados)
+        ]);  
+
 
     }
 
 
     public function storeIndividual(Request $request)
     {  
-
+        
         $valor = str_replace([".",","],["","."],$request->valor); 
         
-        $cliente = Cliente::find($request->cliente);
+        $cliente = new Cliente();
+        $cliente->user_id = $request->users_individual;
         $cliente->nome = $request->nome_individual;
+        
         $cliente->cidade = $request->cidade_origem_individual;
         $cliente->celular = $request->celular_individual;
         $cliente->telefone = $request->telefone_individual;
@@ -357,6 +405,11 @@ class ContratoController extends Controller
         $cliente->dependente = ($request->dependente_individual == "on" ? 1 : 0);  
         $cliente->save();
 
+
+
+        
+       
+
         if($cliente->dependente) {
             $dependente = new Dependentes();
             $dependente->cliente_id = $cliente->id;
@@ -371,16 +424,25 @@ class ContratoController extends Controller
         $data_boleto = $request->data_boleto;
         $valor_adesao = str_replace([".",","],["","."],$request->valor_adesao);
         $valor_plano = str_replace([".",","],["","."],$request->valor);
-        $contrato = Contrato::find($request->contrato);        
+
+
+        $contrato = new Contrato();
+        $contrato->cliente_id = $cliente->id;
+        $contrato->administradora_id = $request->administradora;
         $contrato->acomodacao_id = $acomodacao_id;
+        $contrato->tabela_origens_id = $request->tabela_origem_individual;
+        $contrato->plano_id = 1;
         $contrato->financeiro_id = 1;
+        $contrato->coparticipacao = ($request->coparticipacao_individual == "sim" ? 1 : 0);
+        $contrato->odonto = ($request->odonto_individual == "sim" ? 1 : 0);
+        $contrato->codigo_externo = $request->codigo_externo_individual;
         $contrato->data_vigencia = $data_vigencia;
         $contrato->data_boleto = $data_boleto;
         $contrato->valor_adesao = $valor_adesao;
         $contrato->valor_plano = $valor_plano;
         $contrato->save();
 
-        CotacaoFaixaEtaria::where("contrato_id",$contrato->id)->delete();
+        // CotacaoFaixaEtaria::where("contrato_id",$contrato->id)->delete();
         $totalVidas = 0;
         $faixas = $request->faixas_etarias;
         foreach($faixas as $k => $v) {
@@ -397,20 +459,20 @@ class ContratoController extends Controller
         $comissao = new Comissoes();
         $comissao->contrato_id = $contrato->id;
         // $comissao->cliente_id = $contrato->cliente_id;
-        $comissao->user_id = $request->user;
+        $comissao->user_id = $request->users_individual;
         // $comissao->status = 1;
         $comissao->plano_id = 1;
         $comissao->administradora_id = 4;
-        $comissao->tabela_origens_id = $request->tabela_origem;
+        $comissao->tabela_origens_id = $request->tabela_origem_individual;
         $comissao->data = date('Y-m-d');
         $comissao->save();
 
-        /* Comissao Corretor */
+        // /* Comissao Corretor */
         $comissoes_configuradas_corretor = ComissoesCorretoresConfiguracoes
         ::where("plano_id",1)
         ->where("administradora_id",4)
-        ->where("user_id",$request->user)
-        ->where("tabela_origens_id",$request->tabela_origem)
+        ->where("user_id",$request->users_individual)
+        ->where("tabela_origens_id",$request->tabela_origem_individual)
         ->get();
 
         
@@ -427,10 +489,7 @@ class ContratoController extends Controller
                     $comissaoVendedor->data = date('Y-m-d',strtotime($request->data_boleto));
                     
                 } else {
-                    
-                    
                     $comissaoVendedor->data = date("Y-m-d",strtotime($request->data_boleto."+{$comissao_corretor_contagem}month"));
-                   
                 }
                 $comissaoVendedor->valor = ($valor * $c->valor) / 100;
                 $comissaoVendedor->save();  
@@ -441,7 +500,7 @@ class ContratoController extends Controller
         /** Comissao Corretora */   
         $comissoes_configurada_corretora = ComissoesCorretoraConfiguracoes::where("administradora_id",4)
         ->where('plano_id',1)
-        ->where('tabela_origens_id',$request->tabela_origem)
+        ->where('tabela_origens_id',$request->tabela_origem_individual)
         ->get();
         $comissoes_corretora_contagem=0;
         if(count($comissoes_configurada_corretora)>=1) {
@@ -464,10 +523,10 @@ class ContratoController extends Controller
 
         $premiacao = new Premiacoes();
         $premiacao->contrato_id = $contrato->id;
-        $premiacao->user_id = $request->user;
+        $premiacao->user_id = $request->users_individual;
         $premiacao->plano_id = 1;
         $premiacao->administradora_id = 4;
-        $premiacao->tabela_origens_id = $request->tabela_origem;
+        $premiacao->tabela_origens_id = $request->tabela_origem_individual;
         $premiacao->data = date('Y-m-d');
         $premiacao->save();
 
@@ -475,8 +534,8 @@ class ContratoController extends Controller
         $premiacao_configurada_corretor = PremiacoesCorretoresConfiguracoes
         ::where("plano_id",1)
         ->where("administradora_id",4)
-        ->where("user_id",$request->user)
-        ->where("tabela_origens_id",$request->tabela_origem)
+        ->where("user_id",$request->users_individual)
+        ->where("tabela_origens_id",$request->tabela_origem_individual)
         ->get();
 
 
@@ -506,7 +565,7 @@ class ContratoController extends Controller
         ::where("plano_id",1)
         ->where("administradora_id",4)
         //->where("user_id",$request->user)
-        ->where("tabela_origens_id",$request->tabela_origem)
+        ->where("tabela_origens_id",$request->tabela_origem_individual)
         ->get();
 
 
@@ -550,18 +609,48 @@ class ContratoController extends Controller
         }
     }
 
+    public function listarEmpresarialEmGeral(Request $request)
+    {
+        if($request->ajax()) {
+            return ContratoEmpresarial
+            ::selectRaw("(SELECT name FROM users WHERE users.id = contrato_empresarial.user_id) as usuario")
+            ->selectRaw("(SELECT nome FROM planos WHERE planos.id = contrato_empresarial.plano_id) as plano")
+            ->selectRaw("(SELECT nome FROM tabela_origens WHERE tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem")
+            ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
+            ->with('comissao')
+            ->get();
+        }
+    }
+
+
+
+
     public function listarContratoPrimeiraParcela(Request $request)
     {
         if($request->ajax()) {
-            if($request->ajax()) {
-                return ContratoEmpresarial
-                    ::selectRaw("(SELECT name FROM users WHERE users.id = contrato_empresarial.user_id) as usuario")
-                    ->selectRaw("(SELECT nome FROM planos WHERE planos.id = contrato_empresarial.plano_id) as plano")
-                    ->selectRaw("(SELECT nome FROM tabela_origens WHERE tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem")
-                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
-                    ->where("financeiro_id",5)
-                    ->get();
-            }
+            // $dados = ContratoEmpresarial
+            // ::with("comissao")
+            // ->selectRaw("(SELECT name FROM users WHERE users.id = contrato_empresarial.user_id) as usuario")
+            // ->selectRaw("(SELECT nome FROM planos WHERE planos.id = contrato_empresarial.plano_id) as plano")
+            // ->selectRaw("(SELECT nome FROM tabela_origens WHERE tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem")
+            // ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
+            // ->where("financeiro_id",5)
+            // ->get();
+            $dados = ContratoEmpresarial
+            ::with("comissao")
+            ->whereHas('comissao.comissoesLancadas',function($query){
+                $query->where("status_financeiro",0);
+                $query->where("status_gerente",0);
+                $query->where("parcela",1);
+                $query->whereRaw("data_baixa IS NULL");
+            })
+            ->selectRaw("(SELECT name FROM users WHERE users.id = contrato_empresarial.user_id) as usuario")
+            ->selectRaw("(SELECT nome FROM planos WHERE planos.id = contrato_empresarial.plano_id) as plano")
+            ->selectRaw("(SELECT nome FROM tabela_origens WHERE tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem")
+            ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
+            ->where("financeiro_id",5)
+            ->get();
+            return $dados;
         }
     }
 
@@ -674,10 +763,11 @@ class ContratoController extends Controller
 
     public function store(Request $request)
     {
-
+        
         $valor = str_replace([".",","],["","."],$request->valor);        
-        $cliente = Cliente::find($request->cliente);
+        $cliente = new Cliente();
         $cliente->nome = $request->nome_coletivo;
+        $cliente->user_id = $request->usuario_coletivo_switch;
         $cliente->cidade = $request->cidade_origem_coletivo;
         $cliente->celular = $request->celular;
         $cliente->telefone = $request->telefone;
@@ -709,17 +799,27 @@ class ContratoController extends Controller
         $valor_adesao = str_replace([".",","],["","."],$request->valor_adesao);
         $valor_plano = str_replace([".",","],["","."],$request->valor);
         
-        $contrato = Contrato::find($request->contrato);        
+        $contrato = new Contrato();
+
         $contrato->acomodacao_id = $acomodacao_id;
+        $contrato->cliente_id = $cliente->id;
+        $contrato->administradora_id = $request->administradora;
+        $contrato->tabela_origens_id = $request->tabela_origem;
+        $contrato->plano_id = 3;
         $contrato->financeiro_id = 1;
         $contrato->data_vigencia = $data_vigencia;
-
+        $contrato->codigo_externo = $request->codigo_externo_coletivo;
         $contrato->data_boleto = $data_boleto;
         $contrato->valor_adesao = $valor_adesao;
         $contrato->valor_plano = $valor_plano;
+        $contrato->coparticipacao = ($request->coparticipacao_coletivo == "sim" ? 1 : 0);
+        $contrato->odonto = ($request->odonto_coletivo == "sim" ? 1 : 0);
+
         $contrato->save();
 
-        CotacaoFaixaEtaria::where("contrato_id",$contrato->id)->delete();
+        
+
+        
         $totalVidas = 0;
         $faixas = $request->faixas_etarias;
         foreach($faixas as $k => $v) {
@@ -736,7 +836,7 @@ class ContratoController extends Controller
         $comissao = new Comissoes();
         $comissao->contrato_id = $contrato->id;
         // $comissao->cliente_id = $contrato->cliente_id;
-        $comissao->user_id = $request->user;
+        $comissao->user_id = $request->usuario_coletivo_switch;
         // $comissao->status = 1;
         $comissao->plano_id = 3;
         $comissao->administradora_id = $request->administradora;
@@ -748,7 +848,7 @@ class ContratoController extends Controller
         $comissoes_configuradas_corretor = ComissoesCorretoresConfiguracoes
         ::where("plano_id",3)
         ->where("administradora_id",$request->administradora)
-        ->where("user_id",$request->user)
+        ->where("user_id",$request->usuario_coletivo_switch)
         ->where("tabela_origens_id",$request->tabela_origem)
         ->get();
 
@@ -781,7 +881,7 @@ class ContratoController extends Controller
         }
 
         /** Comissao Corretora */   
-        $comissoes_configurada_corretora = ComissoesCorretoraConfiguracoes::where("administradora_id",$request->administradora_coletivo)
+        $comissoes_configurada_corretora = ComissoesCorretoraConfiguracoes::where("administradora_id",$request->administradora)
         ->where('plano_id',3)
         ->where('tabela_origens_id',$request->tabela_origem)
         ->get();
@@ -805,7 +905,7 @@ class ContratoController extends Controller
 
         $premiacao = new Premiacoes();
         $premiacao->contrato_id = $contrato->id;
-        $premiacao->user_id = $request->user;
+        $premiacao->user_id = $request->usuario_coletivo_switch;
         $premiacao->plano_id = 3;
         $premiacao->administradora_id = $request->administradora;
         $premiacao->tabela_origens_id = $request->tabela_origem;
@@ -816,7 +916,7 @@ class ContratoController extends Controller
         $premiacao_configurada_corretor = PremiacoesCorretoresConfiguracoes
         ::where("plano_id",3)
         ->where("administradora_id",$request->administradora)
-        ->where("user_id",$request->user)
+        ->where("user_id",$request->usuario_coletivo_switch)
         ->where("tabela_origens_id",$request->tabela_origem)
         ->get();
 
@@ -1086,6 +1186,7 @@ class ContratoController extends Controller
 
     public function formCreate()
     {
+        
         $users = User::where("id","!=",auth()->user()->id)->get();
         $origem_tabela = TabelaOrigens::all();
         return view('admin.pages.contratos.cadastrar',[

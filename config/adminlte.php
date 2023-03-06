@@ -110,13 +110,13 @@ return [
     */
 
     'preloader' => [
-        'enabled' => false,
+        'enabled' => true,
         'img' => [
             'path' => 'vendor/adminlte/dist/img/connectlife.png',
             'alt' => 'Accert',
             'effect' => 'animation__shake',
-            'width' => 150,
-            'height' => 150,
+            'width' => 627,
+            'height' => 357,
         ],
     ],
 
@@ -171,12 +171,12 @@ return [
     |
     */
 
-    'classes_auth_card' => 'card-outline card-primary',
+    'classes_auth_card' => '',
     'classes_auth_header' => '',
     'classes_auth_body' => '',
     'classes_auth_footer' => '',
     'classes_auth_icon' => '',
-    'classes_auth_btn' => 'btn-flat btn-primary',
+    'classes_auth_btn' => '',
 
     /*
     |--------------------------------------------------------------------------
@@ -331,22 +331,33 @@ return [
         ],
 
         [
-            "text" => "Comissões",
-            "url" => "admin/comissao",
-            "icon" => "fas fa-id-card-alt",
-            'icon_color' => 'white',
-            'classes' => 'text-white',
-            'can'       => 'comissao'
+            "text" => "Financeiro - Tharllyany",
+            "url" => "admin/gerente",
+            "icon" => "fas fa-money-check-alt",
+            "icon_color" => 'white',
+            "classes" => "text-white",
         ],
 
-        [
-            "text" => "Premiações",
-            "url" => "admin/premiacao",
-            "icon" => "fas fa-crown",
-            'icon_color' => 'white',
-            'classes' => 'text-white',
-            'can' => 'premiacoes'
-        ],
+
+
+
+        // [
+        //     "text" => "Comissões",
+        //     "url" => "admin/comissao",
+        //     "icon" => "fas fa-id-card-alt",
+        //     'icon_color' => 'white',
+        //     'classes' => 'text-white',
+        //     'can'       => 'comissao'
+        // ],
+
+        // [
+        //     "text" => "Premiações",
+        //     "url" => "admin/premiacao",
+        //     "icon" => "fas fa-crown",
+        //     'icon_color' => 'white',
+        //     'classes' => 'text-white',
+        //     'can' => 'premiacoes'
+        // ],
 
         [
             'text'    => 'Configurações',
@@ -362,43 +373,58 @@ return [
                     'classes' => 'text-white',
                     'active' => ['corretora',"http://localhost:8000/admin/corretora/*"]
                 ],
-                [
-                    'text' => 'Administradora',
-                    'url'  => 'admin/administradora',
-                    'icon' => 'fab fa-superpowers',
-                    'classes' => 'text-white',
-                    'active' => ['administradora',"http://localhost:8000/admin/administradora/*"]
-                ],
-                [
-                    "text" => "Tabela Origem",
-                    "url" => "admin/tabela_origem",
-                    "icon" => "fas fa-city",
-                    'classes' => 'text-white',
-                    "active" => ['tabela_origem',"http://localhost:8000/admin/tabela_origem/*"]
-
-                ],
-                [
+               [
                     'text' => 'Colaborador',
-                    'url'  => 'admin/corretores',
+                    'url'  => '',
                     'icon' => 'fas fa-users',
                     'classes' => 'text-white',
                     'active' => ['corretores',"http://localhost:8000/admin/corretores/*"]
                 ],
-                [
-                    "text" => "Planos",
-                    "url" => "admin/planos",
-                    "icon" => "fas fa-clipboard-list",
-                    'classes' => 'text-white',
-                    "active" => ['planos',"http://localhost:8000/admin/planos/*"]
-
-                ],
-                [
+                 [
                     'text' => 'Tabela de Preços',
                     'url'  => 'admin/tabela',
                     'icon' => 'fas fa-money-bill',
                     'classes' => 'text-white',
                     'active' => ['tabela',"http://localhost:8000/admin/tabela/*"]
                 ],
+
+                // [
+                //     'text' => 'Administradora',
+                //     'url'  => 'admin/administradora',
+                //     'icon' => 'fab fa-superpowers',
+                //     'classes' => 'text-white',
+                //     'active' => ['administradora',"http://localhost:8000/admin/administradora/*"]
+                // ],
+                // [
+                //     "text" => "Tabela Origem",
+                //     "url" => "admin/tabela_origem",
+                //     "icon" => "fas fa-city",
+                //     'classes' => 'text-white',
+                //     "active" => ['tabela_origem',"http://localhost:8000/admin/tabela_origem/*"]
+
+                // ],
+                // [
+                //     'text' => 'Colaborador',
+                //     'url'  => 'admin/corretores',
+                //     'icon' => 'fas fa-users',
+                //     'classes' => 'text-white',
+                //     'active' => ['corretores',"http://localhost:8000/admin/corretores/*"]
+                // ],
+                // [
+                //     "text" => "Planos",
+                //     "url" => "admin/planos",
+                //     "icon" => "fas fa-clipboard-list",
+                //     'classes' => 'text-white',
+                //     "active" => ['planos',"http://localhost:8000/admin/planos/*"]
+
+                // ],
+                // [
+                //     'text' => 'Tabela de Preços',
+                //     'url'  => 'admin/tabela',
+                //     'icon' => 'fas fa-money-bill',
+                //     'classes' => 'text-white',
+                //     'active' => ['tabela',"http://localhost:8000/admin/tabela/*"]
+                // ],
                 
                 
                 
@@ -457,17 +483,17 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js',
+                    'location' => 'https://cdn.datatables.net/v/dt/dt-1.13.3/datatables.min.js',
                 ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
-                ],
+                // [
+                //     'type' => 'js',
+                //     'asset' => false,
+                //     'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
+                // ],
                 [
                     'type' => 'css',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
+                    'location' => 'https://cdn.datatables.net/v/dt/dt-1.13.3/datatables.min.css',
                 ],
             ],
         ],
@@ -568,6 +594,26 @@ return [
                 ],
                
             ]
+        ],
+        'Chartjs' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '/vendor/chart.js/chart3.js',
+                ],
+            ],
+        ],
+        'ChartGoogle' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '/vendor/chart.js/loader.js',
+                ],
+            ],
         ],
     ],
 

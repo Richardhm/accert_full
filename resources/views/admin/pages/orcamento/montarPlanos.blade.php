@@ -22,13 +22,13 @@
                 <div class="card-body" style="box-shadow:rgba(0,0,0,0.8) 0.6em 0.7em 5px;padding:0.6rem;">
                 <input type="hidden" name="administradora_id" id="administradora_id" value="{{$planos[$i]->admin_id}}"> 
                   <div class="d-flex mb-2">
-                    <div style="flex-basis:30%;background-color:#fff;padding:10px;border-radius:10px;">
-                      <img class="mx-auto" src="{{asset($planos[$i]->admin_logo)}}"  alt="{{$planos[$i]->admin_nome}}" width="100%;">
+                    <div style="flex-basis:30%;background-color:#fff;padding:10px;border-radius:10px;max-height:52px;display:flex;align-items: center;">
+                      <img class="mx-auto" src="{{asset($planos[$i]->admin_logo)}}"  alt="{{$planos[$i]->admin_nome}}" width="100%;" height="100%">
                     </div>
                    <div class="d-flex justify-content-center align-items-center" style="flex-basis:70%;">
                       <div class="d-flex flex-column text-center">
                         <span style="font-size:1.1em;" style="background-color:rgba(0,0,0,0.9)">{{$planos[$i]->plano}}</span>
-                        <span style="font-size:1.1em;">{{$planos[$i]->titulos}}</span>
+                        <span style="font-size:1.1em;" id="plano_com_sem_odonto">{{$planos[$i]->titulos}}</span>
                         
                       </div>
                     </div>
@@ -140,5 +140,5 @@
       </tfoot>   
       </div>      
 @else 
-  <h3>Sem Resultados para essa pesquisa</h3>
+  <h3 class="text-center alert alert-info">Sem Resultados para essa pesquisa =/</h3>
 @endif

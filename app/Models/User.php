@@ -38,6 +38,11 @@ class User extends Authenticatable
         return $this->belongsTo(Cargo::class);
     }
 
+    public function comissoes()
+    {
+        return $this->hasMany(comissoes::class);
+    }
+
 
 
 

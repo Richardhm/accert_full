@@ -9,8 +9,8 @@
     "zeroRecords": "Nenhum registro encontrado",
     "search": "Pesquisar",
     "paginate": {
-        "next": "Próximo",
-        "previous": "Anterior",
+        "next": "Próx.",
+        "previous": "Ant.",
         "first": "Primeiro",
         "last": "Último"
     },
@@ -65,7 +65,7 @@
         "fillHorizontal": "Preencher células horizontalmente",
         "fillVertical": "Preencher células verticalmente"
     },
-    "lengthMenu": "Exibir _MENU_ resultados por página",
+    "lengthMenu": "Exibir _MENU_ por página",
     "searchBuilder": {
         "add": "Adicionar Condição",
         "button": {

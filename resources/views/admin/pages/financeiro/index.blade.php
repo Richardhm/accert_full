@@ -4,13 +4,11 @@
 @section('plugins.Datatables', true)
 
 @section('content_top_nav_right')
-    <li class="nav-item mostrar_comissao"><a href="" class="nav-link div_info text-white">
-        <i class='fas fa-eye'></i>
-    </a></li>
-    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-        <i class="fas fa-expand-arrows-alt text-white"></i>
-    </a>
+    <li class="nav-item mostrar_comissao"><a href="" class="nav-link div_info text-white"><i class='fas fa-eye'></i></a></li>
+    <li class="nav-item"><a class="nav-link text-white" href="{{route('orcamento.search.home')}}">Tabela de Preço</a></li>
+    <li class="nav-item"><a class="nav-link text-white" href="{{route('home.administrador.consultar')}}">Consultar</a></li>
     
+    <a class="nav-link" data-widget="fullscreen" href="#" role="button"><i class="fas fa-expand-arrows-alt text-white"></i></a>
 @stop
 
 @section('content_header')
@@ -80,7 +78,8 @@
             <div class="modal-body">
                 <form action="" name="data_da_baixa" id="data_da_baixa" method="POST">
                     <input type="date" name="data_baixa" id="data_baixa" class="form-control form-control-sm">
-                    <input type="hidden" name="comissao_id" id="comissao_id_baixa">                   
+                    <input type="hidden" name="comissao_id" id="comissao_id_baixa">  
+                    <input type="hidden" name="premiacao_id" id="premiacao_id_baixa">                   
                     <div id="error_data_baixa">
                     </div>
             </div>
@@ -238,14 +237,6 @@
                             
                         </ul>
                     </div>
-
-
-
-
-
-
-
-
 
 
                 </div>
@@ -473,8 +464,6 @@
                     </div>
                     
                     <div style="margin:0 0 20px 0;padding:0;background-color:#123449;border-radius:5px;">
-                        
-                            
                         <div class="text-center py-1 d-flex justify-content-between border-bottom" id="all_pendentes_coletivo">
                             <span class="w-50 d-flex justify-content-start ml-2">
                                 Pendentes
@@ -482,13 +471,7 @@
                             <span class="d-flex justify-content-end badge badge-light mr-1" style="width:45px;text-align:right;">
                                 3
                             </span>
-                        </div>
-
-
-
-
-                        
-                        
+                        </div>                        
                         <ul style="margin:0;padding:0;list-style:none;" id="listar">
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="em_analise_coletivo" class="fundo coletivo ">
                                 <span>Em Analise</span>
@@ -779,7 +762,14 @@
 
 
                     <div style="margin:0 0 20px 0;padding:0;background-color:#123449;border-radius:5px;">
-                        <h5 class="text-center d-flex align-items-center justify-content-center py-2 border-bottom">Pendentes</h5>
+                        
+                        <div class="text-center py-1 d-flex justify-content-between border-bottom" id="all_pendentes_empresarial">
+                            <span class="w-50 d-flex justify-content-start ml-2">Pendentes</span>                         
+                            <span class="d-flex justify-content-end badge badge-light mr-1" style="width:45px;text-align:right;">3</span>
+                        </div>    
+
+
+
 
                         <ul style="margin:0;padding:0;list-style:none;" id="listar_empresarial">
                             
@@ -847,6 +837,7 @@
                                     <th>Razão Social</th>
                                     <th>Valor</th>
                                     <th>Vencimento</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -1186,7 +1177,7 @@
                     })
                 }
                let excluir_empresarial = $(this).attr('data-cliente-excluir-individual');
-                return false;
+               return false;
            }); 
 
 
@@ -1403,6 +1394,7 @@
                         }
                     },
                     success:function(res) {
+                        
                         $(".coletivo_quantidade_em_analise").html(res.qtd_coletivo_em_analise);    
                         $(".coletivo_quantidade_emissao_boleto").html(res.qtd_coletivo_emissao_boleto);
                         $(".coletivo_quantidade_pagamento_adesao").html(res.qtd_coletivo_pg_adesao);
@@ -1443,6 +1435,7 @@
                         // }
                     },
                     success:function(res) {
+                        console.log(res);
                         $('#dataBaixaIndividualModal').modal('hide');
                         $(".individual_quantidade_em_analise").html(res.qtd_individual_em_analise);    
                         $(".individual_quantidade_1_parcela").html(res.qtd_individual_01_parcela);
@@ -1616,7 +1609,7 @@
                     {data:"clientes.user.name",name:"corretor"},
                     {data:"administradora.nome",name:"administradora"},
                     {data:"clientes.nome",name:"cliente"},
-                    {data:"data_boleto",name:"Vencimento"},
+                    {data:"comissao.comissao_atual_financeiro.data",name:"Vencimento"},
                     {data:"financeiro.nome",name:"administradora"}
                     
                 ],
@@ -1735,7 +1728,8 @@
             $('#tabela_coletivo').on('click', 'tbody tr', function () {
                 table.$('tr').removeClass('textoforte');
                 $(this).closest('tr').addClass('textoforte');
-                let data = table.row(this).data();               
+                let data = table.row(this).data(); 
+                console.log(data);
                 if(data.financeiro_id == 4) {
                     $("#data_vigencia_coletivo_view").removeAttr('readonly');
                 } else {
@@ -1745,9 +1739,8 @@
                 $(".next").attr('data-cliente',data.clientes.id).attr('data-contrato',data.id);
                 $("#cliente_id_alvo").val(data.clientes.id);
                 $("#comissao_id_baixa").val(data.comissao.id);
-
+                //$("#premiacao_id_baixa").val(data.premiacoes.id);
                 $(".excluir_coletivo").attr('data-cliente-excluir',data.clientes.id);
-
                 let acomodacao_individual = data.acomodacao.nome;
                 let coparticipacao_individual = data.coparticipacao;
                 let odonto_individual = data.odonto;
@@ -1946,11 +1939,12 @@
                     {data:"razao_social",name:"razao_social"},
                     {data:"valor_plano",name:"valor_plano"},
                     {data:"vencimento_boleto",name:"vencimento"},
+                    {data:"financeiro_id",name:"financeiro_id"}
                 ],
                 "columnDefs": [
                     {
                         "targets": 0,
-                        "width":"30%"
+                        "width":"20%"
                     },
                     {
                         "targets": 0,
@@ -1968,12 +1962,39 @@
                     },
                     {
                         "targets": 3,
-                        "width":"20%",
+                        "width":"10%",
                         "createdCell": function (td, cellData, rowData, row, col) {
                             let alvo = cellData.split("-").reverse().join("/")
                             $(td).html(alvo);
                         }
                     },
+                    {
+                        "targets":4,
+                        "width":"20%",
+                        "createdCell":function(td,cellData,rowData,row,col) {
+                            if(cellData == 1) {
+                                $(td).html("Em Analise");        
+                            }
+                            if(cellData == 5) {
+                                $(td).html("Pag. 1º Parcela");        
+                            }
+                            if(cellData == 6) {
+                                $(td).html("Pag. 2º Parcela");        
+                            }
+                            if(cellData == 7) {
+                                $(td).html("Pag. 3º Parcela");        
+                            }
+                            if(cellData == 8) {
+                                $(td).html("Pag. 4º Parcela");        
+                            }
+                            if(cellData == 9) {
+                                $(td).html("Pag. 5º Parcela");        
+                            }
+                            if(cellData == 10) {
+                                $(td).html("Pag. 6º Parcela");        
+                            }
+                        }
+                    }
                ],
                 "initComplete": function( settings, json ) {
                     $('#title_empresarial').html("<h4>Em Analise</h4>");
@@ -2005,7 +2026,7 @@
                 tableempresarial.$('tr').removeClass('textoforte');
                 $(this).closest('tr').addClass('textoforte');
                 let data = tableempresarial.row(this).data();
-
+                
                 let valor_boleto = Number(data.valor_boleto).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
                 let valor_plano = Number(data.valor_plano).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
                 let valor_total = Number(data.valor_total).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
@@ -2191,7 +2212,7 @@
                     $("ul#grupo_finalizados li.coletivo").removeClass('textoforte-list');
                     $("#all_pendentes_coletivo").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');                   
-                    limparFormulario()
+                    limparFormulario();
 
                 } else if(id_lista == "emissao_boleto_coletivo") {
                     $('#title_coletivo_por_adesao_table').html("<h4>Emissão Boleto</h4>");
@@ -2221,19 +2242,16 @@
                     limparFormulario();
 
                 } else if(id_lista == "pagamento_vigencia_coletivo") {
-
                     $('#title_coletivo_por_adesao_table').html("<h4>Pagamento Vigência</h4>");
                     table.ajax.url("{{ route('financeiro.coletivo.pagamento_vigencia') }}").load();
                     $('.buttons').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>'+
                         '<button class="btn btn-success w-50 pagamento_vegencia next">Pagou Vigência</button>'
                     );
-                    $(".container_edit").addClass('ocultar');
-                    
+                    $(".container_edit").addClass('ocultar');                   
                     $("ul#listar li.coletivo").removeClass('textoforte-list');
                     $("ul#grupo_finalizados li.coletivo").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
-
                     adicionarReadonly();
                     limparFormulario();
                 } else if(id_lista == "pagamento_segunda_parcela") {
@@ -2315,7 +2333,6 @@
                     $(this).addClass('textoforte-list');                   
                     adicionarReadonly();
                     limparFormulario();
-
                 } else if(id_lista == "cancelado_coletivo") {
                     $('#title_coletivo_por_adesao_table').html("<h4>Cancelado</h4>");
                     table.ajax.url("{{ route('financeiro.coletivo.pagamento_sexta_parcela') }}").load();
@@ -2346,6 +2363,19 @@
                 $("ul#grupo_finalizados li.coletivo").removeClass('textoforte-list');
                 $(this).addClass('textoforte-list');
             });
+
+            $("#all_pendentes_empresarial").on('click',function(){
+                $("#title_empresarial").html("<h4>Geral Empresarial</h4>");
+                $("ul#listar_empresarial li.empresarial").removeClass('textoforte-list');
+                $("ul#grupo_finalizados_empresarial li.empresarial").removeClass('textoforte-list');               
+                tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.emgeral")}}').load();
+                $(".button_empresarial").html('');
+                $(this).addClass('textoforte-list');
+
+            });
+
+
+
 
 
 
@@ -2522,6 +2552,10 @@
                 let id_lista = $(this).attr('id');
                 console.log(id_lista);
                 if(id_lista == "aguardando_finalizado_empresarial") {
+
+                    
+
+
                     $('#title_empresarial').html("<h4>Finalizado</h4>");
                     table_individual.ajax.url("{{ route('financeiro.individual.finalizado') }}").load();
                     $('.button_individual').empty().html('');
@@ -2539,6 +2573,8 @@
                     $('.button_individual').empty().html('');
                     $(".container_edit").addClass('ocultar');
 
+                    
+
                     $("ul#grupo_finalizados_empresarial li.empresarial").removeClass('textoforte-list');
                     $("ul#listar_empresarial li.empresarial").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
@@ -2553,21 +2589,17 @@
 
             $("ul#listar_empresarial li.empresarial").on('click',function(){
                 let id_lista = $(this).attr('id');
-                
                 if(id_lista == "aguardando_em_analise_empresarial") {
                     $("#title_empresarial").html("<h4>Em Análise</h4>");
                     $('.button_empresarial').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 excluir_empresarial">Excluir</button>'+
                         '<button class="btn btn-success w-50 next_empresarial">Conferido</button>'
                     );
-                    
                     //$("ul#listar li.coletivo").removeClass('textoforte-list');
                     $("ul#listar_empresarial li.empresarial").removeClass('textoforte-list');
+                    $("ul#grupo_finalizados_empresarial li.empresarial").removeClass('textoforte-list');
+                    $("#all_pendentes_empresarial").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');    
-
-
-
-
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.analise")}}').load();
                 } else if(id_lista == "aguardando_pagamento_1_parcela_empresarial") {
                     $("#title_empresarial").html("<h4>Pagamento 1º Parcela</h4>");
@@ -2575,37 +2607,32 @@
                         '<button class="btn btn-danger w-50 mr-2 cancelar_empresarial">Cancelar</button>'+
                         '<button class="btn btn-success w-50 emissao_boleto next_empresarial">1º Parcela Paga</button>'
                     );                      
-
                     $("ul#listar_empresarial li.empresarial").removeClass('textoforte-list');
+                    $("ul#grupo_finalizados_empresarial li.empresarial").removeClass('textoforte-list');
+                    $("#all_pendentes_empresarial").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');    
-
-
-
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.primeiraparcela")}}').load();
                 } else if(id_lista == "aguardando_pagamento_2_parcela_empresarial") {
                     $("#title_empresarial").html("<h4>Pagamento 2º Parcela</h4>");
                     $('.button_empresarial').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar_empresarial">Cancelar</button>'+
                         '<button class="btn btn-success w-50 emissao_boleto next_empresarial">2º Parcela Paga</button>'
-                    );  
-                    
+                    );                     
                     $("ul#listar_empresarial li.empresarial").removeClass('textoforte-list');
+                    $("ul#grupo_finalizados_empresarial li.empresarial").removeClass('textoforte-list');
+                    $("#all_pendentes_empresarial").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');        
-
-
-
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.segundaparcela")}}').load();
                 } else if(id_lista == "aguardando_pagamento_3_parcela_empresarial") {
                     $("#title_empresarial").html("<h4>Pagamento 3º Parcela</h4>");
                     $('.button_empresarial').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar_empresarial">Cancelar</button>'+
                         '<button class="btn btn-success w-50 emissao_boleto next_empresarial">3º Parcela Paga</button>'
-                    );    
-                    
+                    );                       
                     $("ul#listar_empresarial li.empresarial").removeClass('textoforte-list');
+                    $("ul#grupo_finalizados_empresarial li.empresarial").removeClass('textoforte-list');
+                    $("#all_pendentes_empresarial").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');        
-
-
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.terceiraparcela")}}').load();
                 } else if(id_lista == "aguardando_pagamento_4_parcela_empresarial") {
                     $("#title_empresarial").html("<h4>Pagamento 4º Parcela</h4>");
@@ -2613,23 +2640,21 @@
                         '<button class="btn btn-danger w-50 mr-2 cancelar_empresarial">Cancelar</button>'+
                         '<button class="btn btn-success w-50 emissao_boleto next_empresarial">4º Parcela Paga</button>'
                     );  
-                    
                     $("ul#listar_empresarial li.empresarial").removeClass('textoforte-list');
+                    $("ul#grupo_finalizados_empresarial li.empresarial").removeClass('textoforte-list');
+                    $("#all_pendentes_empresarial").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
-
-
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.quartaparcela")}}').load();
                 } else if(id_lista == "aguardando_pagamento_5_parcela_empresarial") {
                     $("#title_empresarial").html("<h4>Pagamento 5º Parcela</h4>");
                     $('.button_empresarial').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar_empresarial">Cancelar</button>'+
                         '<button class="btn btn-success w-50 emissao_boleto next_empresarial">5º Parcela Paga</button>'
-                    );  
-                    
+                    );                      
                     $("ul#listar_empresarial li.empresarial").removeClass('textoforte-list');
+                    $("ul#grupo_finalizados_empresarial li.empresarial").removeClass('textoforte-list');
+                    $("#all_pendentes_empresarial").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
-
-
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.quintaparcela")}}').load();
                 } else if(id_lista == "aguardando_pagamento_6_parcela_empresarial") {
                     $("#title_empresarial").html("<h4>Pagamento 6º Parcela</h4>");
@@ -2637,15 +2662,15 @@
                         '<button class="btn btn-danger w-50 mr-2 cancelar_empresarial">Cancelar</button>'+
                         '<button class="btn btn-success w-50 emissao_boleto next_empresarial">6º Parcela Paga</button>'
                     );                
-
                     $("ul#listar_empresarial li.empresarial").removeClass('textoforte-list');
+                    $("ul#grupo_finalizados_empresarial li.empresarial").removeClass('textoforte-list');
+                    $("#all_pendentes_empresarial").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
-
-
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.sextaparcela")}}').load();
                 } else if(id_lista == "aguardando_finalizado_empresarial") {
                     $("#title_empresarial").html("<h4>Finalizado</h4>");
-                    $('.button_empresarial').empty().html('');                
+                    $('.button_empresarial').empty().html('');  
+                    $("#all_pendentes_empresarial").removeClass('textoforte-list');              
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.finalizado")}}').load();
                 } else if(id_lista == "aguardando_cancelado_empresarial") {
                     $("#title_empresarial").html("<h4>Cancelado</h4>");
@@ -2858,6 +2883,7 @@
         .buttons {display: flex;}
         .button_individual {display:flex;}
         .button_empresarial {display: flex;}
+        
     </style>
 @stop
 
