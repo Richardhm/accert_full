@@ -132,10 +132,10 @@ return [
     |
     */
 
-    'usermenu_enabled' => false,
+    'usermenu_enabled' => true,
     'usermenu_header' => false,
     'usermenu_header_class' => 'bg-primary',
-    'usermenu_image' => false,
+    'usermenu_image' => true,
     'usermenu_desc' => false,
     'usermenu_profile_url' => false,
 
@@ -308,7 +308,7 @@ return [
             'icon'        => 'fas fa-money-bill',
             'icon_color' => 'white', 
             'classes'  => 'text-white',
-            'can'       => 'orcamento'            
+            'can'       => ''        
         ],
 
         [
@@ -321,13 +321,21 @@ return [
         ],
 
         [
+            "text" => "Contrato",
+            "url" => "admin/contrato",
+            "icon" => "fas fa-id-card-alt",
+            'icon_color' => 'white',
+            'classes' => 'text-white',
+            'can'       => 'contrato'  
+        ],
+
+        [
             "text" => "Financeiro",
             "url" => "admin/financeiro",
             "icon" => "fas fa-coins",
             'icon_color' => 'white',
             'classes' => 'text-white',
             'can'       => 'financeiro'  
-            
         ],
 
         [
@@ -336,6 +344,7 @@ return [
             "icon" => "fas fa-money-check-alt",
             "icon_color" => 'white',
             "classes" => "text-white",
+            'can' => 'comissao'
         ],
 
 
@@ -483,7 +492,7 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => 'https://cdn.datatables.net/v/dt/dt-1.13.3/datatables.min.js',
+                    'location' => '/vendor/datatables/datatables.min.js',
                 ],
                 // [
                 //     'type' => 'js',
@@ -493,7 +502,7 @@ return [
                 [
                     'type' => 'css',
                     'asset' => false,
-                    'location' => 'https://cdn.datatables.net/v/dt/dt-1.13.3/datatables.min.css',
+                    'location' => '/vendor/datatables/datatables.min.css',
                 ],
             ],
         ],

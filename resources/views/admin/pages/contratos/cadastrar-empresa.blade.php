@@ -59,9 +59,15 @@
                         <input type="text" name="cnpj" id="cnpj" class="form-control  form-control-sm" placeholder="CNPJ" required>         
                     </div>
                 </div>
-                <div style="flex-basis:33%;margin-right:1%;">
+                <div style="flex-basis:21%;margin-right:1%;">
                     <span for="razao_social" class="text-white" style="font-size:0.875em;">Razão Social:</span>
                     <input type="text" name="razao_social" required id="razao_social" value="{{old('razao_social')}}" placeholder="Razão Social" class="form-control  form-control-sm" value="">
+                </div>
+                <div style="flex-basis:12%;margin-right:1%;">
+                    <div>
+                        <span for="codigo_externo" class="text-white" style="font-size:0.875em;">Codigo Externo:</span>
+                        <input type="text" name="codigo_externo" value="{{old('codigo_externo')}}" required id="codigo_externo" class="form-control  form-control-sm" placeholder="COD. Externo">
+                    </div>
                 </div>
 
                 <div style="flex-basis:8%;">

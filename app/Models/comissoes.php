@@ -25,6 +25,24 @@ class comissoes extends Model
             ");
     }
 
+    public function cancelado()
+    {
+        return $this->belongsTo(Cancelado::class,"id","comissoes_id");
+    }
+
+
+
+
+    // public function comissoesLancadasLiquidados()
+    // {
+    //     // return $this->hasMany(ComissoesCorretoresLancadas::class)->where('status_financeiro',1)->where('status_gerente',1);
+    //     return $this->hasMany(ComissoesCorretoresLancadas::class)->where('status_financeiro',1)->where('status_gerente',1);
+    // }
+
+
+
+
+
     public function comissoesLancadasCorretora()
     {
         return $this->hasMany(ComissoesCorretoraLancadas::class)
@@ -48,6 +66,15 @@ class comissoes extends Model
     {
         return $this->hasOne(ComissoesCorretoresLancadas::class)->where('status_financeiro',1)->where('status_gerente',0);
     }
+
+    public function comissaoAtualLast() 
+    {
+        return $this->hasOne(ComissoesCorretoresLancadas::class)
+            
+            ->where('status_financeiro',1)
+            ->where('status_gerente',0)->orderBy("id","desc");
+    }
+
 
     public function comissaoAtualFinanceiro()
     {

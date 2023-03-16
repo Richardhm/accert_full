@@ -130,7 +130,7 @@
                 <form action="" name="data_da_baixa_empresarial" id="data_da_baixa_empresarial" method="POST">
                     <input type="date" name="date_baixa_empresarial" id="date_baixa_empresarial" class="form-control form-control-sm">
                                        
-                    <div id="error_data_baixa_individual">
+                    <div id="error_data_baixa_empresarial">
                     </div>
             </div>
             <div class="modal-footer">
@@ -176,8 +176,8 @@
                             <span class="w-50 d-flex justify-content-start ml-2">
                                 Pendentes
                             </span>
-                            <span class="d-flex justify-content-end badge badge-light mr-1" style="width:45px;text-align:right;">
-                                4
+                            <span class="d-flex justify-content-end badge badge-light mr-1 individual_quantidade_pendentes" style="width:45px;text-align:right;">
+                                {{$qtd_individual_pendentes}}
                             </span>
                         </div>
 
@@ -765,7 +765,7 @@
                         
                         <div class="text-center py-1 d-flex justify-content-between border-bottom" id="all_pendentes_empresarial">
                             <span class="w-50 d-flex justify-content-start ml-2">Pendentes</span>                         
-                            <span class="d-flex justify-content-end badge badge-light mr-1" style="width:45px;text-align:right;">3</span>
+                            <span class="d-flex justify-content-end badge badge-light mr-1" style="width:45px;text-align:right;">{{$qtd_empresarial_pendentes}}</span>
                         </div>    
 
 
@@ -942,7 +942,6 @@
                         </div>              
 
                         <div class="d-flex mb-2">
-
                             <div style="flex-basis:24%;">
                                 <span class="text-white" style="font-size:0.875em;">Cód.Corretora:</span>
                                 <input type="text" id="cod_corretora_view_empresarial" class="form-control form-control-sm" readonly>
@@ -966,63 +965,44 @@
                         </div>                    
 
                         <div class="d-flex mb-2">
-
                             <div style="flex-basis:25%;margin-right:1%;">
                                 <span class="text-white" style="font-size:0.875em;">Valor Saude:</span>
                                 <input type="text" id="valor_plano_saude_view" class="form-control form-control-sm" readonly>
                             </div>
-
                             <div style="flex-basis:25%;margin-right:1%;">
                                 <span class="text-white" style="font-size:0.875em;">Valor Odonto:</span>
                                 <input type="text" id="valor_plano_odonto_view" class="form-control form-control-sm" readonly>
                             </div>
-
-                            
-
                             <div style="flex-basis:25%;margin-right:1%;">
                                 <span class="text-white" style="font-size:0.875em;">Total Plano:</span>
-                                <input type="text" id="valor_plano_view_empresarial" class="form-control form-control-sm" readonly>
-                            
+                                <input type="text" id="valor_plano_view_empresarial" class="form-control form-control-sm" readonly>                            
                             </div>
-
                             <div style="flex-basis:25%;">
                                 <span class="text-white" style="font-size:0.875em;">Taxa Adesão:</span>
                                 <input type="text" id="taxa_adesao_view_empresarial" class="form-control form-control-sm" readonly>
                             </div>
-
                         </div>
 
 
                         <div class="d-flex mb-1">
-                            
                             <div style="flex-basis:24%;margin-right:1%;">
                                 <span class="text-white" style="font-size:0.875em;">Plano c/Adesão:</span>
                                 <input type="text" id="plano_adesao_view_empresarial" class="form-control form-control-sm" readonly>
                             </div>
-
                             <div style="flex-basis:24%;">
                                 <span class="text-white" style="font-size:0.875em;">Valor Boleto:</span>
                                 <input type="text" id="valor_boleto_view_empresarial" class="form-control form-control-sm" readonly>
                             </div>
-
                             <div style="flex-basis:25%;margin:0 1%;">
                                 <span class="text-white" style="font-size:0.875em;">Venc. Boleto:</span>
                                 <input type="text" id="vencimento_boleto_view_empresarial" class="form-control form-control-sm" readonly>
                             </div>
-
                             <div style="flex-basis:25%;">
                                 <span class="text-white" style="font-size:0.9em;">Data 1º Boleto:</span>
                                 <input type="text" id="data_boleto_view_empresarial" class="form-control form-control-sm" readonly>
                             </div>                      
-
-                            
-                        
-                           
-
                         </div>
-
-                        
-                        </section>      
+                        </section>   
 
                         <div class="button_empresarial mt-1">
                             <button class="btn btn-danger w-50 mr-2 excluir_empresarial">Excluir</button>
@@ -1030,16 +1010,8 @@
                         </div>  
                         
                 </div>
-
-                
-                
                 <!---------FIM DIREITA----------->
-           
-           
-           
-           
-
-       </main>
+        </main>
     </section>
    
 @stop  
@@ -1049,7 +1021,14 @@
     <script>
         $(function(){  
 
-            
+
+            $("#dataBaixaIndividualModal").on('hidden.bs.modal', function (event) {
+                $("#error_data_baixa_individual").html('');
+            }); 
+
+            $("#dataBaixaIndividualModal").on('shown.bs.modal', function (event) {
+                $("#error_data_baixa_individual").html('');
+            }); 
 
 
 
@@ -1120,7 +1099,6 @@
                                         $(".individual_quantidade_6_parcela").html(res.qtd_individual_06_parcela);
                                         $(".individual_quantidade_finalizado").html(res.qtd_individual_finalizado);
                                         $(".individual_quantidade_cancelado").html(res.qtd_individual_cancelado);
-                                        
                                         table_individual.ajax.reload();
                                         limparFormularioIndividual();
                                     } else {
@@ -1180,12 +1158,6 @@
                return false;
            }); 
 
-
-
-
-
-
-
            $("body").on('click','.cancelar_individual',function(){
                 $('#cancelarModal').modal('show')
            });
@@ -1207,7 +1179,6 @@
                         } else {
                             
                             if(res.plano == "coletivo") {
-
                                 $(".coletivo_quantidade_em_analise").html(res.dados.qtd_coletivo_em_analise);    
                                 $(".coletivo_quantidade_emissao_boleto").html(res.dados.qtd_coletivo_emissao_boleto);
                                 $(".coletivo_quantidade_pagamento_adesao").html(res.dados.qtd_coletivo_pg_adesao);
@@ -1253,7 +1224,6 @@
                     var janela  = "aba_empresarial";
                     var id_contrato = $('.next_empresarial').attr('data-contrato');
                 }
-                               
                 if(janela && id_contrato) {
                     $.ajax({
                         url:"{{route('financeiro.ver.contrato')}}",
@@ -1284,15 +1254,12 @@
                 $('.next').attr('data-cliente','');
                 $('.next').attr('data-contrato','');
                 $('tr').removeClass('textoforte');
-
                 table.ajax.url("{{ route('financeiro.coletivo.em_analise') }}").load();
                 table_individual.ajax.url("{{ route('financeiro.individual.em_analise') }}").load();
                 tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.analise")}}').load();
-
                 $('#title_coletivo_por_adesao_table').html("<h4>Em Análise</h4>");
                 $('#title_individual').html("<h4>Em Análise</h4>");
                 $("#title_empresarial").html("<h4>Em Análise</h4>");
-
                 $("#cliente_id_alvo").val('');
                 $("#cliente_id_alvo_individual").val('');
                 limparFormularioIndividual();
@@ -1300,24 +1267,15 @@
                 limparEmpresarial();
                 adicionarReadonly();
                 adicionarReadonlyIndividual();
-
                 $("#all_pendentes_individual").removeClass('textoforte-list');
-
                 $("ul#listar li.coletivo").removeClass('textoforte-list');
                 $("ul#grupo_finalizados li.coletivo").removeClass('textoforte-list');
-
-
                 $("ul#listar_individual li.individual").removeClass('textoforte-list');
                 $("ul#grupo_finalizados_individual li.individual").removeClass('textoforte-list');
-
-
                 $("ul#listar_empresarial li.empresarial").removeClass('textoforte-list');
                 $("ul#grupo_finalizados_empresarial li.empresarial").removeClass('textoforte-list');
-
-
                 //limparTudo();
             });
-
 
             $('.editar_btn').on('click',function(){
                 let params = $("#cliente_coletivo_view").prop('readonly');
@@ -1336,7 +1294,6 @@
                     removeReadonlyIndividual();
                 }
             });
-
 
             $("body").on('change','.editar_campo',function(){
                 let alvo = $(this).attr('id');
@@ -1394,7 +1351,6 @@
                         }
                     },
                     success:function(res) {
-                        
                         $(".coletivo_quantidade_em_analise").html(res.qtd_coletivo_em_analise);    
                         $(".coletivo_quantidade_emissao_boleto").html(res.qtd_coletivo_emissao_boleto);
                         $(".coletivo_quantidade_pagamento_adesao").html(res.qtd_coletivo_pg_adesao);
@@ -1427,15 +1383,14 @@
                         "comissao_id": $("#comissao_id_baixa_individual").val()
                     },  
                     beforeSend:function() {
-                        // if($("#data_baixa").val() == "") {
-                        //     $("#error_data_baixa").html('<p class="alert alert-danger">O campo data é campo obrigatório</p>');
-                        //     return false;
-                        // } else {
-                        //     $("#error_data_baixa").html('');
-                        // }
+                        if($("#date_baixa_individual").val() == "") {
+                            $("#error_data_baixa_individual").html('<p class="alert alert-danger">O campo data é campo obrigatório</p>');
+                            return false;
+                        } else {
+                            $("#error_data_baixa_individual").html('');
+                        }
                     },
                     success:function(res) {
-                        console.log(res);
                         $('#dataBaixaIndividualModal').modal('hide');
                         $(".individual_quantidade_em_analise").html(res.qtd_individual_em_analise);    
                         $(".individual_quantidade_1_parcela").html(res.qtd_individual_01_parcela);
@@ -1445,10 +1400,12 @@
                         $(".individual_quantidade_5_parcela").html(res.qtd_individual_05_parcela);
                         $(".individual_quantidade_6_parcela").html(res.qtd_individual_06_parcela);
                         $(".individual_quantidade_finalizado").html(res.qtd_individual_finalizado);
+                        $(".individual_quantidade_pendentes").html(res.qtd_individual_pendentes);
                         table_individual.ajax.reload();
                         limparFormulario();
                         $('#dataBaixaIndividualModal').modal('hide');
                         $('#date_baixa_individual').val('');
+                        $('#error_data_baixa_individual').html('');
                     }
                 });
                 return false;
@@ -1461,6 +1418,14 @@
                     url:"{{route('financeiro.baixa.data.empresarial')}}",
                     method:"POST",
                     data:"id_contrato="+id_contrato+"&data_baixa="+date_baixa_empresarial,
+                    beforeSend:function() {
+                        if($("#date_baixa_empresarial").val() == "") {
+                            $("#error_data_baixa_empresarial").html('<p class="alert alert-danger">O campo data é campo obrigatório</p>');
+                            return false;
+                        } else {
+                            $("#error_data_baixa_empresarial").html('');
+                        }
+                    },
                     success:function(res) {
                         $('#dataBaixaEmpresarialModal').modal('hide');
                         $(".empresarial_quantidade_em_analise").html(res.qtd_empresarial_em_analise);    
@@ -1497,10 +1462,42 @@
                 "autoWidth": false,
                 "responsive": true,
                 columns: [
-                    {data:"created_at",name:"data"},
-                    {data:"clientes.user.name",name:"corretor"},
-                    {data:"clientes.nome",name:"cliente"},
-                    {data:"data_boleto",name:"Vencimento"},
+                    {data:"created_at",name:"data",
+                        "createdCell": function (td, cellData, rowData, row, col) {
+                            let datas = cellData.split("T")[0]
+                            let alvo = datas.split("-").reverse().join("/")
+                            $(td).html(alvo)    
+                        },
+                        "width":"8%"
+                    },
+                    {data:"clientes.user.name",name:"corretor",
+                        "createdCell": function (td, cellData, rowData, row, col) {
+                            let palavra = cellData.split(" ");
+                            if(palavra.length >= 3) {
+                                $(td).html(palavra[0]+" "+palavra[1]+"...")
+                            }
+                        }
+                    },
+                    {data:"clientes.nome",name:"cliente",
+                        "createdCell":function(td,cellData,rowData,row,col) {
+                            let palavras = cellData.ucWords();
+                            $(td).html(palavras)
+                        }
+                    },
+                    {data:"comissao.comissao_atual_financeiro",name:"vencimento",
+                        "createdCell": function(td,cellData,rowData,row,col) {
+                            if(cellData == null) {
+                                if(rowData.financeiro.nome == "Finalizado") {
+                                    $(td).html("Finalizado");
+                                } else {
+                                    $(td).html("Cancelado");
+                                }
+                            } else {
+                                let alvo = cellData.data.split("-").reverse().join("/");
+                                $(td).html(alvo);
+                            }
+                        }
+                    },
                     {data:"financeiro.nome",name:"financeiro"},
                 ],
                 "columnDefs": [
@@ -1535,7 +1532,8 @@
                         "targets": 3,
                         "width":"15%",
                         "createdCell": function (td, cellData, rowData, row, col) {
-                            let alvo = cellData.split("-").reverse().join("/");
+                            console.log(rowData);
+                            let alvo = cellData.data.split("-").reverse().join("/");
                             $(td).html(alvo);
                         }                            
                     },
@@ -1589,7 +1587,8 @@
             });
 
             $(".listardados").DataTable({
-                dom: '<"d-flex justify-content-between"<"#title_coletivo_por_adesao_table">ft><t><"d-flex justify-content-between"lp>',
+                
+                dom: '<"d-flex justify-content-between"<"#title_coletivo_por_adesao_table"><"estilizar_search"f>><t><"d-flex justify-content-between align-items-center"<"por_pagina"l><"estilizar_pagination"p>>',
                 "language": {
                     "url": "{{asset('traducao/pt-BR.json')}}"
                 },
@@ -1729,7 +1728,7 @@
                 table.$('tr').removeClass('textoforte');
                 $(this).closest('tr').addClass('textoforte');
                 let data = table.row(this).data(); 
-                console.log(data);
+                
                 if(data.financeiro_id == 4) {
                     $("#data_vigencia_coletivo_view").removeAttr('readonly');
                 } else {
@@ -1914,8 +1913,6 @@
                 $("#tipo_plano_individual").val(data.plano.nome); 
                 $("#quantidade_vidas_individual_cadastrar").val(data.somar_cotacao_faixa_etaria[0].soma);                
             });
-
-            
             
 
             $(".listarempresarial").DataTable({
@@ -1938,7 +1935,26 @@
                     {data:"usuario",name:"usuario"},
                     {data:"razao_social",name:"razao_social"},
                     {data:"valor_plano",name:"valor_plano"},
-                    {data:"vencimento_boleto",name:"vencimento"},
+                    {data:"comissao.comissao_atual_financeiro",name:"vencimento",
+                        "createdCell": function(td,cellData,rowData,row,col) {
+                            if(cellData == null) {
+                                if(rowData.financeiro_id == 11) {
+                                    $(td).html('Finalizado');
+                                } else if(rowData.financeiro_id == 12) {
+                                    $(td).html('Cancelado');
+                                } else {
+                                    let alvo = rowData.comissao.comissao_atual_last.data.split("-").reverse().join("/");
+                                    $(td).html(alvo);    
+                                }
+                            } else {
+                                let alvo = cellData.data.split("-").reverse().join("/");
+                                $(td).html(alvo);
+                            }
+                        }
+                    
+                    
+                    
+                    },
                     {data:"financeiro_id",name:"financeiro_id"}
                 ],
                 "columnDefs": [
@@ -2365,18 +2381,12 @@
             });
 
             $("#all_pendentes_empresarial").on('click',function(){
-                $("#title_empresarial").html("<h4>Geral Empresarial</h4>");
-                $("ul#listar_empresarial li.empresarial").removeClass('textoforte-list');
-                $("ul#grupo_finalizados_empresarial li.empresarial").removeClass('textoforte-list');               
-                tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.emgeral")}}').load();
-                $(".button_empresarial").html('');
+                $("#title_empresarial").html("<h4>Prendentes</h4>");
+                tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.listarContratoEmpresaPendentes")}}').load();
+                $("ul#listar li.coletivo").removeClass('textoforte-list');
+                $("#grupo_coletivo_concluido li.individual").removeClass('textoforte-list');
                 $(this).addClass('textoforte-list');
-
             });
-
-
-
-
 
 
             $("ul#listar_individual li.individual").on('click',function(){
@@ -2395,7 +2405,7 @@
                     $(this).addClass('textoforte-list');
                     limparFormulario()
                 } else if(id_lista == "aguardando_pagamento_1_parcela_individual") {
-                    $('#title_individual').html("<h4>Pag. 1º Parcela</h4>");
+                    $('#title_individual').html("<h4>Pagamento 1º Parcela</h4>");
                     table_individual.ajax.url("{{ route('financeiro.individual.pagamento_primeira_parcela') }}").load();
                     $('.button_individual').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
@@ -2409,7 +2419,7 @@
                     $(this).addClass('textoforte-list');
                     limparFormulario();
                 } else if(id_lista == "aguardando_pagamento_2_parcela_individual") {
-                    $('#title_individual').html("<h4>Pag. 2º Parcela</h4>");
+                    $('#title_individual').html("<h4>Pagamento 2º Parcela</h4>");
                     table_individual.ajax.url("{{ route('financeiro.individual.pagamento_segunda_parcela') }}").load();
                     $('.button_individual').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
@@ -2423,7 +2433,7 @@
                     $(this).addClass('textoforte-list');
                     limparFormulario();
                 } else if(id_lista == "aguardando_pagamento_3_parcela_individual") {
-                    $('#title_individual').html("<h4>Pag. 3º Parcela</h4>");
+                    $('#title_individual').html("<h4>Pagamento 3º Parcela</h4>");
                     table_individual.ajax.url("{{ route('financeiro.individual.pagamento_terceira_parcela') }}").load();
                     $('.button_individual').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
@@ -2437,7 +2447,7 @@
                     $(this).addClass('textoforte-list');
                     limparFormulario();
                 } else if(id_lista == "aguardando_pagamento_4_parcela_individual") {
-                    $('#title_individual').html("<h4>Pag. 4º Parcela</h4>");
+                    $('#title_individual').html("<h4>Pagamento 4º Parcela</h4>");
                     table_individual.ajax.url("{{ route('financeiro.individual.pagamento_quarta_parcela') }}").load();
                     $('.button_individual').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
@@ -2451,7 +2461,7 @@
                     $(this).addClass('textoforte-list');
                     limparFormulario();
                 } else if(id_lista == "aguardando_pagamento_5_parcela_individual") {
-                    $('#title_individual').html("<h4>Pag. 5º Parcela</h4>");
+                    $('#title_individual').html("<h4>Pagamento 5º Parcela</h4>");
                     table_individual.ajax.url("{{ route('financeiro.individual.pagamento_quinta_parcela') }}").load();
                     $('.button_individual').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
@@ -2465,7 +2475,7 @@
                     $(this).addClass('textoforte-list');
                     limparFormulario();
                 } else if(id_lista == "aguardando_pagamento_6_parcela_individual") {
-                    $('#title_individual').html("<h4>Pag. 6º Parcela</h4>");
+                    $('#title_individual').html("<h4>Pagamento 6º Parcela</h4>");
                     table_individual.ajax.url("{{ route('financeiro.individual.pagamento_sexta_parcela') }}").load();
                     $('.button_individual').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
@@ -2519,13 +2529,10 @@
                     table_individual.ajax.url("{{ route('financeiro.individual.finalizado') }}").load();
                     $('.button_individual').empty().html('');
                     $(".container_edit").addClass('ocultar');
-
                     $("ul#listar_individual li.individual").removeClass('textoforte-list');
                     $("#all_pendentes_individual").removeClass('textoforte-list');
                     $("ul#grupo_finalizados_individual li.individual").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
-
-
                     adicionarReadonly();
                     limparFormulario();
                 } else if(id_lista == "cancelado_individual") {
@@ -2533,38 +2540,26 @@
                     table_individual.ajax.url("{{ route('financeiro.individual.cancelado') }}").load();
                     $('.button_individual').empty().html('');
                     $(".container_edit").addClass('ocultar');
-
                     $("ul#listar_individual li.individual").removeClass('textoforte-list');
                     $("#all_pendentes_individual").removeClass('textoforte-list');
                     $("ul#grupo_finalizados_individual li.individual").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
-
-
                     adicionarReadonly();
                     limparFormulario();
                 } else {
-
-
                 }
             });
 
             $("ul#grupo_finalizados_empresarial li.empresarial").on('click',function(){
-                let id_lista = $(this).attr('id');
-                console.log(id_lista);
+                let id_lista = $(this).attr('id');                
                 if(id_lista == "aguardando_finalizado_empresarial") {
-
-                    
-
-
                     $('#title_empresarial').html("<h4>Finalizado</h4>");
                     table_individual.ajax.url("{{ route('financeiro.individual.finalizado') }}").load();
                     $('.button_individual').empty().html('');
                     $(".container_edit").addClass('ocultar');
-
                     $("ul#grupo_finalizados_empresarial li.empresarial").removeClass('textoforte-list');
                     $("ul#listar_empresarial li.empresarial").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
-
                     //adicionarReadonly();
                     //limparFormulario();
                 } else if(id_lista == "aguardando_cancelado_empresarial") {
@@ -2572,13 +2567,9 @@
                     table_individual.ajax.url("{{ route('financeiro.individual.cancelado') }}").load();
                     $('.button_individual').empty().html('');
                     $(".container_edit").addClass('ocultar');
-
-                    
-
                     $("ul#grupo_finalizados_empresarial li.empresarial").removeClass('textoforte-list');
                     $("ul#listar_empresarial li.empresarial").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
-
                     //adicionarReadonly();
                     //limparFormulario();
                 } else {
@@ -2680,7 +2671,6 @@
                 }
             });
             
-
             $(".div_info").on('click',function(){
                 let contrato = $(this).attr('data-id');
                 $.ajax({
@@ -2867,7 +2857,7 @@
         .list_abas li {color: #fff;width: 150px;padding: 8px 5px;text-align:center;border-radius: 5px 5px 0 0;background-color:#123449;}
         .list_abas li:hover {cursor: pointer;}    
         .list_abas li:nth-of-type(2) {margin: 0 1%;}
-        .textoforte {background-color:rgba(255,255,255,0.5);color:black;}
+        .textoforte {background-color:rgba(255,255,255,0.5) !important;color:black;}
         .textoforte-list {background-color:rgba(255,255,255,0.5);color:white;}
         .botao:hover {background-color: rgba(0,0,0,0.5) !important;color:#FFF !important;}
         .valores-acomodacao {background-color:#123449;color:#FFF;width:32%;box-shadow:rgba(0,0,0,0.8) 0.6em 0.7em 5px;}
@@ -2883,6 +2873,37 @@
         .buttons {display: flex;}
         .button_individual {display:flex;}
         .button_empresarial {display: flex;}
+
+        th { font-size: 0.9em !important;}
+        td { font-size: 0.9em !important;}
+        
+        .dt-right {text-align: right !important;}
+        .dt-center {text-align: center !important;}
+        .estilizar_pagination .pagination {font-size: 0.8em !important;color:#FFF;}
+        .estilizar_pagination .pagination li {height:10px;color:#FFF;}
+        .por_pagina {font-size: 12px !important;color:#FFF;}
+        .por_pagina #tabela_mes_atual_length {display: flex;align-items: center;align-self: center;margin-top: 8px;}
+        .por_pagina #tabela_mes_diferente_length {display: flex;align-items: center;align-self: center;margin-top: 8px;}
+        .por_pagina select {color:#FFF !important;}
+        .estilizar_pagination #tabela_mes_atual_previous {color:#FFF !important;}
+        .estilizar_pagination #tabela_mes_atual_next {color:#FFF !important;}
+        .estilizar_pagination #tabela_mes_diferente_previous {color:#FFF !important;}
+        .estilizar_pagination #tabela_mes_diferente_next {color:#FFF !important;}
+        #tabela_individual_filter input[type='search'] {background-color: #FFF !important;}
+
+
+        
+        
+        #tabela_coletivo_filter input[type='search'] {background-color: #FFF !important;}
+
+        #tabela_empresarial_filter input[type='search'] {background-color: #FFF !important;}
+
+
+
+
+
+
+
         
     </style>
 @stop

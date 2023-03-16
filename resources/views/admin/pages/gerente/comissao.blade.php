@@ -38,12 +38,12 @@
 
                     <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;align-items: center;" id="aguardando_pagamento_3_parcela_individual" class="individual">
                         <span class="text-white w-25">Salario</span>
-                        <input type="text" class="form-control-sm w-50" placeholder="Salario">
+                        <input type="text" class="form-control-sm w-50 salario_usuario" placeholder="Salario">
                     </li>
 
                     <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;align-items: center;" id="aguardando_pagamento_3_parcela_individual" class="individual">
                         <span class="text-white w-25">Premiação</span>
-                        <input type="text" class="form-control-sm w-50" placeholder="Premiação">
+                        <input type="text" class="form-control-sm w-50 premiacao_usuario" placeholder="Premiação">
                     </li>
                     
                 </ul>
@@ -51,10 +51,12 @@
 
             <div class="separador"></div>
 
-            <div style="color:#FFF;display:flex;justify-content: space-between;padding:5px;border-radius:5px;">
+            <div style="color:#FFF;display:flex;justify-content:space-between;padding:5px;border-radius:5px;">
                 
                     <span class="ml-2">Total:</span>
-                    <span class="mr-2">R$ 5555</span>
+                    <span class="mr-2">
+                        <span class="total_a_pagar">0</span>
+                    </span>
                 
             </div>
 
@@ -67,7 +69,7 @@
             <div class="separador"></div>
             
             <div style="background-color:#C5D4EB">
-                <button class="btn btn-block btn-info">PDF</button>
+                <a class="btn btn-block btn-info" href="{{route('comissao.create.pdf')}}">PDF</a>
             </div>
 
         </div>
@@ -121,9 +123,13 @@
 
 
 @section('js')
+<script src="{{asset('js/jquery.mask.min.js')}}"></script>   
     <script>
-
+        
         $(function(){
+
+            $('.salario_usuario').mask("#.##0,00", {reverse: true});
+            $('.premiacao_usuario').mask("#.##0,00", {reverse: true});
 
             let id = $("#cliente_id").val();
 
@@ -163,15 +169,17 @@
                                 name: 'test',
                                 on: {
                                     change: function() { 
-                                        //let valor = parseFloat($(this).closest("tr").find("td:eq(4)").text().replace("R$ ","").replace(",","."));
-                                        //let first_valor = valor_proximo.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+                                        $(this).prop('disabled', 'disabled');
                                         if($("#valor_comissao").val() == "") {
                                             let teste = $(this).closest("tr").find("td:eq(4)").text();
-                                            
-                                            //teste = parseFloat(teste);
-                                            //let first_teste = teste.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
-                                            //console.log(typeof(teste));
                                             $("#valor_comissao").val(teste);
+                                            let valor_numero = $(this).closest("tr").find("td:eq(4)").text().replace("R$","").replace(/\./g,'').replace(',', '.');    
+                                            let valor_numero_float = parseFloat(valor_numero);
+                                            let total = $(".total_a_pagar").text().replace("R$","").replace(/\./g,'').replace(',', '.');
+                                            let total_numero = parseFloat(total);   
+                                            let valor_input = valor_numero_float + total_numero;
+                                            f = valor_input.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+                                            $(".total_a_pagar").html(f);
                                         } else {
                                             let valor_input = "";
                                             let valor_click = "";
@@ -179,13 +187,16 @@
                                             let f = "";
                                             valor_input = $("#valor_comissao").val().replace(/[^0-9][$]/,'').replace(",",".");
                                             valor_click = $(this).closest("tr").find("td:eq(4)").text().replace(/[^0-9][$]/,'').replace(",",".");
-                                            
                                             let n1 = parseFloat(valor_input);
                                             let n2 = parseFloat(valor_click);
                                             valor_proximo = n1 + n2;
                                             f = valor_proximo.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
                                             $("#valor_comissao").val(f);
-                                            
+                                            let tp = $(".total_a_pagar").text().replace("R$","").replace(/\./g,'').replace(',', '.');
+                                            let tp_float = parseFloat(tp);
+                                            let resultado = tp_float + n2
+                                            ff = resultado.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+                                            $(".total_a_pagar").html(ff);
                                         }
                                     }
                                 },
@@ -202,23 +213,21 @@
                 "initComplete": function( settings, json ) {
                     $('#title_comissao_atual').html("<h4>Liquidados</h4>");
                 }
-            });    
+            });  
+            
+            var data = new Date();
+            var mes = String(data.getMonth());
+
+            let meses = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 
             var listarcomissaomesdfirente = $(".listarcomissaomesdiferente").DataTable({
-                
-                
-
                 dom: '<"d-flex justify-content-between"<"#title_comissao_diferente"><"estilizar_search"f>><t><"d-flex justify-content-between align-items-center"<"por_pagina"l><"estilizar_pagination"p>>',
-
-
                 "language": {
                     "url": "{{asset('traducao/pt-BR.json')}}"
                 },
                 ajax: {
                     "url":`{{ url('/admin/gerente/listagem/comissao_mes_diferente/${id}') }}`,
-                    "dataSrc": "",
-                    
-                    
+                    "dataSrc": "",                   
                 },
                 "lengthMenu": [50,100,150,200,300,500],
                 "ordering": false,
@@ -232,23 +241,73 @@
                     {data:"cliente",name:"cliente"},
                     {data:"data",name:"data",className: 'dt-center'},
                     {data:"data_baixa_gerente",name:"baixa"},
-                    {data:"valor",name:"valor",render: $.fn.dataTable.render.number('.', ',', 2, 'R$ '),
-                        className: 'dt-center'
-                    },
+                    {data:"valor",name:"valor",render: $.fn.dataTable.render.number('.',',',2,'R$ '),className: 'dt-center'},
                     {data:"mes_atual",name:"mes",
-                        width:"5%"
+                        "createdCell": function (td, cellData, rowData, row, col) {
+                            let selected = $('<select />', {
+                                name: 'teste',
+                                class:"mes_diferente_select",
+                                on: {
+                                    change: function() { 
+                                        
+                                    }
+                                },
+                                append : [
+                                    $('<option />', {value : "1", text : cellData}),
+                                    $('<option />', {value : "2", text : meses[mes]}),
+                                ]
+                            });
+                            $(td).html(selected)
+                        }
                     }                          
                 ],
                 "initComplete": function( settings, json ) {
                     $('#title_comissao_diferente').html("<h4>A Receber</h4>");
                     
                 }
-            });    
+            });  
+            
+            // $ ('#tabela_mes_diferente tbody'). on ('click', 'tr', function () {
+            //     var source = listarcomissaomesdfirente.row(this);
+            //     console.log(source); 
+            //     // listarcomissaomesatual.row.add(source.data()).draw();
+            //     // source.remove().draw();
+            // });
+
+
+            $("body").on('change','.mes_diferente_select',function(){
+                var source = listarcomissaomesdfirente.row(this.parent);
+                listarcomissaomesatual.row.add(source.data()).draw();
+                source.remove().draw();
+            });
+
+            
 
 
 
 
 
+
+            $(".salario_usuario").on('change',function(){
+                let valor = $(this).val().replace(/\./g,'').replace(',', '.');
+                let valor_numerico = parseFloat(valor);
+                let total = $(".total_a_pagar").text().replace("R$","").replace(/\./g,'').replace(',', '.');
+                let total_numero = parseFloat(total);                
+                let valor_input = valor_numerico + total_numero;
+                f = valor_input.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+                $(".total_a_pagar").html(f);
+            }); 
+
+
+            $(".premiacao_usuario").on('change',function(){
+                let valor = $(this).val().replace(/\./g,'').replace(',', '.');
+                let valor_numerico = parseFloat(valor);
+                let total = $(".total_a_pagar").text().trim().replace("R$","").replace(/\./g,'').replace(',', '.');
+                let total_numero = parseFloat(total);
+                let valor_input = valor_numerico + total_numero;
+                f = valor_input.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+                $(".total_a_pagar").html(f);
+            });
 
 
 
@@ -271,6 +330,7 @@
         #valor_comissao {
             color:#FFF;
         }
+        
         .dt-right {text-align: right !important;}
         .dt-center {text-align: center !important;}
         .estilizar_pagination .pagination {font-size: 0.8em !important;color:#FFF;}
@@ -279,10 +339,12 @@
         .por_pagina #tabela_mes_atual_length {display: flex;align-items: center;align-self: center;margin-top: 8px;}
         .por_pagina #tabela_mes_diferente_length {display: flex;align-items: center;align-self: center;margin-top: 8px;}
         .por_pagina select {color:#FFF !important;}
-        .estilizar_pagination #tabela_mes_atual_previous {color:#FFF !important;}
-        .estilizar_pagination #tabela_mes_atual_next {color:#FFF !important;}
-        .estilizar_pagination #tabela_mes_diferente_previous {color:#FFF !important;}
-        .estilizar_pagination #tabela_mes_diferente_next {color:#FFF !important;}
+        #tabela_individual_previous {color:#FFF !important;background-color: red !important;}
+        #tabela_individual_next {color:#FFF !important;}
+        #tabela_coletivo_previous {color:#FFF !important;}
+        #tabela_coletivo_next {color:#FFF !important;}
         .estilizar_search input[type='search'] {background-color: #FFF !important;}
+        .tabela_individual_paginate {color:#FFF !important;}
+
     </style>
 @stop

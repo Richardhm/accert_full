@@ -15,25 +15,12 @@
 		<form action="" method="post" class="px-3" name="cadastrar_pessoa_fisica_formulario_individual" id="cadastrar_pessoa_fisica_formulario_individual">
             @csrf              
             
-            <input type="hidden" name="tipo_cadastro" value="administrador_cadastro">
+            <input type="hidden" name="tipo_cadastro" value="corretor_cadastro">
 
 
             <!-- Primeiro Linha -->
-            <div class="d-flex">
-                    
-                <div style="flex-basis:12%;margin-right: 1%;">
-                    <div class="form-group">
-                        <span for="tabela_origem" class="text-white">Vendedor:</span>
-                        <select name="users_individual" id="users_individual" class="form-control form-control-sm change_valores">
-                            <option value="">----Corretor----</option>
-                            @foreach($users as $u)
-                                <option value="{{$u->id}}">{{$u->name}}</option>
-                            @endforeach
-                        </select>   
-                       
-                    </div>
-                </div>
-
+            <div class="d-flex">          
+                <input type="hidden" name="users_individual" id="users_individual" value="{{Auth::user()->id}}">
                 <div style="flex-basis:13%;margin-right: 1%;">
                     <div class="form-group">
                         <span for="tabela_origem" class="text-white">Tabela Origem:</span>
@@ -48,7 +35,7 @@
                 </div>
 
 
-                <div style="flex-basis:18%">
+                <div style="flex-basis:25%">
                     <div class="form-group">
                         <span for="nome" class="text-white">Titular:</span>
                         <input type="text" name="nome_individual" id="nome_individual" class="form-control form-control-sm" placeholder="Nome" value="">

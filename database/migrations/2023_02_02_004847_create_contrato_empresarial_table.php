@@ -41,6 +41,7 @@ class CreateContratoEmpresarialTable extends Migration
 
             $table->string('codigo_saude');
             $table->string('codigo_odonto');
+            $table->string('codigo_externo');
 
 
             $table->date('data_boleto');

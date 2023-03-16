@@ -36,6 +36,7 @@ class ContratoEmpresarial extends Model
             "telefone",
             "celular",
             "email",
+            "codigo_externo",
             "data_boleto",
             "cidade",
             "uf",
@@ -46,7 +47,12 @@ class ContratoEmpresarial extends Model
         public function comissao()
         {
             return $this->hasOne(Comissoes::class);
-        }    
+        }   
+        
+            
+
+
+
 
 
 

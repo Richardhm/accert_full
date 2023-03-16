@@ -324,6 +324,7 @@
 			$("body").on('click','.pdf',function(){
 				let tabela_origem 	  = $("#origem_cidade").val();
 				let administradora_id = $(this).closest('.card_plano').find('#administradora_id').val();
+				let plano_id = $(this).closest('.card_plano').find('#plano_id').val();
 				let odonto = $(this).closest('.card_plano').find("#plano_com_sem_odonto").text();
 				$.ajax({
                     url:"{{route('orcamento.criarpdf')}}",
@@ -331,6 +332,7 @@
                     data:{
                     	"tabela_origem": tabela_origem,
 						"administradora_id":administradora_id,
+						"plano_id":plano_id,
 						"odonto":odonto,
                     	"faixas" : [{
                             '1' : $('#faixa-input-0-18').val(),
@@ -349,53 +351,37 @@
                         responseType: 'blob' 
                     },
 					success:function(blob,status,xhr,ppp) {
-                        console.log(blob,status,xhr,ppp);
-                        var filename = "";
+						var filename = "";
                         var disposition = xhr.getResponseHeader('Content-Disposition');
                         if (disposition && disposition.indexOf('attachment') !== -1) {
                             var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
                             var matches = filenameRegex.exec(disposition);
                             if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-                            
                         }
                         if (typeof window.navigator.msSaveBlob !== 'undefined') {
-                            window.navigator.msSaveBlob(blob, filename);
-                            
+                            window.navigator.msSaveBlob(blob, filename);    
                         } else {
                             var URL = window.URL || window.webkitURL;
                             var downloadUrl = URL.createObjectURL(blob);
-                            
                             if (filename) {
                                 var a = document.createElement("a");
                                 if (typeof a.download === 'undefined') {
                                     window.location.href = downloadUrl;
-                                    
                                 } else {
                                     a.href = downloadUrl;
                                     a.download = filename;
                                     document.body.appendChild(a);
-                                    a.click();
-                                    
+                                    a.click(); 
                                 }
                             } else {
-                                window.location.href = downloadUrl;
-                                
+                                window.location.href = downloadUrl;  
                             }
                             setTimeout(function () { 
                                 URL.revokeObjectURL(downloadUrl); 
-                                
-                            }, 100);
+                            },100);
                         }
-                    }
-                    
-                    
+                    }  
                 });
-
-
-
-
-
-
 				return false;
 			});
 

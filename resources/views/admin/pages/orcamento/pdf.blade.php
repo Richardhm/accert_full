@@ -188,10 +188,6 @@ time, mark, audio, video {
     </div>
     <!-----HEADER------>
     <h3 class="plano">{{$plano}}</h3>
-
-
-
-
     @php
           $total_apartamento_coparticipacao = 0;
           $total_enfermaria_coparticipacao = 0;
@@ -201,9 +197,6 @@ time, mark, audio, video {
           $total_ambulatorial_sem_coparticipacao = 0;
         @endphp
         @foreach($planos as $k => $p)
-
-            
-
              @if($loop->first)
              <div class="tabela">
              <table style="margin:0 auto;">
@@ -297,22 +290,27 @@ time, mark, audio, video {
 
   <div class="valores-carencias-col1-cards">
       <p class="valores-carencias-col1-param-1">Consultas Eletivas</p>
-      <p class="valores-carencias-col1-param-2">R$ {{$consultas_eletivas}}</p>
+      <p class="valores-carencias-col1-param-2">R$ {{number_format($consultas_eletivas,2,",",".")}}</p>
   </div>
 
   <div class="valores-carencias-col1-cards">
       <p class="valores-carencias-col1-param-1">Consultas De Urgência</p>
-      <p class="valores-carencias-col1-param-2">R$ {{$consultas_de_urgencia}}</p>
+      <p class="valores-carencias-col1-param-2">R$ {{number_format($consultas_de_urgencia,2,",",".")}}</p>
   </div>
 
   <div class="valores-carencias-col1-cards">
       <p class="valores-carencias-col1-param-1">Exames Simples</p>
-      <p class="valores-carencias-col1-param-2">R$ {{$exames_simples}}</p>
+      <p class="valores-carencias-col1-param-2">R$ {{number_format($exames_simples,2,",",".")}}</p>
   </div>
 
   <div class="valores-carencias-col1-cards">
       <p class="valores-carencias-col1-param-1">Exames Complexos</p>
-      <p class="valores-carencias-col1-param-2">R$ {{$exames_complexos}}</p>
+      <p class="valores-carencias-col1-param-2">R$ {{number_format($exames_complexos,2,",",".")}}</p>
+  </div>
+
+  <div class="valores-carencias-col1-cards">
+      <p class="valores-carencias-col1-param-1">Terapias</p>
+      <p class="valores-carencias-col1-param-2">R$ {{number_format($terapias,2,",",".")}}</p>
   </div>
 
     <div class="carencias-odonto">
@@ -564,13 +562,8 @@ time, mark, audio, video {
      
 </div>  
 <div class="footercol2">   
-    <p>
-      
-      {{$telefone}}
-    </p>
-    <p>
-      accertplanosdesaude
-    </p>
+    <p>(62) 3097-5952</p>
+    <p>accertplanosdesaude</p>
     <p>
       {{$site}}
     </p>

@@ -17,8 +17,8 @@
 
     {{-- User menu toggler --}}
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-        @if(config('adminlte.usermenu_image'))
-            <img src="{{ Auth::user()->adminlte_image() }}"
+    @if(config('adminlte.usermenu_image') && Auth::user()->image)
+            <img src="{{ asset('storage/'.Auth::user()->image) }}"
                  class="user-image img-circle elevation-2"
                  alt="{{ Auth::user()->name }}">
         @endif
@@ -71,7 +71,7 @@
             <a class="btn btn-default btn-flat float-right @if(!$profile_url) btn-block @endif"
                href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <i class="fa fa-fw fa-power-off text-red"></i>
-                {{ __('adminlte::adminlte.log_out') }}
+                Sair
             </a>
             <form id="logout-form" action="{{ $logout_url }}" method="POST" style="display: none;">
                 @if(config('adminlte.logout_method'))
@@ -79,6 +79,18 @@
                 @endif
                 {{ csrf_field() }}
             </form>
+
+            <li class="user-footer">
+                <a class="btn btn-default btn-flat float-right @if(!$profile_url) btn-block @endif"
+                href="{{route('profile.getUser',auth()->user()->id)}}">
+                    
+                    <i class="fas fa-user-check text-info"></i>
+                    Atualizar Perfil
+                </a>
+            </li>    
+
+
+
         </li>
 
     </ul>

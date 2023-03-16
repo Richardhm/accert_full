@@ -21,6 +21,7 @@
               <div class="card shadow card_plano">
                 <div class="card-body" style="box-shadow:rgba(0,0,0,0.8) 0.6em 0.7em 5px;padding:0.6rem;">
                 <input type="hidden" name="administradora_id" id="administradora_id" value="{{$planos[$i]->admin_id}}"> 
+                <input type="hidden" name="plano_id" id="plano_id" value="{{$planos[$i]->plano_id}}"> 
                   <div class="d-flex mb-2">
                     <div style="flex-basis:30%;background-color:#fff;padding:10px;border-radius:10px;max-height:52px;display:flex;align-items: center;">
                       <img class="mx-auto" src="{{asset($planos[$i]->admin_logo)}}"  alt="{{$planos[$i]->admin_nome}}" width="100%;" height="100%">

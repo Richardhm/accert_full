@@ -21,6 +21,15 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'cargo_id',
+        'cpf',
+        'endereco',
+        'cidade',
+        'estado',
+        'celular',
+        'numero',
+        'image',
+        'password'
     ];
 
     /**

@@ -13,7 +13,7 @@
 	
 	<form action="" method="post" class="px-3" name="cadastrar_pessoa_fisica_formulario_modal_coletivo" id="cadastrar_pessoa_fisica_formulario_modal_coletivo">
             @csrf              
-
+            <input type="hidden" name="tipo_cadastro" value="administrador_cadastro">
             <!-- Primeiro Linha -->
             <div class="d-flex">
                 
@@ -519,23 +519,15 @@
                 }
             });
 
-
             $("body").on('change','input[name="boleto"]',function(){
-                let data_boleto = $(this).val();
-                
+                let data_boleto = $(this).val();                
                 $(this).closest('form').find('#data_boleto').val(data_boleto);
-
-                //$("#data_boleto").val(data_boleto);
             });
 
             $("body").on('change','input[name="adesao"]',function(){
                 let valor_adesao = $(this).val();
                 $(this).closest('form').find('#valor_adesao').val(valor_adesao);
-                
             });
-
-
-           
 
             $("body").find('form[name="cadastrar_pessoa_fisica_formulario_modal_coletivo"]').on("click","#mostrar_plano_coletivo",function(){
 
@@ -1023,10 +1015,6 @@
 			$('body').on('click','.valores-acomodacao',function(e){
                 $(".valores-acomodacao").removeClass('destaque');
                 $(this).addClass('destaque');
-
-                
-
-
                 let valor_plano = $(this).find('.valor_plano').text().replace("R$ ","");
                 let tipo = $(this).find('.tipo').text();
                 $("#valor").val(valor_plano);
@@ -1037,9 +1025,10 @@
                     $('#valor_adesao').val('');
                 }
                 
-                $('#animate').animate({
-                    scrollTop:$(window).scrollTop() + $(window).height(),
-                },1500);
+                $('body,html').animate({
+                                scrollTop:$(window).scrollTop() + $(window).height(),
+                            },1500);
+
                 $("#btn_submit").html("<button type='submit' class='btn btn-block btn-light my-4 salvar_contrato'>Salvar Contrato</button>")
                 $('.valores-acomodacao').not('.destaque').each(function(i,e){
                     $(e).find('.vigente').val('')
@@ -1130,10 +1119,14 @@
                     },
                     success:function(res) {
                         
-                        if(res == "cadastrado") {
+                        if(res == "contratos") {
                             $(location).prop('href','/admin/contratos?ac=coletivo');
                             return true;
-                        } 
+                        } else {
+                            $(location).prop('href','/admin/contrato?ac=coletivo');
+                            return true;
+                        }      
+
                     }
                 });  
 
