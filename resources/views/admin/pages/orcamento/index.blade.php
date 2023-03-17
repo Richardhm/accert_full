@@ -15,6 +15,14 @@
 
 
 @section('content')
+
+	<div id="error_pdf">
+
+	</div>
+
+
+
+
 	 <div class="card shadow" style="background-color:#123449;color:#FFF;">
 		<div class="card-body" style="box-shadow: rgba(0,0,0,0.8) 0.6em 0.7em 5px;">
 			<form action="" method="post" class="px-3">
@@ -281,8 +289,13 @@
                     },
 					
                     success:function(res) {
-						
-                    	$("#aquiPlano").html(res);
+						if(res == "error_pdf") {
+							$("#error_pdf").html('<p class="alert alert-danger text-center">Acima de 7 faixas etarias não e possivel criar PDF =/</p>')
+						} else {
+							$("#error_pdf").html('');
+							$("#aquiPlano").html(res);
+						}
+                    	
 
 
                     	
@@ -292,8 +305,7 @@
 			});
 
 			$("body").on('click','.card_plano:not(".cards_destaque_links")',function(){
-
-				
+		
 
 
                 $(".cards_destaque_links").remove();
@@ -351,6 +363,7 @@
                         responseType: 'blob' 
                     },
 					success:function(blob,status,xhr,ppp) {
+						
 						var filename = "";
                         var disposition = xhr.getResponseHeader('Content-Disposition');
                         if (disposition && disposition.indexOf('attachment') !== -1) {

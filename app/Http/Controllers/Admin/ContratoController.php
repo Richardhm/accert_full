@@ -1565,98 +1565,98 @@ class ContratoController extends Controller
             }
         }
 
-        /** Comissao Corretora */   
-        $comissoes_configurada_corretora = ComissoesCorretoraConfiguracoes::where("administradora_id",$request->administradora)
-        ->where('plano_id',3)
-        ->where('tabela_origens_id',$request->tabela_origem)
-        ->get();
-        $comissoes_corretora_contagem=0;
-        if(count($comissoes_configurada_corretora)>=1) {
-            foreach($comissoes_configurada_corretora as $cc) {                
-                $comissaoCorretoraLancadas = new ComissoesCorretoraLancadas();
-                $comissaoCorretoraLancadas->comissoes_id = $comissao->id;            
-                $comissaoCorretoraLancadas->parcela = $cc->parcela;
-                if($comissoes_corretora_contagem == 0) {
-                    $comissaoCorretoraLancadas->data = date('Y-m-d',strtotime($request->data_boleto));
-                } else {
-                    $comissaoCorretoraLancadas->data = date("Y-m-d",strtotime($request->data_boleto."+{$comissoes_corretora_contagem}month"));
-                }
-                $comissaoCorretoraLancadas->valor = ($valor * $cc->valor) / 100;
-                $comissaoCorretoraLancadas->save();
-                $comissoes_corretora_contagem++;
-            }
-        }
+        // /** Comissao Corretora */   
+        // $comissoes_configurada_corretora = ComissoesCorretoraConfiguracoes::where("administradora_id",$request->administradora)
+        // ->where('plano_id',3)
+        // ->where('tabela_origens_id',$request->tabela_origem)
+        // ->get();
+        // $comissoes_corretora_contagem=0;
+        // if(count($comissoes_configurada_corretora)>=1) {
+        //     foreach($comissoes_configurada_corretora as $cc) {                
+        //         $comissaoCorretoraLancadas = new ComissoesCorretoraLancadas();
+        //         $comissaoCorretoraLancadas->comissoes_id = $comissao->id;            
+        //         $comissaoCorretoraLancadas->parcela = $cc->parcela;
+        //         if($comissoes_corretora_contagem == 0) {
+        //             $comissaoCorretoraLancadas->data = date('Y-m-d',strtotime($request->data_boleto));
+        //         } else {
+        //             $comissaoCorretoraLancadas->data = date("Y-m-d",strtotime($request->data_boleto."+{$comissoes_corretora_contagem}month"));
+        //         }
+        //         $comissaoCorretoraLancadas->valor = ($valor * $cc->valor) / 100;
+        //         $comissaoCorretoraLancadas->save();
+        //         $comissoes_corretora_contagem++;
+        //     }
+        // }
         
 
-        $premiacao = new Premiacoes();
-        $premiacao->contrato_id = $contrato->id;
-        $premiacao->user_id = $request->usuario_coletivo_switch;
-        $premiacao->plano_id = 3;
-        $premiacao->administradora_id = $request->administradora;
-        $premiacao->tabela_origens_id = $request->tabela_origem;
-        $premiacao->data = date('Y-m-d');
-        $premiacao->save();
+        // $premiacao = new Premiacoes();
+        // $premiacao->contrato_id = $contrato->id;
+        // $premiacao->user_id = $request->usuario_coletivo_switch;
+        // $premiacao->plano_id = 3;
+        // $premiacao->administradora_id = $request->administradora;
+        // $premiacao->tabela_origens_id = $request->tabela_origem;
+        // $premiacao->data = date('Y-m-d');
+        // $premiacao->save();
 
 
-        $premiacao_configurada_corretor = PremiacoesCorretoresConfiguracoes
-        ::where("plano_id",3)
-        ->where("administradora_id",$request->administradora)
-        ->where("user_id",$request->usuario_coletivo_switch)
-        ->where("tabela_origens_id",$request->tabela_origem)
-        ->get();
-
-
-
+        // $premiacao_configurada_corretor = PremiacoesCorretoresConfiguracoes
+        // ::where("plano_id",3)
+        // ->where("administradora_id",$request->administradora)
+        // ->where("user_id",$request->usuario_coletivo_switch)
+        // ->where("tabela_origens_id",$request->tabela_origem)
+        // ->get();
 
 
 
-        $premiacao_corretor_contagem = 0;
-        if(count($premiacao_configurada_corretor)>=1) {
-            foreach($premiacao_configurada_corretor as $k => $p) {
-                $premiacaoCorretoresLancados = new PremiacoesCorretoresLancadas();
-                $premiacaoCorretoresLancados->premiacoes_id = $premiacao->id;
-                $premiacaoCorretoresLancados->parcela = $p->parcela;
+
+
+
+        // $premiacao_corretor_contagem = 0;
+        // if(count($premiacao_configurada_corretor)>=1) {
+        //     foreach($premiacao_configurada_corretor as $k => $p) {
+        //         $premiacaoCorretoresLancados = new PremiacoesCorretoresLancadas();
+        //         $premiacaoCorretoresLancados->premiacoes_id = $premiacao->id;
+        //         $premiacaoCorretoresLancados->parcela = $p->parcela;
                 
-                if($premiacao_corretor_contagem == 0) {
-                    $premiacaoCorretoresLancados->data = date('Y-m-d H:i:s',strtotime($request->data_boleto));
-                } else {
-                    $premiacaoCorretoresLancados->data = date("Y-m-d H:i:s",strtotime($request->data_boleto."+{$premiacao_corretor_contagem}month"));
-                }
-                $premiacaoCorretoresLancados->valor = $p->valor * $totalVidas;
-                $premiacaoCorretoresLancados->save();
-                $premiacao_corretor_contagem++;
-            }
-        }
+        //         if($premiacao_corretor_contagem == 0) {
+        //             $premiacaoCorretoresLancados->data = date('Y-m-d H:i:s',strtotime($request->data_boleto));
+        //         } else {
+        //             $premiacaoCorretoresLancados->data = date("Y-m-d H:i:s",strtotime($request->data_boleto."+{$premiacao_corretor_contagem}month"));
+        //         }
+        //         $premiacaoCorretoresLancados->valor = $p->valor * $totalVidas;
+        //         $premiacaoCorretoresLancados->save();
+        //         $premiacao_corretor_contagem++;
+        //     }
+        // }
 
         
 
 
-        /** Premiação Corretora */
-        $premiacao_configurada_corretora = PremiacoesCorretoraConfiguracoes
-        ::where("plano_id",3)
-        ->where("administradora_id",$request->administradora)
-        //->where("user_id",$request->user)
-        ->where("tabela_origens_id",$request->tabela_origem_coletivo)
-        ->get();
+        // /** Premiação Corretora */
+        // $premiacao_configurada_corretora = PremiacoesCorretoraConfiguracoes
+        // ::where("plano_id",3)
+        // ->where("administradora_id",$request->administradora)
+        // //->where("user_id",$request->user)
+        // ->where("tabela_origens_id",$request->tabela_origem_coletivo)
+        // ->get();
 
 
 
-        $premiacao_corretora_contagem = 0;
-        if(count($premiacao_configurada_corretora)>=1) {
-            foreach($premiacao_configurada_corretora as $k => $p) {
-                $premiacaoCorretoraLancados = new PremiacoesCorretoraLancadas();
-                $premiacaoCorretoraLancados->premiacoes_id = $premiacao->id;
-                $premiacaoCorretoraLancados->parcela = $p->parcela;
-                if($premiacao_corretor_contagem == 0) {
-                    $premiacaoCorretoraLancados->data = date('Y-m-d',strtotime($request->data_boleto));
-                } else {
-                    $premiacaoCorretoraLancados->data = date("Y-m-d",strtotime($request->data_boleto."+{$premiacao_corretora_contagem}month"));
-                }
-                $premiacaoCorretoraLancados->valor = $p->valor * $totalVidas;
-                $premiacaoCorretoraLancados->save();
-                $premiacao_corretora_contagem++;
-            }
-        }   
+        // $premiacao_corretora_contagem = 0;
+        // if(count($premiacao_configurada_corretora)>=1) {
+        //     foreach($premiacao_configurada_corretora as $k => $p) {
+        //         $premiacaoCorretoraLancados = new PremiacoesCorretoraLancadas();
+        //         $premiacaoCorretoraLancados->premiacoes_id = $premiacao->id;
+        //         $premiacaoCorretoraLancados->parcela = $p->parcela;
+        //         if($premiacao_corretor_contagem == 0) {
+        //             $premiacaoCorretoraLancados->data = date('Y-m-d',strtotime($request->data_boleto));
+        //         } else {
+        //             $premiacaoCorretoraLancados->data = date("Y-m-d",strtotime($request->data_boleto."+{$premiacao_corretora_contagem}month"));
+        //         }
+        //         $premiacaoCorretoraLancados->valor = $p->valor * $totalVidas;
+        //         $premiacaoCorretoraLancados->save();
+        //         $premiacao_corretora_contagem++;
+        //     }
+        // }   
 
 
 

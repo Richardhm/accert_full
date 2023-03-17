@@ -30,6 +30,9 @@ class OrcamentoController extends Controller
 
     public function criarPDF(Request $request)
     {
+
+        
+
         
         $odonto = $request->odonto == "Com Odonto" ? 1 : 0;
         $cidade = $request->tabela_origem;
@@ -111,19 +114,9 @@ class OrcamentoController extends Controller
      GROUP BY faixa_etaria_id,administradora_id,plano_id,tabela_origens_id,odonto ORDER BY id
                     ) 
 AS full_tabela");
-
-      
-
-
-        
             
         $pdf = Corretora::first();
-        
-       
-
         $site = $pdf->site;
-        
-        
         $endereco = $pdf->endereco;
 
         $icone_site_oficial = 'data:image/png;base64,'.base64_encode(file_get_contents(public_path("storage/01.png")));
@@ -241,6 +234,13 @@ AS full_tabela");
 
     public function montarOrcamento(Request $request)
     {
+        if(count(array_filter($request->faixas[0])) >= 7) {
+            return "error_pdf";
+        }
+
+
+
+
         $sql = "";
         $chaves = [];
         foreach($request->faixas[0] as $k => $v) {
