@@ -4,7 +4,7 @@
 @section('plugins.Datatables', true)
 
 @section('content_top_nav_right')
-    <li class="nav-item mostrar_comissao"><a href="" class="nav-link div_info text-white"><i class='fas fa-eye'></i></a></li>
+    <!-- <li class="nav-item mostrar_comissao"><a href="" class="nav-link div_info text-white"><i class='fas fa-eye'></i></a></li> -->
     <li class="nav-item"><a class="nav-link text-white" href="{{route('orcamento.search.home')}}">Tabela de Preço</a></li>
     <li class="nav-item"><a class="nav-link text-white" href="{{route('home.administrador.consultar')}}">Consultar</a></li>
     
@@ -22,6 +22,14 @@
 @section('content')
     <input type="hidden" id="janela_atual" value="aba_individual">
     <div id="container_mostrar_comissao" class="ocultar"></div>
+
+    <input type="hidden" id="janela_ativa" name="janela_ativa" value="aba_individual">
+
+    <div class="container_div_info">
+        
+    </div>
+
+
 
     <!-- Modal -->
     <div class="modal fade" id="cancelarModal" tabindex="-1" aria-labelledby="cancelarModalLabel" aria-hidden="true">
@@ -188,32 +196,32 @@
                                <span class="badge badge-light individual_quantidade_em_analise" style="width:45px;text-align:right;">{{$qtd_individual_em_analise}}</span>                        
                             </li>
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_1_parcela_individual" class="individual">
-                                <span>Pagamento 1º Parcela</span>
+                                <span>Pag. 1º Parcela</span>
                                <span class="badge badge-light individual_quantidade_1_parcela" style="width:45px;text-align:right;">{{$qtd_individual_parcela_01}}</span>                        
                             </li>
 
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_2_parcela_individual" class="individual">
-                               <span>Pagamento 2º Parcela</span>
+                               <span>Pag. 2º Parcela</span>
                                <span class="badge badge-light individual_quantidade_2_parcela" style="width:45px;text-align:right;">{{$qtd_individual_parcela_02}}</span>                        
                             </li>
 
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_3_parcela_individual" class="individual">
-                               <span>Pagamento 3º Parcela</span>
+                               <span>Pag. 3º Parcela</span>
                                <span class="badge badge-light individual_quantidade_3_parcela" style="width:45px;text-align:right;">{{$qtd_individual_parcela_03}}</span>                        
                             </li>
 
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_4_parcela_individual" class="individual">
-                               <span>Pagamento 4º Parcela</span>
+                               <span>Pag. 4º Parcela</span>
                                <span class="badge badge-light individual_quantidade_4_parcela" style="width:45px;text-align:right;">{{$qtd_individual_parcela_04}}</span>                        
                             </li>
 
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_5_parcela_individual" class="individual">
-                               <span>Pagamento 5º Parcela</span>
+                               <span>Pag. 5º Parcela</span>
                                <span class="badge badge-light individual_quantidade_5_parcela" style="width:45px;text-align:right;">{{$qtd_individual_parcela_05}}</span>                        
                             </li>
 
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_6_parcela_individual" class="individual">
-                               <span>Pagamento 6º Parcela</span>
+                               <span>Pag. 6º Parcela</span>
                                <span class="badge badge-light individual_quantidade_6_parcela" style="width:45px;text-align:right;">{{$qtd_individual_parcela_06}}</span>                        
                             </li>
 
@@ -254,6 +262,7 @@
                                     <th>Cliente</th>
                                     <th>Vencimento</th>                                  
                                     <th>Status</th>
+                                    <th>Detalhes</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -263,24 +272,24 @@
                 <!--FIM COLUNA DA CENTRAL-->
 
                 <!---------DIREITA-------------->    
-                <div class="mr-1 coluna-right">
+                <div class="mr-1 coluna-right aba_individual">
                     <section class="p-1" style="background-color:#123449;border-radius: 5px;">
 
 
                         <div class="d-flex mb-2">
                                 
                             <div style="flex-basis:25%;">
-                                <span class="text-white" style="font-size:0.875em;">Administradora:</span>
+                                <span class="text-white" style="font-size:0.81em;">Administradora:</span>
                                 <input type="text" name="administradora_individual" id="administradora_individual" class="form-control  form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:33%;margin:0 1%;">    
-                                <span class="text-white" style="font-size:0.875em;">Tipo Plano:</span>
+                                <span class="text-white" style="font-size:0.81em;">Tipo Plano:</span>
                                 <input type="text" name="tipo_plano" id="tipo_plano_individual" class="form-control  form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:40%;margin-top:1%;" id="status">
-                                <span class="text-white" style="margin:0;padding:0;font-size:0.875em;display:flex;">
+                                <span class="text-white" style="margin:0;padding:0;font-size:0.81em;display:flex;">
                                     <span style="flex-basis:50%;">
                                         Status:        
                                     </span>
@@ -298,18 +307,18 @@
 
                         <div class="d-flex mb-2">
                             
-                            <div style="flex-basis:43%;">
-                                <span class="text-white" style="font-size:0.875em;">Cliente:</span>
+                            <div style="flex-basis:40%;">
+                                <span class="text-white" style="font-size:0.81em;">Cliente:</span>
                                 <input type="text" name="cliente" id="cliente" class="form-control form-control-sm" readonly>
                             </div>
                             
-                            <div style="flex-basis:25%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Data Nascimento:</span>
+                            <div style="flex-basis:28%;margin:0 1%;">
+                                <span class="text-white" style="font-size:0.81em;">Data Nascimento:</span>
                                 <input type="text" name="data_nascimento" id="data_nascimento" class="form-control form-control-sm" readonly>
                             </div>
                             
                             <div style="flex-basis:30%;">
-                                <span class="text-white" style="font-size:0.875em;">Codigo Externo:</span>
+                                <span class="text-white" style="font-size:0.81em;">Codigo Externo:</span>
                                 <input type="text" name="codigo_externo" id="codigo_externo_individual" class="form-control  form-control-sm" readonly>
                             </div>    
 
@@ -317,15 +326,15 @@
 
                         <div class="d-flex mb-2">
                             <div style="flex-basis:28%;">
-                                <span class="text-white" style="font-size:0.875em;">CPF:</span>
+                                <span class="text-white" style="font-size:0.81em;">CPF:</span>
                                 <input type="text" id="cpf" class="form-control form-control-sm" readonly>
                             </div>
                             <div style="flex-basis:38%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Responsavel Financeiro:</span>
+                                <span class="text-white" style="font-size:0.81em;">Responsavel Financeiro:</span>
                                 <input type="text" id="responsavel_financeiro" class="form-control  form-control-sm" readonly>
                             </div>
                             <div style="flex-basis:32%;">
-                                <span class="text-white" style="font-size:0.875em;">CPF Financeiro:</span>
+                                <span class="text-white" style="font-size:0.81em;">CPF Financeiro:</span>
                                 <input type="text" id="cpf_financeiro" class="form-control  form-control-sm" readonly>
                             </div>    
                         </div>
@@ -334,17 +343,17 @@
                         <div class="d-flex mb-2">
                             
                             <div style="flex-basis:28%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.875em;">Celular:</span>
+                                <span class="text-white" style="font-size:0.81em;">Celular:</span>
                                 <input type="text" id="celular_individual_view_input" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:25%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.875em;">Telefone:</span>
+                                <span class="text-white" style="font-size:0.81em;">Telefone:</span>
                                 <input type="text" id="telefone_individual_view_input" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:45%;">
-                                <span class="text-white" style="font-size:0.875em;">Email:</span>
+                                <span class="text-white" style="font-size:0.81em;">Email:</span>
                                 <input type="text" id="email" class="form-control form-control-sm" readonly>
                             </div>
 
@@ -353,15 +362,15 @@
 
                         <div class="d-flex mb-2">
                             <div style="flex-basis:22%;">
-                                <span class="text-white" style="font-size:0.875em;">CEP:</span>
+                                <span class="text-white" style="font-size:0.81em;">CEP:</span>
                                 <input type="text" name="cep" id="cep_individual_cadastro" class="form-control form-control-sm" readonly>
                             </div>
                             <div style="flex-basis:78%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Cidade:</span> 
+                                <span class="text-white" style="font-size:0.81em;">Cidade:</span> 
                                 <input type="text" id="cidade" class="form-control  form-control-sm" readonly>
                             </div>
                             <div style="flex-basis:10%;">
-                                <span class="text-white" style="font-size:0.875em;">UF:</span>
+                                <span class="text-white" style="font-size:0.81em;">UF:</span>
                                 <input type="text" id="uf" class="form-control form-control-sm" readonly>
                             </div>                         
                         </div>
@@ -369,17 +378,17 @@
                         <div class="d-flex mb-2">
                             
                             <div style="flex-basis:30%;">
-                                <span class="text-white" style="font-size:0.875em;">Bairro:</span>
+                                <span class="text-white" style="font-size:0.81em;">Bairro:</span>
                                 <input type="text" id="bairro_individual_cadastro" class="form-control form-control-sm" readonly>
                             </div>    
 
                             <div style="flex-basis:40%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Rua:</span>
+                                <span class="text-white" style="font-size:0.81em;">Rua:</span>
                                 <input type="text" id="rua_individual_cadastro" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:29%;">
-                                <span class="text-white" style="font-size:0.875em;">Complemento:</span>
+                                <span class="text-white" style="font-size:0.81em;">Complemento:</span>
                                 <input type="text" id="complemento_individual_cadastro" class="form-control form-control-sm" readonly>
                             </div>
 
@@ -389,22 +398,22 @@
                        
                         <div class="d-flex mb-2">
                             <div style="flex-basis:32%;">
-                                <span class="text-white" style="font-size:0.875em;">Data Contrato:</span>
+                                <span class="text-white" style="font-size:0.81em;">Data Contrato:</span>
                                 <input type="text" name="data_contrato" id="data_contrato" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:32%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Valor Contrato:</span>
+                                <span class="text-white" style="font-size:0.81em;">Valor Contrato:</span>
                                 <input type="text" name="valor_contrato" id="valor_contrato" class="form-control  form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:32%;">
-                                <span class="text-white" style="font-size:0.875em;">Valor Adesão:</span>
+                                <span class="text-white" style="font-size:0.81em;">Valor Adesão:</span>
                                 <input type="text" name="valor_adesao" id="valor_adesao" class="form-control  form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:8%;margin-left:1%;">    
-                                <span class="text-white" style="font-size:0.875em;">Vidas</span>
+                                <span class="text-white" style="font-size:0.81em;">Vidas</span>
                                 <input type="text" name="quantidade_vidas" id="quantidade_vidas_individual_cadastrar" class="form-control  form-control-sm" readonly>
                             </div>
                              
@@ -413,17 +422,17 @@
                         <div class="d-flex mb-2">
 
                             <div style="flex-basis:23%;">
-                                <span class="text-white" style="font-size:0.875em;">Data Boleto:</span>
+                                <span class="text-white" style="font-size:0.81em;">Data Boleto:</span>
                                 <input type="text" name="data_boleto" id="data_boleto" class="form-control  form-control-sm" readonly>
                             </div>
 
                              <div style="flex-basis:23%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Data Vigência:</span>
+                                <span class="text-white" style="font-size:0.81em;">Data Vigência:</span>
                                 <input type="text" name="data_vigencia" id="data_vigencia" class="form-control  form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:53%;">
-                                <span class="text-white" style="font-size:0.875em;">Plano Contratado:</span>
+                                <span class="text-white" style="font-size:0.81em;">Plano Contratado:</span>
                                 <input type="text" id="texto_descricao_individual_view" value="" class="form-control form-control-sm" readonly>     
                             </div>    
                             
@@ -482,31 +491,31 @@
                                 <span class="badge badge-light coletivo_quantidade_emissao_boleto" style="width:45px;text-align:right;">{{$qtd_coletivo_emissao_boleto}}</span>
                             </li>
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_adesao_coletivo" class="coletivo">
-                                <span>Pagamento Adesão</span>
+                                <span>Pag. Adesão</span>
                                 <span class="badge badge-light coletivo_quantidade_pagamento_adesao" style="width:45px;text-align:right;">{{$qtd_coletivo_pg_adesao}}</span>
                             </li>
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_vigencia_coletivo" class="coletivo">
-                                <span>Pagamento Vigência</span>
+                                <span>Pag. Vigência</span>
                                 <span class="badge badge-light coletivo_quantidade_pagamento_vigencia" style="width:45px;text-align:right;">{{$qtd_coletivo_pg_vigencia}}</span>
                             </li>
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_segunda_parcela" class="coletivo">
-                                <span>Pagamento 2º Parcela</span>
+                                <span>Pag. 2º Parcela</span>
                                 <span class="badge badge-light coletivo_quantidade_segunda_parcela" style="width:45px;text-align:right;">{{$qtd_coletivo_02_parcela}}</span>
                             </li>
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_terceira_parcela" class="coletivo">
-                                <span>Pagamento 3º Parcela</span>
+                                <span>Pag. 3º Parcela</span>
                                 <span class="badge badge-light coletivo_quantidade_terceira_parcela" style="width:45px;text-align:right;">{{$qtd_coletivo_03_parcela}}</span>
                             </li>
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_quarta_parcela" class="coletivo">
-                                <span>Pagamento 4º Parcela</span>
+                                <span>Pag. 4º Parcela</span>
                                 <span class="badge badge-light coletivo_quantidade_quarta_parcela" style="width:45px;text-align:right;">{{$qtd_coletivo_04_parcela}}</span>
                             </li>
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_quinta_parcela" class="coletivo">
-                                <span>Pagamento 5º Parcela</span>
+                                <span>Pag. 5º Parcela</span>
                                 <span class="badge badge-light coletivo_quantidade_quinta_parcela" style="width:45px;text-align:right;">{{$qtd_coletivo_05_parcela}}</span>
                             </li>
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_sexta_parcela" class="coletivo">
-                                <span>Pagamento 6º Parcela</span>
+                                <span>Pag. 6º Parcela</span>
                                 <span class="badge badge-light coletivo_quantidade_sexta_parcela" style="width:45px;text-align:right;">{{$qtd_coletivo_06_parcela}}</span>
                             </li>
                             
@@ -543,6 +552,7 @@
                                     <th>Cliente</th>
                                     <th>Vencimento</th>
                                     <th>Status</th>
+                                    <th>Detalhes</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -552,7 +562,7 @@
                 <!--FIM COLUNA DA CENTRAL-->
 
                 <!--COLUNA DA DIREITA-->    
-                <div class="mr-1 coluna-right">
+                <div class="mr-1 coluna-right aba_coletivo">
                     
                     <section class="p-1" style="background-color:#123449;">
                         
@@ -560,23 +570,23 @@
                         <div class="d-flex mb-2">
                                 
                             <div style="flex-basis:25%;">
-                                <span class="text-white" style="font-size:0.875em;">Administradora:</span>
+                                <span class="text-white" style="font-size:0.81em;">Administradora:</span>
                                 <input type="text" id="administradora_coletivo_view" class="form-control  form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:33%;margin:0 1%;">    
-                                <span class="text-white" style="font-size:0.875em;">Tipo Plano:</span>
+                                <span class="text-white" style="font-size:0.81em;">Tipo Plano:</span>
                                 <input type="text" id="tipo_plano_coletivo_view" class="form-control  form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:40%;margin-top:1%;" id="status">
-                                <span class="text-white" style="margin:0;padding:0;font-size:0.875em;display:flex;">
+                                <span class="text-white" style="margin:0;padding:0;font-size:0.81em;display:flex;">
                                     
                                     <span style="flex-basis:50%;">  
                                         Status:
                                     </span>
                                     
-                                    <div class="container_edit" style="flex-basis:50%;font-size:0.9em;">
+                                    <div class="container_edit" style="flex-basis:50%;font-size:0.81em;">
                                         <i class="fas fa-edit text-white editar_btn"></i>
                                     </div> 
 
@@ -588,18 +598,18 @@
 
                         <div class="d-flex mb-2">
                             
-                            <div style="flex-basis:43%;">
-                                <span class="text-white" style="font-size:0.875em;">Cliente:</span>
+                            <div style="flex-basis:40%;">
+                                <span class="text-white" style="font-size:0.81em;">Cliente:</span>
                                 <input type="text" id="cliente_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>
                             
-                            <div style="flex-basis:25%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Data Nascimento:</span>
+                            <div style="flex-basis:28%;margin:0 1%;">
+                                <span class="text-white" style="font-size:0.81em;">Data Nascimento:</span>
                                 <input type="text" id="data_nascimento_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>
                             
                             <div style="flex-basis:30%;">
-                                <span class="text-white" style="font-size:0.875em;">Codigo Externo:</span>
+                                <span class="text-white" style="font-size:0.81em;">Codigo Externo:</span>
                                 <input type="text" id="codigo_externo_coletivo_view" class="form-control  form-control-sm" readonly>
                             </div>    
 
@@ -608,17 +618,17 @@
                         <div class="d-flex mb-2">
 
                             <div style="flex-basis:28%;">
-                                <span class="text-white" style="font-size:0.875em;">CPF:</span>
+                                <span class="text-white" style="font-size:0.81em;">CPF:</span>
                                 <input type="text" id="cpf_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:38%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Responsavel Financeiro:</span>
+                                <span class="text-white" style="font-size:0.81em;">Responsavel Financeiro:</span>
                                 <input type="text" id="responsavel_financeiro_coletivo" class="form-control  form-control-sm" readonly>
                             </div>
                             
                             <div style="flex-basis:32%;">
-                                <span class="text-white" style="font-size:0.875em;">CPF Financeiro:</span>
+                                <span class="text-white" style="font-size:0.81em;">CPF Financeiro:</span>
                                 <input type="text" id="cpf_financeiro_coletivo_view" class="form-control  form-control-sm" readonly>
                             </div>    
 
@@ -627,17 +637,17 @@
                         <div class="d-flex mb-2">
                             
                             <div style="flex-basis:28%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.875em;">Celular:</span>
+                                <span class="text-white" style="font-size:0.81em;">Celular:</span>
                                 <input type="text" id="celular_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:26%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.875em;">Telefone:</span>
+                                <span class="text-white" style="font-size:0.81em;">Telefone:</span>
                                 <input type="text" id="telefone_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:46%;">
-                                <span class="text-white" style="font-size:0.875em;">Email:</span>
+                                <span class="text-white" style="font-size:0.81em;">Email:</span>
                                 <input type="text" id="email_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>
 
@@ -647,17 +657,17 @@
                         <div class="d-flex mb-2">
 
                             <div style="flex-basis:22%;">
-                                <span class="text-white" style="font-size:0.875em;">CEP:</span>
+                                <span class="text-white" style="font-size:0.81em;">CEP:</span>
                                 <input type="text" id="cep_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:78%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Cidade:</span> 
+                                <span class="text-white" style="font-size:0.81em;">Cidade:</span> 
                                 <input type="text" id="cidade_coletivo_view" class="form-control  form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:10%;">
-                                <span class="text-white" style="font-size:0.875em;">UF:</span>
+                                <span class="text-white" style="font-size:0.81em;">UF:</span>
                                 <input type="text" id="uf_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>
 
@@ -667,17 +677,17 @@
                         <div class="d-flex mb-2">
                             
                               <div style="flex-basis:30%;">
-                                <span class="text-white" style="font-size:0.875em;">Bairro:</span>
+                                <span class="text-white" style="font-size:0.81em;">Bairro:</span>
                                 <input type="text" name="bairro_coletivo" id="bairro_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>    
                     
                             <div style="flex-basis:30%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Rua:</span>
+                                <span class="text-white" style="font-size:0.81em;">Rua:</span>
                                 <input type="text" name="rua_coletivo" id="rua_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:40%;">
-                                <span class="text-white" style="font-size:0.875em;">Complemento:</span>
+                                <span class="text-white" style="font-size:0.81em;">Complemento:</span>
                                 <input type="text" id="complemento_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>
 
@@ -687,24 +697,24 @@
                         <div class="d-flex mb-2">
 
                             <div style="flex-basis:31%;">
-                                <span class="text-white" style="font-size:0.875em;">Data Contrato:</span>
+                                <span class="text-white" style="font-size:0.81em;">Data Contrato:</span>
                                 <input type="text" name="data_contrato_coletivo" id="data_contrato_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:31%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Valor Contrato:</span>
+                                <span class="text-white" style="font-size:0.81em;">Valor Contrato:</span>
                                 <input type="text" name="valor_contrato_coletivo" id="valor_contrato_coletivo_view" class="form-control  form-control-sm" readonly>
                             </div>
 
                              
 
                             <div style="flex-basis:31%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.875em;">Valor Adesão:</span>
+                                <span class="text-white" style="font-size:0.81em;">Valor Adesão:</span>
                                 <input type="text" id="valor_adesao_coletivo_view" class="form-control  form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:7%">    
-                                <span class="text-white" style="font-size:0.875em;">Vidas</span>
+                                <span class="text-white" style="font-size:0.81em;">Vidas</span>
                                 <input type="text" name="quantidade_vidas" id="quantidade_vidas_coletivo_cadastrar" class="form-control  form-control-sm" readonly>
                             </div>
                     
@@ -714,17 +724,17 @@
                          <div class="d-flex mb-2">
 
                             <div style="flex-basis:23%;">
-                                <span class="text-white" style="font-size:0.875em;">Data Boleto:</span>
+                                <span class="text-white" style="font-size:0.81em;">Data Boleto:</span>
                                 <input type="text" id="data_boleto_coletivo_view" class="form-control  form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:23%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Data Vigência:</span>
+                                <span class="text-white" style="font-size:0.81em;">Data Vigência:</span>
                                 <input type="text" name="data_vigencia_coletivo" id="data_vigencia_coletivo_view" class="form-control  form-control-sm" readonly>
                             </div>
                             
                             <div style="flex-basis:54%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.875em;">Plano Contratado:</span>
+                                <span class="text-white" style="font-size:0.81em;">Plano Contratado:</span>
                                 <input type="text" id="texto_descricao_coletivo_view" value="" class="form-control form-control-sm" readonly> 
                             </div>    
  
@@ -778,27 +788,27 @@
                                <span class="badge badge-light empresarial_quantidade_em_analise" style="width:45px;text-align:right;">{{$qtd_empresarial_em_analise}}</span>                        
                             </li>
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_1_parcela_empresarial" class="empresarial">
-                                <span>Pagamento 1º Parcela</span>
+                                <span>Pag. 1º Parcela</span>
                                <span class="badge badge-light empresarial_quantidade_1_parcela" style="width:45px;text-align:right;">{{$qtd_empresarial_parcela_01}}</span>                        
                             </li>
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_2_parcela_empresarial" class="empresarial">
-                               <span>Pagamento 2º Parcela</span>
+                               <span>Pag. 2º Parcela</span>
                                <span class="badge badge-light empresarial_quantidade_2_parcela" style="width:45px;text-align:right;">{{$qtd_empresarial_parcela_02}}</span>                        
                             </li>
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_3_parcela_empresarial" class="empresarial">
-                               <span>Pagamento 3º Parcela</span>
+                               <span>Pag. 3º Parcela</span>
                                <span class="badge badge-light empresarial_quantidade_3_parcela" style="width:45px;text-align:right;">{{$qtd_empresarial_parcela_03}}</span>                        
                             </li>
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_4_parcela_empresarial" class="empresarial">
-                               <span>Pagamento 4º Parcela</span>
+                               <span>Pag. 4º Parcela</span>
                                <span class="badge badge-light empresarial_quantidade_4_parcela" style="width:45px;text-align:right;">{{$qtd_empresarial_parcela_04}}</span>                        
                             </li>
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_5_parcela_empresarial" class="empresarial">
-                               <span>Pagamento 5º Parcela</span>
+                               <span>Pag. 5º Parcela</span>
                                <span class="badge badge-light empresarial_quantidade_5_parcela" style="width:45px;text-align:right;">{{$qtd_empresarial_parcela_05}}</span>                        
                             </li>
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_6_parcela_empresarial" class="empresarial">
-                               <span>Pagamento 6º Parcela</span>
+                               <span>Pag. 6º Parcela</span>
                                <span class="badge badge-light empresarial_quantidade_6_parcela" style="width:45px;text-align:right;">{{$qtd_empresarial_parcela_06}}</span>                        
                             </li>
                         </ul>
@@ -833,11 +843,13 @@
                         <table id="tabela_empresarial" class="table table-sm listarempresarial">
                             <thead>
                                 <tr>
-                                    <th>Usuario</th>
-                                    <th>Razão Social</th>
+                                    <th>Data</th>
+                                    <th>Corretor</th>
+                                    <th>Cliente</th>
+                                    <th>Plano</th>
                                     <th>Valor</th>
                                     <th>Vencimento</th>
-                                    <th>Status</th>
+                                    <th>Ver</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -847,24 +859,24 @@
                 <!--FIM COLUNA DA CENTRAL-->
 
                 <!---Coluna Direita--->
-                <div class="mr-1 coluna-right">
+                <div class="mr-1 coluna-right aba_empresarial">
 
                     <section class="p-1" style="background-color:#123449;">
 
                         <div class="d-flex mb-2">
                             
                             <div style="flex-basis:33%;">
-                                <span class="text-white" style="font-size:0.875em;">Vendedor:</span>
+                                <span class="text-white" style="font-size:0.81em;">Vendedor:</span>
                                 <input type="text" id="vendedor_view_empresarial" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:33%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Plano:</span> 
+                                <span class="text-white" style="font-size:0.81em;">Plano:</span> 
                                 <input type="text" name="plano_view_empresarial" id="plano_view_empresarial" class="form-control  form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:33%;">
-                                <span class="text-white" style="font-size:0.875em;">Tabela Origem:</span> 
+                                <span class="text-white" style="font-size:0.81em;">Tabela Origem:</span> 
                                 <input type="text" name="tabela_origem_view_empresarial" id="tabela_origem_view_empresarial" class="form-control  form-control-sm" readonly>
                             </div>
 
@@ -872,44 +884,38 @@
 
                         
                         <div class="d-flex mb-2">
-                            
-                            
+                                                        
                             <div style="flex-basis:57%;">
-                                <span class="text-white" style="font-size:0.875em;">Razão Social:</span>
+                                <span class="text-white" style="font-size:0.81em;">Razão Social:</span>
                                 <input type="text" id="razao_social_view_empresarial" class="form-control form-control-sm" readonly>
                             </div>
                                   
                             <div style="flex-basis:33%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">CNPJ:</span>
+                                <span class="text-white" style="font-size:0.81em;">CNPJ:</span>
                                 <input type="text" id="cnpj_view" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:8%;">
-                                <span class="text-white" style="font-size:0.875em;">Vidas:</span>
+                                <span class="text-white" style="font-size:0.81em;">Vidas:</span>
                                 <input type="text" id="qtd_vidas" class="form-control form-control-sm" readonly>
                             </div>
                    
                         </div>
 
-
-
-                       
-
-
                         <div class="d-flex mb-2">
 
                             <div style="flex-basis:30%;">
-                                <span class="text-white" style="font-size:0.875em;">Telefone:</span>
+                                <span class="text-white" style="font-size:0.81em;">Telefone:</span>
                                 <input type="text" id="telefone_corretor_view_empresarial" class="form-control form-control-sm" readonly>
                             </div>    
 
                             <div style="flex-basis:30%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Celular:</span>
+                                <span class="text-white" style="font-size:0.81em;">Celular:</span>
                                 <input type="text" id="celular_corretor_view_empresarial" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:40%;">
-                                <span class="text-white" style="font-size:0.875em;">Email:</span>
+                                <span class="text-white" style="font-size:0.81em;">Email:</span>
                                 <input type="text" id="email_odonto_view_empresarial" class="form-control form-control-sm" readonly>
                             </div>
                             
@@ -918,47 +924,45 @@
                          <div class="d-flex mb-2">
 
                             <div style="flex-basis:30%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.875em;">Responsavel:</span>
+                                <span class="text-white" style="font-size:0.81em;">Responsavel:</span>
                                 <input type="text" id="nome_corretor_view_empresarial" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:10%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.875em;">UF:</span>
+                                <span class="text-white" style="font-size:0.81em;">UF:</span>
                                 <input type="text" id="uf_cliente_view_empresarial" class="form-control form-control-sm" readonly>
                             </div> 
 
                             <div style="flex-basis:24%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.875em;">Cidade:</span>
+                                <span class="text-white" style="font-size:0.81em;">Cidade:</span>
                                 <input type="text" id="cidade_saude_view_empresarial" class="form-control form-control-sm" readonly>
                             </div>
-
-                                                    
+                  
                             <div style="flex-basis:38%;">
-                                <span class="text-white" style="font-size:0.875em;">Plano Contratado:</span>
+                                <span class="text-white" style="font-size:0.81em;">Plano Contratado:</span>
                                 <input type="text" id="plano_contratado_corretor_view_empresarial" class="form-control form-control-sm" readonly>
                             </div>
-
 
                         </div>              
 
                         <div class="d-flex mb-2">
                             <div style="flex-basis:24%;">
-                                <span class="text-white" style="font-size:0.875em;">Cód.Corretora:</span>
+                                <span class="text-white" style="font-size:0.81em;">Cód.Corretora:</span>
                                 <input type="text" id="cod_corretora_view_empresarial" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:24%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Codigo Saude:</span>
+                                <span class="text-white" style="font-size:0.81em;">Codigo Saude:</span>
                                 <input type="text" id="cod_saude_view_empresarial" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:24%;margin-right: 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Codigo Odonto:</span>
+                                <span class="text-white" style="font-size:0.81em;">Codigo Odonto:</span>
                                 <input type="text" id="cod_odonto_view_empresarial" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:25%;">
-                                <span class="text-white" style="font-size:0.875em;">Senha Cliente:</span>
+                                <span class="text-white" style="font-size:0.81em;">Senha Cliente:</span>
                                 <input type="text" id="senha_cliente_view_empresarial" class="form-control form-control-sm" readonly>
                             </div>
 
@@ -966,19 +970,19 @@
 
                         <div class="d-flex mb-2">
                             <div style="flex-basis:25%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.875em;">Valor Saude:</span>
+                                <span class="text-white" style="font-size:0.81em;">Valor Saude:</span>
                                 <input type="text" id="valor_plano_saude_view" class="form-control form-control-sm" readonly>
                             </div>
                             <div style="flex-basis:25%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.875em;">Valor Odonto:</span>
+                                <span class="text-white" style="font-size:0.81em;">Valor Odonto:</span>
                                 <input type="text" id="valor_plano_odonto_view" class="form-control form-control-sm" readonly>
                             </div>
                             <div style="flex-basis:25%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.875em;">Total Plano:</span>
+                                <span class="text-white" style="font-size:0.81em;">Total Plano:</span>
                                 <input type="text" id="valor_plano_view_empresarial" class="form-control form-control-sm" readonly>                            
                             </div>
                             <div style="flex-basis:25%;">
-                                <span class="text-white" style="font-size:0.875em;">Taxa Adesão:</span>
+                                <span class="text-white" style="font-size:0.81em;">Taxa Adesão:</span>
                                 <input type="text" id="taxa_adesao_view_empresarial" class="form-control form-control-sm" readonly>
                             </div>
                         </div>
@@ -986,15 +990,15 @@
 
                         <div class="d-flex mb-1">
                             <div style="flex-basis:24%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.875em;">Plano c/Adesão:</span>
+                                <span class="text-white" style="font-size:0.81em;">Plano c/Adesão:</span>
                                 <input type="text" id="plano_adesao_view_empresarial" class="form-control form-control-sm" readonly>
                             </div>
                             <div style="flex-basis:24%;">
-                                <span class="text-white" style="font-size:0.875em;">Valor Boleto:</span>
+                                <span class="text-white" style="font-size:0.81em;">Valor Boleto:</span>
                                 <input type="text" id="valor_boleto_view_empresarial" class="form-control form-control-sm" readonly>
                             </div>
                             <div style="flex-basis:25%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Venc. Boleto:</span>
+                                <span class="text-white" style="font-size:0.81em;">Venc. Boleto:</span>
                                 <input type="text" id="vencimento_boleto_view_empresarial" class="form-control form-control-sm" readonly>
                             </div>
                             <div style="flex-basis:25%;">
@@ -1017,21 +1021,20 @@
 @stop  
 
 @section('js')
-
+    <script src="{{asset('js/jquery.mask.min.js')}}"></script>   
     <script>
         $(function(){  
 
+            var default_formulario = $('.coluna-right.aba_individual').html();
 
+            $('#cpf_financeiro_coletivo_view').mask('000.000.000-00');
+            $('#telefone_coletivo_view').mask('(00) 0000-0000');
             $("#dataBaixaIndividualModal").on('hidden.bs.modal', function (event) {
                 $("#error_data_baixa_individual").html('');
             }); 
-
             $("#dataBaixaIndividualModal").on('shown.bs.modal', function (event) {
                 $("#error_data_baixa_individual").html('');
             }); 
-
-
-
 
            $("body").on('click','.excluir_coletivo',function(){
                 if($(this).attr('data-cliente-excluir')) {
@@ -1213,30 +1216,30 @@
                 return false;
            });     
 
-            $(".mostrar_comissao").on('mouseenter',function(){   
-                if($("#janela_atual").val() == "aba_individual") {
-                    var janela  = "aba_individual";
-                    var id_contrato = $('.next_individual').attr('data-contrato');
-                } else if($("#janela_atual").val() == "aba_coletivo") {
-                    var janela  = "aba_coletivo";
-                    var id_contrato = $('.next').attr('data-contrato');
-                } else {
-                    var janela  = "aba_empresarial";
-                    var id_contrato = $('.next_empresarial').attr('data-contrato');
-                }
-                if(janela && id_contrato) {
-                    $.ajax({
-                        url:"{{route('financeiro.ver.contrato')}}",
-                        method:"POST",
-                        data:"contrato_id="+id_contrato+"&janela="+janela,
-                        success:function(res) {
-                            $("#container_mostrar_comissao").html(res).removeClass('ocultar');        
-                        }
-                    });
-                }
-            }).on('mouseleave',function(){
-                $("#container_mostrar_comissao").html('').addClass('ocultar'); 
-            });
+            // $(".mostrar_comissao").on('mouseenter',function(){   
+            //     if($("#janela_atual").val() == "aba_individual") {
+            //         var janela  = "aba_individual";
+            //         var id_contrato = $('.next_individual').attr('data-contrato');
+            //     } else if($("#janela_atual").val() == "aba_coletivo") {
+            //         var janela  = "aba_coletivo";
+            //         var id_contrato = $('.next').attr('data-contrato');
+            //     } else {
+            //         var janela  = "aba_empresarial";
+            //         var id_contrato = $('.next_empresarial').attr('data-contrato');
+            //     }
+            //     if(janela && id_contrato) {
+            //         $.ajax({
+            //             url:"{{route('financeiro.ver.contrato')}}",
+            //             method:"POST",
+            //             data:"contrato_id="+id_contrato+"&janela="+janela,
+            //             success:function(res) {
+            //                 $("#container_mostrar_comissao").html(res).removeClass('ocultar');        
+            //             }
+            //         });
+            //     }
+            // }).on('mouseleave',function(){
+            //     $("#container_mostrar_comissao").html('').addClass('ocultar'); 
+            // });
             
             String.prototype.ucWords = function () {
                 let str = this.toLowerCase()
@@ -1249,17 +1252,23 @@
                 $(this).addClass("ativo");
                 let id = $(this).attr('data-id');
                 $("#janela_atual").val(id);
+                $("#janela_ativa").val(id);
+                default_formulario = $('.coluna-right.'+id).html();
                 $('.conteudo_abas main').addClass('ocultar');
                 $('#'+id).removeClass('ocultar');
                 $('.next').attr('data-cliente','');
                 $('.next').attr('data-contrato','');
                 $('tr').removeClass('textoforte');
-                table.ajax.url("{{ route('financeiro.coletivo.em_analise') }}").load();
-                table_individual.ajax.url("{{ route('financeiro.individual.em_analise') }}").load();
-                tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.analise")}}').load();
-                $('#title_coletivo_por_adesao_table').html("<h4>Em Análise</h4>");
-                $('#title_individual').html("<h4>Em Análise</h4>");
-                $("#title_empresarial").html("<h4>Em Análise</h4>");
+
+                $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Pendentes</h4>");
+                table.ajax.url("{{ route('financeiro.individual.geralColetivoPendentes.contrato') }}").load();
+                
+                $('#title_individual').html("<h4 style='font-size:1em;margin-top:10px;'>Pendentes</h4>");
+                table_individual.ajax.url("{{ route('financeiro.individual.geralIndividualPendentes.contrato') }}").load();
+                
+                $("#title_empresarial").html("<h4 style='font-size:1em;margin-top:10px;'>Pendentes</h4>");
+                tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.listarContratoEmpresaPendentes")}}').load();
+                
                 $("#cliente_id_alvo").val('');
                 $("#cliente_id_alvo_individual").val('');
                 limparFormularioIndividual();
@@ -1319,6 +1328,7 @@
                     method:"POST",
                     data:"alvo="+alvo+"&valor="+valor+"&id_cliente="+id_cliente,
                     success:function(res) {
+                        console.log(res);
                         table_individual.ajax.reload();
                     }
                 });
@@ -1499,6 +1509,7 @@
                         }
                     },
                     {data:"financeiro.nome",name:"financeiro"},
+                    {data:"financeiro.nome",name:"ver"}
                 ],
                 "columnDefs": [
                     {
@@ -1532,7 +1543,6 @@
                         "targets": 3,
                         "width":"15%",
                         "createdCell": function (td, cellData, rowData, row, col) {
-                            console.log(rowData);
                             let alvo = cellData.data.split("-").reverse().join("/");
                             $(td).html(alvo);
                         }                            
@@ -1560,11 +1570,18 @@
                                 $(td).html("Pag. 6º Parcela");        
                             }
                         },
+                    },
+                    {
+                        "width":"4%",
+                        "targets": 5,
+                        "createdCell": function (td, cellData, rowData, row, col) {
+                            $(td).html("<div class='text-center'><i class='fas fa-eye div_info' data-id='"+rowData.id+"'></i></div>");
+                        }
                     }
                ],
                 
                 "initComplete": function( settings, json ) {
-                    $('#title_individual').html("<h4>Em Análise</h4>");
+                    $('#title_individual').html("<h4 style='font-size:1em;margin-top:10px;'>Em Análise</h4>");
                      this.api()
                        .columns([1])
                        .every(function () {
@@ -1609,8 +1626,8 @@
                     {data:"administradora.nome",name:"administradora"},
                     {data:"clientes.nome",name:"cliente"},
                     {data:"comissao.comissao_atual_financeiro.data",name:"Vencimento"},
-                    {data:"financeiro.nome",name:"administradora"}
-                    
+                    {data:"financeiro.nome",name:"administradora"},
+                    {data:"financeiro.nome",name:"detalhes"}  
                 ],
                 "columnDefs": [
                     {
@@ -1679,10 +1696,17 @@
                                 $(td).html("Pag. 6º Parcela");        
                             }
                         },
+                    },
+                    {
+                        "width":"4%",
+                        "targets": 6,
+                        "createdCell": function (td, cellData, rowData, row, col) {
+                            $(td).html("<div class='text-center'><i class='fas fa-eye div_info' data-id='"+rowData.id+"'></i></div>");
+                        }
                     }
                 ],              
                 "initComplete": function( settings, json ) {
-                    $('#title_coletivo_por_adesao_table').html("<h4>Em Análise</h4>");
+                    $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Em Análise</h4>");
                     this.api()
                        .columns([1])
                        .every(function () {
@@ -1760,7 +1784,8 @@
                     texto = "";
                 }
                 $("#texto_descricao_coletivo_view").val(texto);
-                if(data.clientes.dependente) {
+                if(data.clientes.dependentes) {
+
                     $("#responsavel_financeiro_coletivo").val(data.clientes.dependentes.nome);
                     $("#cpf_financeiro_coletivo_view").val(data.clientes.dependentes.cpf);
                 } else {
@@ -1921,7 +1946,7 @@
                     "url": "{{asset('traducao/pt-BR.json')}}"
                 },
                 ajax: {
-                    "url":"{{ route('contratos.listarEmpresarial.analise') }}",
+                    "url":"{{ route('contratos.listarEmpresarial.listarContratoEmpresaPendentes') }}",
                     "dataSrc": ""
                 },
                 "lengthMenu": [50,100,150,200,300,500],
@@ -1932,8 +1957,10 @@
                 "autoWidth": false,
                 "responsive": true,
                 columns: [
+                    {data:"created_at",name:"created_at"},
                     {data:"usuario",name:"usuario"},
-                    {data:"razao_social",name:"razao_social"},
+                    {data:"responsavel",name:"responsavel"},
+                    {data:"plano",name:"plano"},
                     {data:"valor_plano",name:"valor_plano"},
                     {data:"comissao.comissao_atual_financeiro",name:"vencimento",
                         "createdCell": function(td,cellData,rowData,row,col) {
@@ -1951,69 +1978,67 @@
                                 $(td).html(alvo);
                             }
                         }
-                    
-                    
-                    
                     },
-                    {data:"financeiro_id",name:"financeiro_id"}
+                    {data:"razao_social",name:"razao_social"},
                 ],
                 "columnDefs": [
+                    // <th>Data</th>
                     {
                         "targets": 0,
-                        "width":"20%"
+                        "width":"5%",
+                        "createdCell":function(td,cellData,rowData,row,col) {
+                            let datas = cellData.split("T")[0]
+                            let alvo = datas.split("-").reverse().join("/")
+                            $(td).html(alvo)    
+                        }
                     },
+                    // <th>Corretor</th>
                     {
-                        "targets": 0,
-                        "width":"30%"
+                        "targets": 1,
+                        "width":"25%"
                     },
+                    // <th>Cliente</th>
                     {
                         "targets": 2,
+                        "width":"25%"
+                    },
+                    // <th>Razão Social</th>
+                    {
+                        "targets": 3,
                         "width":"20%",
+                        
+                    },
+                    // <th>Valor</th>
+                    {
+                        "targets": 4,
+                        "width":"0%",
                         "createdCell": function (td, cellData, rowData, row, col) {
                             let formatado = Number(cellData).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
                             // let datas = cellData.split("T")[0]
                             // let alvo = datas.split("-").reverse().join("/")
                             $(td).html(formatado);    
                         }
+                        
                     },
+                    // <th>Vencimento</th>
                     {
-                        "targets": 3,
-                        "width":"10%",
+                        "targets": 5,
                         "createdCell": function (td, cellData, rowData, row, col) {
                             let alvo = cellData.split("-").reverse().join("/")
                             $(td).html(alvo);
                         }
+                        
                     },
+                    // <th>Ver</th> 
                     {
-                        "targets":4,
-                        "width":"20%",
-                        "createdCell":function(td,cellData,rowData,row,col) {
-                            if(cellData == 1) {
-                                $(td).html("Em Analise");        
-                            }
-                            if(cellData == 5) {
-                                $(td).html("Pag. 1º Parcela");        
-                            }
-                            if(cellData == 6) {
-                                $(td).html("Pag. 2º Parcela");        
-                            }
-                            if(cellData == 7) {
-                                $(td).html("Pag. 3º Parcela");        
-                            }
-                            if(cellData == 8) {
-                                $(td).html("Pag. 4º Parcela");        
-                            }
-                            if(cellData == 9) {
-                                $(td).html("Pag. 5º Parcela");        
-                            }
-                            if(cellData == 10) {
-                                $(td).html("Pag. 6º Parcela");        
-                            }
+                        "targets": 6,
+                        "createdCell": function (td, cellData, rowData, row, col) {
+                            $(td).html("<div class='text-center'><i class='fas fa-eye div_info' data-id='"+rowData.id+"'></i></div>");
                         }
                     }
                ],
                 "initComplete": function( settings, json ) {
-                    $('#title_empresarial').html("<h4>Em Analise</h4>");
+                    $('#title_empresarial').html("<h4 style='font-size:1em;margin-top:10px;'>Em Analise</h4>");
                      this.api()
                        .columns([0])
                        .every(function () {
@@ -2137,6 +2162,37 @@
                 }
             });
 
+            $("body").on('mouseover','.div_info',function(){
+               let contrato = $(this).attr('data-id');
+               let janela_ativa = $('#janela_ativa').val(); 
+               $.ajax({
+                    url:"{{route('contratos.info')}}",
+                    data:"contrato="+contrato,
+                    method:"POST",
+                    success:function(res) {
+                        $('.coluna-right.'+janela_ativa).html(res);
+                        //$('.container_div_info').html(res);
+                    }
+                });
+                $('.container_div_info').toggle();
+                return false;
+            });
+
+            $("body").on('mouseout','.div_info',function(){
+                let janela_ativa = $('#janela_ativa').val();
+                $(".coluna-right."+janela_ativa).html(default_formulario);
+            });
+
+
+
+
+
+
+
+
+
+
+
             $("body").on('click','.next_individual',function(){
                 if($(this).attr('data-cliente') && $(this).attr('data-contrato')) {
                     
@@ -2231,7 +2287,7 @@
                     limparFormulario();
 
                 } else if(id_lista == "emissao_boleto_coletivo") {
-                    $('#title_coletivo_por_adesao_table').html("<h4>Emissão Boleto</h4>");
+                    $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Emissão Boleto</h4>");
                     table.ajax.url("{{ route('financeiro.coletivo.emissao_boleto') }}").load();
                     $('.buttons').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 excluir_coletivo">Excluir</button>'+
@@ -2244,7 +2300,7 @@
                     adicionarReadonly();
                     limparFormulario();
                 } else if(id_lista == "pagamento_adesao_coletivo") {
-                    $('#title_coletivo_por_adesao_table').html("<h4>Pagamento Adesão</h4>");
+                    $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento Adesão</h4>");
                     table.ajax.url("{{ route('financeiro.coletivo.pagamento_adesao') }}").load();
                     $('.buttons').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>'+
@@ -2258,7 +2314,7 @@
                     limparFormulario();
 
                 } else if(id_lista == "pagamento_vigencia_coletivo") {
-                    $('#title_coletivo_por_adesao_table').html("<h4>Pagamento Vigência</h4>");
+                    $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento Vigência</h4>");
                     table.ajax.url("{{ route('financeiro.coletivo.pagamento_vigencia') }}").load();
                     $('.buttons').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>'+
@@ -2271,7 +2327,7 @@
                     adicionarReadonly();
                     limparFormulario();
                 } else if(id_lista == "pagamento_segunda_parcela") {
-                    $('#title_coletivo_por_adesao_table').html("<h4>Pagamento 2º Parcela</h4>");
+                    $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 2º Parcela</h4>");
                     table.ajax.url("{{ route('financeiro.coletivo.pagamento_segunda_parcela') }}").load();
                     $('.buttons').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>'+
@@ -2286,7 +2342,7 @@
                     adicionarReadonly();
                     limparFormulario();
                 } else if(id_lista == "pagamento_terceira_parcela") {
-                    $('#title_coletivo_por_adesao_table').html("<h4>Pagamento 3º Parcela</h4>");
+                    $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 3º Parcela</h4>");
                     table.ajax.url("{{ route('financeiro.coletivo.pagamento_terceira_parcela') }}").load();
                     $('.buttons').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>'+
@@ -2301,7 +2357,7 @@
                     adicionarReadonly();
                     limparFormulario();
                 } else if(id_lista == "pagamento_quarta_parcela") {
-                    $('#title_coletivo_por_adesao_table').html("<h4>Pagamento 4º Parcela</h4>");
+                    $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 4º Parcela</h4>");
                     table.ajax.url("{{ route('financeiro.coletivo.pagamento_quarta_parcela') }}").load();
                     $('.buttons').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>'+
@@ -2314,7 +2370,7 @@
                     adicionarReadonly();
                     limparFormulario();
                 } else if(id_lista == "pagamento_quinta_parcela") {
-                    $('#title_coletivo_por_adesao_table').html("<h4>Pagamento 5º Parcela</h4>");
+                    $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 5º Parcela</h4>");
                     table.ajax.url("{{ route('financeiro.coletivo.pagamento_quinta_parcela') }}").load();
                     $('.buttons').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>'+
@@ -2327,7 +2383,7 @@
                     adicionarReadonly();
                     limparFormulario();
                 } else if(id_lista == "pagamento_sexta_parcela") {
-                    $('#title_coletivo_por_adesao_table').html("<h4>Pagamento 6º Parcela</h4>");
+                    $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 6º Parcela</h4>");
                     table.ajax.url("{{ route('financeiro.coletivo.pagamento_sexta_parcela') }}").load();
                     $('.buttons').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>'+
@@ -2340,7 +2396,7 @@
                     adicionarReadonly();
                     limparFormulario();
                 } else if(id_lista == "finalizado_coletivo") {
-                    $('#title_coletivo_por_adesao_table').html("<h4>Finalizado</h4>");
+                    $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Finalizado</h4>");
                     table.ajax.url("{{ route('financeiro.coletivo.pagamento_sexta_parcela') }}").load();
                     $('.buttons').empty().html();
                     $(".container_edit").addClass('ocultar');
@@ -2350,7 +2406,7 @@
                     adicionarReadonly();
                     limparFormulario();
                 } else if(id_lista == "cancelado_coletivo") {
-                    $('#title_coletivo_por_adesao_table').html("<h4>Cancelado</h4>");
+                    $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Cancelado</h4>");
                     table.ajax.url("{{ route('financeiro.coletivo.pagamento_sexta_parcela') }}").load();
                     $('.buttons').empty().html();
                     $(".container_edit").addClass('ocultar');
@@ -2365,14 +2421,14 @@
             });  
 
             $("#all_pendentes_individual").on('click',function(){
-                $('#title_individual').html("<h4>Geral Individual</h4>");
+                $('#title_individual').html("<h4 style='font-size:1em;margin-top:10px;'>Pendentes</h4>");
                 table_individual.ajax.url("{{ route('financeiro.individual.geralIndividualPendentes') }}").load();
                 $("ul#listar_individual li.individual").removeClass('textoforte-list');
                 $(this).addClass('textoforte-list');
             });
             
             $("#all_pendentes_coletivo").on('click',function(){
-                $('#title_coletivo_por_adesao_table').html("<h4>Geral Coletivo</h4>");
+                $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Pendentes</h4>");
                 table.ajax.url("{{ route('financeiro.coletivo.em_geral') }}").load();
                 //$("ul#listar_individual li.individual").removeClass('textoforte-list');
                 $("ul#listar li.coletivo").removeClass('textoforte-list');
@@ -2381,7 +2437,7 @@
             });
 
             $("#all_pendentes_empresarial").on('click',function(){
-                $("#title_empresarial").html("<h4>Prendentes</h4>");
+                $("#title_empresarial").html("<h4 style='font-size:1em;margin-top:10px;'>Pendentes</h4>");
                 tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.listarContratoEmpresaPendentes")}}').load();
                 $("ul#listar li.coletivo").removeClass('textoforte-list');
                 $("#grupo_coletivo_concluido li.individual").removeClass('textoforte-list');
@@ -2392,7 +2448,7 @@
             $("ul#listar_individual li.individual").on('click',function(){
                 let id_lista = $(this).attr('id');
                 if(id_lista == "aguardando_em_analise_individual") {
-                    $('#title_individual').html("<h4>Em Análise</h4>");
+                    $('#title_individual').html("<h4 style='font-size:1em;margin-top:10px;'>Em Análise</h4>");
                     table_individual.ajax.url("{{ route('financeiro.individual.em_analise') }}").load();
                     $('.button_individual').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 excluir_individual">Excluir</button>'+
@@ -2405,7 +2461,7 @@
                     $(this).addClass('textoforte-list');
                     limparFormulario()
                 } else if(id_lista == "aguardando_pagamento_1_parcela_individual") {
-                    $('#title_individual').html("<h4>Pagamento 1º Parcela</h4>");
+                    $('#title_individual').html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 1º Parcela</h4>");
                     table_individual.ajax.url("{{ route('financeiro.individual.pagamento_primeira_parcela') }}").load();
                     $('.button_individual').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
@@ -2419,7 +2475,7 @@
                     $(this).addClass('textoforte-list');
                     limparFormulario();
                 } else if(id_lista == "aguardando_pagamento_2_parcela_individual") {
-                    $('#title_individual').html("<h4>Pagamento 2º Parcela</h4>");
+                    $('#title_individual').html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 2º Parcela</h4>");
                     table_individual.ajax.url("{{ route('financeiro.individual.pagamento_segunda_parcela') }}").load();
                     $('.button_individual').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
@@ -2433,7 +2489,7 @@
                     $(this).addClass('textoforte-list');
                     limparFormulario();
                 } else if(id_lista == "aguardando_pagamento_3_parcela_individual") {
-                    $('#title_individual').html("<h4>Pagamento 3º Parcela</h4>");
+                    $('#title_individual').html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 3º Parcela</h4>");
                     table_individual.ajax.url("{{ route('financeiro.individual.pagamento_terceira_parcela') }}").load();
                     $('.button_individual').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
@@ -2447,7 +2503,7 @@
                     $(this).addClass('textoforte-list');
                     limparFormulario();
                 } else if(id_lista == "aguardando_pagamento_4_parcela_individual") {
-                    $('#title_individual').html("<h4>Pagamento 4º Parcela</h4>");
+                    $('#title_individual').html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 4º Parcela</h4>");
                     table_individual.ajax.url("{{ route('financeiro.individual.pagamento_quarta_parcela') }}").load();
                     $('.button_individual').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
@@ -2461,7 +2517,7 @@
                     $(this).addClass('textoforte-list');
                     limparFormulario();
                 } else if(id_lista == "aguardando_pagamento_5_parcela_individual") {
-                    $('#title_individual').html("<h4>Pagamento 5º Parcela</h4>");
+                    $('#title_individual').html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 5º Parcela</h4>");
                     table_individual.ajax.url("{{ route('financeiro.individual.pagamento_quinta_parcela') }}").load();
                     $('.button_individual').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
@@ -2475,7 +2531,7 @@
                     $(this).addClass('textoforte-list');
                     limparFormulario();
                 } else if(id_lista == "aguardando_pagamento_6_parcela_individual") {
-                    $('#title_individual').html("<h4>Pagamento 6º Parcela</h4>");
+                    $('#title_individual').html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 6º Parcela</h4>");
                     table_individual.ajax.url("{{ route('financeiro.individual.pagamento_sexta_parcela') }}").load();
                     $('.button_individual').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar_individual">Cancelar</button>'+
@@ -2496,7 +2552,7 @@
             $("ul#grupo_finalizados li.coletivo").on('click',function(){
                 let id_lista = $(this).attr('id');
                 if(id_lista == "finalizado_coletivo") {
-                    $('#title_coletivo_por_adesao_table').html("<h4>Finalizado</h4>");
+                    $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Finalizado</h4>");
                     table.ajax.url("{{ route('financeiro.coletivo.finalizado') }}").load();
                     $('.buttons').empty().html();
                     $(".container_edit").addClass('ocultar');
@@ -2507,7 +2563,7 @@
                     adicionarReadonly();
                     limparFormulario();
                 } else if(id_lista == "cancelado_coletivo") {
-                    $('#title_coletivo_por_adesao_table').html("<h4>Cancelado</h4>");
+                    $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Cancelado</h4>");
                     table.ajax.url("{{ route('financeiro.coletivo.cancelado') }}").load();
                     $('.buttons').empty().html();
                     $(".container_edit").addClass('ocultar');
@@ -2525,7 +2581,7 @@
             $("ul#grupo_finalizados_individual li.individual").on('click',function(){
                 let id_lista = $(this).attr('id');
                 if(id_lista == "finalizado_individual") {
-                    $('#title_individual').html("<h4>Finalizado</h4>");
+                    $('#title_individual').html("<h4 style='font-size:1em;margin-top:10px;'>Finalizado</h4>");
                     table_individual.ajax.url("{{ route('financeiro.individual.finalizado') }}").load();
                     $('.button_individual').empty().html('');
                     $(".container_edit").addClass('ocultar');
@@ -2536,7 +2592,7 @@
                     adicionarReadonly();
                     limparFormulario();
                 } else if(id_lista == "cancelado_individual") {
-                    $('#title_individual').html("<h4>Cancelado</h4>");
+                    $('#title_individual').html("<h4 style='font-size:1em;margin-top:10px;'>Cancelado</h4>");
                     table_individual.ajax.url("{{ route('financeiro.individual.cancelado') }}").load();
                     $('.button_individual').empty().html('');
                     $(".container_edit").addClass('ocultar');
@@ -2553,7 +2609,7 @@
             $("ul#grupo_finalizados_empresarial li.empresarial").on('click',function(){
                 let id_lista = $(this).attr('id');                
                 if(id_lista == "aguardando_finalizado_empresarial") {
-                    $('#title_empresarial').html("<h4>Finalizado</h4>");
+                    $('#title_empresarial').html("<h4 style='font-size:1em;margin-top:10px;'>Finalizado</h4>");
                     table_individual.ajax.url("{{ route('financeiro.individual.finalizado') }}").load();
                     $('.button_individual').empty().html('');
                     $(".container_edit").addClass('ocultar');
@@ -2563,7 +2619,7 @@
                     //adicionarReadonly();
                     //limparFormulario();
                 } else if(id_lista == "aguardando_cancelado_empresarial") {
-                    $('#title_empresarial').html("<h4>Cancelado</h4>");
+                    $('#title_empresarial').html("<h4 style='font-size:1em;margin-top:10px;'>Cancelado</h4>");
                     table_individual.ajax.url("{{ route('financeiro.individual.cancelado') }}").load();
                     $('.button_individual').empty().html('');
                     $(".container_edit").addClass('ocultar');
@@ -2581,7 +2637,7 @@
             $("ul#listar_empresarial li.empresarial").on('click',function(){
                 let id_lista = $(this).attr('id');
                 if(id_lista == "aguardando_em_analise_empresarial") {
-                    $("#title_empresarial").html("<h4>Em Análise</h4>");
+                    $("#title_empresarial").html("<h4 style='font-size:1em;margin-top:10px;'>Em Análise</h4>");
                     $('.button_empresarial').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 excluir_empresarial">Excluir</button>'+
                         '<button class="btn btn-success w-50 next_empresarial">Conferido</button>'
@@ -2593,7 +2649,7 @@
                     $(this).addClass('textoforte-list');    
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.analise")}}').load();
                 } else if(id_lista == "aguardando_pagamento_1_parcela_empresarial") {
-                    $("#title_empresarial").html("<h4>Pagamento 1º Parcela</h4>");
+                    $("#title_empresarial").html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 1º Parcela</h4>");
                     $('.button_empresarial').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar_empresarial">Cancelar</button>'+
                         '<button class="btn btn-success w-50 emissao_boleto next_empresarial">1º Parcela Paga</button>'
@@ -2604,7 +2660,7 @@
                     $(this).addClass('textoforte-list');    
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.primeiraparcela")}}').load();
                 } else if(id_lista == "aguardando_pagamento_2_parcela_empresarial") {
-                    $("#title_empresarial").html("<h4>Pagamento 2º Parcela</h4>");
+                    $("#title_empresarial").html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 2º Parcela</h4>");
                     $('.button_empresarial').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar_empresarial">Cancelar</button>'+
                         '<button class="btn btn-success w-50 emissao_boleto next_empresarial">2º Parcela Paga</button>'
@@ -2615,7 +2671,7 @@
                     $(this).addClass('textoforte-list');        
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.segundaparcela")}}').load();
                 } else if(id_lista == "aguardando_pagamento_3_parcela_empresarial") {
-                    $("#title_empresarial").html("<h4>Pagamento 3º Parcela</h4>");
+                    $("#title_empresarial").html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 3º Parcela</h4>");
                     $('.button_empresarial').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar_empresarial">Cancelar</button>'+
                         '<button class="btn btn-success w-50 emissao_boleto next_empresarial">3º Parcela Paga</button>'
@@ -2626,7 +2682,7 @@
                     $(this).addClass('textoforte-list');        
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.terceiraparcela")}}').load();
                 } else if(id_lista == "aguardando_pagamento_4_parcela_empresarial") {
-                    $("#title_empresarial").html("<h4>Pagamento 4º Parcela</h4>");
+                    $("#title_empresarial").html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 4º Parcela</h4>");
                     $('.button_empresarial').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar_empresarial">Cancelar</button>'+
                         '<button class="btn btn-success w-50 emissao_boleto next_empresarial">4º Parcela Paga</button>'
@@ -2637,7 +2693,7 @@
                     $(this).addClass('textoforte-list');
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.quartaparcela")}}').load();
                 } else if(id_lista == "aguardando_pagamento_5_parcela_empresarial") {
-                    $("#title_empresarial").html("<h4>Pagamento 5º Parcela</h4>");
+                    $("#title_empresarial").html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 5º Parcela</h4>");
                     $('.button_empresarial').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar_empresarial">Cancelar</button>'+
                         '<button class="btn btn-success w-50 emissao_boleto next_empresarial">5º Parcela Paga</button>'
@@ -2648,7 +2704,7 @@
                     $(this).addClass('textoforte-list');
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.quintaparcela")}}').load();
                 } else if(id_lista == "aguardando_pagamento_6_parcela_empresarial") {
-                    $("#title_empresarial").html("<h4>Pagamento 6º Parcela</h4>");
+                    $("#title_empresarial").html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 6º Parcela</h4>");
                     $('.button_empresarial').empty().html(
                         '<button class="btn btn-danger w-50 mr-2 cancelar_empresarial">Cancelar</button>'+
                         '<button class="btn btn-success w-50 emissao_boleto next_empresarial">6º Parcela Paga</button>'
@@ -2659,12 +2715,12 @@
                     $(this).addClass('textoforte-list');
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.sextaparcela")}}').load();
                 } else if(id_lista == "aguardando_finalizado_empresarial") {
-                    $("#title_empresarial").html("<h4>Finalizado</h4>");
+                    $("#title_empresarial").html("<h4 style='font-size:1em;margin-top:10px;'>Finalizado</h4>");
                     $('.button_empresarial').empty().html('');  
                     $("#all_pendentes_empresarial").removeClass('textoforte-list');              
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.finalizado")}}').load();
                 } else if(id_lista == "aguardando_cancelado_empresarial") {
-                    $("#title_empresarial").html("<h4>Cancelado</h4>");
+                    $("#title_empresarial").html("<h4 style='font-size:1em;margin-top:10px;'>Cancelado</h4>");
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.cancelado")}}').load();
                 } else {
 
@@ -2868,14 +2924,14 @@
         #coluna_direita ul {list-style: none;margin: 0;padding: 0;}
         #coluna_direita li {color:#FFF;}
         .coluna-right {flex-basis:30%;flex-wrap: wrap;border-radius:5px;height:720px;}
-        .container_div_info {background-color:rgba(0,0,0,1);position:absolute;width:500px;right:0px;top:57px;min-height: 700px;display: none;z-index: 1;color: #FFF;}
+        /* .container_div_info {background-color:rgba(0,0,0,1);position:absolute;width:500px;right:0px;top:57px;min-height: 700px;display: none;z-index: 1;color: #FFF;} */
+        .container_div_info {display:flex;position:absolute;flex-basis:30%;right:0px;top:57px;display: none;z-index: 1;color: #FFF;}
         #padrao {width:50px;background-color:#FFF;color:#000;}
         .buttons {display: flex;}
         .button_individual {display:flex;}
         .button_empresarial {display: flex;}
 
-        th { font-size: 0.9em !important;}
-        td { font-size: 0.9em !important;}
+        
         
         .dt-right {text-align: right !important;}
         .dt-center {text-align: center !important;}
@@ -2898,7 +2954,8 @@
 
         #tabela_empresarial_filter input[type='search'] {background-color: #FFF !important;}
 
-
+        th { font-size: 0.9em !important; }
+        td { font-size: 0.8em !important; }       
 
 
 

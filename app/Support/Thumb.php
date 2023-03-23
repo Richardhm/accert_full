@@ -8,7 +8,6 @@
         public function __construct()
         {
             $this->cropper = new Cropper("../public/storage/cache");
-            
         }
 
         public function makes(string $uri,int $width,int $height=null)

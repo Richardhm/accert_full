@@ -32,6 +32,11 @@ class CreateContratoEmpresarialTable extends Migration
             $table->decimal('valor_plano',10,2);
             $table->decimal('valor_total',10,2);
 
+            $table->decimal('desconto_corretora',10,2)->nullable();
+            $table->decimal('desconto_corretor',10,2)->nullable();
+
+
+
             $table->date('vencimento_boleto');
             $table->decimal('valor_boleto',10,2);            
             $table->string('codigo_cliente');

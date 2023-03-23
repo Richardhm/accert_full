@@ -1447,9 +1447,10 @@ class ContratoController extends Controller
 
 
     public function store(Request $request)
-    {
-        
-        $valor = str_replace([".",","],["","."],$request->valor);        
+    {  
+        $desconto_corretor = $request->desconto_corretor; 
+        $desconto_corretora = $request->desconto_corretora; 
+        $valor = str_replace([".",","],["","."],$request->valor_adesao);        
         $cliente = new Cliente();
         $cliente->nome = $request->nome_coletivo;
         $cliente->user_id = $request->usuario_coletivo_switch;
@@ -1499,12 +1500,10 @@ class ContratoController extends Controller
         $contrato->valor_plano = $valor_plano;
         $contrato->coparticipacao = ($request->coparticipacao_coletivo == "sim" ? 1 : 0);
         $contrato->odonto = ($request->odonto_coletivo == "sim" ? 1 : 0);
-
+        $contrato->created_at = $request->created_at;
+        $contrato->desconto_corretor = $desconto_corretor;
+        $contrato->desconto_corretora = $desconto_corretora;
         $contrato->save();
-
-        
-
-        
         $totalVidas = 0;
         $faixas = $request->faixas_etarias;
         foreach($faixas as $k => $v) {
@@ -1517,7 +1516,6 @@ class ContratoController extends Controller
                 $totalVidas += $v;
             } 
         }       
-
         $comissao = new Comissoes();
         $comissao->contrato_id = $contrato->id;
         // $comissao->cliente_id = $contrato->cliente_id;
@@ -1566,26 +1564,26 @@ class ContratoController extends Controller
         }
 
         // /** Comissao Corretora */   
-        // $comissoes_configurada_corretora = ComissoesCorretoraConfiguracoes::where("administradora_id",$request->administradora)
-        // ->where('plano_id',3)
-        // ->where('tabela_origens_id',$request->tabela_origem)
-        // ->get();
-        // $comissoes_corretora_contagem=0;
-        // if(count($comissoes_configurada_corretora)>=1) {
-        //     foreach($comissoes_configurada_corretora as $cc) {                
-        //         $comissaoCorretoraLancadas = new ComissoesCorretoraLancadas();
-        //         $comissaoCorretoraLancadas->comissoes_id = $comissao->id;            
-        //         $comissaoCorretoraLancadas->parcela = $cc->parcela;
-        //         if($comissoes_corretora_contagem == 0) {
-        //             $comissaoCorretoraLancadas->data = date('Y-m-d',strtotime($request->data_boleto));
-        //         } else {
-        //             $comissaoCorretoraLancadas->data = date("Y-m-d",strtotime($request->data_boleto."+{$comissoes_corretora_contagem}month"));
-        //         }
-        //         $comissaoCorretoraLancadas->valor = ($valor * $cc->valor) / 100;
-        //         $comissaoCorretoraLancadas->save();
-        //         $comissoes_corretora_contagem++;
-        //     }
-        // }
+        $comissoes_configurada_corretora = ComissoesCorretoraConfiguracoes::where("administradora_id",$request->administradora)
+        ->where('plano_id',3)
+        ->where('tabela_origens_id',$request->tabela_origem)
+        ->get();
+        $comissoes_corretora_contagem=0;
+        if(count($comissoes_configurada_corretora)>=1) {
+            foreach($comissoes_configurada_corretora as $cc) {                
+                $comissaoCorretoraLancadas = new ComissoesCorretoraLancadas();
+                $comissaoCorretoraLancadas->comissoes_id = $comissao->id;            
+                $comissaoCorretoraLancadas->parcela = $cc->parcela;
+                if($comissoes_corretora_contagem == 0) {
+                    $comissaoCorretoraLancadas->data = date('Y-m-d',strtotime($request->data_boleto));
+                } else {
+                    $comissaoCorretoraLancadas->data = date("Y-m-d",strtotime($request->data_boleto."+{$comissoes_corretora_contagem}month"));
+                }
+                $comissaoCorretoraLancadas->valor = ($valor * $cc->valor) / 100;
+                $comissaoCorretoraLancadas->save();
+                $comissoes_corretora_contagem++;
+            }
+        }
         
 
         // $premiacao = new Premiacoes();
@@ -1658,10 +1656,6 @@ class ContratoController extends Controller
         //     }
         // }   
 
-
-
-
-
         if($request->tipo_cadastro == "administrador_cadastro") {
             return "contratos";
         } else {
@@ -1691,11 +1685,12 @@ class ContratoController extends Controller
 
     public function storeEmpresarial(Request $request)
     {
+        
         $dados = $request->all();
-        
-        
-
         $dados['taxa_adesao'] = str_replace([".",","],["","."],$request->taxa_adesao);
+        $dados['desconto_corretor'] = str_replace([".",","],["","."],$request->desconto_corretor);
+        $dados['desconto_corretora'] = str_replace([".",","],["","."],$request->desconto_corretora);
+        
         $dados['valor_plano'] = str_replace([".",","],["","."],$request->valor_plano);
         $dados['valor_plano_saude'] = str_replace([".",","],["","."],$request->valor_plano_saude);
         $dados['valor_plano_odonto'] = str_replace([".",","],["","."],$request->valor_plano_odonto);
@@ -1703,19 +1698,10 @@ class ContratoController extends Controller
         $dados['valor_total'] = $dados['valor_plano'] + $dados['taxa_adesao'];
         $dados['valor_boleto'] = str_replace([".",","],["","."],$request->valor_boleto);  
         $dados['data_boleto'] = date('Y-m-d',strtotime($request->data_boleto)); 
-
+        $dados['created_at'] = $request->created_at; 
         $dados['financeiro_id'] = 1;
-
         $valor = $dados['valor_plano'];
-      
-        
-        
-        
-
-
         $contrato = ContratoEmpresarial::create($dados);
-
-
         $comissao = new Comissoes();
         $comissao->contrato_empresarial_id = $contrato->id;
         // $comissao->cliente_id = $contrato->cliente_id;
@@ -1735,7 +1721,6 @@ class ContratoController extends Controller
         ->where("user_id",$request->user_id)
         ->where("tabela_origens_id",$request->tabela_origens_id)
         ->get();
-
         
 
         $date = new \DateTime(now());

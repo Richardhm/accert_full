@@ -86,7 +86,7 @@
         		<!-- Primeiro Linha -->            
 				<div class="d-flex">
 									
-					<div style="flex-basis:20%;">
+					<div style="flex-basis:15%;">
 	                    <div>
 	                        <span for="responsavel" class="text-white" style="font-size:0.875em;">Responsável:</span>
 	                        <input type="text" name="responsavel" id="responsavel" class="form-control  form-control-sm" placeholder="Responsável" required>         
@@ -107,7 +107,7 @@
 	                    </div>
 	                </div>
 
-	                <div style="flex-basis:20%;margin:0% 1%;">
+	                <div style="flex-basis:15%;margin:0% 1%;">
 	                    <div>
 	                        <span for="email" class="text-white" style="font-size:0.875em;">Email:</span>
 	                        <input type="text" name="email" id="email" class="form-control form-control-sm" placeholder="Email" required>         
@@ -131,7 +131,7 @@
 	                    </div>
 	                </div>
 
-	                <div style="flex-basis:15%;">
+	                <div style="flex-basis:15%;margin-right:1%;">
 	                    <div>
 	                        <span for="plano_contrado" class="text-white" style="font-size:0.875em;">Plano Contratado:</span>
 	                        <select name="plano_contrado" id="plano_contrado" class="form-control form-control-sm">
@@ -143,7 +143,31 @@
 	                        </select>
 	                    </div>
 	                </div>
+
+                    <div style="flex-basis:8%;">
+	                    <div>
+	                        <span for="cidade" class="text-white" style="font-size:0.875em;">Data:</span>
+	                        <input type="date" name="created_at" id="created_at" value="<?= date('Y-m-d'); ?>" class="form-control form-control-sm">
+	                    </div>
+	                </div>
+
+
+
+
+
+
+
 				</div>
+
+                <!-- <div style="flex-basis:8%;">   
+                    <div>
+                        <span for="created_at" class="text-white" style="font-size:0.875em;">Data de Cadastro:</span>
+                        <input type="date" name="created_at" id="created_at" value="">
+                    </div>    
+                </div> -->
+
+                    
+
 				<!-- Fim Primeiro Linha -->            
 
 
@@ -152,47 +176,57 @@
             <div>
             	<div class="d-flex" style="padding:0;margin:8px 0;"> 
 
-                <div class="form-group" style="flex-basis:12%;margin-right:1%;">
+                <div class="form-group" style="flex-basis:9%;margin-right:1%;">
                     <span for="valor_plano_saude" class="text-white" style="font-size:0.875em;">Valor Plano Saúde:</span>
                     <input type="text" name="valor_plano_saude" required id="valor_plano_saude" value="{{old('valor_plano_saude')}}" placeholder="Valor Plano Saúde" class="form-control form-control-sm" value="">                    
                 </div>                
 
-                <div class="form-group" style="flex-basis:12%;margin-right:1%;">
+                <div class="form-group" style="flex-basis:9%;margin-right:1%;">
                     <span for="valor_plano_odonto" class="text-white" style="font-size:0.875em;">Valor Plano Odonto:</span>
                     <input type="text" name="valor_plano_odonto" required id="valor_plano_odonto" value="{{old('valor_plano_odonto')}}" placeholder="Valor Plano Odonto" class="form-control form-control-sm form-control-sm" value="">                    
                 </div>
 
-                <div class="form-group" style="flex-basis:12%;margin-right:1%;">
+                <div class="form-group" style="flex-basis:9%;margin-right:1%;">
+                    <span for="desconto_corretor" class="text-white" style="font-size:0.875em;">Desconto Corretor:</span>
+                    <input type="text" name="desconto_corretor" id="desconto_corretor" value="{{old('desconto_corretor')}}" placeholder="Desconto Corretor" class="form-control form-control-sm form-control-sm" value="">                    
+                </div>
+
+                <div class="form-group" style="flex-basis:9%;margin-right:1%;">
+                    <span for="desconto_corretora" class="text-white" style="font-size:0.875em;">Desconto Corretora:</span>
+                    <input type="text" name="desconto_corretora" id="desconto_corretora" value="{{old('desconto_corretora')}}" placeholder="Desconto Corretora" class="form-control form-control-sm form-control-sm" value="">                    
+                </div>
+
+                <div class="form-group" style="flex-basis:7%;margin-right:1%;">
                     <span for="taxa_adesao" class="text-white" style="font-size:0.875em;">Taxa Adesão:</span>
                     <input type="text" name="taxa_adesao" required id="taxa_adesao" value="{{old('taxa_adesao')}}" placeholder="Taxa Adesão" class="form-control form-control-sm" value="">                    
                 </div>
 
-                <div class="form-group" style="flex-basis:12%;margin-right:1%;">
+                <div class="form-group" style="flex-basis:7%;margin-right:1%;">
                     <span for="valor_boleto" class="text-white" style="font-size:0.875em;">Valor Boleto:</span>
                     <input type="text" name="valor_boleto" required id="valor_boleto" value="{{old('valor_boleto')}}" placeholder="Valor Boleto" class="form-control form-control-sm" value="">                    
                 </div>
 
-                <div class="form-group" style="flex-basis:12%;margin-right:1%;">
+                <div class="form-group" style="flex-basis:5%;margin-right:1%;">
                     <span for="vencimento_boleto" class="text-white" style="font-size:0.875em;">Vencimento:</span>
                     <input type="date" name="vencimento_boleto" required id="vencimento_boleto" value="{{old('vencimento_boleto')}}" placeholder="Vencimento Boleto" class="form-control form-control-sm" value="">                    
                 </div>
 
-                <div class="form-group" style="flex-basis:10%;margin-right:1%;">
+                <div class="form-group" style="flex-basis:8%;margin-right:1%;">
                     <span for="codigo_saude" class="text-white" style="font-size:0.875em;">Codigo Saude:</span>
                     <input type="text" name="codigo_saude" id="codigo_saude" value="{{old('codigo_saude')}}" placeholder="Codigo Saude" class="form-control form-control-sm" value="">                    
                 </div>
 
-                <div class="form-group" style="flex-basis:10%;margin-right:1%;">
+                <div class="form-group" style="flex-basis:8%;margin-right:1%;">
                     <span for="codigo_odonto" class="text-white" style="font-size:0.875em;">Codigo Odonto:</span>
                     <input type="text" name="codigo_odonto" id="codigo_odonto" value="{{old('codigo_odonto')}}" placeholder="Codigo Odonto" class="form-control form-control-sm" value="">                    
                 </div>
                 
-                <div class="form-group" style="flex-basis:10%;margin-right:1%;">
+                <div class="form-group" style="flex-basis:8%;margin-right:1%;">
                     <span for="senha_cliente" class="text-white" style="font-size:0.875em;">Senha Cliente:</span>
                     <input type="text" name="senha_cliente" id="senha_cliente" value="{{old('senha_cliente')}}" class="form-control form-control-sm" placeholder="Senha Cliente">
                 </div>
                 
-                <div style="flex-basis:11%;">
+                <div style="flex-basis:5%;">
                     <div class="form-group">
                         <span for="data_boleto" class="text-white" style="font-size:0.875em;">Data 1º Boleto:</span>
                         <input type="date" name="data_boleto" required id="data_boleto" value="{{old('data_boleto')}}" class="form-control form-control-sm" placeholder="Data Boleto">
@@ -249,6 +283,10 @@
 
             $('#telefone').mask('(00) 0000-0000');
             $('#celular').mask('(00) 0 0000-0000');
+            $('#taxa_adesao').mask("#.##0,00", {reverse: true});
+
+            $('#desconto_corretor').mask("#.##0,00", {reverse: true});
+            $('#desconto_corretora').mask("#.##0,00", {reverse: true});
             $('#taxa_adesao').mask("#.##0,00", {reverse: true});
 
          //    $('#valor_plano').mask("#.##0,00", {reverse: true},translation: {

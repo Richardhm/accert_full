@@ -38,16 +38,9 @@
             @endforeach
         @endif
 
-
-
-
-
         <form action="{{route('profile.setUser')}}" method="post" enctype="multipart/form-data">
-            @csrf
-            
+            @csrf            
             <input type="hidden" name="user_id" id="user_id" value="{{$user->id}}">
-
-
             <div class="form-row">
                 <div class="col-md-6 mb-3">
                     <label for="name">Nome*</label>

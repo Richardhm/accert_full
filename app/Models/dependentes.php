@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Dependentes extends Model
 {
     use HasFactory;
+
+    protected $fillable = ["cliente_id","nome","cpf"];
+
+
 }

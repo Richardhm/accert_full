@@ -10,11 +10,11 @@
 @stop
 
 @section('content_header')
-    <div style="display:flex;">
+    <!-- <div style="display:flex;">
         <p class="text-white link-down">Dashboard</p>
         <p class="text-white grafico link-down mx-2">Grafico</p>
         <p class="text-white anual link-down">Anual</p>
-    </div>    
+    </div>     -->
 @stop
 
 @section('content')
@@ -22,10 +22,10 @@
     <section class="content">
 
         <!----------HEADER DASHBOARD----------->
-        <section class="header mb-3">
+        <section class="header mb-1">
             <!-----TABLE----->
-            <div class="tabela" style="margin:0;padding:0;">
-                <table class="table table-sm table-borderless w-100" style="background-color:rgba(0,0,0,0.5);color:white;margin-bottom:0rem;border-radius:5px;">
+            <div class="tabela" style="margin:0;padding:0;background-color:#123449;border-radius:5px;">
+                <table class="table table-sm table-borderless w-100" style="color:white;margin-bottom:0rem;border-radius:5px;">
                     <thead>
                         <tr class="text-center border-bottom">
                             <th colspan="5">Novembro / 2022</th>
@@ -67,7 +67,7 @@
             <!-----FIM TABLE----->
 
             <!-----GRAFICOS--------->
-            <div class="graficos" style="display:flex;align-items:center;background-color:rgba(0,0,0,0.6);color:white;border-radius:5px;">
+            <div class="graficos" style="display:flex;align-items:center;background-color:#123449;color:white;border-radius:5px;">
                 <div id="chart_div" style="color:#FFF;display:flex;justify-content:space-between;"></div>
             </div>
             <!-----FIM GRAFICOS----->
@@ -75,14 +75,13 @@
             <!-----CARDS--------->
             <div class="cards">
 
-                <div class="box-body" style="flex-basis:48%;padding:5px;background-color:rgba(0,0,0,0.5);color:#FFF;border-radius:5px;">
+                <div class="box-body" style="flex-basis:48%;padding:5px;background-color:#123449;color:#FFF;border-radius:5px;">
                     <h5 class="text-center border-bottom">Vendas Mês</h5>
                     <div>
                         <h6></h6>
-                        
                     </div>
                 </div>
-                <div class="box-body" style="flex-basis:48%;padding:5px;background-color:rgba(0,0,0,0.5);color:#FFF;border-radius:5px;">
+                <div class="box-body" style="flex-basis:48%;padding:5px;background-color:#123449;color:#FFF;border-radius:5px;">
                     <h5 class="text-center border-bottom">Cancelados Mês</h5>     
                     <div id="cancelados">                       
                         <div class="boxer">
@@ -109,10 +108,10 @@
 
         <!---------------LEMBRETES-------------------------->
 
-            <div style="display:flex;flex-basis:100%;justify-content: space-between;box-sizing:border-box;">
+            <!-- <div style="display:flex;flex-basis:100%;justify-content: space-between;box-sizing:border-box;"> -->
 
                 
-                    <a href="/admin/clientes/pf" class="conteudo"> 
+                    <!-- <a href="/admin/clientes/pf" class="conteudo"> 
                                             
                         <div class="conteudo_left">
                                                     
@@ -130,9 +129,9 @@
                             <p style="font-size:1.4em;">10</p>
                         </div>
 
-                    </a>
+                    </a> -->
 
-                    <a href="/admin/clientes/pf?ac=tarefa_atrasada" class="conteudo">                       
+                    <!-- <a href="/admin/clientes/pf?ac=tarefa_atrasada" class="conteudo">                       
                         
                         <div class="conteudo_left">
                             <div class="conteudo_left_icone">
@@ -148,9 +147,9 @@
                             <p style="font-size:1.4em;">00</p>
                         </div>
 
-                    </a>    
+                    </a>     -->
 
-                    <a href="/admin/leads/pessoa_fisica" class="conteudo">                       
+                    <!-- <a href="/admin/leads/pessoa_fisica" class="conteudo">                       
                         <div class="conteudo_left">
                             <div class="conteudo_left_icone">
                                 <i class="fas fa-calendar-day" style="font-size:1.8em;color:rgb(255,165,0);"></i>
@@ -163,10 +162,10 @@
                         <div class="conteudo_right">
                             <p style="font-size:1.4em;">0</p>
                         </div>
-                    </a>
+                    </a> -->
 
 
-                    <a href="/admin/leads/pessoa_fisica" class="conteudo">                       
+                    <!-- <a href="/admin/leads/pessoa_fisica" class="conteudo">                       
                         <div class="conteudo_left">
                             <div class="conteudo_left_icone">
                                 <i class="fas fa-calendar-times" style="font-size:1.8em;color:rgb(255,165,0);"></i>
@@ -179,13 +178,13 @@
                         <div class="conteudo_right">
                             <p style="font-size:1.4em;">0</p>
                         </div>
-                    </a>
-            </div>
+                    </a> -->
+            <!-- </div> -->
 
-            <div style="display:flex;flex-basis:100%;justify-content: space-between;box-sizing:border-box;margin-top:10px;">
+            <!-- <div style="display:flex;flex-basis:100%;justify-content: space-between;box-sizing:border-box;margin-top:10px;"> -->
 
                 
-                    <a href="/admin/leads/pessoa_fisica?ac=atendimento_iniciado" class="conteudo">                       
+                    <!-- <a href="/admin/leads/pessoa_fisica?ac=atendimento_iniciado" class="conteudo">                       
                         <div class="conteudo_left">
                                                     
                             <div class="conteudo_left_icone">
@@ -201,9 +200,9 @@
                         <div class="conteudo_right">
                             <p style="font-size:1.4em;">00</p>
                         </div>
-                    </a>
+                    </a> -->
 
-                    <a href="/admin/leads/pessoa_fisica?ac=atendimento_iniciado" class="conteudo">                       
+                    <!-- <a href="/admin/leads/pessoa_fisica?ac=atendimento_iniciado" class="conteudo">                       
                         
                         <div class="conteudo_left">
                             <div class="conteudo_left_icone">
@@ -219,9 +218,9 @@
                             <p style="font-size:1.4em;">00</p>
                         </div>
 
-                    </a>    
+                    </a>     -->
 
-                    <a href="/admin/leads/pessoa_fisica?ac=prospeccaohj" class="conteudo">                       
+                    <!-- <a href="/admin/leads/pessoa_fisica?ac=prospeccaohj" class="conteudo">                       
                         <div class="conteudo_left">
                             <div class="conteudo_left_icone">
                                 <i class="fas fa-thumbs-up" style="font-size:1.8em;color:rgb(255,165,0);"></i>
@@ -233,11 +232,11 @@
                         </div>             
                         <div class="conteudo_right">
                             <p style="font-size:1.4em;">00</p>
-                        </div>
-                    </a>
+                        </div> 
+                    </a>-->
 
 
-                    <a href="/admin/leads/pessoa_fisica?ac=prospeccaoat" class="conteudo">                       
+                    <!-- <a href="/admin/leads/pessoa_fisica?ac=prospeccaoat" class="conteudo">                       
                         <div class="conteudo_left">
                             <div class="conteudo_left_icone">
                                 <i class="fas fa-thumbs-down" style="font-size:1.8em;color:rgb(255,165,0);"></i>
@@ -250,11 +249,11 @@
                         <div class="conteudo_right">
                             <p style="font-size:1.4em;">00</p>
                         </div>
-                    </a>
-            </div>
+                    </a> -->
+            <!-- </div> -->
             
-            <div style="display:flex;flex-basis:100%;justify-content: space-between;box-sizing:border-box;margin-top:10px;">
-                    <a href="/admin/clientes/pf?ac=interessado_frio" class="conteudo">                       
+            <!-- <div style="display:flex;flex-basis:100%;justify-content: space-between;box-sizing:border-box;margin-top:10px;"> -->
+                    <!-- <a href="/admin/clientes/pf?ac=interessado_frio" class="conteudo">                       
                         <div class="conteudo_left">
                             <div class="conteudo_left_icone">
                                 <i class="fas fa-star fa-xs" style="color:rgb(255,165,0);font-size:1em;"></i>
@@ -266,9 +265,9 @@
                         <div class="conteudo_right">
                             <p style="font-size:1.4em;">00</p>
                         </div>
-                    </a>
+                    </a> -->
 
-                    <a href="/admin/clientes/pf?ac=interessado_morno" class="conteudo">                       
+                    <!-- <a href="/admin/clientes/pf?ac=interessado_morno" class="conteudo">                       
                         
                         <div class="conteudo_left">
                             <div class="conteudo_left_icone">
@@ -284,9 +283,9 @@
                             <p style="font-size:1.4em;">00</p>
                         </div>
 
-                    </a>    
+                    </a>     -->
 
-                    <a href="/admin/clientes/pf?ac=interessado_quente" class="conteudo">                       
+                    <!-- <a href="/admin/clientes/pf?ac=interessado_quente" class="conteudo">                       
                         <div class="conteudo_left">
                             <div class="conteudo_left_icone">
                                 <i class="fas fa-star fa-xs" style="color:rgb(255,165,0);font-size:1em;"></i>
@@ -295,16 +294,15 @@
                             </div>
                             <div class="conteudo_left_descricao">
                                 <span>Interessado</span>
-                                
-                            </div>
+                                                  </div>
                         </div>             
                         <div class="conteudo_right">
                             <p style="font-size:1.4em;">00</p>
                         </div>
-                    </a>
+                    </a> -->
 
 
-                    <a href="/admin/clientes/pf?ac=aguardando_documentacao" class="conteudo">                       
+                    <!-- <a href="/admin/clientes/pf?ac=aguardando_documentacao" class="conteudo">                       
                         <div class="conteudo_left">
                             <div class="conteudo_left_icone">
                                 <i class="fas fa-file-medical-alt" style="font-size:1.8em;color:rgb(255,165,0);"></i>
@@ -317,15 +315,15 @@
                         <div class="conteudo_right">
                             <p style="font-size:1.4em;">00</p>
                         </div>
-                    </a>
-            </div>
+                    </a> -->
+            <!-- </div> -->
 
             <!-----LINHA 04------>    
             <div class="linha_04">
 
-                <a href="/admin/contratos/pf?ac=aguardando_boleto" class="conteudo">
+                <a href="/admin/contratos/pf?ac=aguardando_boleto" class="conteudo" style="background-color:#123449;">
                     <div style="display:flex;flex-basis:70%;">
-                        <span style="display:flex;font-size:1.3em;border:1px solid rgba(255,255,255,0.1);border-radius:5px;color:rgb(249,179,0);flex-basis:35%;height:62px;align-items:center;justify-content:center;"></span>
+                        <span style="display:flex;font-size:1.3em;border:1px solid rgba(255,255,255,0.1);border-radius:5px;color:rgb(249,179,0);flex-basis:35%;height:62px;align-items:center;justify-content:center;">0</span>
                         <div style="display:flex;flex-direction:column;flex-basis:65%;margin-left:10px;">
                             <span>Aguardando</span>
                             <span>Boleto</span>
@@ -337,7 +335,7 @@
                     </div>
                 </a>
                 
-                <a href="/admin/contratos/pf?ac=pagamento_adesao" class="conteudo">
+                <a href="/admin/contratos/pf?ac=pagamento_adesao" class="conteudo" style="background-color:#123449;">
                     <div style="display:flex;flex-basis:70%;">
                         <div style="display:flex;font-size:1.3em;border:1px solid rgba(255,255,255,0.1);border-radius:5px;color:rgb(249,179,0);flex-basis:35%;height:62px;align-items:center;justify-content:center;">0</div>
                         <div style="display:flex;flex-direction:column;flex-basis:65%;margin-left:10px;">
@@ -351,9 +349,9 @@
                     </div>
                 </a>
 
-                <a href="/admin/contratos/pf?ac=pagamento_vigencia" class="conteudo">
+                <a href="/admin/contratos/pf?ac=pagamento_vigencia" class="conteudo" style="background-color:#123449;">
                     <div style="display:flex;flex-basis:70%;">
-                    <div style="display:flex;font-size:1.3em;border:1px solid rgba(255,255,255,0.1);border-radius:5px;color:rgb(249,179,0);flex-basis:35%;height:62px;align-items:center;justify-content:center;"></div>
+                    <div style="display:flex;font-size:1.3em;border:1px solid rgba(255,255,255,0.1);border-radius:5px;color:rgb(249,179,0);flex-basis:35%;height:62px;align-items:center;justify-content:center;">0</div>
                         <div style="display:flex;flex-direction:column;flex-basis:65%;margin-left:10px;">
                             <span>Pagamento</span>
                             <span>Vigência</span>
@@ -365,9 +363,9 @@
                     </div>
                 </a>
 
-                <a href="/admin/contratos/pf?ac=pagamento_individual" class="conteudo">
+                <a href="/admin/contratos/pf?ac=pagamento_individual" class="conteudo" style="background-color:#123449;">
                     <div style="display:flex;flex-basis:70%;">
-                    <div style="display:flex;font-size:1.3em;border:1px solid rgba(255,255,255,0.1);border-radius:5px;color:rgb(249,179,0);flex-basis:35%;height:62px;align-items:center;justify-content:center;"></div>
+                    <div style="display:flex;font-size:1.3em;border:1px solid rgba(255,255,255,0.1);border-radius:5px;color:rgb(249,179,0);flex-basis:35%;height:62px;align-items:center;justify-content:center;">0</div>
                         <div style="display:flex;flex-direction:column;flex-basis:65%;margin-left:10px;">
                             <span>Pagamento</span>
                             <span>Individual</span>
@@ -387,7 +385,7 @@
             <div style="display:flex;flex-basis:100%;justify-content: space-between;box-sizing:border-box;margin-top:10px;">
 
                 
-                    <a href="/admin/contratos/pf?ac=contratos_finalizados" class="conteudo">                       
+                    <a href="/admin/contratos/pf?ac=contratos_finalizados" class="conteudo" style="background-color:#123449;">                       
                         <div class="conteudo_left">
                             <div class="conteudo_left_icone">
                                 <i class="fas fa-file-signature" style="font-size:1.5em;"></i>
@@ -401,7 +399,7 @@
                         </div>                       
                     </a>
 
-                    <a href="/admin/contratos/pf?ac=contratos_finalizados" class="conteudo">                         
+                    <a href="/admin/contratos/pf?ac=contratos_finalizados" class="conteudo" style="background-color:#123449;">                         
                         
                         <div class="conteudo_left">
                             <div class="conteudo_left_icone">
@@ -418,7 +416,7 @@
 
                     </a>    
 
-                    <a href="/admin/leads/pessoa_fisica?ac=sem_contato" class="conteudo">                       
+                    <a href="/admin/leads/pessoa_fisica?ac=sem_contato" class="conteudo" style="background-color:#123449;">                       
                         <div class="conteudo_left">
                             <div class="conteudo_left_icone">
                                 <i class="fas fa-file-signature" style="font-size:1.5em;"></i>
@@ -434,7 +432,7 @@
                     </a>
 
 
-                    <a href="/admin/leads/pessoa_fisica?ac=sem_contato" class="conteudo">                       
+                    <a href="/admin/leads/pessoa_fisica?ac=sem_contato" class="conteudo" style="background-color:#123449;">                       
                         <div class="conteudo_left">
                             <div class="conteudo_left_icone">
                                 <i class="fas fa-user-slash" style="font-size:1.5em;"></i>    
@@ -460,7 +458,7 @@
         <!---------------------DETALHES----------------------------->
         <section class="detalhes">
 
-             <div class="cards-detalhes">
+             <div class="cards-detalhes" style="background-color:#123449;">
                 <h6 class="py-1 px-2 d-flex text-center justify-content-center">Leads no Mês</h6>
                 <h6 class="py-1 px-2 text-center" id="resultado_aqui_leads_mes"></h6>
                 <div class="detalhes-grafico">
@@ -475,7 +473,7 @@
                 </div>
              </div>   
                 
-             <div class="cards-detalhes">
+             <div class="cards-detalhes" style="background-color:#123449;">
                 <h6 class="py-1 px-2 d-flex text-center justify-content-center">
                     <span class="text-center">Contratos no mês</span>
                     
@@ -496,7 +494,7 @@
                 </div>
              </div>   
 
-             <div class="cards-detalhes">
+             <div class="cards-detalhes" style="background-color:#123449;">
                 <h6 class="py-1 px-2 d-flex justify-content-center">
                     <span class="text-center">Venda por plano vidas</span>
                 </h6>
@@ -525,7 +523,7 @@
                 </div>
              </div>   
 
-             <div class="cards-detalhes">
+             <div class="cards-detalhes" style="background-color:#123449;">
                 <h6 class="py-1 px-2 d-flex justify-content-center">
                     <span>Venda plano valor</span>
                 </h6>
@@ -554,10 +552,10 @@
         </section>    
         <!---------------------FIM DETALHES------------------------->    
         <section class="detalhes">
-             <div class="cards-detalhes">
+
+             <div class="cards-detalhes" style="background-color:#123449;">
                 <h6 class="py-1 px-2 d-flex">
                     <span style="flex-basis:66%;">Venda Coletivo Administrador</span>
-                    
                 </h6>
                 <div class="detalhes-grafico">
                     <canvas id="vendas_coletivo_por_administradora" width="300" height="180"
@@ -570,8 +568,9 @@
                   
                    
                 </div>
-             </div>   
-             <div class="cards-detalhes">
+             </div>
+
+             <div class="cards-detalhes" style="background-color:#123449;">
                 <h6 class="py-1 px-2 d-flex">
                     <span style="flex-basis:38%;">Ticket Médio Mês</span>
                     
@@ -601,7 +600,7 @@
                 </div>
              </div>   
 
-             <div class="cards-detalhes">
+             <div class="cards-detalhes" style="background-color:#123449;">
                 <h6 class="py-1 px-2 d-flex">
                     <span style="flex-basis:60%;">Venda por faixa etária mês</span>
                     <span style="flex-basis:40%;text-align:right;" id="resultado_venda_por_faixa_etaria_mes"></span>
@@ -619,7 +618,7 @@
                 </div>
              </div>   
 
-             <div class="cards-detalhes">
+             <div class="cards-detalhes" style="background-color:#123449;">
                 <h6 class="py-1 px-2 d-flex">
                     <span style="flex-basis:50%;">Taxa Conversão</span>
                     <span style="flex-basis:50%;text-align:right;" id="resultado_taxa_conversao"></span>
@@ -638,7 +637,7 @@
         </section>    
     
 
-        <section class="grafico_anual" style="width:100%;height:400px;margin-bottom:20px;margin-top:15px;background-color:rgba(0,0,0,0.5);">
+        <section class="grafico_anual" style="width:100%;height:400px;margin-bottom:20px;margin-top:15px;background-color:#123449;">
             <h3 class="text-center text-white">VENDA ANUAL</h3>
             <canvas id="anual" width="1400" height="350" 
                 data-label-anual="" 

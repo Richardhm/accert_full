@@ -528,7 +528,7 @@ class FinanceiroController extends Controller
                 $query->whereRaw("data_baixa IS NULL");
             })
             //->whereRaw("data_boleto >= date_add(data_boleto, interval 1 day)")
-            ->whereRaw("NOW() > date_add(updated_at, INTERVAL 30 SECOND)")
+            //->whereRaw("NOW() > date_add(updated_at, INTERVAL 30 SECOND)")
             // ->whereRaw("tempo >= now()")
             ->orderBy("id","desc")
             ->get();
@@ -572,7 +572,7 @@ class FinanceiroController extends Controller
                 $query->where("parcela",2);
                 $query->whereRaw("data_baixa IS NULL");
             })
-            ->whereRaw("NOW() > date_add(updated_at, INTERVAL 30 SECOND)")
+            //->whereRaw("NOW() > date_add(updated_at, INTERVAL 30 SECOND)")
             ->orderBy("id","desc")
             ->get();
         return $contratos;
@@ -651,7 +651,7 @@ class FinanceiroController extends Controller
                 $query->whereRaw("data_baixa IS NULL");
                 
             })
-            ->whereRaw("NOW() > date_add(updated_at, INTERVAL 30 SECOND)")
+            //->whereRaw("NOW() > date_add(updated_at, INTERVAL 30 SECOND)")
             ->with('comissao.comissaoAtualFinanceiro')
             ->orderBy("id","desc")
             ->get();
@@ -736,7 +736,7 @@ class FinanceiroController extends Controller
                 $query->whereRaw("data_baixa IS NULL");
             })
             ->with('comissao.comissaoAtualFinanceiro')
-            ->whereRaw("NOW() > date_add(updated_at, INTERVAL 30 SECOND)")
+            //->whereRaw("NOW() > date_add(updated_at, INTERVAL 30 SECOND)")
             //->whereRaw("data_boleto >= date_add(data_boleto, interval 1 day)")
             //->whereRaw("NOW() > date_add(updated_at, INTERVAL 30 SECOND)")
             // ->whereRaw("tempo >= now()")
@@ -823,7 +823,7 @@ class FinanceiroController extends Controller
             })
             ->with('comissao.comissaoAtualFinanceiro')
             //->whereRaw("data_boleto >= date_add(data_boleto, interval 1 day)")
-            ->whereRaw("NOW() > date_add(updated_at, INTERVAL 30 SECOND)")
+            //->whereRaw("NOW() > date_add(updated_at, INTERVAL 30 SECOND)")
             // ->whereRaw("tempo >= now()")
             ->orderBy("id","desc")
             ->get();
@@ -911,7 +911,7 @@ class FinanceiroController extends Controller
             })
             ->with('comissao.comissaoAtualFinanceiro')
             //->whereRaw("data_boleto >= date_add(data_boleto, interval 1 day)")
-            ->whereRaw("NOW() > date_add(updated_at, INTERVAL 30 SECOND)")
+            //->whereRaw("NOW() > date_add(updated_at, INTERVAL 30 SECOND)")
             // ->whereRaw("tempo >= now()")
             ->orderBy("id","desc")
             ->get();
@@ -997,7 +997,7 @@ class FinanceiroController extends Controller
             })
             ->with('comissao.comissaoAtualFinanceiro')
             //->whereRaw("data_boleto >= date_add(data_boleto, interval 1 day)")
-            ->whereRaw("NOW() > date_add(updated_at, INTERVAL 30 SECOND)")
+            //->whereRaw("NOW() > date_add(updated_at, INTERVAL 30 SECOND)")
             // ->whereRaw("tempo >= now()")
             ->orderBy("id","desc")
             ->get();
@@ -2067,15 +2067,39 @@ class FinanceiroController extends Controller
 
             case "responsavel_financeiro_coletivo":
 
-                $dependente->nome = $request->valor;
-                $dependente->save();
+                if(!$dependente) {
+                    
+                    $cad = new Dependentes();
+                    $cad->cliente_id = $request->id_cliente;
+                    $cad->nome = $request->valor;
+                    $cad->save();                  
+                } else {
+                    $dependente->nome = $request->valor;
+                    $dependente->save();
+                }
+
+
+
+
+
+
+                
 
             break;
             
             case "cpf_financeiro_coletivo_view":
 
-                $dependente->cpf = $request->valor;
-                $dependente->save();
+                if(!$dependente) {
+                    $cad = new Dependentes();
+                    $cad->cliente_id = $request->id_cliente;
+                    $cad->cpf = $request->valor;
+                    $cad->save();
+                } else {
+                    $dependente->cpf = $request->valor;
+                    $dependente->save();
+                }
+
+                
 
             break;
             
@@ -2155,9 +2179,10 @@ class FinanceiroController extends Controller
 
     public function editarIndividualCampoIndividualmente(Request $request)
     {
+        
         $cliente = Cliente::where("id",$request->id_cliente)->first();
         $dependente = Dependentes::where('cliente_id',$request->id_cliente)->first();
-
+        
         switch($request->alvo) {
             
             case "cliente":
@@ -2183,14 +2208,14 @@ class FinanceiroController extends Controller
             break;  
 
             case "responsavel_financeiro":
-
+                
                 $dependente->nome = $request->valor;
                 $dependente->save();
 
             break;
             
             case "cpf_financeiro":
-
+                
                 $dependente->cpf = $request->valor;
                 $dependente->save();
 
@@ -2264,7 +2289,7 @@ class FinanceiroController extends Controller
 
             break;
 
-            //$cliente->save();
+            $cliente->save();
 
         }
     }

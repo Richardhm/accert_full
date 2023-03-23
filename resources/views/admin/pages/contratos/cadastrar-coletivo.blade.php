@@ -8,12 +8,89 @@
 
 
 @section('content')
+
+    
+
+
+    <div class="modal fade" id="mudarDataCriacao" tabindex="-1" role="dialog" aria-labelledby="mudarDataCriacaoLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mudarDataCriacaoLabel">Data de Cadastro:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="date" value="<?php echo date('Y-m-d');?>" class="form-control" id="data_criacao">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Salvar Data</button>
+                
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalDiferencaEntreValores" tabindex="-1" role="dialog" aria-labelledby="modalDiferencaEntreValoresLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalDiferencaEntreValoresLabel">Data de Cadastro:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="text-center">
+                <p>Diferença entre valores: <span class="diferenca_entre_valores"></span>   </p>
+            </div>
+
+            <div style="display:flex;justify-content: space-around;">
+                <div style="display:flex;flex-direction: column;">   
+                    <span>Corretora:</span>        
+                    <input type="text" id="desconto_corretora_valores">
+                </div>   
+                <div style="display:flex;flex-direction: column;">
+                    <span>Corretor</span> 
+                    <input type="text" id="desconto_corretor_valores" disabled>
+                </div>
+            </div>
+
+
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Salvar Valores</button>
+                
+            </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
 	
 	<div style="background-color:#123449;border-radius:5px;padding:10px 5px;">
 	
 	<form action="" method="post" class="px-3" name="cadastrar_pessoa_fisica_formulario_modal_coletivo" id="cadastrar_pessoa_fisica_formulario_modal_coletivo">
             @csrf              
             <input type="hidden" name="tipo_cadastro" value="administrador_cadastro">
+
+            <input type="hidden" name="created_at" id="created_at">
+
+            <input type="hidden" name="desconto_corretor" id="desconto_corretor">
+            <input type="hidden" name="desconto_corretora" id="desconto_corretora">
+
             <!-- Primeiro Linha -->
             <div class="d-flex">
                 
@@ -437,6 +514,11 @@
                     return numero; 
             }
 
+
+
+
+
+
             $("#cep_coletivo").change(function(){
                 let cep = $(this).val().replace("-","");
                 const url = `https://viacep.com.br/ws/${cep}/json`;
@@ -470,11 +552,16 @@
 
             $('#valor_plano_saude').mask("#.##0,00", {reverse: true});
             $('#valor_plano_odonto').mask("#.##0,00", {reverse: true});
+            $('#desconto_corretora_valores').mask("#.##0,00", {reverse: true});
+            //$('#desconto_corretor_valores').mask("#.##0,00", {reverse: true});
+
+
+
+
             $('#cpf_individual').mask('000.000.000-00');
             $('#cpf_financeiro_individual_cadastro').mask('000.000.000-00');   
             $('#responsavel_financeiro_coletivo_cadastrar_cpf').mask('000.000.000-00');
             
-
             $('#cpf_coletivo').mask('000.000.000-00');  
             $('#cep_individual').mask('00000-000');          
             $('#cep_coletivo').mask('00000-000');      
@@ -513,7 +600,6 @@
                 let pai = alvo.closest('.content');
                 let input = $(pai).find('input');
                 let newValue = parseInt(input.val()) - 1;
-                
                 if(newValue >= 0) {
                     input.val(newValue);
                 }
@@ -530,7 +616,6 @@
             });
 
             $("body").find('form[name="cadastrar_pessoa_fisica_formulario_modal_coletivo"]').on("click","#mostrar_plano_coletivo",function(){
-
                 if($("#usuario_coletivo_switch").val() == "") {
                     toastr["error"]("Vendedor é campo obrigatório")
                     toastr.options = {
@@ -596,8 +681,6 @@
                     }
                     return false;
                  }
-
-
 
                 if($("#nome_coletivo").val() == "") {
                     toastr["error"]("Titular é campo obrigatório")
@@ -707,12 +790,7 @@
                         "hideMethod": "fadeOut"
                     }
                     return false;
-                 }
-
-
-                 
-
-                
+                 }               
                  
                  if($("#cep_coletivo").val() == "") {
                     toastr["error"]("Cep é campo obrigatório")
@@ -758,10 +836,7 @@
                     return false;
                  }
 
-
-
-
-                  if($("#bairro_coletivo").val() == "") {
+                if($("#bairro_coletivo").val() == "") {
                     toastr["error"]("Bairro é campo obrigatório")
                     toastr.options = {
                         "closeButton": false,
@@ -928,12 +1003,6 @@
                     return false;  
                 }    
 
-
-
-
-
-
-
                 $.ajax({
                     url:"{{route('contratos.montarPlanos')}}",
                     method:"POST",
@@ -956,13 +1025,11 @@
                         }]
                     },
                     success(res) {
-                        
                         $("#resultado_coletivo").slideUp().html(res).delay(100).slideToggle(100,function(){
                             $('body,html').animate({
                                 scrollTop:$(window).scrollTop() + $(window).height(),
                             },1500);
                         });
-
                         $("body").find('.vigente').datepicker({
                             onSelect: function() { 
                                 var dateObject = $(this).datepicker('getDate'); 
@@ -998,21 +1065,15 @@
                 //         // } else {
                 //         //     $("body").find('.vigente').datepicker()
                 //         // }
-                        
-                        
-                        
-
-
-
                     }
                 });
-            	
-
                 return false;
             });	
 
-
-			$('body').on('click','.valores-acomodacao',function(e){
+			$('body').on('click','.valores-acomodacao',function(e){        
+                if($("#created_at").val() == "") {
+                    $('#mudarDataCriacao').modal('show');
+                }
                 $(".valores-acomodacao").removeClass('destaque');
                 $(this).addClass('destaque');
                 let valor_plano = $(this).find('.valor_plano').text().replace("R$ ","");
@@ -1024,11 +1085,9 @@
                     $('#data_boleto').val('');
                     $('#valor_adesao').val('');
                 }
-                
                 $('body,html').animate({
-                                scrollTop:$(window).scrollTop() + $(window).height(),
-                            },1500);
-
+                    scrollTop:$(window).scrollTop() + $(window).height(),
+                },1500);
                 $("#btn_submit").html("<button type='submit' class='btn btn-block btn-light my-4 salvar_contrato'>Salvar Contrato</button>")
                 $('.valores-acomodacao').not('.destaque').each(function(i,e){
                     $(e).find('.vigente').val('')
@@ -1037,18 +1096,54 @@
                 });
                 if($(e.target).is('.form-control')) {
                     return;
-                } 
+                }  
+            });
+
+            
+
+            $('#mudarDataCriacao').on('hidden.bs.modal', function (e) {
+                let valor = $("#data_criacao").val();
+                $("#created_at").val(valor);
+            });
+
+            var intVal = function (i) {
+                return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+            };
+
+
+
+            
+            $('#modalDiferencaEntreValores').on('hidden.bs.modal', function (e) {
+                // let valor_t = $("#valor").val().replace(".","").replace(",",".");
+                // let valor_a = $("#valor_adesao").val().replace(".","").replace(",",".");
+                // let diferenca = valor_t - valor_a;
+                // let valor_difrenca = diferenca.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
+                // $(".diferenca_entre_valores").text(valor_difrenca);
+                //let total = parseFloat(diferenca);
+                // console.log(valor_t,valor_a,diferenca,valor_difrenca);
+                
+                $('form[name="cadastrar_pessoa_fisica_formulario_modal_coletivo"]').submit();
+
+
+            });
+
+            
+            $("#desconto_corretora_valores").change(function(){
+                let valor = $(this).val().replace(".","").replace(",",".");
+                let total = $(".diferenca_entre_valores").text().replace("R$","").replace(".","").replace(",",".").trim();
+                let corretor = total - valor;
+                let resto_corretor = parseFloat(corretor);
+                $("#desconto_corretor_valores").val(resto_corretor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+                $("#desconto_corretor").val(resto_corretor);
+                $("#desconto_corretora").val(valor);
             });
 
 
             $('form[name="cadastrar_pessoa_fisica_formulario_modal_coletivo"]').on('submit',function(){
-
                 $.ajax({
-
                     url:"{{route('contratos.store')}}",
                     method:"POST",
                     data:$(this).serialize(),
-
                     beforeSend:function() {
 
                          if($("#data_vigencia").val() == "") {
@@ -1116,6 +1211,22 @@
                             }
                             return false;            
                         }
+
+                        if(($("#valor_adesao").val() != $("#valor").val()) && $("#desconto_corretor").val() == "") {
+                            let valor_t = $("#valor").val().replace(".","").replace(",",".");
+                            let valor_a = $("#valor_adesao").val().replace(".","").replace(",",".");
+                            let diferenca = valor_t - valor_a;
+                            let valor_difrenca = diferenca.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
+                            $(".diferenca_entre_valores").text(valor_difrenca);                            
+                            $('#modalDiferencaEntreValores').modal('show');
+                            return false;
+                        }
+
+                        
+
+
+
+
                     },
                     success:function(res) {
                         
@@ -1126,14 +1237,12 @@
                             $(location).prop('href','/admin/contrato?ac=coletivo');
                             return true;
                         }      
-
                     }
                 });  
-
                 return false;
             });
 
-
+            
 
 
 
@@ -1190,32 +1299,11 @@
                 //         // } else {
                 //         //     $("body").find('.vigente').datepicker()
                 //         // }
-                        
-                        
-                        
-
-
-
                     }
                 });
                 return false;
             }				
-
-
-
-
-
-
-
-
-
-
-
 		});
-
-
-
-
 	</script>
 
 @stop

@@ -22,6 +22,11 @@
 @stop
 
 @section('content')
+
+    <input type="hidden" id="janela_ativa" name="janela_ativa" value="aba_individual">
+
+
+
     <div class="container_div_info">
         
     </div>
@@ -60,32 +65,32 @@
                             </li>
 
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_1_parcela_individual" class="individual">
-                                <span>Pagamento 1º Parcela</span>
+                                <span>Pag. 1º Parcela</span>
                                <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_parcela_01}}</span>                        
                             </li>
 
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_2_parcela_individual" class="individual">
-                               <span>Pagamento 2º Parcela</span>
+                               <span>Pag. 2º Parcela</span>
                                <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_parcela_02}}</span>                        
                             </li>
 
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_3_parcela_individual" class="individual">
-                               <span>Pagamento 3º Parcela</span>
+                               <span>Pag. 3º Parcela</span>
                                <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_parcela_03}}</span>                        
                             </li>
 
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_4_parcela_individual" class="individual">
-                               <span>Pagamento 4º Parcela</span>
+                               <span>Pag. 4º Parcela</span>
                                <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_parcela_04}}</span>                        
                             </li>
 
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_5_parcela_individual" class="individual">
-                               <span>Pagamento 5º Parcela</span>
+                               <span>Pag. 5º Parcela</span>
                                <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_parcela_05}}</span>                        
                             </li>
 
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_6_parcela_individual" class="individual">
-                               <span>Pagamento 6º Parcela</span>
+                               <span>Pag. 6º Parcela</span>
                                <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_parcela_06}}</span>                        
                             </li>
 
@@ -138,24 +143,24 @@
                 <!--FIM COLUNA DA CENTRAL-->
 
                 <!---------DIREITA-------------->    
-                <div class="mr-1 coluna-right">
+                <div class="mr-1 coluna-right aba_individual">
                     <section class="p-1" style="background-color:#123449;border-radius: 5px;">
 
 
                         <div class="d-flex mb-2">
                                 
                             <div style="flex-basis:25%;">
-                                <span class="text-white" style="font-size:0.875em;">Administradora:</span>
+                                <span class="text-white" style="font-size:0.81em;">Administradora:</span>
                                 <input type="text" name="administradora_individual" id="administradora_individual" class="form-control  form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:28%;margin:0 1%;">    
-                                <span class="text-white" style="font-size:0.875em;">Tipo Plano:</span>
+                                <span class="text-white" style="font-size:0.81em;">Tipo Plano:</span>
                                 <input type="text" name="tipo_plano" id="tipo_plano_individual" class="form-control  form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:45%;" id="status">
-                                <span class="text-white" style="font-size:0.875em;">Status:</span>
+                                <span class="text-white" style="font-size:0.81em;">Status:</span>
                                 <input type="text" id="status_individual_view" class="form-control form-control-sm" readonly>
                             </div>    
 
@@ -164,18 +169,18 @@
 
                         <div class="d-flex mb-2">
                             
-                            <div style="flex-basis:43%;">
-                                <span class="text-white" style="font-size:0.875em;">Cliente:</span>
+                            <div style="flex-basis:40%;">
+                                <span class="text-white" style="font-size:0.81em;">Cliente:</span>
                                 <input type="text" name="cliente" id="cliente" class="form-control form-control-sm" readonly>
                             </div>
                             
-                            <div style="flex-basis:25%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Data Nascimento:</span>
+                            <div style="flex-basis:28%;margin:0 1%;">
+                                <span class="text-white" style="font-size:0.81em;">Data Nascimento:</span>
                                 <input type="text" name="data_nascimento" id="data_nascimento" class="form-control form-control-sm" readonly>
                             </div>
                             
                             <div style="flex-basis:30%;">
-                                <span class="text-white" style="font-size:0.875em;">Codigo Externo:</span>
+                                <span class="text-white" style="font-size:0.81em;">Codigo Externo:</span>
                                 <input type="text" name="codigo_externo" id="codigo_externo_individual" class="form-control  form-control-sm" readonly>
                             </div>    
 
@@ -183,15 +188,15 @@
 
                         <div class="d-flex mb-2">
                             <div style="flex-basis:28%;">
-                                <span class="text-white" style="font-size:0.875em;">CPF:</span>
+                                <span class="text-white" style="font-size:0.81em;">CPF:</span>
                                 <input type="text" id="cpf" class="form-control form-control-sm" readonly>
                             </div>
                             <div style="flex-basis:38%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Responsavel Financeiro:</span>
+                                <span class="text-white" style="font-size:0.81em;">Responsavel Financeiro:</span>
                                 <input type="text" id="responsavel_financeiro" class="form-control  form-control-sm" readonly>
                             </div>
                             <div style="flex-basis:32%;">
-                                <span class="text-white" style="font-size:0.875em;">CPF Financeiro:</span>
+                                <span class="text-white" style="font-size:0.81em;">CPF Financeiro:</span>
                                 <input type="text" id="cpf_financeiro" class="form-control  form-control-sm" readonly>
                             </div>    
                         </div>
@@ -200,17 +205,17 @@
                         <div class="d-flex mb-2">
                             
                             <div style="flex-basis:28%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.875em;">Celular:</span>
+                                <span class="text-white" style="font-size:0.81em;">Celular:</span>
                                 <input type="text" id="celular_individual_view_input" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:25%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.875em;">Telefone:</span>
+                                <span class="text-white" style="font-size:0.81em;">Telefone:</span>
                                 <input type="text" id="telefone_individual_view_input" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:45%;">
-                                <span class="text-white" style="font-size:0.875em;">Email:</span>
+                                <span class="text-white" style="font-size:0.81em;">Email:</span>
                                 <input type="text" id="email" class="form-control form-control-sm" readonly>
                             </div>
 
@@ -220,15 +225,15 @@
 
                         <div class="d-flex mb-2">
                             <div style="flex-basis:22%;">
-                                <span class="text-white" style="font-size:0.875em;">CEP:</span>
+                                <span class="text-white" style="font-size:0.81em;">CEP:</span>
                                 <input type="text" name="cep" id="cep_individual_cadastro" class="form-control form-control-sm" readonly>
                             </div>
                             <div style="flex-basis:78%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Cidade:</span> 
+                                <span class="text-white" style="font-size:0.81em;">Cidade:</span> 
                                 <input type="text" id="cidade" class="form-control  form-control-sm" readonly>
                             </div>
                             <div style="flex-basis:10%;">
-                                <span class="text-white" style="font-size:0.875em;">UF:</span>
+                                <span class="text-white" style="font-size:0.81em;">UF:</span>
                                 <input type="text" id="uf" class="form-control form-control-sm" readonly>
                             </div>                         
                         </div>
@@ -236,17 +241,17 @@
                         <div class="d-flex mb-2">
                             
                             <div style="flex-basis:30%;">
-                                <span class="text-white" style="font-size:0.875em;">Bairro:</span>
+                                <span class="text-white" style="font-size:0.81em;">Bairro:</span>
                                 <input type="text" id="bairro_individual_cadastro" class="form-control form-control-sm" readonly>
                             </div>    
 
                             <div style="flex-basis:40%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Rua:</span>
+                                <span class="text-white" style="font-size:0.81em;">Rua:</span>
                                 <input type="text" id="rua_individual_cadastro" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:29%;">
-                                <span class="text-white" style="font-size:0.875em;">Complemento:</span>
+                                <span class="text-white" style="font-size:0.81em;">Complemento:</span>
                                 <input type="text" id="complemento_individual_cadastro" class="form-control form-control-sm" readonly>
                             </div>
 
@@ -257,22 +262,22 @@
                        
                         <div class="d-flex mb-2">
                             <div style="flex-basis:32%;">
-                                <span class="text-white" style="font-size:0.875em;">Data Contrato:</span>
+                                <span class="text-white" style="font-size:0.81em;">Data Contrato:</span>
                                 <input type="text" name="data_contrato" id="data_contrato" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:32%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Valor Contrato:</span>
+                                <span class="text-white" style="font-size:0.81em;">Valor Contrato:</span>
                                 <input type="text" name="valor_contrato" id="valor_contrato" class="form-control  form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:32%;">
-                                <span class="text-white" style="font-size:0.875em;">Valor Adesão:</span>
+                                <span class="text-white" style="font-size:0.81em;">Valor Adesão:</span>
                                 <input type="text" name="valor_adesao" id="valor_adesao" class="form-control  form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:8%;margin-left:1%;">    
-                                <span class="text-white" style="font-size:0.875em;">Vidas</span>
+                                <span class="text-white" style="font-size:0.81em;">Vidas</span>
                                 <input type="text" name="quantidade_vidas" id="quantidade_vidas_individual_cadastrar" class="form-control  form-control-sm" readonly>
                             </div>
                              
@@ -281,17 +286,17 @@
                         <div class="d-flex mb-2">
 
                             <div style="flex-basis:23%;">
-                                <span class="text-white" style="font-size:0.875em;">Data Boleto:</span>
+                                <span class="text-white" style="font-size:0.81em;">Data Boleto:</span>
                                 <input type="text" name="data_boleto" id="data_boleto" class="form-control  form-control-sm" readonly>
                             </div>
 
                              <div style="flex-basis:23%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Data Vigência:</span>
+                                <span class="text-white" style="font-size:0.81em;">Data Vigência:</span>
                                 <input type="text" name="data_vigencia" id="data_vigencia" class="form-control  form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:53%;">
-                                <span class="text-white" style="font-size:0.875em;">Plano Contratado:</span>
+                                <span class="text-white" style="font-size:0.81em;">Plano Contratado:</span>
                                 <input type="text" id="texto_descricao_individual_view" value="" class="form-control form-control-sm" readonly>     
                             </div>    
                                                     
@@ -300,15 +305,15 @@
                         <div class="ocultar dados_cancelados">
                             <div class="d-flex mb-2" style="flex-wrap: wrap;">
                                 <div style="flex-basis:49%;">
-                                    <span class="text-white" style="font-size:0.875em;">Motivo:</span>
+                                    <span class="text-white" style="font-size:0.81em;">Motivo:</span>
                                     <input type="text" id="motivo_cancelamento" class="form-control  form-control-sm" readonly>
                                 </div>
                                 <div style="flex-basis:50%;margin-left:1%;">
-                                    <span class="text-white" style="font-size:0.875em;">Data Cancelamento:</span>
+                                    <span class="text-white" style="font-size:0.81em;">Data Cancelamento:</span>
                                     <input type="text" id="data_cancelamento" class="form-control  form-control-sm" readonly>
                                 </div>
                                 <div style="flex-basis:100%;">
-                                    <span class="text-white" style="font-size:0.875em;">Observação Cancelamento:</span>
+                                    <span class="text-white" style="font-size:0.81em;">Observação Cancelamento:</span>
                                     <input type="text" id="observacao_cancelamento" class="form-control  form-control-sm" readonly>
                                 </div>
                             </div>            
@@ -358,31 +363,31 @@
                                 <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_coletivo_emissao_boleto}}</span>
                             </li>
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_adesao_coletivo" class="coletivo">
-                                <span>Pagamento Adesão</span>
+                                <span>Pag. Adesão</span>
                                 <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_coletivo_pg_adesao}}</span>
                             </li>
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_vigencia_coletivo" class="coletivo">
-                                <span>Pagamento Vigência</span>
+                                <span>Pag. Vigência</span>
                                 <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_coletivo_pg_vigencia}}</span>
                             </li>
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_segunda_parcela" class="coletivo">
-                                <span>Pagamento 2º Parcela</span>
+                                <span>Pag. 2º Parcela</span>
                                 <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_coletivo_02_parcela}}</span>
                             </li>
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_terceira_parcela" class="coletivo">
-                                <span>Pagamento 3º Parcela</span>
+                                <span>Pag. 3º Parcela</span>
                                 <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_coletivo_03_parcela}}</span>
                             </li>
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_quarta_parcela" class="coletivo">
-                                <span>Pagamento 4º Parcela</span>
+                                <span>Pag. 4º Parcela</span>
                                 <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_coletivo_04_parcela}}</span>
                             </li>
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_quinta_parcela" class="coletivo">
-                                <span>Pagamento 5º Parcela</span>
+                                <span>Pag. 5º Parcela</span>
                                 <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_coletivo_05_parcela}}</span>
                             </li>
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="pagamento_sexta_parcela" class="coletivo">
-                                <span>Pagamento 6º Parcela</span>
+                                <span>Pag. 6º Parcela</span>
                                 <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_coletivo_06_parcela}}</span>
                             </li>
                             
@@ -432,23 +437,23 @@
 
 
                 <!--COLUNA DA DIREITA-->    
-                <div class="mr-1 coluna-right">
+                <div class="mr-1 coluna-right aba_coletivo">
                     <section class="p-1" style="background-color:#123449;">
                         
                         <div class="d-flex mb-2">
                                 
                             <div style="flex-basis:25%;">
-                                <span class="text-white" style="font-size:0.875em;">Administradora:</span>
+                                <span class="text-white" style="font-size:0.81em;">Administradora:</span>
                                 <input type="text" id="administradora_coletivo_view" class="form-control  form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:33%;margin:0 1%;">    
-                                <span class="text-white" style="font-size:0.875em;">Tipo Plano:</span>
+                                <span class="text-white" style="font-size:0.81em;">Tipo Plano:</span>
                                 <input type="text" id="tipo_plano_coletivo_view" class="form-control  form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:40%;" id="status">
-                                <span class="text-white" style="font-size:0.875em;">Status:</span>
+                                <span class="text-white" style="font-size:0.81em;">Status:</span>
                                 <input type="text" id="estagio_contrato_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>  
 
@@ -456,18 +461,18 @@
 
                         <div class="d-flex mb-2">
                             
-                            <div style="flex-basis:43%;">
-                                <span class="text-white" style="font-size:0.875em;">Cliente:</span>
+                            <div style="flex-basis:40%;">
+                                <span class="text-white" style="font-size:0.81em;">Cliente:</span>
                                 <input type="text" id="cliente_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>
                             
-                            <div style="flex-basis:25%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Data Nascimento:</span>
+                            <div style="flex-basis:28%;margin:0 1%;">
+                                <span class="text-white" style="font-size:0.81em;">Data Nascimento:</span>
                                 <input type="text" id="data_nascimento_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>
                             
                             <div style="flex-basis:30%;">
-                                <span class="text-white" style="font-size:0.875em;">Codigo Externo:</span>
+                                <span class="text-white" style="font-size:0.81em;">Codigo Externo:</span>
                                 <input type="text" id="codigo_externo_coletivo_view" class="form-control  form-control-sm" readonly>
                             </div>    
 
@@ -476,17 +481,17 @@
                         <div class="d-flex mb-2">
 
                             <div style="flex-basis:28%;">
-                                <span class="text-white" style="font-size:0.875em;">CPF:</span>
+                                <span class="text-white" style="font-size:0.81em;">CPF:</span>
                                 <input type="text" id="cpf_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:38%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Responsavel Financeiro:</span>
+                                <span class="text-white" style="font-size:0.81em;">Responsavel Financeiro:</span>
                                 <input type="text" id="responsavel_financeiro_coletivo" class="form-control  form-control-sm" readonly>
                             </div>
                             
                             <div style="flex-basis:32%;">
-                                <span class="text-white" style="font-size:0.875em;">CPF Financeiro:</span>
+                                <span class="text-white" style="font-size:0.81em;">CPF Financeiro:</span>
                                 <input type="text" id="cpf_financeiro_coletivo_view" class="form-control  form-control-sm" readonly>
                             </div>    
 
@@ -495,17 +500,17 @@
                         <div class="d-flex mb-2">
                             
                             <div style="flex-basis:28%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.875em;">Celular:</span>
+                                <span class="text-white" style="font-size:0.81em;">Celular:</span>
                                 <input type="text" id="celular_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:26%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.875em;">Telefone:</span>
+                                <span class="text-white" style="font-size:0.81em;">Telefone:</span>
                                 <input type="text" id="telefone_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:46%;">
-                                <span class="text-white" style="font-size:0.875em;">Email:</span>
+                                <span class="text-white" style="font-size:0.81em;">Email:</span>
                                 <input type="text" id="email_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>
 
@@ -515,17 +520,17 @@
                         <div class="d-flex mb-2">
 
                             <div style="flex-basis:22%;">
-                                <span class="text-white" style="font-size:0.875em;">CEP:</span>
+                                <span class="text-white" style="font-size:0.81em;">CEP:</span>
                                 <input type="text" id="cep_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:78%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Cidade:</span> 
+                                <span class="text-white" style="font-size:0.81em;">Cidade:</span> 
                                 <input type="text" id="cidade_coletivo_view" class="form-control  form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:10%;">
-                                <span class="text-white" style="font-size:0.875em;">UF:</span>
+                                <span class="text-white" style="font-size:0.81em;">UF:</span>
                                 <input type="text" id="uf_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>
 
@@ -535,17 +540,17 @@
                         <div class="d-flex mb-2">
                             
                               <div style="flex-basis:30%;">
-                                <span class="text-white" style="font-size:0.875em;">Bairro:</span>
+                                <span class="text-white" style="font-size:0.81em;">Bairro:</span>
                                 <input type="text" name="bairro_coletivo" id="bairro_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>    
                     
                             <div style="flex-basis:30%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Rua:</span>
+                                <span class="text-white" style="font-size:0.81em;">Rua:</span>
                                 <input type="text" name="rua_coletivo" id="rua_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:40%;">
-                                <span class="text-white" style="font-size:0.875em;">Complemento:</span>
+                                <span class="text-white" style="font-size:0.81em;">Complemento:</span>
                                 <input type="text" id="complemento_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>
 
@@ -555,24 +560,24 @@
                         <div class="d-flex mb-2">
 
                             <div style="flex-basis:31%;">
-                                <span class="text-white" style="font-size:0.875em;">Data Contrato:</span>
+                                <span class="text-white" style="font-size:0.81em;">Data Contrato:</span>
                                 <input type="text" name="data_contrato_coletivo" id="data_contrato_coletivo_view" class="form-control form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:31%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Valor Contrato:</span>
+                                <span class="text-white" style="font-size:0.81em;">Valor Contrato:</span>
                                 <input type="text" name="valor_contrato_coletivo" id="valor_contrato_coletivo_view" class="form-control  form-control-sm" readonly>
                             </div>
 
                              
 
                             <div style="flex-basis:31%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.875em;">Valor Adesão:</span>
+                                <span class="text-white" style="font-size:0.81em;">Valor Adesão:</span>
                                 <input type="text" id="valor_adesao_coletivo_view" class="form-control  form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:7%">    
-                                <span class="text-white" style="font-size:0.875em;">Vidas</span>
+                                <span class="text-white" style="font-size:0.81em;">Vidas</span>
                                 <input type="text" name="quantidade_vidas" id="quantidade_vidas_coletivo_cadastrar" class="form-control  form-control-sm" readonly>
                             </div>
                     
@@ -582,17 +587,17 @@
                          <div class="d-flex mb-2">
 
                             <div style="flex-basis:23%;">
-                                <span class="text-white" style="font-size:0.875em;">Data Boleto:</span>
+                                <span class="text-white" style="font-size:0.81em;">Data Boleto:</span>
                                 <input type="text" id="data_boleto_coletivo_view" class="form-control  form-control-sm" readonly>
                             </div>
 
                             <div style="flex-basis:23%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.875em;">Data Vigência:</span>
+                                <span class="text-white" style="font-size:0.81em;">Data Vigência:</span>
                                 <input type="text" name="data_vigencia_coletivo" id="data_vigencia_coletivo_view" class="form-control  form-control-sm" readonly>
                             </div>
                             
                             <div style="flex-basis:54%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.875em;">Plano Contratado:</span>
+                                <span class="text-white" style="font-size:0.81em;">Plano Contratado:</span>
                                 <input type="text" id="texto_descricao_coletivo_view" value="" class="form-control form-control-sm" readonly> 
                             </div>    
  
@@ -615,6 +620,11 @@
    
     <script>
         $(function(){
+
+
+            
+            
+            var default_formulario = $('.coluna-right.aba_individual').html();
 
             let url = window.location.href.indexOf("?");
             if(url != -1) {
@@ -679,42 +689,30 @@
                 $("ul#listar li.coletivo").removeClass('textoforte-list');
                 $("#grupo_coletivo_concluido li.individual").removeClass('textoforte-list');
                 $(this).addClass('textoforte-list');
-            });
+            });            
 
-            
-
-            
-
-            $(".list_abas li").on('click',function(){
-                
+            $(".list_abas li").on('click',function(){ 
                 $('li').removeClass('ativo');
                 $(this).addClass("ativo");
                 let id = $(this).attr('data-id');
+                $("#janela_ativa").val(id);
+
+                default_formulario = $('.coluna-right.'+id).html();
+
                 $('.conteudo_abas main').addClass('ocultar');
                 $('#'+id).removeClass('ocultar');
-
                 $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Pendentes</h4>");
                 table.ajax.url("{{ route('financeiro.individual.geralColetivoPendentes.contrato.corretor') }}").load();
-                                          
-                
                 $('#title_individual').html("<h4 style='font-size:1em;margin-top:10px;'>Pendentes</h4>");
                 table_individual.ajax.url("{{ route('financeiro.individual.geralIndividualPendentes.contrato.corretor') }}").load();
-                
-                
-                
                 $("ul#listar_individual li.individual").removeClass('textoforte-list'); 
                 $("ul#grupo_individual_concluido li.individual").removeClass('textoforte-list');  
-                
                 $("ul#listar li.coletivo").removeClass('textoforte-list');
                 $("ul#grupo_coletivo_concluido li.coletivo").removeClass('textoforte-list');
-
                 $("#all_pendentes_individual").addClass("textoforte-list");
                 $("#all_pendentes_coletivo").addClass("textoforte-list");
-                
-
                 limparFormularioIndividual();
                 limparFormulario();
-                
             });
 
             $('#cnpj').mask('00.000.000/0000-00');
@@ -776,9 +774,7 @@
                             }
                         }
                     },   
-                        
                     {data:"financeiro.nome",name:"financeiro"},
-
                     {data:"financeiro.nome",name:"detalhes"}
                 ],
                 "columnDefs": [
@@ -843,37 +839,12 @@
                ],
                 
                 "initComplete": function( settings, json ) {
-                    $('#title_individual').html("<h4 style='font-size:1em;margin-top:10px;'>Pendentes</h4>");
-
-                     
+                    $('#title_individual').html("<h4 style='font-size:1em;margin-top:10px;'>Pendentes</h4>");                     
                 },
 
                 "drawCallback": function( settings ) {
-                    $("#select_usuario_individual").html('<option value="todos" class="text-center">---Escolher Corretor---</option>');
-                    this.api()
-                       .columns([1])
-                       .every(function () {
-                            var column = this;
-                            var selectUsuarioIndividual = $("#select_usuario_individual");
-                            selectUsuarioIndividual.on('change',function(){
-                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                if(val != "todos") {
-                                    column.search(val ? '^' + val + '$' : '', true, false).draw();    
-                                } else {
-                                    var val = "";
-                                    column.search(val ? '^' + val + '$' : '', true, false).draw();
-                                }
-                                
-                            });
-
-                            column.data().unique().sort().each(function (d, j) {
-                                selectUsuarioIndividual.append('<option value="' + d + '">' + d + '</option>');
-                            });
-                       })
+                   
                 }
-
-
-
             });
 
             $(".listardados").DataTable({
@@ -898,9 +869,7 @@
                     {data:"clientes.nome",name:"cliente"},
                     {data:"comissao.comissao_atual_financeiro",name:"Vencimento",
                         "createdCell": function(td,cellData,rowData,row,col) {
-                            
                             if(cellData == null) {
-
                                 if(rowData.financeiro.id == 10) {                                    
                                     let alvo = rowData.comissao.comissao_atual_last.data.split("-").reverse().join("/");
                                     $(td).html(alvo);    
@@ -909,16 +878,11 @@
                                 } else {
                                     $(td).html("Cancelado");    
                                 }
-
                             } else {
                                 let alvo = cellData.data.split("-").reverse().join("/");
                                 $(td).html(alvo);
                             }
-                                
                         },
-                    
-                    
-                    
                     },
                     {data:"financeiro.nome",name:"administradora"},
                     {data:"financeiro.nome",name:"ver"}
@@ -997,7 +961,6 @@
                ],              
                 "initComplete": function( settings, json ) {
                     $('#title_coletivo_por_adesao_table').html("<h4>Coletivo Por Adesão</h4>");
-
                     this.api()
                        .columns([1])
                        .every(function () {
@@ -1010,10 +973,8 @@
                                 } else {
                                     var val = "";
                                     column.search(val ? '^' + val + '$' : '', true, false).draw();
-                                }
-                                
+                                } 
                             });
-
                             column.data().unique().sort().each(function (d, j) {
                                 selectAdministradora.append('<option value="' + d + '">' + d + '</option>');
                             });
@@ -1248,12 +1209,17 @@
 
             $("body").on('mouseover','.div_info',function(){
                let contrato = $(this).attr('data-id');
+               let janela_ativa = $('#janela_ativa').val(); 
+                
+
+
                 $.ajax({
                     url:"{{route('contratos.info')}}",
                     data:"contrato="+contrato,
                     method:"POST",
                     success:function(res) {
-                        $('.container_div_info').html(res);
+                        $('.coluna-right.'+janela_ativa).html(res);
+                        //$('.container_div_info').html(res);
                     }
                 });
                 $('.container_div_info').toggle();
@@ -1261,17 +1227,31 @@
             });
 
             $("body").on('mouseout','.div_info',function(){
-                let contrato = $(this).attr('data-id');
-                $.ajax({
-                    url:"{{route('contratos.info')}}",
-                    data:"contrato="+contrato,
-                    method:"POST",
-                    success:function(res) {
-                        $('.container_div_info').html(res);
-                    }
-                });
-                $('.container_div_info').toggle();
-                return false;
+                let janela_ativa = $('#janela_ativa').val();
+                $(".coluna-right."+janela_ativa).html(default_formulario);
+
+
+
+
+                //let contrato = $(this).attr('data-id');
+                //let janela_ativa = $('#janela_ativa').val();
+
+
+                //let default_formulario = $('.coluna-right.'+janela_ativa).html();
+                //console.log(default_formulario);
+
+
+                //$(".coluna-right").html(default_formulario);
+                // $.ajax({
+                //     url:"{{route('contratos.info')}}",
+                //     data:"contrato="+contrato,
+                //     method:"POST",
+                //     success:function(res) {
+                //         //$('.container_div_info').html(res);
+                //     }
+                // });
+                // $('.container_div_info').toggle();
+                // return false;
             });
 
             // $(".div_info").on('click',function(){
@@ -1582,7 +1562,10 @@
         #coluna_direita ul {list-style: none;margin: 0;padding: 0;}
         #coluna_direita li {color:#FFF;}
         .coluna-right {flex-basis:30%;flex-wrap: wrap;border-radius:5px;height:720px;}
-        .container_div_info {background-color:rgba(0,0,0,1);position:absolute;width:450px;right:0px;top:57px;min-height: 700px;display: none;z-index: 1;color: #FFF;}
+        /* .container_div_info {background-color:rgba(0,0,0,1);position:absolute;width:450px;right:0px;top:57px;min-height: 700px;display: none;z-index: 1;color: #FFF;} */
+        .container_div_info {display:flex;position:absolute;flex-basis:30%;right:0px;top:57px;display: none;z-index: 1;color: #FFF;}
+
+
         #padrao {width:50px;background-color:#FFF;color:#000;}
 
         th { font-size: 0.9em !important; }

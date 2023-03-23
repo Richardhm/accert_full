@@ -11,6 +11,8 @@ class ContratoEmpresarial extends Model
     protected $table = "contrato_empresarial";
     protected $fillable = [
             "plano_id",
+            "desconto_corretora",
+            "desconto_corretor",
             "tabela_origens_id",
             "user_id",
             "financeiro_id",
@@ -40,8 +42,8 @@ class ContratoEmpresarial extends Model
             "data_boleto",
             "cidade",
             "uf",
-            "plano_contrado"
-
+            "plano_contrado",
+            "created_at"
         ];
 
         public function comissao()

@@ -475,11 +475,9 @@ class GerenteController extends Controller
     }
 
 
-    public function mudarStatus(Request $request) {
-        
-        
-        $comissao = Comissoes::where("id",$request->id)->first();
-        
+    public function mudarStatus(Request $request) 
+    {
+        $comissao = Comissoes::where("id",$request->id)->first();    
         if($comissao->empresarial) {
             $id_contrato = $comissao->contrato_empresarial_id; 
             $contrato = ContratoEmpresarial::where("id",$id_contrato)->first();
@@ -489,10 +487,7 @@ class GerenteController extends Controller
             $contrato = Contrato::find($id_contrato);
             $plano_id = $contrato->plano_id;    
         }
-
-        
         $comissao_id = $comissao->id;
-
         if($plano_id == 3) {
 
             switch($contrato->financeiro_id) {
