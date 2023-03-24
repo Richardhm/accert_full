@@ -111,16 +111,10 @@
                                <span>Cancelado</span>
                                <span class="badge badge-light" style="width:45px;text-align:right;">{{$qtd_individual_cancelado}}</span>                        
                             </li>
-
                         </ul>
                     </div>    
-
-
-
-
                 </div>
                 <!--Fim Coluna da Esquerda  -->
-
 
                 <!--COLUNA DA CENTRAL-->
                 <div style="flex-basis:53%;">
@@ -167,8 +161,7 @@
 
                         </div>
 
-                        <div class="d-flex mb-2">
-                            
+                        <div class="d-flex mb-2">                           
                             <div style="flex-basis:40%;">
                                 <span class="text-white" style="font-size:0.81em;">Cliente:</span>
                                 <input type="text" name="cliente" id="cliente" class="form-control form-control-sm" readonly>
@@ -319,10 +312,6 @@
                             </div>            
                         </div>
                         
-
-
-
-
                     </section>                    
                 </div>    
                 <!---------FIM DIREITA-------------->    
@@ -620,12 +609,7 @@
    
     <script>
         $(function(){
-
-
-            
-            
             var default_formulario = $('.coluna-right.aba_individual').html();
-
             let url = window.location.href.indexOf("?");
             if(url != -1) {
                 var b =  window.location.href.substring(url);
@@ -635,6 +619,7 @@
                     $('.list_abas li:nth-child(2)').addClass("ativo");
                     $('.conteudo_abas main').addClass('ocultar');
                     $('#aba_coletivo').removeClass('ocultar');
+                    $("#janela_ativa").val("aba_coletivo");
                     var c = window.location.href.replace(b,"");
                     window.history.pushState({path:c},'',c);
                 } 
@@ -793,7 +778,6 @@
                         "targets": 1,
                         "width":"35%",
                         "createdCell":function(td,cellData,rowData,row,col) {
-                            //let palavra = capitalizeFirstLetter(cellData);
                             let palavras = cellData.ucWords();
                             $(td).html(palavras)
                         }
@@ -948,9 +932,7 @@
                                 $(td).html("Pag. 6º Parcela");        
                             }
                         },
-                    },
-
-                   
+                    },                  
                     {
                         "width":"4%",
                         "targets": 5,
@@ -985,30 +967,7 @@
 
                 },
                 "drawCallback": function( settings ) {
-                    //$("#select_coletivo").html('<option value="todos" class="text-center">---Administradora---</option>');
                     
-                    
-
-                    // this.api()
-                    //    .columns([2])
-                    //    .every(function () {
-                    //         var column = this;
-                    //         var selectAdministradora = $("#select_coletivo");
-                    //         selectAdministradora.on('change',function(){
-                    //             var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                    //             if(val != "todos") {
-                    //                 column.search(val ? '^' + val + '$' : '', true, false).draw();    
-                    //             } else {
-                    //                 var val = "";
-                    //                 column.search(val ? '^' + val + '$' : '', true, false).draw();
-                    //             }
-                                
-                    //         });
-
-                    //         column.data().unique().sort().each(function (d, j) {
-                    //             selectAdministradora.append('<option value="' + d + '">' + d + '</option>');
-                    //         });
-                    //    })
                 }
             });
 
@@ -1210,10 +1169,7 @@
             $("body").on('mouseover','.div_info',function(){
                let contrato = $(this).attr('data-id');
                let janela_ativa = $('#janela_ativa').val(); 
-                
-
-
-                $.ajax({
+               $.ajax({
                     url:"{{route('contratos.info')}}",
                     data:"contrato="+contrato,
                     method:"POST",
@@ -1229,45 +1185,7 @@
             $("body").on('mouseout','.div_info',function(){
                 let janela_ativa = $('#janela_ativa').val();
                 $(".coluna-right."+janela_ativa).html(default_formulario);
-
-
-
-
-                //let contrato = $(this).attr('data-id');
-                //let janela_ativa = $('#janela_ativa').val();
-
-
-                //let default_formulario = $('.coluna-right.'+janela_ativa).html();
-                //console.log(default_formulario);
-
-
-                //$(".coluna-right").html(default_formulario);
-                // $.ajax({
-                //     url:"{{route('contratos.info')}}",
-                //     data:"contrato="+contrato,
-                //     method:"POST",
-                //     success:function(res) {
-                //         //$('.container_div_info').html(res);
-                //     }
-                // });
-                // $('.container_div_info').toggle();
-                // return false;
             });
-
-            // $(".div_info").on('click',function(){
-            //     console.log("Olaaaaa");
-            //     // let contrato = $(this).attr('data-id');
-            //     // $.ajax({
-            //     //     url:"{{route('contratos.info')}}",
-            //     //     data:"contrato="+contrato,
-            //     //     method:"POST",
-            //     //     success:function(res) {
-            //     //         $('.container_div_info').html(res);
-            //     //     }
-            //     // });
-            //     // $('.container_div_info').toggle();
-            //     return false;
-            // });
 
             //  $("select[name='mudar_user_empresarial']").on('change',function(e){
             //     let user = $(this).val();

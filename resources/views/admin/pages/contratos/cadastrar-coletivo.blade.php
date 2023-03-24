@@ -1098,8 +1098,7 @@
                     return;
                 }  
             });
-
-            
+           
 
             $('#mudarDataCriacao').on('hidden.bs.modal', function (e) {
                 let valor = $("#data_criacao").val();
@@ -1109,22 +1108,9 @@
             var intVal = function (i) {
                 return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i === 'number' ? i : 0;
             };
-
-
-
             
             $('#modalDiferencaEntreValores').on('hidden.bs.modal', function (e) {
-                // let valor_t = $("#valor").val().replace(".","").replace(",",".");
-                // let valor_a = $("#valor_adesao").val().replace(".","").replace(",",".");
-                // let diferenca = valor_t - valor_a;
-                // let valor_difrenca = diferenca.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
-                // $(".diferenca_entre_valores").text(valor_difrenca);
-                //let total = parseFloat(diferenca);
-                // console.log(valor_t,valor_a,diferenca,valor_difrenca);
-                
                 $('form[name="cadastrar_pessoa_fisica_formulario_modal_coletivo"]').submit();
-
-
             });
 
             

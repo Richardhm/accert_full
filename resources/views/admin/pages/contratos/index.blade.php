@@ -2177,48 +2177,16 @@
 
 
             $(".list_abas li").on('click',function(){
-                
-
                 $('li').removeClass('ativo');
                 $(this).addClass("ativo");
-                let id = $(this).attr('data-id');
-                
-                if(id == "aba_coletivo") {
-
-                    
-
-                    
-
-
-                    // $("#select_usuario").html('');
-                    //const table_coletivo_ativa = $(".ativado").DataTable();
-                    // // let dados = table_coletivo.columns[1];
-                    // // console.log(dados);
-                    // var selectUsuario = $("#select_usuario");
-                    // table_coletivo_ativa
-                    //    .columns([1])
-                    //    .every(function () {
-                    //         var column = this;
-                    //         column.data().unique().sort().each(function (d, j) {
-                    //             console.log(d);
-                    //             //selectUsuario.append('<option value="' + d + '">' + d + '</option>');
-                    //         })
-
-                    //    })
-                }
-                
-                
+                let id = $(this).attr('data-id');                                
                 $("#janela_ativa").val(id);
-
                 default_formulario = $('.coluna-right.'+id).html();
-
-
-
-
                 $('.conteudo_abas main').addClass('ocultar');
                 $('#'+id).removeClass('ocultar');
 
-                var formulario_default = $(".coluna-right."+id).html();
+                
+                default_formulario = $('.coluna-right.'+id).html();
 
                 $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Pendentes</h4>");
                 table.ajax.url("{{ route('financeiro.individual.geralColetivoPendentes.contrato') }}").load();
@@ -2235,11 +2203,9 @@
                 $("ul#grupo_empresarial_concluido li.empresarial").removeClass('textoforte-list');  
                 $("ul#listar li.coletivo").removeClass('textoforte-list');
                 $("ul#grupo_coletivo_concluido li.coletivo").removeClass('textoforte-list');
-
                 $("#all_pendentes_individual").addClass("textoforte-list");
                 $("#all_pendentes_coletivo").addClass("textoforte-list");
                 $("#all_pendentes_empresarial").addClass("textoforte-list");
-
                 limparFormularioIndividual();
                 limparFormulario();
                 limparEmpresarial();
