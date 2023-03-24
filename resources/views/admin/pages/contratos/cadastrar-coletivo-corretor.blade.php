@@ -6,10 +6,16 @@
 	<h2 class="text-white">Coletivo Adesão</h2>
 @stop
 
+@section('content_top_nav_right')
+    <li class="nav-item"><a class="nav-link text-white" href="{{route('orcamento.search.home')}}">Tabela de Preço</a></li>
+    <li class="nav-item"><a class="nav-link text-white" href="{{route('home.administrador.consultar')}}">Consultar</a></li>
+    <!-- <li class="nav-item"><a href="" class="nav-link div_info"><i class="fas fa-cogs text-white"></i></a></li> -->
+    <a class="nav-link" data-widget="fullscreen" href="#" role="button"><i class="fas fa-expand-arrows-alt text-white"></i></a>
+@stop
 
 @section('content')
 	
-<div class="modal fade" id="mudarDataCriacao" tabindex="-1" role="dialog" aria-labelledby="mudarDataCriacaoLabel" aria-hidden="true">
+    <div class="modal fade" id="mudarDataCriacao" tabindex="-1" role="dialog" aria-labelledby="mudarDataCriacaoLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
@@ -22,8 +28,7 @@
                 <input type="date" value="<?php echo date('Y-m-d');?>" class="form-control" id="data_criacao">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Salvar Data</button>
-                
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Salvar Data</button>            
             </div>
             </div>
         </div>
@@ -508,6 +513,26 @@
 	<script>
 		$(function(){
 
+
+            function TestaCPF(strCPF) {
+                var Soma;
+                var Resto;
+                Soma = 0;
+                
+                if (strCPF == "00000000000") return false;
+                for (i=1; i<=9; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (11 - i);
+                Resto = (Soma * 10) % 11;
+                if ((Resto == 10) || (Resto == 11))  Resto = 0;
+                if (Resto != parseInt(strCPF.substring(9, 10)) ) return false;
+                Soma = 0;
+                for (i = 1; i <= 10; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (12 - i);
+                Resto = (Soma * 10) % 11;
+                if ((Resto == 10) || (Resto == 11))  Resto = 0;
+                if (Resto != parseInt(strCPF.substring(10, 11) ) ) return false;
+                return true;
+            }
+
+ 
             $("#email_coletivo").on('keyup',(e) => {
                 $('#email_coletivo').val($('#email_coletivo').val().toLowerCase());
             });
@@ -549,6 +574,9 @@
             $('#valor_total').mask("#.##0,00", {reverse: true});
             $('#valor_boleto').mask("#.##0,00", {reverse: true});
             $('#valor_plano_saude').mask("#.##0,00", {reverse: true});
+            $('#desconto_corretora_valores').mask("#.##0,00", {reverse: true});
+
+
 
             $('#valor_plano_saude').mask("#.##0,00", {reverse: true});
             $('#valor_plano_odonto').mask("#.##0,00", {reverse: true});
@@ -754,6 +782,34 @@
                     }
                     return false;
                  }
+
+                 if(!TestaCPF($("#cpf_coletivo").val().replace(/[^0-9]/g,''))) {
+                    toastr["error"]("CPF Inválido")
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                    return false;
+                 }
+
+
+                 
+
+
+
 
                  if($("#data_nascimento_coletivo").val() == "") {
                     toastr["error"]("Data Nascimento campo obrigatório")

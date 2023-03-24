@@ -7,6 +7,12 @@
 @stop
 
 
+
+
+
+
+
+
 @section('content')
 
     
@@ -502,6 +508,12 @@
 	<script src="{{asset('js/jquery.mask.min.js')}}"></script>  
 	<script>
 		$(function(){
+
+
+            
+
+
+
 
             $("#email_coletivo").on('keyup',(e) => {
                 $('#email_coletivo').val($('#email_coletivo').val().toLowerCase());

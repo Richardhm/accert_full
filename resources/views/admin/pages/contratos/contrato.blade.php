@@ -42,7 +42,8 @@
 
                     <div class="mb-1">
                         <!-- <button class="btn btn-success btn-block estilo_btn_plus_individual">Criar Contrato</button> -->
-                        <a class="btn btn-block" style="background-color:#123449;color:#FFF;" href="{{route('contrato.create')}}">Criar Contrato</a>
+                        <!-- <a class="btn btn-block" style="background-color:#123449;color:#FFF;" href="{{route('contrato.create')}}">Criar Contrato</a> -->
+                        <button class="btn btn-block" style="background-color:#123449;color:#FFF;">Listar Contrato</button>
                     </div>
 
                     
@@ -633,6 +634,13 @@
    
     <script>
         $(function(){
+
+           
+
+
+
+
+
             var default_formulario = $('.coluna-right.aba_individual').html();
             let url = window.location.href.indexOf("?");
             if(url != -1) {

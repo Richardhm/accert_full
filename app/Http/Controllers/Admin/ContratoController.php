@@ -1450,7 +1450,7 @@ class ContratoController extends Controller
     {  
         $desconto_corretor = $request->desconto_corretor; 
         $desconto_corretora = $request->desconto_corretora; 
-        $valor = str_replace([".",","],["","."],$request->valor_adesao);        
+        $valor = str_replace([".",","],["","."],$request->valor);        
         $cliente = new Cliente();
         $cliente->nome = $request->nome_coletivo;
         $cliente->user_id = $request->usuario_coletivo_switch;
@@ -1847,20 +1847,14 @@ class ContratoController extends Controller
     {
       $id = $request->contrato;
       $contrato = Contrato::where("id",$id)->first();
-      
       if($contrato == null) {
             $contrato = ContratoEmpresarial::where("id",$id)->with(['comissao','comissao.comissoesLancadas'])->first(); 
       } else {
             $contrato = Contrato::where("id",$id)->with(['clientes','comissao','comissao.comissoesLancadas'])->first();
       }
-
-
-
-      
       return view('admin.pages.contratos.historicoFinanceiro',[
             "contrato" => $contrato
       ]);    
-
     }
 
 
@@ -1880,7 +1874,6 @@ class ContratoController extends Controller
         $users = User::where("id","!=",auth()->user()->id)->get();
         $origem_tabela = TabelaOrigens::all();
         $administradoras = Administradoras::whereRaw("id != (SELECT id FROM administradoras WHERE nome LIKE '%hapvida%')")->get();
-
         return view('admin.pages.contratos.cadastrar-coletivo',[
             'users' => $users,
             'cidades' => $origem_tabela,
@@ -1890,12 +1883,9 @@ class ContratoController extends Controller
 
     public function formCreateColetivoCorretor()
     {
-        
         $origem_tabela = TabelaOrigens::all();
         $administradoras = Administradoras::whereRaw("id != (SELECT id FROM administradoras WHERE nome LIKE '%hapvida%')")->get();
-
-        return view('admin.pages.contratos.cadastrar-coletivo-corretor',[
-            
+        return view('admin.pages.contratos.cadastrar-coletivo-corretor',[            
             'cidades' => $origem_tabela,
             'administradoras' => $administradoras
         ]);   
@@ -1907,7 +1897,6 @@ class ContratoController extends Controller
         $users = User::where("id","!=",auth()->user()->id)->get();
         $plano_empresarial = Planos::where("empresarial",1)->get();
         $tabela_origem = TabelaOrigens::all();
-
         return view('admin.pages.contratos.cadastrar-empresa',[
             "users" => $users,
             "planos_empresarial" => $plano_empresarial,
