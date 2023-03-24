@@ -293,7 +293,11 @@
                                 <input type="text" id="texto_descricao_individual_view" value="" class="form-control form-control-sm" readonly>     
                             </div>    
                                                     
-                        </div> 
+                        </div>
+                        
+                        
+
+
                         
                         <div class="ocultar dados_cancelados">
                             <div class="d-flex mb-2" style="flex-wrap: wrap;">
@@ -591,7 +595,27 @@
                             </div>    
  
                             
-                        </div>                
+                        </div>      
+                        
+                        <div class="d-flex mb-2">  
+                            <div style="flex-basis:33%;">
+                                <span class="text-white" style="font-size:0.81em;">Desconto:</span>
+                                <input type="text" id="desconto_coletivo" value="" class="form-control form-control-sm" readonly>
+                            </div>    
+                            <div style="flex-basis:32%;margin:0 1%;">
+                                <span class="text-white" style="font-size:0.81em;">Desconto Corretora:</span>
+                                <input type="text" id="desconto_corretora_coletivo" value="" class="form-control form-control-sm" readonly>
+                            </div>
+                            <div style="flex-basis:33%;">
+                                <span class="text-white" style="font-size:0.81em;">Desconto Corretor:</span>
+                                <input type="text" id="desconto_corretor_coletivo" value="" class="form-control form-control-sm" readonly>
+                            </div>
+                        </div>       
+
+
+
+
+
                     </section>    
                 </div>
 
@@ -1037,6 +1061,11 @@
                 $("#coparticipacao_nao").attr("style","padding:0.21rem 0.75rem;");
                 $("#odonto_sim").attr("style","padding:0.21rem 0.75rem;");
                 $("#odonto_nao").attr("style","padding:0.21rem 0.75rem;");
+                $("#desconto_corretora_coletivo").val(Number(data.desconto_corretora).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+                $("#desconto_corretor_coletivo").val(Number(data.desconto_corretor).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+                let desconto = data.valor_plano - data.valor_adesao;
+                $("#desconto_coletivo").val(Number(desconto).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})); 
+
                 if(data.coparticipacao) {       
                     $("#coparticipacao_sim_coletivo").attr("style","padding:0.21rem 0.75rem;background-color:white;color:black;").attr("disabled",true);
                 } else {
