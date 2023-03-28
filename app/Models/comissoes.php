@@ -70,7 +70,6 @@ class comissoes extends Model
     public function comissaoAtualLast() 
     {
         return $this->hasOne(ComissoesCorretoresLancadas::class)
-            
             ->where('status_financeiro',1)
             ->where('status_gerente',0)->orderBy("id","desc");
     }

@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'Contratos')
+@section('title', 'Contratosssss')
 @section('plugins.jqueryUi', true)
 @section('plugins.Toastr', true)
 @section('plugins.Datatables', true)
@@ -46,12 +46,10 @@
                     <div class="mb-1">
                         <select id="select_usuario_individual" class="form-control">
                             <option value="todos" class="text-center">---Escolher Corretor---</option>
-                            
                         </select>
                     </div>
 
                     <div style="margin:0 0 20px 0;padding:0;background-color:#123449;border-radius:5px;">
-
                         <div class="text-center py-1 d-flex justify-content-between border-bottom textoforte-list" id="all_pendentes_individual">
                             <span class="w-50 d-flex justify-content-start ml-2">
                                 Pendentes
@@ -1762,26 +1760,41 @@
                 $("#data_boleto_view_empresarial").val(data_boleto);
             });
 
-            $("body").on('mouseover','.div_info',function(){
-               let contrato = $(this).attr('data-id');
-               let janela_ativa = $('#janela_ativa').val(); 
-               $.ajax({
-                    url:"{{route('contratos.info')}}",
-                    data:"contrato="+contrato,
-                    method:"POST",
-                    success:function(res) {
-                        $('.coluna-right.'+janela_ativa).html(res);
-                        //$('.container_div_info').html(res);
-                    }
-                });
-                $('.container_div_info').toggle();
-                return false;
+            // $("body").on('mouseover','.div_info',function(){
+            //    let contrato = $(this).attr('data-id');
+            //    let janela_ativa = $('#janela_ativa').val(); 
+            //    $.ajax({
+            //         url:"{{route('contratos.info')}}",
+            //         data:"contrato="+contrato,
+            //         method:"POST",
+            //         success:function(res) {
+            //             $('.coluna-right.'+janela_ativa).html(res);
+            //             //$('.container_div_info').html(res);
+            //         }
+            //     });
+            //     $('.container_div_info').toggle();
+            //     return false;
+            // });
+
+            // $("body").on('mouseout','.div_info',function(){
+            //     let janela_ativa = $('#janela_ativa').val();
+            //     $(".coluna-right."+janela_ativa).html(default_formulario);
+            // });
+
+            $("body").on('click','.div_info',function(){
+                let contrato = $(this).attr('data-id');
+                let janela_ativa = $('#janela_ativa').val(); 
+
+                
+
+
             });
 
-            $("body").on('mouseout','.div_info',function(){
-                let janela_ativa = $('#janela_ativa').val();
-                $(".coluna-right."+janela_ativa).html(default_formulario);
-            });
+
+
+
+
+
 
             // $(".div_info").on('click',function(){
             //     console.log("Olaaaaa");
@@ -1970,7 +1983,6 @@
                     $("ul#listar_empresarial li.empresarial").removeClass('textoforte-list');
                     $("ul#grupo_empresarial_concluido li.empresarial").removeClass('textoforte-list');  
                     $("#all_pendentes_empresarial").removeClass('textoforte-list');
-
                     $(this).addClass('textoforte-list');
                 } else if(id_lista == "aguardando_pagamento_1_parcela_empresarial") {
                     $("#title_empresarial").html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 1º Parcela</h4>");
@@ -2167,12 +2179,6 @@
                 $("#valor_boleto_view_empresarial").val('');
                 $("#vencimento_boleto_view_empresarial").val('');
                 $("#data_boleto_view_empresarial").val('');
-
-
-
-
-
-
             }
 
 
@@ -2185,7 +2191,6 @@
                 $('.conteudo_abas main').addClass('ocultar');
                 $('#'+id).removeClass('ocultar');
 
-                
                 default_formulario = $('.coluna-right.'+id).html();
 
                 $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Pendentes</h4>");

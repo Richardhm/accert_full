@@ -273,10 +273,10 @@
 
                 <!---------DIREITA-------------->    
                 <div class="mr-1 coluna-right aba_individual">
-                    <section class="p-1" style="background-color:#123449;border-radius: 5px;">
+                    <section class="p-1" style="background-color:#123449;border-radius: 5px;position:fixed;">
 
 
-                        <div class="d-flex mb-2">
+                        <div class="d-flex">
                                 
                             <div style="flex-basis:25%;">
                                 <span class="text-white" style="font-size:0.81em;">Administradora:</span>
@@ -305,7 +305,7 @@
 
                         </div>
 
-                        <div class="d-flex mb-2">
+                        <div class="d-flex">
                             
                             <div style="flex-basis:40%;">
                                 <span class="text-white" style="font-size:0.81em;">Cliente:</span>
@@ -324,93 +324,110 @@
 
                         </div>
 
-                        <div class="d-flex mb-2">
-                            <div style="flex-basis:28%;">
+                        <div class="d-flex">
+                            <div style="flex-basis:33%;">
                                 <span class="text-white" style="font-size:0.81em;">CPF:</span>
                                 <input type="text" id="cpf" class="form-control form-control-sm" readonly>
                             </div>
-                            <div style="flex-basis:38%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.81em;">Responsavel Financeiro:</span>
-                                <input type="text" id="responsavel_financeiro" class="form-control  form-control-sm" readonly>
-                            </div>
-                            <div style="flex-basis:32%;">
-                                <span class="text-white" style="font-size:0.81em;">CPF Financeiro:</span>
-                                <input type="text" id="cpf_financeiro" class="form-control  form-control-sm" readonly>
-                            </div>    
-                        </div>
 
-
-                        <div class="d-flex mb-2">
-                            
-                            <div style="flex-basis:28%;margin-right:1%;">
+                            <div style="flex-basis:33%;margin:0 1%;">
                                 <span class="text-white" style="font-size:0.81em;">Celular:</span>
                                 <input type="text" id="celular_individual_view_input" class="form-control form-control-sm" readonly>
                             </div>
 
-                            <div style="flex-basis:25%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.81em;">Telefone:</span>
+                            <div style="flex-basis:33%;">
+                                <span class="text-white" style="font-size:0.81em;">Telefonesss:</span>
                                 <input type="text" id="telefone_individual_view_input" class="form-control form-control-sm" readonly>
                             </div>
+                           
+                        </div>
 
-                            <div style="flex-basis:45%;">
+
+                        <div class="d-flex">
+                            
+                            
+
+                            <div style="flex-basis:40%;">
                                 <span class="text-white" style="font-size:0.81em;">Email:</span>
                                 <input type="text" id="email" class="form-control form-control-sm" readonly>
                             </div>
 
+                            <div style="flex-basis:25%;margin:0 1%;">
+                                <span class="text-white" style="font-size:0.81em;">Numero Registro:</span>
+                                <input type="text" id="numero_registro" class="form-control  form-control-sm" readonly>
+                            </div>
+                            <div style="flex-basis:35%;">
+                                <span class="text-white" style="font-size:0.81em;">Carteirinha:</span>
+                                <input type="text" id="carteirinha" class="form-control  form-control-sm" readonly>
+                            </div>
+
+
+
+
+
                         </div>
 
 
-                        <div class="d-flex mb-2">
-                            <div style="flex-basis:22%;">
+                        <div class="d-flex">
+                            <div style="flex-basis:18%;">
                                 <span class="text-white" style="font-size:0.81em;">CEP:</span>
                                 <input type="text" name="cep" id="cep_individual_cadastro" class="form-control form-control-sm" readonly>
                             </div>
-                            <div style="flex-basis:78%;margin:0 1%;">
+                            <div style="flex-basis:35%;margin:0 1%;">
                                 <span class="text-white" style="font-size:0.81em;">Cidade:</span> 
                                 <input type="text" id="cidade" class="form-control  form-control-sm" readonly>
                             </div>
-                            <div style="flex-basis:10%;">
-                                <span class="text-white" style="font-size:0.81em;">UF:</span>
-                                <input type="text" id="uf" class="form-control form-control-sm" readonly>
-                            </div>                         
-                        </div>
-
-                        <div class="d-flex mb-2">
-                            
-                            <div style="flex-basis:30%;">
+                           
+                            <div style="flex-basis:45%;">
                                 <span class="text-white" style="font-size:0.81em;">Bairro:</span>
                                 <input type="text" id="bairro_individual_cadastro" class="form-control form-control-sm" readonly>
-                            </div>    
+                            </div>                       
+                        </div>
 
-                            <div style="flex-basis:40%;margin:0 1%;">
+                        <div class="d-flex">
+                            
+                            
+
+                            <div style="flex-basis:60%;">
                                 <span class="text-white" style="font-size:0.81em;">Rua:</span>
                                 <input type="text" id="rua_individual_cadastro" class="form-control form-control-sm" readonly>
                             </div>
 
-                            <div style="flex-basis:29%;">
+                            <div style="flex-basis:29%;margin:0 1%;">
                                 <span class="text-white" style="font-size:0.81em;">Complemento:</span>
                                 <input type="text" id="complemento_individual_cadastro" class="form-control form-control-sm" readonly>
                             </div>
+
+                            <div style="flex-basis:10%;margin-right:1%;">
+                                <span class="text-white" style="font-size:0.81em;">UF:</span>
+                                <input type="text" id="uf" class="form-control form-control-sm" readonly>
+                            </div>      
 
 
                         </div>
 
                        
-                        <div class="d-flex mb-2">
-                            <div style="flex-basis:32%;">
+                        <div class="d-flex">
+                            <div style="flex-basis:23%;">
                                 <span class="text-white" style="font-size:0.81em;">Data Contrato:</span>
                                 <input type="text" name="data_contrato" id="data_contrato" class="form-control form-control-sm" readonly>
                             </div>
 
-                            <div style="flex-basis:32%;margin:0 1%;">
+                            <div style="flex-basis:23%;margin:0 1%;">
                                 <span class="text-white" style="font-size:0.81em;">Valor Contrato:</span>
                                 <input type="text" name="valor_contrato" id="valor_contrato" class="form-control  form-control-sm" readonly>
                             </div>
 
-                            <div style="flex-basis:32%;">
+                            <div style="flex-basis:23%;">
                                 <span class="text-white" style="font-size:0.81em;">Valor Adesão:</span>
                                 <input type="text" name="valor_adesao" id="valor_adesao" class="form-control  form-control-sm" readonly>
                             </div>
+
+                            <div style="flex-basis:20%;margin-left:1%;">
+                                <span class="text-white" style="font-size:0.81em;">Data Boleto:</span>
+                                <input type="text" name="data_boleto" id="data_boleto" class="form-control  form-control-sm" readonly>
+                            </div>
+
 
                             <div style="flex-basis:8%;margin-left:1%;">    
                                 <span class="text-white" style="font-size:0.81em;">Vidas</span>
@@ -419,32 +436,68 @@
                              
                         </div>
 
-                        <div class="d-flex mb-2">
+                        <div class="d-flex">
 
-                            <div style="flex-basis:23%;">
-                                <span class="text-white" style="font-size:0.81em;">Data Boleto:</span>
-                                <input type="text" name="data_boleto" id="data_boleto" class="form-control  form-control-sm" readonly>
-                            </div>
-
-                             <div style="flex-basis:23%;margin:0 1%;">
+                            
+                             <div style="flex-basis:23%;margin-right:1%;">
                                 <span class="text-white" style="font-size:0.81em;">Data Vigência:</span>
                                 <input type="text" name="data_vigencia" id="data_vigencia" class="form-control  form-control-sm" readonly>
                             </div>
 
-                            <div style="flex-basis:53%;">
-                                <span class="text-white" style="font-size:0.81em;">Plano Contratado:</span>
-                                <input type="text" id="texto_descricao_individual_view" value="" class="form-control form-control-sm" readonly>     
-                            </div>    
+                            <div style="flex-basis:35%;margin:0 1%;">
+                                <span class="text-white" style="font-size:0.81em;">Rede Plano:</span>
+                                <input type="text" id="rede_plano" class="form-control  form-control-sm" readonly>
+                            </div>
+
+                             <div style="flex-basis:39%;">
+                                <span class="text-white" style="font-size:0.81em;">Segmentaçao:</span>
+                                <input type="text" id="segmentacao" class="form-control  form-control-sm" readonly>
+                            </div>
+
+                           
                             
                             <input type="hidden" id="cliente_id_alvo_individual" />
 
-                        </div>                
+                        </div>    
+
+                        <div class="d-flex">
+
+                            
+
+                            
+                            
+                            
+
+                        </div>    
+
+                        <div class="d-flex">
+                            <div style="flex-basis:70%;margin-right:1%;">
+                                <span class="text-white" style="font-size:0.81em;">Plano:</span>
+                                <input type="text" id="plano" class="form-control  form-control-sm" readonly>
+                            </div>
+
+                            <div style="flex-basis:29%;">
+                                <span class="text-white" style="font-size:0.81em;">Tipo Plano:</span>
+                                <input type="text" id="tipo_acomodacao_plano" value="" class="form-control form-control-sm" readonly>     
+                            </div>    
+                        </div> 
+                        
+                       
+
+
+
+
+                        
+                        <div class="button_individual mt-1">
+                            <button class="btn btn-danger w-50 mr-2 excluir_individual" data-comissao="">Excluir</button>
+                            <button class="btn btn-success w-50 next_individual">Conferido</button>
+                        </div>    
+
+
+
                     </section>                    
 
-                    <div class="button_individual mt-1">
-                        <button class="btn btn-danger w-50 mr-2 excluir_individual" data-comissao="">Excluir</button>
-                        <button class="btn btn-success w-50 next_individual">Conferido</button>
-                    </div>
+                    
 
 
 
@@ -1017,6 +1070,14 @@
                 <!---------FIM DIREITA----------->
         </main>
     </section>
+
+    <p>
+        <form action="{{route('financeiro.importar.dados')}}" method="post" enctype="multipart/form-data">
+            @csrf
+            <input type="file" name="importar_arquivo" id="importar_arquivo">
+            <button type="submit" class="btn btn-primary btn-block">Importar</button>
+        </form>    
+    </p>
    
 @stop  
 
@@ -1852,7 +1913,16 @@
             $('#tabela_individual').on('click', 'tbody tr', function () {
                 table_individual.$('tr').removeClass('textoforte');
                 $(this).closest('tr').addClass('textoforte');
-                let data = table_individual.row(this).data();   
+                let data = table_individual.row(this).data();  
+                console.log(data);
+                $("#numero_registro").val(data.clientes.numero_registro_plano);
+                $("#carteirinha").val(data.clientes.cateirinha);
+                $("#tipo_acomodacao_plano").val(data.clientes.tipo_acomodacao_plano);
+                $("#segmentacao").val(data.clientes.segmentacao_plano);
+                $("#plano").val(data.clientes.nm_plano);
+                $("#rede_plano").val(data.clientes.rede_plano);
+
+
                 $("#cliente_id_alvo_individual").val(data.clientes.id);
                 $('#comissao_id_cancelado').val(data.comissao.id);
                 $(".excluir_individual").attr('data-cliente-excluir-individual',data.clientes.id);
@@ -1863,22 +1933,22 @@
                 let odonto_individual = data.odonto;
                 let texto = "";
 
-                if(acomodacao_individual == "Apartamento" && coparticipacao_individual == 1 && odonto_individual == 1) {
-                    texto = "Apartamento C/Copart + Odonto";
-                } else if(acomodacao_individual == "Apartamento" && coparticipacao_individual == 1 && odonto_individual == 0) {
-                    texto = "Apartamento C/Copart Sem Odonto";
-                } else if(acomodacao_individual == "Apartamento" && coparticipacao_individual == 0 && odonto_individual == 0) {
-                    texto = "Apartamento S/Copart Sem Odonto";
-                } else if(acomodacao_individual == "Enfermaria" && coparticipacao_individual == 1 && odonto_individual == 1) {
-                    texto = "Enfermaria C/Copart + Odonto";    
-                } else if(acomodacao_individual == "Enfermaria" && coparticipacao_individual == 1 && odonto_individual == 0) {
-                    texto = "Enfermaria C/Copart Sem Odonto";    
-                } else if(acomodacao_individual == "Enfermaria" && coparticipacao_individual == 0 && odonto_individual == 0) {
-                    texto = "Apartamento S/Copart Sem Odonto";    
-                } else {
-                    texto = "";
-                }
-                $("#texto_descricao_individual_view").val(texto)
+                // if(acomodacao_individual == "Apartamento" && coparticipacao_individual == 1 && odonto_individual == 1) {
+                //     texto = "Apartamento C/Copart + Odonto";
+                // } else if(acomodacao_individual == "Apartamento" && coparticipacao_individual == 1 && odonto_individual == 0) {
+                //     texto = "Apartamento C/Copart Sem Odonto";
+                // } else if(acomodacao_individual == "Apartamento" && coparticipacao_individual == 0 && odonto_individual == 0) {
+                //     texto = "Apartamento S/Copart Sem Odonto";
+                // } else if(acomodacao_individual == "Enfermaria" && coparticipacao_individual == 1 && odonto_individual == 1) {
+                //     texto = "Enfermaria C/Copart + Odonto";    
+                // } else if(acomodacao_individual == "Enfermaria" && coparticipacao_individual == 1 && odonto_individual == 0) {
+                //     texto = "Enfermaria C/Copart Sem Odonto";    
+                // } else if(acomodacao_individual == "Enfermaria" && coparticipacao_individual == 0 && odonto_individual == 0) {
+                //     texto = "Apartamento S/Copart Sem Odonto";    
+                // } else {
+                //     texto = "";
+                // }
+                // $("#texto_descricao_individual_view").val(texto)
 
                 if(data.clientes.dependente) {
                     $("#responsavel_financeiro").val(data.clientes.dependentes.nome);
@@ -1936,7 +2006,7 @@
                 }
                 // $("#quantidade_vidas").val(vidas);
                 $("#tipo_plano_individual").val(data.plano.nome); 
-                $("#quantidade_vidas_individual_cadastrar").val(data.somar_cotacao_faixa_etaria[0].soma);                
+                $("#quantidade_vidas_individual_cadastrar").val(data.clientes.quantidade_vidas);                
             });
             
 
@@ -2162,26 +2232,26 @@
                 }
             });
 
-            $("body").on('mouseover','.div_info',function(){
-               let contrato = $(this).attr('data-id');
-               let janela_ativa = $('#janela_ativa').val(); 
-               $.ajax({
-                    url:"{{route('contratos.info')}}",
-                    data:"contrato="+contrato,
-                    method:"POST",
-                    success:function(res) {
-                        $('.coluna-right.'+janela_ativa).html(res);
-                        //$('.container_div_info').html(res);
-                    }
-                });
-                $('.container_div_info').toggle();
-                return false;
-            });
+            // $("body").on('mouseover','.div_info',function(){
+            //    let contrato = $(this).attr('data-id');
+            //    let janela_ativa = $('#janela_ativa').val(); 
+            //    $.ajax({
+            //         url:"{{route('contratos.info')}}",
+            //         data:"contrato="+contrato,
+            //         method:"POST",
+            //         success:function(res) {
+            //             $('.coluna-right.'+janela_ativa).html(res);
+            //             //$('.container_div_info').html(res);
+            //         }
+            //     });
+            //     $('.container_div_info').toggle();
+            //     return false;
+            // });
 
-            $("body").on('mouseout','.div_info',function(){
-                let janela_ativa = $('#janela_ativa').val();
-                $(".coluna-right."+janela_ativa).html(default_formulario);
-            });
+            // $("body").on('mouseout','.div_info',function(){
+            //     let janela_ativa = $('#janela_ativa').val();
+            //     $(".coluna-right."+janela_ativa).html(default_formulario);
+            // });
 
 
 
@@ -2924,12 +2994,18 @@
         #coluna_direita ul {list-style: none;margin: 0;padding: 0;}
         #coluna_direita li {color:#FFF;}
         .coluna-right {flex-basis:30%;flex-wrap: wrap;border-radius:5px;height:720px;}
+        .coluna-right.aba_individual {flex-basis:30%;flex-wrap: wrap;border-radius:5px;height:1000px;}
+
+
+
         /* .container_div_info {background-color:rgba(0,0,0,1);position:absolute;width:500px;right:0px;top:57px;min-height: 700px;display: none;z-index: 1;color: #FFF;} */
         .container_div_info {display:flex;position:absolute;flex-basis:30%;right:0px;top:57px;display: none;z-index: 1;color: #FFF;}
         #padrao {width:50px;background-color:#FFF;color:#000;}
         .buttons {display: flex;}
         .button_individual {display:flex;}
         .button_empresarial {display: flex;}
+
+        
 
         
         

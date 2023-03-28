@@ -69,6 +69,9 @@ Route::middleware('auth')->prefix("admin")->group(function(){
     Route::get('/contratos/cadastrar/coletivo',"App\Http\Controllers\Admin\ContratoController@formCreateColetivo")->name('contratos.create.coletivo');
     Route::get('/contrato/cadastrar/coletivo',"App\Http\Controllers\Admin\ContratoController@formCreateColetivoCorretor")->name('contratos.create.coletivo.corretor');
 
+    Route::post('/financeiro/importarDados',"App\Http\Controllers\Admin\FinanceiroController@importarDados")->name('financeiro.importar.dados');
+
+
 
 
     Route::get('/contratos/cadastrar/empresarial',"App\Http\Controllers\Admin\ContratoController@formCreateEmpresarial")->name('contratos.create.empresarial');

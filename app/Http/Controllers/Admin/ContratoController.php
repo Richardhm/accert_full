@@ -966,9 +966,7 @@ class ContratoController extends Controller
 
 
         $chaves = implode(",",$chaves);
-
         $cidade = $request->tabela_origem;
-
         $odonto = $request->odonto == "sim" ? 1 : 0;
         $coparticipacao = $request->coparticipacao == "sim" ? 1 : 0;
         
@@ -1321,7 +1319,6 @@ class ContratoController extends Controller
     public function listarContratoTerceiraParcela(Request $request)
     {
         if($request->ajax()) {
-            
                 return ContratoEmpresarial
                 ::with(["comissao","comissao.comissaoAtualFinanceiro"])
                 ->whereHas('comissao.comissoesLancadas',function($query){
