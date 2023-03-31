@@ -38,6 +38,10 @@
 		            </select>
 		            <div class="error_origem_cidade"></div>    
 		        </div>
+
+				
+
+
 				<div class="errorFaixa"></div> 
 		        <div class="d-flex">
 
@@ -256,13 +260,15 @@
 				}
 
 
+
+
+
+
 				if($("#faixa-input-0-18").val() == "" && $('#faixa-input-19-23').val() == "" && $('#faixa-input-24-28').val() == "" &&  $('#faixa-input-29-33').val() == "" && $('#faixa-input-34-38').val() == "" && $('#faixa-input-39-43').val() == "" && $('#faixa-input-44-48').val() == "" && $('#faixa-input-49-53').val() == "" && $('#faixa-input-54-58').val() == "" && $('#faixa-input-59').val() == "") {
 					$(".errorFaixa").html("<p class='alert alert-danger text-center'>Alguma faixa etaria deve ter preenchida</p>");
 					return false;
 				} else {
 					$(".errorFaixa").html('');
-					
-					
 				}
 
 				

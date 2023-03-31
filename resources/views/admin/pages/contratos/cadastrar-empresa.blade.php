@@ -9,7 +9,7 @@
 @section('content')
 	<div style="background-color:#123449;border-radius:5px;padding:10px 5px;">
 	
-		<form action="{{route('contratos.storeEmpresarial')}}" method="post" class="px-3" name="cadastrar_dados_empresarial" id="cadastrar_dados_empresarial">
+		<form action="{{route('contratos.storeEmpresarial.financeiro')}}" method="post" class="px-3" name="cadastrar_dados_empresarial" id="cadastrar_dados_empresarial">
             @csrf     
             <div style="padding:0;margin:8px 0;">         
             	<!-- Primeiro Linha -->

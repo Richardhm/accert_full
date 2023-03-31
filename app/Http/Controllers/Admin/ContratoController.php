@@ -17,22 +17,13 @@ class ContratoController extends Controller
 {
     public function index()
     {
-        
-
-
-
-
         $contratos_coletivo_pendentes = Contrato::where("plano_id",3)->count();
-        
         $cidades = TabelaOrigens::all();
         $administradoras = Administradoras::whereRaw("id != (SELECT id FROM administradoras WHERE nome LIKE '%hapvida%')")->get();
-        
         $planos = Planos::whereRaw("empresarial is null")->orWhere("empresarial",0)->get();
         $plano_empresarial = Planos::where("empresarial",1)->get();
-
         $users = User::where("id","!=",auth()->user()->id)->get();
         $tabela_origem = TabelaOrigens::all();
-
         $qtd_individual_pendentes = Contrato::where("plano_id",1)->count();
         $qtd_individual_em_analise = Contrato::where("financeiro_id",1)
             ->where("plano_id",1)
@@ -1772,70 +1763,70 @@ class ContratoController extends Controller
          }
          
  
-         $premiacao = new Premiacoes();
-         $premiacao->contrato_empresarial_id = $contrato->id;
-         $premiacao->user_id = $request->user_id;
-         $premiacao->plano_id = $request->plano_id;
-         $premiacao->administradora_id = 4;
-         $premiacao->tabela_origens_id = $request->tabela_origens_id;
-         $premiacao->data = date('Y-m-d');
-         $premiacao->empresarial = 1;
-         $premiacao->save();
+        //  $premiacao = new Premiacoes();
+        //  $premiacao->contrato_empresarial_id = $contrato->id;
+        //  $premiacao->user_id = $request->user_id;
+        //  $premiacao->plano_id = $request->plano_id;
+        //  $premiacao->administradora_id = 4;
+        //  $premiacao->tabela_origens_id = $request->tabela_origens_id;
+        //  $premiacao->data = date('Y-m-d');
+        //  $premiacao->empresarial = 1;
+        //  $premiacao->save();
   
-         $premiacao_configurada_corretor = PremiacoesCorretoresConfiguracoes
-         ::where("plano_id",$request->plano_id)
-         ->where("administradora_id",4)
-         ->where("user_id",$request->user_id)
-         ->where("tabela_origens_id",$request->tabela_origens_id)
-         ->get();
+        //  $premiacao_configurada_corretor = PremiacoesCorretoresConfiguracoes
+        //  ::where("plano_id",$request->plano_id)
+        //  ->where("administradora_id",4)
+        //  ->where("user_id",$request->user_id)
+        //  ->where("tabela_origens_id",$request->tabela_origens_id)
+        //  ->get();
   
-         $premiacao_corretor_contagem = 0;
-         if(count($premiacao_configurada_corretor)>=1) {
-             foreach($premiacao_configurada_corretor as $k => $p) {
-                 $premiacaoCorretoresLancados = new PremiacoesCorretoresLancadas();
-                 $premiacaoCorretoresLancados->premiacoes_id = $premiacao->id;
-                 $premiacaoCorretoresLancados->parcela = $p->parcela;
+        //  $premiacao_corretor_contagem = 0;
+        //  if(count($premiacao_configurada_corretor)>=1) {
+        //      foreach($premiacao_configurada_corretor as $k => $p) {
+        //          $premiacaoCorretoresLancados = new PremiacoesCorretoresLancadas();
+        //          $premiacaoCorretoresLancados->premiacoes_id = $premiacao->id;
+        //          $premiacaoCorretoresLancados->parcela = $p->parcela;
                  
-                 if($premiacao_corretor_contagem == 0) {
-                     $premiacaoCorretoresLancados->data = date('Y-m-d H:i:s',strtotime($request->data_boleto));
-                 } else {
-                     $premiacaoCorretoresLancados->data = date("Y-m-d H:i:s",strtotime($request->data_boleto."+{$premiacao_corretor_contagem}month"));
-                 }
-                 $premiacaoCorretoresLancados->valor = $p->valor * $request->quantidade_vidas;
-                 $premiacaoCorretoresLancados->save();
-                 $premiacao_corretor_contagem++;
-             }
-         }
+        //          if($premiacao_corretor_contagem == 0) {
+        //              $premiacaoCorretoresLancados->data = date('Y-m-d H:i:s',strtotime($request->data_boleto));
+        //          } else {
+        //              $premiacaoCorretoresLancados->data = date("Y-m-d H:i:s",strtotime($request->data_boleto."+{$premiacao_corretor_contagem}month"));
+        //          }
+        //          $premiacaoCorretoresLancados->valor = $p->valor * $request->quantidade_vidas;
+        //          $premiacaoCorretoresLancados->save();
+        //          $premiacao_corretor_contagem++;
+        //      }
+        //  }
  
          
  
  
-         /** Premiação Corretora */
-         $premiacao_configurada_corretora = PremiacoesCorretoraConfiguracoes
-         ::where("plano_id",$request->plano_id)
-         ->where("administradora_id",4)
-         //->where("user_id",$request->user_id)
-         ->where("tabela_origens_id",$request->tabela_origens_id)
-         ->get();
+        //  /** Premiação Corretora */
+        //  $premiacao_configurada_corretora = PremiacoesCorretoraConfiguracoes
+        //  ::where("plano_id",$request->plano_id)
+        //  ->where("administradora_id",4)
+        //  //->where("user_id",$request->user_id)
+        //  ->where("tabela_origens_id",$request->tabela_origens_id)
+        //  ->get();
  
  
  
-         $premiacao_corretora_contagem = 0;
-         if(count($premiacao_configurada_corretora)>=1) {
-             foreach($premiacao_configurada_corretora as $k => $p) {
-                 $premiacaoCorretoraLancados = new PremiacoesCorretoraLancadas();
-                 $premiacaoCorretoraLancados->premiacoes_id = $premiacao->id;
-                 $premiacaoCorretoraLancados->parcela = $p->parcela;
-                 if($premiacao_corretor_contagem == 0) {
-                     $premiacaoCorretoraLancados->data = date('Y-m-d',strtotime($request->data_boleto));
-                 } else {
-                     $premiacaoCorretoraLancados->data = date("Y-m-d",strtotime($request->data_boleto."+{$premiacao_corretora_contagem}month"));
-                 }
-                 $premiacaoCorretoraLancados->valor = $p->valor * $request->quantidade_vidas;
-                 $premiacaoCorretoraLancados->save();
-                 $premiacao_corretora_contagem++;
-             }
-         }
+        //  $premiacao_corretora_contagem = 0;
+        //  if(count($premiacao_configurada_corretora)>=1) {
+        //      foreach($premiacao_configurada_corretora as $k => $p) {
+        //          $premiacaoCorretoraLancados = new PremiacoesCorretoraLancadas();
+        //          $premiacaoCorretoraLancados->premiacoes_id = $premiacao->id;
+        //          $premiacaoCorretoraLancados->parcela = $p->parcela;
+        //          if($premiacao_corretor_contagem == 0) {
+        //              $premiacaoCorretoraLancados->data = date('Y-m-d',strtotime($request->data_boleto));
+        //          } else {
+        //              $premiacaoCorretoraLancados->data = date("Y-m-d",strtotime($request->data_boleto."+{$premiacao_corretora_contagem}month"));
+        //          }
+        //          $premiacaoCorretoraLancados->valor = $p->valor * $request->quantidade_vidas;
+        //          $premiacaoCorretoraLancados->save();
+        //          $premiacao_corretora_contagem++;
+        //      }
+        //  }
         //return redirect()->route('contratos.index')->with('success',"Contrato cadastrado com sucesso");           
         return redirect('admin/contratos?ac=empresarial')->with('success','Contrato cadastrado com sucesso');
     }

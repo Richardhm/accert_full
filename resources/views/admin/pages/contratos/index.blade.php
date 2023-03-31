@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'Contratosssss')
+@section('title', 'Contratos')
 @section('plugins.jqueryUi', true)
 @section('plugins.Toastr', true)
 @section('plugins.Datatables', true)
@@ -927,7 +927,6 @@
             var default_formulario = $('.coluna-right.aba_individual').html();
 
             mudar_user_empresarial = "";
-
             $("#mudar_user_empresarial").on('change',function(){
                 mudar_user_empresarial = $(this).val();
                 if($(this).val() != "todos") {
@@ -938,8 +937,6 @@
                     table_empresarial.column(1).search(val ? '^' + val + '$' : '', true, false).draw();
                 }
             });
-
-
 
             
             usuario_individual = "";
@@ -952,9 +949,7 @@
                     taindividual.column(1).search(val).draw();
                     taindividual.column(1).search(val ? '^' + val + '$' : '', true, false).draw();
                 }
-            });
-            
-            
+            });     
             
             administradora_selecionado = "";
             $("#select_coletivo").on('change',function(){
@@ -2263,9 +2258,6 @@
         .estilizar_pagination #tabela_mes_diferente_previous {color:#FFF !important;}
         .estilizar_pagination #tabela_mes_diferente_next {color:#FFF !important;}
         .estilizar_search input[type='search'] {background-color: #FFF !important;}
-
-
-
     </style>
 @stop
 

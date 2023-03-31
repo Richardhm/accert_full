@@ -22,6 +22,237 @@ class FinanceiroController extends Controller
 
     public function index()
     {
+        
+        
+        // $comissoesLancadas = ComissoesCorretoresLancadas::whereRaw('documento_gerador IS NOT NULL')->get();
+
+        // foreach($comissoesLancadas as $cc) {
+        //     $data = $cc->data." - ".$cc->documento_gerador."<br />";
+        // }
+
+        // return;
+        // $clientes = Cliente::whereRaw("cateirinha IS NOT NULL")->get();    
+        // foreach($clientes as $cc) {
+            
+
+        //     $url = "https://api-hapvida.sensedia.com/wssrvonline/v1/beneficiario/$cc->cateirinha/financeiro/historico";
+
+        //     $curl = curl_init($url);
+        //     curl_setopt($curl, CURLOPT_URL, $url);
+        //     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+        //     // //for debug only!
+        //     curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        //     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+
+        //     $resp = curl_exec($curl);
+        //     curl_close($curl);
+
+        //     $dados = json_decode($resp);
+        //     $data = "";
+        //     $docu = "";
+        //     foreach($dados as $d) {
+        //         //if($d->dtPagamento != null && $d->cdStatus != 16) {
+        //             $data = implode("-",array_reverse(explode('/',$d->dtVencimento)));
+        //             $docu = $d->cdDocumentoGerador;
+        //             echo $data."-".$docu."<br />";
+        //             // ComissoesCorretoresLancadas
+        //             //     ::where("data",$data)
+        //             //     ->where("documento_gerador",$docu)
+        //             //     ->where("status_financeiro","!=",1)
+        //             //     ->where("status_gerente","!=",1)
+        //             //     ->update(['status_financeiro'=>1,'status_gerente'=>0]);
+                    
+        //         //}
+                
+                
+        //     }
+
+
+
+        // }
+
+        // return;
+
+       
+           
+            
+       
+
+
+
+
+
+
+
+        // $dados = Cliente::all();
+        // // echo "<pre>";
+        // foreach($dados as $v) {
+        //     echo $v->cateirinha."<br />";
+        // //     // $url = "https://api-hapvida.sensedia.com/wssrvonline/v1/beneficiario?cpf=$v->cpf";
+        // //     // $ch = curl_init($url);
+        // //     // curl_setopt($ch,CURLOPT_URL,$url);
+        // //     // curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+        // //     // $resp = curl_exec($ch);
+        // //     // curl_close($ch);
+        // //     // $dado = json_decode($resp);
+        // //     // var_dump($dado);
+        // //     // foreach($dado as $dd) {
+        // //     //     print_r($dd->nomeEmpresa);
+        // //     // }
+        // //     //$key = array_search("SAUDE",array_column($resultado[$v->cpf], 'tipoPlanoC'));
+        // //     //print_r($resultado[$v->cpf]);
+        // }
+        // // echo "</pre>";  
+        
+        // return;
+
+
+
+
+
+        // $url = "https://api-hapvida.sensedia.com/wssrvonline/v1/beneficiario/3010I936043005/financeiro/historico";
+
+        // $curl = curl_init($url);
+        // curl_setopt($curl, CURLOPT_URL, $url);
+        // curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+        // //for debug only!
+        // curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        // curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+
+        // $resp = curl_exec($curl);
+        // curl_close($curl);
+
+        // $dado = json_decode($resp);
+       
+        // foreach($dado as $dados) {
+
+
+        //     print_r($dados);
+
+        //     // if($dados->dtPagamento != NULL) {
+
+        //     //     $sql = "SELECT * FROM comissoes_corretores_lancadas WHERE data = '$dados->dtVencimento' AND status_financeiro = '0' AND status_gerente = '0' AND documentogerador = '1'";
+
+        //     //     if($sql->rowCount() > 0) {
+
+        //     //         $sql_atualiza = "update comissoes_corretores_lancadas SET data_baixa = '$dados->dtPagamento', data_baixagerente = '$dados->dtPagamento' WHERE documentogerador = '1'";
+
+        //     //     }
+
+        //     // }
+
+        // }
+
+
+
+
+        // $dado = "";    
+        // echo "<pre>";
+        // Cliente
+        //     ::with(['contrato','contrato.comissao','contrato.comissao.comissoesLancadas'])
+        //     ->whereRaw("cateirinha IS NOT NULL")
+        //     ->chunk(10,function($clientes) use(&$dd) {
+        //         foreach($clientes as $v) {
+        //             // $cpf = $v->cpf;                           
+        //             // $carteirinha = substr($v->cateirinha,0,-3);
+        //             if($v->cateirinha) {
+        //                 $url = "https://api-hapvida.sensedia.com/wssrvonline/v1/beneficiario/$v->cateirinha/financeiro/historico";
+        //                 $ch = curl_init($url);
+        //                 curl_setopt($ch,CURLOPT_URL,$url);
+        //                 curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+        //                 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        //                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        //                 $resp = curl_exec($ch);
+        //                 curl_close($ch);
+        //                 $dado = json_decode($resp);
+                        
+
+        //                 foreach($dado as $d) {
+        //                     print_r($d);
+        //                 }
+        //             }
+                    
+
+        //             // $dd[] = array_filter($resultado, function ($var) {
+        //             //     return ($var['dtPagamento'] != '') AND ($var['cdStatus'] != 16);
+        //             // });
+        //         }
+        //     });
+        //     echo "</pre>";
+        //     return;
+            // foreach($dd as $d) {
+            //     if(count($d) >= 1) {
+            //         foreach($d as $vv) {
+            //             $data = implode("-",array_reverse(explode("/",$vv['dtVencimento'])));
+            //             $cart = $vv['cdDocumentoGerador'];
+            //             ComissoesCorretoresLancadas::where('documento_gerador', $cart)->where('data', $data)->update([
+            //                     'status_financeiro' => 1,
+            //                     'status_gerente' => 1
+            //             ]);
+            //         }
+            //     } 
+            // }     
+        
+
+        // $carteirinha = "3010J612146";
+        // $url = "https://api-hapvida.sensedia.com/wssrvonline/v1/beneficiario/$carteirinha/financeiro/historico";
+        // $ch = curl_init($url);
+        // curl_setopt($ch,CURLOPT_URL,$url);
+        // curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+        // $resultado = (array) json_decode(curl_exec($ch),true);
+        // echo "<pre>";
+        // print_r($resultado);
+        // echo "<pre>";
+
+
+        // $resultado = [];
+        // echo "<pre>";
+        // Cliente
+        //     ::with(['contrato','contrato.comissao','contrato.comissao.comissoesLancadas'])
+        //     ->whereRaw("cateirinha IS NOT NULL")
+        //     ->chunkById(6,function($clientes){
+        //         foreach($clientes as $v) {
+                    
+        //             // foreach($v->contrato->comissao->comissoesLancadas as $cc) {
+        //                 $carteirinha = substr($v->cateirinha,0,-3);
+
+        //                 //$data = $cc->data;
+        //                 //echo $carteirinha."-".$data."<br />";
+        //                 $url = "https://api-hapvida.sensedia.com/wssrvonline/v1/beneficiario/$v->cateirinha/financeiro/historico";
+        //                 $ch = curl_init($url);
+        //                 curl_setopt($ch,CURLOPT_URL,$url);
+        //                 curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+        //                 $resultado[$v->cpf] = (array) json_decode(curl_exec($ch),true);
+        //                 print_r($resultado[$v->cpf]);
+        //             // } 
+        //         }
+        //         echo "Encerrou um ciclo<br />";
+        //     });
+        // echo "</pre>";
+        // foreach($dados as $v) {
+        // //     if($v->cateirinha) {
+        //         foreach($v->contrato->comissao->comissoesLancadas as $cc) {
+        //             $carteirinha = substr($v->cateirinha,0,-3);
+        //             echo $carteirinha."<br />";
+        // //             $data = $cc->data;
+        // //             $url = "https://api-hapvida.sensedia.com/wssrvonline/v1/beneficiario/$carteirinha/financeiro/historico";
+        // //             $ch = curl_init($url);
+        // //             curl_setopt($ch,CURLOPT_URL,$url);
+        // //             curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+        // //             $resultado[$v->cpf] = (array) json_decode(curl_exec($ch),true);
+        // //             print_r($resultado[$v->cpf]);
+
+        // //         }
+        //     }
+        // }
+        // echo "</pre>";
+
+
+
+        //return;
 
         $contratos_coletivo_pendentes = Contrato
         ::where("plano_id",3)        
@@ -39,22 +270,13 @@ class FinanceiroController extends Controller
         
         $cidades = TabelaOrigens::all();
         $administradoras = Administradoras::whereRaw("id != (SELECT id FROM administradoras WHERE nome LIKE '%hapvida%')")->get();
-
         $motivo_cancelados = MotivoCancelados::all();
-
         $planos = Planos::all();
         $plano_empresarial = PlanoEmpresarial::all();
-
         $users = User::where("id","!=",auth()->user()->id)->get();
         $tabela_origem = TabelaOrigens::all();
-
-        $qtd_individual_pendentes = Contrato
-            ::where("plano_id",1)        
-            ->count();
-        
-        $qtd_individual_em_analise = Contrato::where("financeiro_id",1)
-            ->where("plano_id",1)
-            ->count();
+        $qtd_individual_pendentes = Contrato::where("plano_id",1)->count();
+        $qtd_individual_em_analise = Contrato::where("financeiro_id",1)->where("plano_id",1)->count();
 
         $qtd_individual_parcela_01 = Contrato
             ::where("plano_id",1)        
@@ -436,6 +658,97 @@ class FinanceiroController extends Controller
         return $contratos;
     }
 
+    public function storeEmpresarialFinanceiro(Request $request)
+    {
+        $dados = $request->all();
+        $dados['taxa_adesao'] = str_replace([".",","],["","."],$request->taxa_adesao);
+        $dados['desconto_corretor'] = str_replace([".",","],["","."],$request->desconto_corretor);
+        $dados['desconto_corretora'] = str_replace([".",","],["","."],$request->desconto_corretora);
+        
+        $dados['valor_plano'] = str_replace([".",","],["","."],$request->valor_plano);
+        $dados['valor_plano_saude'] = str_replace([".",","],["","."],$request->valor_plano_saude);
+        $dados['valor_plano_odonto'] = str_replace([".",","],["","."],$request->valor_plano_odonto);
+        $dados['valor_plano'] = $dados['valor_plano_saude'] + $dados['valor_plano_odonto'];
+        $dados['valor_total'] = $dados['valor_plano'] + $dados['taxa_adesao'];
+        $dados['valor_boleto'] = str_replace([".",","],["","."],$request->valor_boleto);  
+        $dados['data_boleto'] = date('Y-m-d',strtotime($request->data_boleto)); 
+        $dados['created_at'] = $request->created_at; 
+        $dados['financeiro_id'] = 1;
+        $valor = $dados['valor_plano'];
+        $contrato = ContratoEmpresarial::create($dados);
+        $comissao = new Comissoes();
+        $comissao->contrato_empresarial_id = $contrato->id;
+        // $comissao->cliente_id = $contrato->cliente_id;
+        $comissao->user_id = $request->user_id;
+        // $comissao->status = 1;
+        $comissao->plano_id = $request->plano_id;
+        $comissao->administradora_id = 4;
+        $comissao->tabela_origens_id = $request->tabela_origens_id;
+        $comissao->data = date('Y-m-d');
+        $comissao->empresarial = 1;
+        $comissao->save();
+
+
+        $comissoes_configuradas_corretor = ComissoesCorretoresConfiguracoes
+        ::where("plano_id",$request->plano_id)
+        ->where("administradora_id",4)
+        ->where("user_id",$request->user_id)
+        ->where("tabela_origens_id",$request->tabela_origens_id)
+        ->get();
+        
+
+        $date = new \DateTime(now());
+        $date->add(new \DateInterval('PT1M'));
+        $data = $date->format('Y-m-d H:i:s');
+
+
+        $comissao_corretor_contagem = 0;
+        if(count($comissoes_configuradas_corretor) >= 1) {
+            foreach($comissoes_configuradas_corretor as $c) {
+                $comissaoVendedor = new ComissoesCorretoresLancadas();
+                $comissaoVendedor->comissoes_id = $comissao->id;
+                //$comissaoVendedor->user_id = auth()->user()->id;
+                $comissaoVendedor->parcela = $c->parcela;
+                if($comissao_corretor_contagem == 0) {
+                    $comissaoVendedor->data = date('Y-m-d H:i:s',strtotime($request->data_boleto));
+                    //$comissaoVendedor->tempo = $data;
+                } else {
+                    $comissaoVendedor->data = date("Y-m-d H:i:s",strtotime($request->data_boleto."+{$comissao_corretor_contagem}month"));
+                    $date = new \DateTime($data);
+                    $date->add(new \DateInterval("PT{$comissao_corretor_contagem}M"));
+                    $data_add = $date->format('Y-m-d H:i:s');
+                    //$comissaoVendedor->tempo = $data_add;
+                }
+                $comissaoVendedor->valor = ($valor * $c->valor) / 100;
+                $comissaoVendedor->save();  
+                $comissao_corretor_contagem++;  
+            }
+        }
+
+         /** Comissao Corretora */   
+         $comissoes_configurada_corretora = ComissoesCorretoraConfiguracoes
+         ::where("administradora_id",4)
+         ->where('plano_id',$request->plano_id)
+         ->where("tabela_origens_id",$request->tabela_origens_id)
+         ->get();
+         $comissoes_corretora_contagem=0;
+         if(count($comissoes_configurada_corretora)>=1) {
+             foreach($comissoes_configurada_corretora as $cc) {                
+                 $comissaoCorretoraLancadas = new ComissoesCorretoraLancadas();
+                 $comissaoCorretoraLancadas->comissoes_id = $comissao->id;            
+                 $comissaoCorretoraLancadas->parcela = $cc->parcela;
+                 if($comissoes_corretora_contagem == 0) {
+                     $comissaoCorretoraLancadas->data = date('Y-m-d',strtotime($request->data_boleto));
+                 } else {
+                     $comissaoCorretoraLancadas->data = date("Y-m-d",strtotime($request->data_boleto."+{$comissoes_corretora_contagem}month"));
+                 }
+                 $comissaoCorretoraLancadas->valor = ($valor * $cc->valor) / 100;
+                 $comissaoCorretoraLancadas->save();
+                 $comissoes_corretora_contagem++;
+             }
+         }
+         return redirect('admin/financeiro?ac=empresarial');
+    }
 
 
 
@@ -1453,7 +1766,7 @@ class FinanceiroController extends Controller
         if($request->ajax()) {
             $id_contrato = $request->id_contrato;
             if($id_contrato != null) {
-                $d = ContratoEmpresarial::find($id_contrato);
+                $d = ContratoEmpresarial::where("id",$id_contrato)->delete();
                 if($d) {
                     return $this->recalcularEmpresarial();
                 } else {
@@ -1463,183 +1776,395 @@ class FinanceiroController extends Controller
         }
     }
 
-    public function importarDados(Request $request)
+    public function sincronizarDados(Request $request)
     {
-        $arquivo = $request->importar_arquivo;
+
+        // $arquivo = $request->arquivo;
+        $arquivo = $request->file('file');
+        //$filename = $file->getRealPath();
+        //$location = 'files';
+        // Upload file
+        //$file->move($location,$filename);
+        //$filepath = url('files/'.$filename);
+        //return $file;
         $handle = fopen($arquivo, "r");
         $row=0;
-        $dados=[];
-        $dd = "";
+        $cpfs=[];
         
-        $map = array(
-            chr(0x8A) => chr(0xA9),
-            chr(0x8C) => chr(0xA6),
-            chr(0x8D) => chr(0xAB),
-            chr(0x8E) => chr(0xAE),
-            chr(0x8F) => chr(0xAC),
-            chr(0x9C) => chr(0xB6),
-            chr(0x9D) => chr(0xBB),
-            chr(0xA1) => chr(0xB7),
-            chr(0xA5) => chr(0xA1),
-            chr(0xBC) => chr(0xA5),
-            chr(0x9F) => chr(0xBC),
-            chr(0xB9) => chr(0xB1),
-            chr(0x9A) => chr(0xB9),
-            chr(0xBE) => chr(0xB5),
-            chr(0x9E) => chr(0xBE),
-            chr(0x80) => '&euro;',
-            chr(0x82) => '&sbquo;',
-            chr(0x84) => '&bdquo;',
-            chr(0x85) => '&hellip;',
-            chr(0x86) => '&dagger;',
-            chr(0x87) => '&Dagger;',
-            chr(0x89) => '&permil;',
-            chr(0x8B) => '&lsaquo;',
-            chr(0x91) => '&lsquo;',
-            chr(0x92) => '&rsquo;',
-            chr(0x93) => '&ldquo;',
-            chr(0x94) => '&rdquo;',
-            chr(0x95) => '&bull;',
-            chr(0x96) => '&ndash;',
-            chr(0x97) => '&mdash;',
-            chr(0x99) => '&trade;',
-            chr(0x9B) => '&rsquo;',
-            chr(0xA6) => '&brvbar;',
-            chr(0xA9) => '&copy;',
-            chr(0xAB) => '&laquo;',
-            chr(0xAE) => '&reg;',
-            chr(0xB1) => '&plusmn;',
-            chr(0xB5) => '&micro;',
-            chr(0xB6) => '&para;',
-            chr(0xB7) => '&middot;',
-            chr(0xBB) => '&raquo;',
-        );
-
-        
-
-        $resultado = [];
-        $cpfs = [];
-       
-     
         while (!feof($handle)) {
-            $line = fgetcsv($handle, 0, ",");
-            if($line != "") {
+             $line = fgetcsv($handle,0,",");
+             if($line != "") {
                 $row++;
                 if($row == 0 || $row == 1 || $row == 2 || $row == 3 || $row == 4)  continue;                
                 if(isset($line[0]) && !empty($line[0])) $dd = explode(";",$line[0]);
-                $cpf = mb_strlen($dd[4]) == 11 ? $dd[4] : str_pad($dd[4], 11, "000", STR_PAD_LEFT);
-                // echo html_entity_decode(mb_convert_encoding(strtr($dd[5], $map),"UTF-8", 'ISO-8859-2'), ENT_QUOTES, 'UTF-8')." - ".$cpf."<br />";
-                
-                $url = "https://api-hapvida.sensedia.com/wssrvonline/v1/beneficiario?cpf=$cpf";
-                $ch = curl_init($url);
-                curl_setopt($ch,CURLOPT_URL,$url);
-                curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-                $resultado[$cpf] = (array) json_decode(curl_exec($ch),true);
-                if($resultado[$cpf]) {
-                    
-                    if(!in_array($cpf,$cpfs)) {
-                        $dia = str_pad($dd[16], 2, "0", STR_PAD_LEFT);
-                        $data_boleto = date("Y-m-".$dia);
-                        array_push($cpfs,$cpf);
-                        $key = array_search("SAUDE",array_column($resultado[$cpf], 'tipoPlanoC'));
-                        
-                        $user_id = User::where('codigo_vendedor',$dd[2])->first()->id;                    
-                        $cliente = new Cliente();
-                        $cliente->user_id = $user_id;
-                        $cliente->nome = mb_convert_case($dd[5], MB_CASE_TITLE, "UTF-8");
-                        $cliente->cidade = mb_convert_case($resultado[$cpf][$key]['cidadeEndereco'], MB_CASE_TITLE, "UTF-8");
-                        $cliente->celular = $dd[7];
-                        
-                        $cliente->cpf = $cpf;
-                        $cliente->data_nascimento = implode("-",array_reverse(explode("/",$dd[6])));
-                        $cliente->cep = $resultado[$cpf][$key]['cepEndereco'];
-                        $cliente->rua = $resultado[$cpf][$key]['ruaEndereco'];
-                        $cliente->bairro =  mb_convert_case($resultado[$cpf][$key]['bairroEndereco'], MB_CASE_TITLE, "UTF-8");
-                        $cliente->complemento = ($resultado[$cpf][$key]['complementoEndereco'] != null ? mb_convert_case($resultado[$cpf][$key]['complementoEndereco'], MB_CASE_TITLE, "UTF-8") : null);
-                        $cliente->uf = $resultado[$cpf][$key]['ufEndereco'];
-                        $cliente->pessoa_fisica = 1;
-                        $cliente->pessoa_juridica = 0;
-                        $cliente->nm_plano = $resultado[$cpf][$key]['nmPlano'];
-                        $cliente->numero_registro_plano = $resultado[$cpf][$key]['nuRegistroPlano'];
-                        $cliente->rede_plano = $resultado[$cpf][$key]['redePlano'];
-                        $cliente->tipo_acomodacao_plano = $resultado[$cpf][$key]['tipoAcomodacaoPlano'];
-                        $cliente->segmentacao_plano = $resultado[$cpf][$key]['segmentacaoPlano'];
-                        $cliente->cateirinha = $resultado[$cpf][$key]['cdUsuario'];
-                        $cliente->quantidade_vidas = $dd[15];
-                        $cliente->email =  "teste@gmail.com";
-                        $cliente->save();
 
-                        $acomodacao = mb_convert_case($resultado[$cpf][$key]['tipoAcomodacaoPlano'], MB_CASE_TITLE, "UTF-8");
-                        $acomodacao = $acomodacao == "Sem Acomodacao" ? "Ambulatorial" : $acomodacao;
-                        $acomodacao_id = Acomodacao::selectRaw('id')->whereRaw("nome LIKE '%{$acomodacao}%'")->first()->id;
-                        $data_vigencia = implode("-",explode("/",$dd[17]));
-                       
-                        $contrato = new Contrato();
-                        $contrato->acomodacao_id = $acomodacao_id;
-                        $contrato->cliente_id = $cliente->id;
-                        $contrato->administradora_id = 4;
-                        $contrato->tabela_origens_id = 2;
-                        $contrato->plano_id = 1;
-                        $contrato->financeiro_id = 1;
-                        $contrato->data_vigencia = implode("-",array_reverse(explode("/",$dd[17])));
-                        $contrato->codigo_externo = $dd[0];
-                        $contrato->data_boleto = implode("-",array_reverse(explode("/",$dd[17])));
-                        $contrato->valor_adesao = $dd[12];
-                        $contrato->valor_plano = $dd[12];
-                        $contrato->coparticipacao = 1;
-                        $contrato->odonto = 0;
-                        $contrato->created_at = $data_vigencia;
-                        $contrato->desconto_corretor = "0,00";
-                        $contrato->desconto_corretora = "0,00";
-                        $contrato->save();
-                        $comissao = new Comissoes();
-                        $comissao->contrato_id = $contrato->id;
-                        // $comissao->cliente_id = $contrato->cliente_id;
-                        $comissao->user_id = $user_id;
-                        // $comissao->status = 1;
-                        $comissao->plano_id = 1;
-                        $comissao->administradora_id = 4;
-                        $comissao->tabela_origens_id = 2;
-                        $comissao->data = date('Y-m-d');
-                        $comissao->save();
-            
-                        // /* Comissao Corretor */
-                        $comissoes_configuradas_corretor = ComissoesCorretoresConfiguracoes
-                        ::where("plano_id",1)
-                        ->where("administradora_id",4)
-                        ->where("user_id",$user_id)
-                        ->where("tabela_origens_id",2)
-                        ->get();
-                        $comissao_corretor_contagem = 0;
-                        if(count($comissoes_configuradas_corretor) >= 1) {
-                            foreach($comissoes_configuradas_corretor as $c) {
-                                $comissaoVendedor = new ComissoesCorretoresLancadas();
-                                $comissaoVendedor->comissoes_id = $comissao->id;
-                                //$comissaoVendedor->user_id = auth()->user()->id;
-                                $comissaoVendedor->parcela = $c->parcela;
-                                if($comissao_corretor_contagem == 0) {
-                                    $comissaoVendedor->data = date('Y-m-d',strtotime($data_boleto)); 
-                                } else {
-                                    $comissaoVendedor->data = date("Y-m-d",strtotime($data_boleto."+{$comissao_corretor_contagem}month"));
-                                }
-                                $comissaoVendedor->valor = ($dd[12] * $c->valor) / 100;
-                                $comissaoVendedor->save();  
-                                $comissao_corretor_contagem++;  
+                $cpf = mb_strlen($dd[4]) == 11 ? $dd[4] : str_pad($dd[4], 11, "000", STR_PAD_LEFT);
+                $dia = str_pad($dd[16], 2, "0", STR_PAD_LEFT);
+                $data_boleto = date("Y-m-".$dia);
+                array_push($cpfs,$cpf);
+                $user_id = User::where('codigo_vendedor',$dd[2])->first()->id;    
+                $cliente = new Cliente();
+                $cliente->user_id = $user_id;
+                $cliente->nome = mb_convert_case($dd[5], MB_CASE_TITLE, "UTF-8");
+                $cliente->celular = $dd[7];
+                $cliente->cpf = $cpf;
+                $cliente->data_nascimento = implode("-",array_reverse(explode("/",$dd[6])));
+                $cliente->pessoa_fisica = 1;
+                $cliente->pessoa_juridica = 0;
+                $cliente->save();
+
+                // $acomodacao = mb_convert_case($resultado[$v->cpf][$key]['tipoAcomodacaoPlano'], MB_CASE_TITLE, "UTF-8");
+                // $acomodacao = $acomodacao == "Sem Acomodacao" ? "Ambulatorial" : $acomodacao;
+                // $acomodacao_id = Acomodacao::selectRaw('id')->whereRaw("nome LIKE '%{$acomodacao}%'")->first()->id;
+                $data_vigencia = implode("-",array_reverse(explode("/",$dd[17])));
+
+                
+                
+                $contrato = new Contrato();
+                //$contrato->acomodacao_id = $acomodacao_id;
+                $contrato->cliente_id = $cliente->id;
+                $contrato->administradora_id = 4;
+                $contrato->tabela_origens_id = 2;
+                $contrato->plano_id = 1;
+                $contrato->financeiro_id = 5;
+                $contrato->data_vigencia = implode("-",array_reverse(explode("/",$dd[17])));
+                $contrato->codigo_externo = $dd[0];
+                $contrato->data_boleto = implode("-",array_reverse(explode("/",$dd[17])));
+                $contrato->valor_adesao = $dd[12];
+                $contrato->valor_plano = $dd[12];
+                $contrato->coparticipacao = 1;
+                $contrato->odonto = 0;
+                $contrato->created_at = $data_vigencia;
+                $contrato->desconto_corretor = "0,00";
+                $contrato->desconto_corretora = "0,00";
+                $contrato->save();
+                $comissao = new Comissoes();
+                $comissao->contrato_id = $contrato->id;
+                // $comissao->cliente_id = $contrato->cliente_id;
+                $comissao->user_id = $user_id;
+                // $comissao->status = 1;
+                $comissao->plano_id = 1;
+                $comissao->administradora_id = 4;
+                $comissao->tabela_origens_id = 2;
+                $comissao->data = date('Y-m-d');
+                $comissao->save();
+    
+                // /* Comissao Corretor */
+                $comissoes_configuradas_corretor = ComissoesCorretoresConfiguracoes
+                ::where("plano_id",1)
+                ->where("administradora_id",4)
+                ->where("user_id",$user_id)
+                ->where("tabela_origens_id",2)
+                ->get();
+                $comissao_corretor_contagem = 0;
+                if(count($comissoes_configuradas_corretor) >= 1) {
+                    foreach($comissoes_configuradas_corretor as $c) {
+                        $comissaoVendedor = new ComissoesCorretoresLancadas();
+                        $comissaoVendedor->comissoes_id = $comissao->id;
+                        //$comissaoVendedor->user_id = auth()->user()->id;
+                        //$comissaoVendedor->documento_gerador = "12345678";
+                        $comissaoVendedor->parcela = $c->parcela;
+                        $comissaoVendedor->valor = ($dd[12] * $c->valor) / 100;
+                        if($comissao_corretor_contagem == 0) {
+                            $comissaoVendedor->data = $data_vigencia;
+                            $comissaoVendedor->status_financeiro = 1;
+                            if($comissaoVendedor->valor == "0.00" || $comissaoVendedor->valor == 0 || $comissaoVendedor->valor >= 0) {
+                                $comissaoVendedor->status_gerente = 1;            
                             }
+                        } else {
+                            $comissaoVendedor->data = date("Y-m-d",strtotime($data_boleto."+{$comissao_corretor_contagem}month"));
                         }
-                    }                    
-                }      
+                        $comissaoVendedor->save();  
+                        $comissao_corretor_contagem++;  
+                    }
+                }
+            }                    
+        }
+          
+        return "sucesso";
+    } 
+    
+    public function sincronizarBaixas(Request $request) 
+    {
+        $dados = Cliente::with(['contrato','contrato.comissao','contrato.comissao.comissoesLancadas'])->get();
+        echo "<pre>";
+        foreach($dados as $v) {
+            if($v->cateirinha) {
+                dd($v);
             }
         }
-        fclose($handle);
-
-        return redirect()->route('financeiro.index');
+        echo "</pre>";
 
 
+        $resultado = [];
+        echo "<pre>";
+        Cliente
+            ::with(['contrato','contrato.comissao','contrato.comissao.comissoesLancadas'])
+            ->whereRaw("cateirinha IS NOT NULL")
+            ->chunkById(6,function($clientes){
+                foreach($clientes as $v) {
+                    
+                    foreach($v->contrato->comissao->comissoesLancadas as $cc) {
+                        $carteirinha = substr($v->cateirinha,0,-3);
+                        $data = implode("/",array_reverse(explode("-",$cc->data)));
+
+                        
+                        $url = "https://api-hapvida.sensedia.com/wssrvonline/v1/beneficiario/$v->cateirinha/financeiro/historico";
+                        $ch = curl_init($url);
+                        curl_setopt($ch,CURLOPT_URL,$url);
+                        curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+                        $resultado[$v->cpf] = (array) json_decode(curl_exec($ch),true);
+                        $key = array_search($data,array_column($resultado[$v->cpf], 'dtVencimento'));
+                        print_r($resultado[$v->cpf][$key]);
+                    } 
+                }
+                echo "Encerrou um ciclo<br />";
+            });
+        echo "</pre>";
 
 
 
+
+    }    
+
+
+
+
+
+    public function atualizarDados(Request $request)
+    {
+        
+
+        $dados = Cliente::all();
+        
+        foreach($dados as $v) {
+            $url = "https://api-hapvida.sensedia.com/wssrvonline/v1/beneficiario?cpf=$v->cpf";
+            $ch = curl_init($url);
+            curl_setopt($ch,CURLOPT_URL,$url);
+            curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+            $resultado = (array) json_decode(curl_exec($ch),true);
+            //$key = array_search("SAUDE",array_column($resultado[$v->cpf], 'tipoPlanoC'));
+            foreach($resultado as $rr) {
+                if($rr['tipoPlanoC'] == "SAUDE" AND $rr['nomeEmpresa'] == "I N D I V I D U A L") {
+                        $cliente = Cliente::where("cpf",$v->cpf)->first();
+                        $cliente->cidade = mb_convert_case($rr['cidadeEndereco'], MB_CASE_TITLE, "UTF-8");
+                        $cliente->cep = $rr['cepEndereco'];
+                        $cliente->rua = $rr['ruaEndereco'];
+                        $cliente->bairro =  mb_convert_case($rr['bairroEndereco'], MB_CASE_TITLE, "UTF-8");
+                        $cliente->complemento = ($rr['complementoEndereco'] != null ? mb_convert_case($rr['complementoEndereco'], MB_CASE_TITLE, "UTF-8") : null);
+                        $cliente->uf = $rr['ufEndereco'];
+                        $cliente->pessoa_fisica = 1;
+                        $cliente->pessoa_juridica = 0;
+                        $cliente->nm_plano = $rr['nmPlano'];
+                        $cliente->numero_registro_plano = $rr['nuRegistroPlano'];
+                        $cliente->rede_plano = $rr['redePlano'];
+                        $cliente->tipo_acomodacao_plano = $rr['tipoAcomodacaoPlano'];
+                        $cliente->segmentacao_plano = $rr['segmentacaoPlano'];
+                        $cliente->cateirinha = $rr['cdUsuario'];
+                        $cliente->save();
+                        $cliente_id = Cliente::where('cpf',$v->cpf)->first()->id;
+                        $contrato = Contrato::where('cliente_id',$cliente_id)->first()->id;
+                        $comissao_id = Comissoes::where("contrato_id",$contrato)->first()->id;
+                        ComissoesCorretoresLancadas::where("comissoes_id",$comissao_id)->update(['documento_gerador'=>substr($rr['cdUsuario'],0,-3)]);
+                }
+            }
+        }    
+
+
+
+
+
+
+        
+       
+        // echo "</pre>";
+        return "sucesso";
+       
     }
+
+
+
+
+
+    // public function importarDados(Request $request)
+    // {
+    //     $arquivo = $request->importar_arquivo;
+    //     $handle = fopen($arquivo, "r");
+    //     $row=0;
+    //     $dados=[];
+    //     $dd = "";
+        
+    //     $map = array(
+    //         chr(0x8A) => chr(0xA9),
+    //         chr(0x8C) => chr(0xA6),
+    //         chr(0x8D) => chr(0xAB),
+    //         chr(0x8E) => chr(0xAE),
+    //         chr(0x8F) => chr(0xAC),
+    //         chr(0x9C) => chr(0xB6),
+    //         chr(0x9D) => chr(0xBB),
+    //         chr(0xA1) => chr(0xB7),
+    //         chr(0xA5) => chr(0xA1),
+    //         chr(0xBC) => chr(0xA5),
+    //         chr(0x9F) => chr(0xBC),
+    //         chr(0xB9) => chr(0xB1),
+    //         chr(0x9A) => chr(0xB9),
+    //         chr(0xBE) => chr(0xB5),
+    //         chr(0x9E) => chr(0xBE),
+    //         chr(0x80) => '&euro;',
+    //         chr(0x82) => '&sbquo;',
+    //         chr(0x84) => '&bdquo;',
+    //         chr(0x85) => '&hellip;',
+    //         chr(0x86) => '&dagger;',
+    //         chr(0x87) => '&Dagger;',
+    //         chr(0x89) => '&permil;',
+    //         chr(0x8B) => '&lsaquo;',
+    //         chr(0x91) => '&lsquo;',
+    //         chr(0x92) => '&rsquo;',
+    //         chr(0x93) => '&ldquo;',
+    //         chr(0x94) => '&rdquo;',
+    //         chr(0x95) => '&bull;',
+    //         chr(0x96) => '&ndash;',
+    //         chr(0x97) => '&mdash;',
+    //         chr(0x99) => '&trade;',
+    //         chr(0x9B) => '&rsquo;',
+    //         chr(0xA6) => '&brvbar;',
+    //         chr(0xA9) => '&copy;',
+    //         chr(0xAB) => '&laquo;',
+    //         chr(0xAE) => '&reg;',
+    //         chr(0xB1) => '&plusmn;',
+    //         chr(0xB5) => '&micro;',
+    //         chr(0xB6) => '&para;',
+    //         chr(0xB7) => '&middot;',
+    //         chr(0xBB) => '&raquo;',
+    //     );
+
+        
+
+    //     $resultado = [];
+    //     $cpfs = [];
+       
+     
+    //     while (!feof($handle)) {
+    //         $line = fgetcsv($handle, 0, ",");
+    //         if($line != "") {
+    //             $row++;
+    //             if($row == 0 || $row == 1 || $row == 2 || $row == 3 || $row == 4)  continue;                
+    //             if(isset($line[0]) && !empty($line[0])) $dd = explode(";",$line[0]);
+    //             $cpf = mb_strlen($dd[4]) == 11 ? $dd[4] : str_pad($dd[4], 11, "000", STR_PAD_LEFT);
+    //             // echo html_entity_decode(mb_convert_encoding(strtr($dd[5], $map),"UTF-8", 'ISO-8859-2'), ENT_QUOTES, 'UTF-8')." - ".$cpf."<br />";
+                
+    //             $url = "https://api-hapvida.sensedia.com/wssrvonline/v1/beneficiario?cpf=$cpf";
+    //             $ch = curl_init($url);
+    //             curl_setopt($ch,CURLOPT_URL,$url);
+    //             curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+    //             $resultado[$cpf] = (array) json_decode(curl_exec($ch),true);
+    //             if($resultado[$cpf]) {
+    //                 if(!in_array($cpf,$cpfs)) {
+    //                     $dia = str_pad($dd[16], 2, "0", STR_PAD_LEFT);
+    //                     $data_boleto = date("Y-m-".$dia);
+                        
+    //                     array_push($cpfs,$cpf);
+    //                     $key = array_search("SAUDE",array_column($resultado[$cpf], 'tipoPlanoC'));
+    //                     $documento_gerador = $resultado[$cpf][$key]['cdUsuario'];
+    //                     $user_id = User::where('codigo_vendedor',$dd[2])->first()->id;    
+
+    //                     $cliente = new Cliente();
+    //                     $cliente->user_id = $user_id;
+    //                     $cliente->nome = mb_convert_case($dd[5], MB_CASE_TITLE, "UTF-8");
+    //                     $cliente->cidade = mb_convert_case($resultado[$cpf][$key]['cidadeEndereco'], MB_CASE_TITLE, "UTF-8");
+    //                     $cliente->celular = $dd[7];
+                        
+    //                     $cliente->cpf = $cpf;
+    //                     $cliente->data_nascimento = implode("-",array_reverse(explode("/",$dd[6])));
+    //                     $cliente->cep = $resultado[$cpf][$key]['cepEndereco'];
+    //                     $cliente->rua = $resultado[$cpf][$key]['ruaEndereco'];
+    //                     $cliente->bairro =  mb_convert_case($resultado[$cpf][$key]['bairroEndereco'], MB_CASE_TITLE, "UTF-8");
+    //                     $cliente->complemento = ($resultado[$cpf][$key]['complementoEndereco'] != null ? mb_convert_case($resultado[$cpf][$key]['complementoEndereco'], MB_CASE_TITLE, "UTF-8") : null);
+    //                     $cliente->uf = $resultado[$cpf][$key]['ufEndereco'];
+    //                     $cliente->pessoa_fisica = 1;
+    //                     $cliente->pessoa_juridica = 0;
+    //                     $cliente->nm_plano = $resultado[$cpf][$key]['nmPlano'];
+    //                     $cliente->numero_registro_plano = $resultado[$cpf][$key]['nuRegistroPlano'];
+    //                     $cliente->rede_plano = $resultado[$cpf][$key]['redePlano'];
+    //                     $cliente->tipo_acomodacao_plano = $resultado[$cpf][$key]['tipoAcomodacaoPlano'];
+    //                     $cliente->segmentacao_plano = $resultado[$cpf][$key]['segmentacaoPlano'];
+    //                     $cliente->cateirinha = $resultado[$cpf][$key]['cdUsuario'];
+    //                     $cliente->quantidade_vidas = $dd[15];
+    //                     $cliente->email =  "teste@gmail.com";
+    //                     $cliente->save();
+
+    //                     $acomodacao = mb_convert_case($resultado[$cpf][$key]['tipoAcomodacaoPlano'], MB_CASE_TITLE, "UTF-8");
+    //                     $acomodacao = $acomodacao == "Sem Acomodacao" ? "Ambulatorial" : $acomodacao;
+    //                     $acomodacao_id = Acomodacao::selectRaw('id')->whereRaw("nome LIKE '%{$acomodacao}%'")->first()->id;
+    //                     $data_vigencia = implode("-",explode("/",$dd[17]));
+                       
+    //                     $contrato = new Contrato();
+    //                     $contrato->acomodacao_id = $acomodacao_id;
+    //                     $contrato->cliente_id = $cliente->id;
+    //                     $contrato->administradora_id = 4;
+    //                     $contrato->tabela_origens_id = 2;
+    //                     $contrato->plano_id = 1;
+    //                     $contrato->financeiro_id = 1;
+    //                     $contrato->data_vigencia = implode("-",array_reverse(explode("/",$dd[17])));
+    //                     $contrato->codigo_externo = $dd[0];
+    //                     $contrato->data_boleto = implode("-",array_reverse(explode("/",$dd[17])));
+    //                     $contrato->valor_adesao = $dd[12];
+    //                     $contrato->valor_plano = $dd[12];
+    //                     $contrato->coparticipacao = 1;
+    //                     $contrato->odonto = 0;
+    //                     $contrato->created_at = $data_vigencia;
+    //                     $contrato->desconto_corretor = "0,00";
+    //                     $contrato->desconto_corretora = "0,00";
+    //                     $contrato->save();
+    //                     $comissao = new Comissoes();
+    //                     $comissao->contrato_id = $contrato->id;
+    //                     // $comissao->cliente_id = $contrato->cliente_id;
+    //                     $comissao->user_id = $user_id;
+    //                     // $comissao->status = 1;
+    //                     $comissao->plano_id = 1;
+    //                     $comissao->administradora_id = 4;
+    //                     $comissao->tabela_origens_id = 2;
+    //                     $comissao->data = date('Y-m-d');
+    //                     $comissao->save();
+            
+    //                     // /* Comissao Corretor */
+    //                     $comissoes_configuradas_corretor = ComissoesCorretoresConfiguracoes
+    //                     ::where("plano_id",1)
+    //                     ->where("administradora_id",4)
+    //                     ->where("user_id",$user_id)
+    //                     ->where("tabela_origens_id",2)
+    //                     ->get();
+    //                     $comissao_corretor_contagem = 0;
+    //                     if(count($comissoes_configuradas_corretor) >= 1) {
+    //                         foreach($comissoes_configuradas_corretor as $c) {
+    //                             $comissaoVendedor = new ComissoesCorretoresLancadas();
+    //                             $comissaoVendedor->comissoes_id = $comissao->id;
+    //                             $comissaoVendedor->documento_gerador = "12345678";
+    //                             //$comissaoVendedor->user_id = auth()->user()->id;
+    //                             $comissaoVendedor->parcela = $c->parcela;
+    //                             if($comissao_corretor_contagem == 0) {
+    //                                 $comissaoVendedor->data = date('Y-m-d',strtotime($data_boleto)); 
+    //                             } else {
+    //                                 $comissaoVendedor->data = date("Y-m-d",strtotime($data_boleto."+{$comissao_corretor_contagem}month"));
+    //                             }
+    //                             $comissaoVendedor->valor = ($dd[12] * $c->valor) / 100;
+    //                             $comissaoVendedor->save();  
+    //                             $comissao_corretor_contagem++;  
+    //                         }
+    //                     }
+    //                 }                    
+    //             }      
+    //         }
+    //     }
+    //     fclose($handle);
+
+    //     return redirect()->route('financeiro.index');
+
+
+
+
+
+    // }
 
 
 
@@ -2463,9 +2988,98 @@ class FinanceiroController extends Controller
 
             break;
 
-            $cliente->save();
+           
 
         }
+    }
+
+
+    public function editarCampoEmpresarialIndividual(Request $request)
+    {
+        $contrato = ContratoEmpresarial::where("id",$request->id_cliente)->first();
+
+        switch($request->alvo) {
+            case "razao_social_view_empresarial":
+                $contrato->razao_social = $request->valor;
+                $contrato->save();
+            break; 
+            
+            case "cnpj_view":
+                $contrato->cnpj = $request->valor;
+                $contrato->save();
+            break; 
+
+            case "telefone_corretor_view_empresarial":
+                $contrato->telefone = $request->valor;
+                $contrato->save();
+            break; 
+
+            case "celular_corretor_view_empresarial":
+                $contrato->telefone = $request->valor;
+                $contrato->save();
+            break;    
+
+            case "email_odonto_view_empresarial":
+                $contrato->email = $request->valor;
+                $contrato->save();
+            break;    
+
+            case "nome_corretor_view_empresarial":
+                $contrato->responsavel = $request->valor;
+                $contrato->save();
+            break;    
+            
+            case "cod_corretora_view_empresarial":
+                $contrato->codigo_corretora = $request->valor;
+                $contrato->save();
+            break;    
+            
+            case "cod_saude_view_empresarial":
+                $contrato->codigo_saude = $request->valor;
+                $contrato->save();
+            break;    
+
+            case "cod_odonto_view_empresarial":
+                $contrato->codigo_odonto = $request->valor;
+                $contrato->save();
+            break;    
+
+            case "senha_cliente_view_empresarial":
+                $contrato->senha_cliente = $request->valor;
+                $contrato->save();
+            break;
+            
+            case "valor_plano_saude_view":
+                $contrato->valor_plano_saude = $request->valor;
+                $contrato->save();
+            break;
+            
+            case "valor_plano_odonto_view":
+                $contrato->valor_plano_odonto = $request->valor;
+                $contrato->save();
+            break;
+            
+            case "valor_plano_view_empresarial":
+                $contrato->valor_plano = $request->valor;
+                $contrato->save();
+            break;
+            
+            case "taxa_adesao_view_empresarial":
+                $contrato->taxa_adesao = $request->valor;
+                $contrato->save();
+            break;
+            
+            case "plano_adesao_view_empresarial":
+
+            break;
+
+            case "valor_boleto_view_empresarial":
+
+            break;    
+
+        }
+
+
     }
 
 
@@ -2666,8 +3280,9 @@ class FinanceiroController extends Controller
     public function recalcularEmpresarial()
     {
         $qtd_empresarial_em_analise = ContratoEmpresarial::where("financeiro_id",1)->count();
+
+        $qtd_empresarial_pendentes = ContratoEmpresarial::count();
         
-        $qtd_empresarial_em_analise = ContratoEmpresarial::where("financeiro_id",1)->count();
         $qtd_empresarial_parcela_01 = ContratoEmpresarial
         ::with("comissao")
         ->whereHas('comissao.comissoesLancadas',function($query){
@@ -2754,7 +3369,8 @@ class FinanceiroController extends Controller
             "qtd_empresarial_05_parcela" => $qtd_empresarial_parcela_05,
             "qtd_empresarial_06_parcela" => $qtd_empresarial_parcela_06,
             "qtd_empresarial_finalizado" => $qtd_empresarial_finalizado,
-            "qtd_empresarial_cancelado" => $qtd_empresarial_cancelado
+            "qtd_empresarial_cancelado" => $qtd_empresarial_cancelado,
+            "qtd_empresarial_pendentes" => $qtd_empresarial_pendentes
         ];
     }
 

@@ -14,6 +14,7 @@ use App\Models\FaixaEtaria;
 use App\Models\TabelaOrigens;
 use App\Models\Corretora;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 class OrcamentoController extends Controller
 {
@@ -40,6 +41,7 @@ class OrcamentoController extends Controller
         $plano_id = $request->plano_id;
 
         $plano = "";
+        $plano_nome = "";
         $administradora_search = Administradoras::find($administradora);
         
         // if($administradora_search->nome == "Hapvida" || $administradora_search->nome == "hapvida") {
@@ -50,16 +52,22 @@ class OrcamentoController extends Controller
 
         if($plano_id == 1) {
             $plano = "Individual";
+            $plano_nome = "individual";
         } else if($plano_id == 2) {
             $plano = "Corpore";
+            $plano_nome = "corpore";
         } else if($plano_id == 3) {
             $plano = "Coletivo por Adesão";
+            $plano_nome = "coletivo";
         } else if($plano_id == 4) {
             $plano = "PME";
+            $plano_nome = "pme";
         } else if($plano_id == 5) {
             $plano = "Super Simples";
+            $plano_nome = "Super Simples";
         } else if($plano_id == 6) {
             $plano = "Sindicato - Sindipão";
+            $plano_nome = "Sindicato";
         } else {
             $plano = "";
         }
@@ -159,6 +167,10 @@ AS full_tabela");
             $exames_complexos       = $pdf->exames_complexos_individual;
             $terapias               = $pdf->terapias_individual;
 
+            
+            
+            $nome_pdf = "orcamento ".$administradora_search->nome." ".$plano_nome."_".date('d/m/Y')."_".date('H:i').".pdf";
+
         } else {
             $linha01 = $pdf->linha_01_coletivo;
             $linha02 = $pdf->linha_02_coletivo;
@@ -170,7 +182,7 @@ AS full_tabela");
             $exames_complexos = $pdf->exames_complexos_coletivo;
             $terapias               = $pdf->terapias_coletivo;
 
-
+            $nome_pdf = "orcamento ".$administradora_search->nome." ".$plano_nome."_".date('d/m/Y')."_".date('H:i').".pdf";
 
         }
 
@@ -196,7 +208,18 @@ AS full_tabela");
 
        }
         
+       
+       if(auth()->user()->name == "Felipe Barros") {
+            $frase_consultor = "Supervisor Comercial";
+       } else {
+            $frase_consultor = "Consultor de Vendas";
+       }
+
+
+
+
         $pdf = PDF::loadView('admin.pages.orcamento.pdf',[
+            "frase_consultor" => $frase_consultor,
             "planos" => $dados,
             "nome" => $nome,
             "administradoras" => $administradora,
@@ -226,7 +249,8 @@ AS full_tabela");
             "endereco" => $endereco,
             "terapias" => $terapias
         ]);
-        return $pdf->download("teste.pdf");
+       
+        return $pdf->download(Str::kebab($nome_pdf));
     }
 
 

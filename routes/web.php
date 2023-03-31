@@ -75,7 +75,7 @@ Route::middleware('auth')->prefix("admin")->group(function(){
 
 
     Route::get('/contratos/cadastrar/empresarial',"App\Http\Controllers\Admin\ContratoController@formCreateEmpresarial")->name('contratos.create.empresarial');
-
+    Route::post('/contratos/empresarial/financeiro',"App\Http\Controllers\Admin\FinanceiroController@storeEmpresarialFinanceiro")->name('contratos.storeEmpresarial.financeiro');  
 
     Route::get('/contrato',"App\Http\Controllers\Admin\ContratoController@contrato")->name('contrato.index');
 
@@ -137,6 +137,13 @@ Route::middleware('auth')->prefix("admin")->group(function(){
     Route::get('/financeiro/individual/em_analise',"App\Http\Controllers\Admin\FinanceiroController@emAnaliseIndividual")->name('financeiro.individual.em_analise');
     Route::get('/financeiro/individual/em_analise/corretor',"App\Http\Controllers\Admin\FinanceiroController@emAnaliseIndividualCorretor")->name('financeiro.individual.em_analise.corretor');
 
+
+    Route::post('/financeiro/sincronizar',"App\Http\Controllers\Admin\FinanceiroController@sincronizarDados")->name('financeiro.sincronizar');
+    Route::post('/financeiro/atualizar_dados',"App\Http\Controllers\Admin\FinanceiroController@atualizarDados")->name('financeiro.atualizar.dados');
+    Route::post('/financeiro/sincronizar_baixas',"App\Http\Controllers\Admin\FinanceiroController@sincronizarBaixas")->name('financeiro.sincronizar.baixas');
+
+
+
     Route::get('/financeiro/individual/pagamento_primeira_parcela',"App\Http\Controllers\Admin\FinanceiroController@individualPagamentoPrimeiraParcela")->name('financeiro.individual.pagamento_primeira_parcela');
     Route::get('/financeiro/individual/pagamento_primeira_parcela/corretor',"App\Http\Controllers\Admin\FinanceiroController@individualPagamentoPrimeiraParcelaCorretor")->name('financeiro.individual.pagamento_primeira_parcela.corretor');
 
@@ -173,6 +180,7 @@ Route::middleware('auth')->prefix("admin")->group(function(){
     Route::post('/financeiro/baixaDaData/empresarial',"App\Http\Controllers\Admin\FinanceiroController@baixaDaDataEmpresarial")->name('financeiro.baixa.data.empresarial');
     Route::post('/financeiro/editarCampoIndividualmente',"App\Http\Controllers\Admin\FinanceiroController@editarCampoIndividualmente")->name('financeiro.editar.campoIndividualmente');
     Route::post('/financeiro/editarIndividualCampoIndividualmente',"App\Http\Controllers\Admin\FinanceiroController@editarIndividualCampoIndividualmente")->name('financeiro.editar.individual.campoIndividualmente');
+    Route::post('/financeiro/editarCampoEmpresarial/campo',"App\Http\Controllers\Admin\FinanceiroController@editarCampoEmpresarialIndividual")->name('financeiro.editar.empresarial.campoIndividualmente');
 
 
 
