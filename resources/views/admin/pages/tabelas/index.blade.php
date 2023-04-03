@@ -1,6 +1,14 @@
 @extends('adminlte::page')
 @section('title', 'Tabela de Preços')
 @section('content_header')
+    <div class="row">
+        <div class="col">
+            <h1>Tabela de Preços</h1>
+        </div>
+        <div class="col d-flex justify-content-end">
+            <a class="btn btn-warning" href="{{route('tabela.search')}}"><i class="fas fa-search"></i></a>
+        </div>
+    </div>    
 @stop
 
 @section('content')

@@ -117,7 +117,7 @@
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="celular">Celular:</label>
-                    <input type="text" class="form-control" id="celular" name="celular" placeholder="(XXX) XXXXX-XXXX" value="{{$user->celular ?? old('celular')}}">
+                    <input type="text" class="form-control" id="celular" name="celular" placeholder="(XX) X XXXX-XXXX" value="{{$user->celular ?? old('celular')}}">
                    
                 </div>
             </div>

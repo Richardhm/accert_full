@@ -2,7 +2,11 @@
 @section('title', 'Cadastro Empresarial')
 @section('plugins.jqueryUi', true)
 @section('content_header')
-	<h2 class="text-white">Plano Empresarial</h2>
+    <div class="d-flex align-items-center">
+        <a href="{{url('admin/financeiro?ac=empresarial')}}" style="border-radius:50%;border:1px solid black;padding:5px 8px;margin-right:5px;background-color:black;color:aliceblue;"><i class="fas fa-arrow-left fa-lg"></i></a>
+        <h2 class="text-white">Plano Empresarial</h2>
+    </div>
+	
 @stop
 
 
@@ -18,9 +22,9 @@
                     <div>
                         <span for="user_id" class="text-white" style="font-size:0.875em;">Vendedor:</span>
                         <select required name="user_id" id="user_id" class="form-control  form-control-sm">
-                            <option value="">--Vendedor--</option>
+                            <option value="" class="text-center">--Vendedor--</option>
                             @foreach($users as $u)
-                                <option value="{{$u->id}}">{{$u->name}}</option>
+                                <option value="{{$u->id}}" class="text-center">{{$u->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -29,9 +33,9 @@
                     <div>
                         <span for="plano_id" class="text-white" style="font-size:0.875em;">Plano:</span>
                         <select required class="form-control  form-control-sm" id="plano_id" name="plano_id">
-                            <option value="">--Plano--</option>
+                            <option value="" class="text-center">--Plano--</option>
                             @foreach($planos_empresarial as $p)
-                                <option value="{{$p->id}}">{{$p->nome}}</option>
+                                <option value="{{$p->id}}" class="text-center">{{$p->nome}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -40,9 +44,9 @@
                     <div>
                         <span for="tabela_origens_id" class="text-white" style="font-size:0.875em;">Origem Tabela:</span>
                         <select  class="form-control  form-control-sm" id="tabela_origens_id" name="tabela_origens_id" required>
-                            <option value="">--Origem Tabela--</option>
+                            <option value="" class="text-center">--Origem Tabela--</option>
                             @foreach($origem_tabela as $o)
-                                <option value="{{$o->id}}">{{$o->nome}}</option>
+                                <option value="{{$o->id}}" class="text-center">{{$o->nome}}</option>
                             @endforeach
                         </select>           
                     </div>
@@ -135,7 +139,7 @@
 	                    <div>
 	                        <span for="plano_contrado" class="text-white" style="font-size:0.875em;">Plano Contratado:</span>
 	                        <select name="plano_contrado" id="plano_contrado" class="form-control form-control-sm">
-	                        	<option>--Plano Contratado--</option>
+	                        	<option class="text-center">--Plano Contratado--</option>
 	                        	<option value="1">C/ Copart + Odonto</option>
 	                        	<option value="2">C/ Copart Sem Odonto</option>
 	                        	<option value="3">Sem Copart + Odonto</option>
@@ -176,66 +180,60 @@
             <div>
             	<div class="d-flex" style="padding:0;margin:8px 0;"> 
 
-                <div class="form-group" style="flex-basis:9%;margin-right:1%;">
-                    <span for="valor_plano_saude" class="text-white" style="font-size:0.875em;">Valor Plano Saúde:</span>
-                    <input type="text" name="valor_plano_saude" required id="valor_plano_saude" value="{{old('valor_plano_saude')}}" placeholder="Valor Plano Saúde" class="form-control form-control-sm" value="">                    
-                </div>                
+                    <div class="form-group" style="flex-basis:11%;margin-right:1%;">
+                        <span for="valor_plano_saude" class="text-white" style="font-size:0.875em;">Valor Plano Saúde:</span>
+                        <input type="text" name="valor_plano_saude" required id="valor_plano_saude" value="{{old('valor_plano_saude')}}" placeholder="Valor Plano Saúde" class="form-control form-control-sm" value="">                    
+                    </div>                
 
-                <div class="form-group" style="flex-basis:9%;margin-right:1%;">
-                    <span for="valor_plano_odonto" class="text-white" style="font-size:0.875em;">Valor Plano Odonto:</span>
-                    <input type="text" name="valor_plano_odonto" required id="valor_plano_odonto" value="{{old('valor_plano_odonto')}}" placeholder="Valor Plano Odonto" class="form-control form-control-sm form-control-sm" value="">                    
-                </div>
-
-                <div class="form-group" style="flex-basis:9%;margin-right:1%;">
-                    <span for="desconto_corretor" class="text-white" style="font-size:0.875em;">Desconto Corretor:</span>
-                    <input type="text" name="desconto_corretor" id="desconto_corretor" value="{{old('desconto_corretor')}}" placeholder="Desconto Corretor" class="form-control form-control-sm form-control-sm" value="">                    
-                </div>
-
-                <div class="form-group" style="flex-basis:9%;margin-right:1%;">
-                    <span for="desconto_corretora" class="text-white" style="font-size:0.875em;">Desconto Corretora:</span>
-                    <input type="text" name="desconto_corretora" id="desconto_corretora" value="{{old('desconto_corretora')}}" placeholder="Desconto Corretora" class="form-control form-control-sm form-control-sm" value="">                    
-                </div>
-
-                <div class="form-group" style="flex-basis:7%;margin-right:1%;">
-                    <span for="taxa_adesao" class="text-white" style="font-size:0.875em;">Taxa Adesão:</span>
-                    <input type="text" name="taxa_adesao" required id="taxa_adesao" value="{{old('taxa_adesao')}}" placeholder="Taxa Adesão" class="form-control form-control-sm" value="">                    
-                </div>
-
-                <div class="form-group" style="flex-basis:7%;margin-right:1%;">
-                    <span for="valor_boleto" class="text-white" style="font-size:0.875em;">Valor Boleto:</span>
-                    <input type="text" name="valor_boleto" required id="valor_boleto" value="{{old('valor_boleto')}}" placeholder="Valor Boleto" class="form-control form-control-sm" value="">                    
-                </div>
-
-                <div class="form-group" style="flex-basis:5%;margin-right:1%;">
-                    <span for="vencimento_boleto" class="text-white" style="font-size:0.875em;">Vencimento:</span>
-                    <input type="date" name="vencimento_boleto" required id="vencimento_boleto" value="{{old('vencimento_boleto')}}" placeholder="Vencimento Boleto" class="form-control form-control-sm" value="">                    
-                </div>
-
-                <div class="form-group" style="flex-basis:8%;margin-right:1%;">
-                    <span for="codigo_saude" class="text-white" style="font-size:0.875em;">Codigo Saude:</span>
-                    <input type="text" name="codigo_saude" id="codigo_saude" value="{{old('codigo_saude')}}" placeholder="Codigo Saude" class="form-control form-control-sm" value="">                    
-                </div>
-
-                <div class="form-group" style="flex-basis:8%;margin-right:1%;">
-                    <span for="codigo_odonto" class="text-white" style="font-size:0.875em;">Codigo Odonto:</span>
-                    <input type="text" name="codigo_odonto" id="codigo_odonto" value="{{old('codigo_odonto')}}" placeholder="Codigo Odonto" class="form-control form-control-sm" value="">                    
-                </div>
-                
-                <div class="form-group" style="flex-basis:8%;margin-right:1%;">
-                    <span for="senha_cliente" class="text-white" style="font-size:0.875em;">Senha Cliente:</span>
-                    <input type="text" name="senha_cliente" id="senha_cliente" value="{{old('senha_cliente')}}" class="form-control form-control-sm" placeholder="Senha Cliente">
-                </div>
-                
-                <div style="flex-basis:5%;">
-                    <div class="form-group">
-                        <span for="data_boleto" class="text-white" style="font-size:0.875em;">Data 1º Boleto:</span>
-                        <input type="date" name="data_boleto" required id="data_boleto" value="{{old('data_boleto')}}" class="form-control form-control-sm" placeholder="Data Boleto">
+                    <div class="form-group" style="flex-basis:11%;margin-right:1%;">
+                        <span for="valor_plano_odonto" class="text-white" style="font-size:0.875em;">Valor Plano Odonto:</span>
+                        <input type="text" name="valor_plano_odonto" required id="valor_plano_odonto" value="{{old('valor_plano_odonto')}}" placeholder="Valor Plano Odonto" class="form-control form-control-sm form-control-sm" value="">                    
                     </div>
-                </div>
+
+                    <div class="form-group" style="flex-basis:11%;margin-right:1%;">
+                        <span for="taxa_adesao" class="text-white" style="font-size:0.875em;">Taxa Adesão:</span>
+                        <input type="text" name="taxa_adesao" required id="taxa_adesao" value="{{old('taxa_adesao')}}" placeholder="Taxa Adesão" class="form-control form-control-sm" value="">                    
+                    </div>
+
+                    <div class="form-group" style="flex-basis:11%;margin-right:1%;">
+                        <span for="valor_boleto" class="text-white" style="font-size:0.875em;">Valor Boleto:</span>
+                        <input type="text" name="valor_boleto" required id="valor_boleto" value="{{old('valor_boleto')}}" placeholder="Valor Boleto" class="form-control form-control-sm" value="">                    
+                    </div>
+
+                    <div class="form-group" style="flex-basis:6%;margin-right:1%;">
+                        <span for="vencimento_boleto" class="text-white" style="font-size:0.875em;">Vencimento:</span>
+                        <input type="date" name="vencimento_boleto" required id="vencimento_boleto" value="{{old('vencimento_boleto')}}" placeholder="Vencimento Boleto" class="form-control form-control-sm" value="">                    
+                    </div>
+
+                    <div class="form-group" style="flex-basis:10%;margin-right:1%;">
+                        <span for="codigo_saude" class="text-white" style="font-size:0.875em;">Codigo Saude:</span>
+                        <input type="text" name="codigo_saude" id="codigo_saude" value="{{old('codigo_saude')}}" placeholder="Codigo Saude" class="form-control form-control-sm" value="">                    
+                    </div>
+
+                    <div class="form-group" style="flex-basis:10%;margin-right:1%;">
+                        <span for="codigo_odonto" class="text-white" style="font-size:0.875em;">Codigo Odonto:</span>
+                        <input type="text" name="codigo_odonto" id="codigo_odonto" value="{{old('codigo_odonto')}}" placeholder="Codigo Odonto" class="form-control form-control-sm" value="">                    
+                    </div>
                 
+                    <div class="form-group" style="flex-basis:10%;margin-right:1%;">
+                        <span for="senha_cliente" class="text-white" style="font-size:0.875em;">Senha Cliente:</span>
+                        <input type="text" name="senha_cliente" id="senha_cliente" value="{{old('senha_cliente')}}" class="form-control form-control-sm" placeholder="Senha Cliente">
+                    </div>
+                
+                    <div style="flex-basis:6%;">
+                        <div class="form-group">
+                            <span for="data_boleto" class="text-white" style="font-size:0.875em;">Data 1º Boleto:</span>
+                            <input type="date" name="data_boleto" required id="data_boleto" value="{{old('data_boleto')}}" class="form-control form-control-sm" placeholder="Data Boleto">
+                        </div>
+                    </div>
+                
+                </div>
             </div>
-            </div>
-            <!-- Segunda Linha -->                
+            <!-- Segunda Linha -->   
+            
+            
+
+
             
             <!-- Fim Segunda Linha -->
             <input type="submit" class="btn btn-block btn-primary" value="Cadastrar">

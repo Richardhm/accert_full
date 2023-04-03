@@ -372,10 +372,10 @@ class ContratoController extends Controller
             ::where("plano_id",1)        
             ->where("financeiro_id",5)
             ->whereHas('comissao.comissoesLancadas',function($query){
-                $query->where("status_financeiro",0);
-                $query->where("status_gerente",0);
+                //$query->where("status_financeiro",0);
+                //$query->where("status_gerente",0);
                 $query->where("parcela",1);
-                $query->whereRaw("data_baixa IS NULL");
+                //$query->whereRaw("data_baixa IS NULL");
             })
             ->whereHas('clientes',function($query) use($id){
                 $query->where("user_id",$id);
@@ -385,10 +385,10 @@ class ContratoController extends Controller
             ::where("plano_id",1)        
             ->where("financeiro_id",6)
             ->whereHas('comissao.comissoesLancadas',function($query){
-                $query->where("status_financeiro",0);
-                $query->where("status_gerente",0);
+                //$query->where("status_financeiro",0);
+                //$query->where("status_gerente",0);
                 $query->where("parcela",2);
-                $query->whereRaw("data_baixa IS NULL");
+                //$query->whereRaw("data_baixa IS NULL");
             })
             ->whereHas('clientes',function($query) use($id){
                 $query->where("user_id",$id);
@@ -398,10 +398,10 @@ class ContratoController extends Controller
             ::where("plano_id",1)        
             ->where("financeiro_id",7)
             ->whereHas('comissao.comissoesLancadas',function($query){
-                $query->where("status_financeiro","=",0);
-                $query->where("status_gerente",0);
+                //$query->where("status_financeiro","=",0);
+                //$query->where("status_gerente",0);
                 $query->where("parcela",3);
-                $query->whereRaw("data_baixa IS NULL");
+                //$query->whereRaw("data_baixa IS NULL");
             })
             ->whereHas('clientes',function($query) use($id){
                 $query->where("user_id",$id);
@@ -411,10 +411,10 @@ class ContratoController extends Controller
             ::where("plano_id",1)        
             ->where("financeiro_id",8)
             ->whereHas('comissao.comissoesLancadas',function($query){
-                $query->where("status_financeiro","=",0);
-                $query->where("status_gerente",0);
+                //$query->where("status_financeiro","=",0);
+                //$query->where("status_gerente",0);
                 $query->where("parcela",4);
-                $query->whereRaw("data_baixa IS NULL");
+                //$query->whereRaw("data_baixa IS NULL");
             })
             ->whereHas('clientes',function($query) use($id){
                 $query->where("user_id",$id);
@@ -424,10 +424,10 @@ class ContratoController extends Controller
             ::where("plano_id",1)        
             ->where("financeiro_id",9)
             ->whereHas('comissao.comissoesLancadas',function($query){
-                $query->where("status_financeiro","=",0);
-                $query->where("status_gerente",0);
+                //$query->where("status_financeiro","=",0);
+                //$query->where("status_gerente",0);
                 $query->where("parcela",5);
-                $query->whereRaw("data_baixa IS NULL");
+                //$query->whereRaw("data_baixa IS NULL");
             })
             ->whereHas('clientes',function($query) use($id){
                 $query->where("user_id",$id);
@@ -437,10 +437,10 @@ class ContratoController extends Controller
             ::where("plano_id",1)        
             ->where("financeiro_id",10)
             ->whereHas('comissao.comissoesLancadas',function($query){
-                $query->where("status_financeiro","=",0);
-                $query->where("status_gerente",0);
+                //$query->where("status_financeiro","=",0);
+                //$query->where("status_gerente",0);
                 $query->where("parcela",6);
-                $query->whereRaw("data_baixa IS NULL");
+                //$query->whereRaw("data_baixa IS NULL");
             })
             ->whereHas('clientes',function($query) use($id){
                 $query->where("user_id",$id);

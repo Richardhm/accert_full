@@ -712,9 +712,6 @@
                 tablearecebido.column(2).search(val).draw();
                 tablearecebido.column(2).search(val ? '^' + val + '$' : '',true,false).draw();
 
-                
-
-
                 $("#listar_recebido").removeClass("destaque");
                 $(this).addClass("destaque");
                 
@@ -726,8 +723,6 @@
 
                 $(".tabela_a_receber_container ").addClass('ocultar');
                 $(".tabela_a_recebido_container").removeClass('ocultar');
-
-
 
                 $('#select_administradora option[value="todos"]').prop('selected',true);
                 $('#select_vendedor option[value="todos"]').prop('selected',true);

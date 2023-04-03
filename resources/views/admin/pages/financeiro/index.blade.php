@@ -40,7 +40,7 @@
     </div>
 
     <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="uploadModalLabel">Upload</h5>
@@ -52,27 +52,32 @@
                     <form action="" method="POST" name="formulario_upload" id="formulario_upload" enctype="multipart/form-data">
                         @csrf
                         <div class="d-flex">
-                            <div>
+                            <div style="flex-basis:90%;margin-right:2%;">
                                 <label for="arquivo">Arquivo:</label>
                                 <input type="file" name="arquivo_upload" id="arquivo_upload" class="form-control form-control-sm">
                             </div>
-                            <div class="btn btn-danger d-flex align-self-end">
+                            <div class="btn btn-danger d-flex align-self-end div_icone_arquivo_upload" style="flex-basis:5%;">
                                 <i class="fas fa-window-close fa-lg"></i>
                             </div>
                         </div>
 
-                        <div class="d-flex">
-                            <div style="flex-basis:80%;">
-                                <button class="btn btn-warning atualizar_dados">Atualizar Dados</button>
+                        <div class="d-flex my-2">
+                            <div style="flex-basis:90%;margin-right:2%;">
+                                <button class="btn btn-warning btn-sm btn-block atualizar_dados text-white">Atualizar Dados</button>
+                            </div>
+                            <div class="btn btn-danger d-flex align-self-end div_icone_atualizar_dados">
+                                <i class="fas fa-window-close fa-lg"></i>
+                            </div>
+                            
+                        </div>
+
+                        <div class="d-flex my-2">
+                            <div style="flex-basis:90%;margin-right:2%;">
+                                <button class="btn btn-info btn-sm btn-block sincronizar_baixas">Sincronizar Baixas</button>
                             </div>
                             <div class="btn btn-danger d-flex align-self-end">
                                 <i class="fas fa-window-close fa-lg"></i>
                             </div>
-                            <div id="response_loading"></div>
-                        </div>
-
-                        <div>
-                            <button class="btn btn-info w-75 sincronizar_baixas">Sincronizar Baixas</button>
                         </div>
                        
 
@@ -210,6 +215,72 @@
         </div>
     </div>
 
+    <div class="modal fade" id="dataBaixaEmpresarialModal" tabindex="-1" role="dialog" aria-labelledby="dataBaixaEmpresarialLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dataBaixaEmpresarialLabel">Data Da Baixa?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" name="data_da_baixa_empresarial" id="data_da_baixa_empresarial" method="POST">
+                    <input type="date" name="date_baixa_empresarial" id="date_baixa_empresarial" class="form-control form-control-sm">
+                                       
+                    <div id="error_data_baixa_empresarial">
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalDiferencaEntreValores" tabindex="-1" role="dialog" aria-labelledby="modalDiferencaEntreValoresLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalDiferencaEntreValoresLabel">Data de Cadastro:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="text-center">
+                <p>Diferença entre valores: <span class="diferenca_entre_valores"></span>   </p>
+            </div>
+            <form action="" method="POST" name="update_desconto_corretor_corretora">
+                @csrf
+                <div style="display:flex;justify-content: space-around;">
+                    <div style="display:flex;flex-direction: column;">   
+                        <span>Corretora:</span>        
+                        <input type="text" id="desconto_corretora_valores" name="desconto_corretora">
+                    </div>   
+                    <div style="display:flex;flex-direction: column;">
+                        <span>Corretor</span> 
+                        <input type="text" id="desconto_corretor_valores" name="desconto_corretor" readonly>
+                    </div>
+                </div>
+
+                <input type="hidden" name="id_contrato" id="contrato_id_update">
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-secondary">Salvar Valores</button>   
+                </div>
+
+            </form>
+           
+
+            
+            
+            </div>
+        </div>
+    </div>
+
 
 
 
@@ -226,6 +297,9 @@
             
                 <!--COLUNA DA ESQUERDA-->
                 <div class="d-flex flex-column text-white ml-1" style="flex-basis:16%;border-radius:5px;">                    
+
+                    
+
 
                     <div class="mb-1">
                         <span class="btn btn-block" style="background-color:#123449;color:#FFF;font-size:1.2em;">Financeiro</span>
@@ -255,10 +329,10 @@
 
 
                         <ul style="margin:0;padding:0;list-style:none;" id="listar_individual">
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_em_analise_individual" class="individual">
+                            <!-- <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_em_analise_individual" class="individual">
                                 <span>Em Análise</span>
                                <span class="badge badge-light individual_quantidade_em_analise" style="width:45px;text-align:right;">{{$qtd_individual_em_analise}}</span>                        
-                            </li>
+                            </li> -->
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_1_parcela_individual" class="individual">
                                 <span>Pag. 1º Parcela</span>
                                <span class="badge badge-light individual_quantidade_1_parcela" style="width:45px;text-align:right;">{{$qtd_individual_parcela_01}}</span>                        
@@ -287,11 +361,11 @@
                             <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="aguardando_pagamento_6_parcela_individual" class="individual">
                                <span>Pag. 6º Parcela</span>
                                <span class="badge badge-light individual_quantidade_6_parcela" style="width:45px;text-align:right;">{{$qtd_individual_parcela_06}}</span>                        
-                            </li>
-
-                            
+                            </li>                            
                         </ul>
-                    </div>
+                   </div>
+
+                    
 
 
                     <div style="background-color:#123449;border-radius:5px;">   
@@ -306,19 +380,29 @@
                             </li>  
                         </ul>
                     </div>
+
+
+                    
+
+
+
                 </div>
                 <!--Fim Coluna da Esquerda  -->
 
 
                 <!--COLUNA DA CENTRAL-->
-                <div style="flex-basis:53%;">
+                <div style="flex-basis:83%;">
                     <div class="p-2" style="background-color:#123449;color:#FFF;border-radius:5px;">
                         <table id="tabela_individual" class="table table-sm listarindividual">
                             <thead>
                                 <tr>
                                     <th>Data</th>
+                                    <th>Contato</th>  
                                     <th>Corretor</th>
+                                    <th>CPF</th>
                                     <th>Cliente</th>
+                                    <!-- <th>Tipo</th> -->
+                                    <th>Valor</th>
                                     <th>Vencimento</th>                                  
                                     <th>Status</th>
                                     <th>Detalhes</th>
@@ -331,235 +415,7 @@
                 <!--FIM COLUNA DA CENTRAL-->
 
                 <!---------DIREITA-------------->    
-                <div class="mr-1 coluna-right aba_individual">
-                    <section class="p-1" style="background-color:#123449;border-radius: 5px;position:fixed;">
-
-
-                        <div class="d-flex">
-                                
-                            <div style="flex-basis:25%;">
-                                <span class="text-white" style="font-size:0.81em;">Administradora:</span>
-                                <input type="text" name="administradora_individual" id="administradora_individual" class="form-control  form-control-sm" readonly>
-                            </div>
-
-                            <div style="flex-basis:33%;margin:0 1%;">    
-                                <span class="text-white" style="font-size:0.81em;">Tipo Plano:</span>
-                                <input type="text" name="tipo_plano" id="tipo_plano_individual" class="form-control  form-control-sm" readonly>
-                            </div>
-
-                            <div style="flex-basis:40%;margin-top:1%;" id="status">
-                                <span class="text-white" style="margin:0;padding:0;font-size:0.81em;display:flex;">
-                                    <span style="flex-basis:50%;">Status:</span>
-                                    
-                                    <div class="container_edit" style="flex-basis:50%;font-size:0.9em;">
-                                        <i class="fas fa-edit text-white editar_btn_individual"></i>
-                                    </div> 
-                                
-                                </span>
-                                <input type="text" id="status_individual_view" class="form-control form-control-sm" readonly>
-                            </div>    
-
-
-                        </div>
-
-                        <div class="d-flex">
-                            
-                            <div style="flex-basis:40%;">
-                                <span class="text-white" style="font-size:0.81em;">Cliente:</span>
-                                <input type="text" name="cliente" id="cliente" class="form-control form-control-sm" readonly>
-                            </div>
-                            
-                            <div style="flex-basis:28%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.81em;">Data Nascimento:</span>
-                                <input type="text" name="data_nascimento" id="data_nascimento" class="form-control form-control-sm" readonly>
-                            </div>
-                            
-                            <div style="flex-basis:30%;">
-                                <span class="text-white" style="font-size:0.81em;">Codigo Externo:</span>
-                                <input type="text" name="codigo_externo" id="codigo_externo_individual" class="form-control  form-control-sm" readonly>
-                            </div>    
-
-                        </div>
-
-                        <div class="d-flex">
-                            <div style="flex-basis:33%;">
-                                <span class="text-white" style="font-size:0.81em;">CPF:</span>
-                                <input type="text" id="cpf" class="form-control form-control-sm" readonly>
-                            </div>
-
-                            <div style="flex-basis:33%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.81em;">Celular:</span>
-                                <input type="text" id="celular_individual_view_input" class="form-control form-control-sm" readonly>
-                            </div>
-
-                            <div style="flex-basis:33%;">
-                                <span class="text-white" style="font-size:0.81em;">Telefone:</span>
-                                <input type="text" id="telefone_individual_view_input" class="form-control form-control-sm" readonly>
-                            </div>
-                           
-                        </div>
-
-
-                        <div class="d-flex">
-                            
-                            
-
-                            <div style="flex-basis:40%;">
-                                <span class="text-white" style="font-size:0.81em;">Email:</span>
-                                <input type="text" id="email" class="form-control form-control-sm" readonly>
-                            </div>
-
-                            <div style="flex-basis:25%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.81em;">Numero Registro:</span>
-                                <input type="text" id="numero_registro" class="form-control  form-control-sm" readonly>
-                            </div>
-                            <div style="flex-basis:35%;">
-                                <span class="text-white" style="font-size:0.81em;">Carteirinha:</span>
-                                <input type="text" id="carteirinha" class="form-control  form-control-sm" readonly>
-                            </div>
-
-
-
-
-
-                        </div>
-
-
-                        <div class="d-flex">
-                            <div style="flex-basis:18%;">
-                                <span class="text-white" style="font-size:0.81em;">CEP:</span>
-                                <input type="text" name="cep" id="cep_individual_cadastro" class="form-control form-control-sm" readonly>
-                            </div>
-                            <div style="flex-basis:35%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.81em;">Cidade:</span> 
-                                <input type="text" id="cidade" class="form-control  form-control-sm" readonly>
-                            </div>
-                           
-                            <div style="flex-basis:45%;">
-                                <span class="text-white" style="font-size:0.81em;">Bairro:</span>
-                                <input type="text" id="bairro_individual_cadastro" class="form-control form-control-sm" readonly>
-                            </div>                       
-                        </div>
-
-                        <div class="d-flex">
-                            
-                            
-
-                            <div style="flex-basis:60%;">
-                                <span class="text-white" style="font-size:0.81em;">Rua:</span>
-                                <input type="text" id="rua_individual_cadastro" class="form-control form-control-sm" readonly>
-                            </div>
-
-                            <div style="flex-basis:29%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.81em;">Complemento:</span>
-                                <input type="text" id="complemento_individual_cadastro" class="form-control form-control-sm" readonly>
-                            </div>
-
-                            <div style="flex-basis:10%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.81em;">UF:</span>
-                                <input type="text" id="uf" class="form-control form-control-sm" readonly>
-                            </div>      
-
-
-                        </div>
-
-                       
-                        <div class="d-flex">
-                            <div style="flex-basis:23%;">
-                                <span class="text-white" style="font-size:0.81em;">Data Contrato:</span>
-                                <input type="text" name="data_contrato" id="data_contrato" class="form-control form-control-sm" readonly>
-                            </div>
-
-                            <div style="flex-basis:23%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.81em;">Valor Contrato:</span>
-                                <input type="text" name="valor_contrato" id="valor_contrato" class="form-control  form-control-sm" readonly>
-                            </div>
-
-                            <div style="flex-basis:23%;">
-                                <span class="text-white" style="font-size:0.81em;">Valor Adesão:</span>
-                                <input type="text" name="valor_adesao" id="valor_adesao" class="form-control  form-control-sm" readonly>
-                            </div>
-
-                            <div style="flex-basis:20%;margin-left:1%;">
-                                <span class="text-white" style="font-size:0.81em;">Data Boleto:</span>
-                                <input type="text" name="data_boleto" id="data_boleto" class="form-control  form-control-sm" readonly>
-                            </div>
-
-
-                            <div style="flex-basis:8%;margin-left:1%;">    
-                                <span class="text-white" style="font-size:0.81em;">Vidas</span>
-                                <input type="text" name="quantidade_vidas" id="quantidade_vidas_individual_cadastrar" class="form-control  form-control-sm" readonly>
-                            </div>
-                             
-                        </div>
-
-                        <div class="d-flex">
-
-                            
-                             <div style="flex-basis:23%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.81em;">Data Vigência:</span>
-                                <input type="text" name="data_vigencia" id="data_vigencia" class="form-control  form-control-sm" readonly>
-                            </div>
-
-                            <div style="flex-basis:35%;margin:0 1%;">
-                                <span class="text-white" style="font-size:0.81em;">Rede Plano:</span>
-                                <input type="text" id="rede_plano" class="form-control  form-control-sm" readonly>
-                            </div>
-
-                             <div style="flex-basis:39%;">
-                                <span class="text-white" style="font-size:0.81em;">Segmentaçao:</span>
-                                <input type="text" id="segmentacao" class="form-control  form-control-sm" readonly>
-                            </div>
-
-                           
-                            
-                            <input type="hidden" id="cliente_id_alvo_individual" />
-
-                        </div>    
-
-                        <div class="d-flex">
-
-                            
-
-                            
-                            
-                            
-
-                        </div>    
-
-                        <div class="d-flex">
-                            <div style="flex-basis:70%;margin-right:1%;">
-                                <span class="text-white" style="font-size:0.81em;">Plano:</span>
-                                <input type="text" id="plano" class="form-control  form-control-sm" readonly>
-                            </div>
-
-                            <div style="flex-basis:29%;">
-                                <span class="text-white" style="font-size:0.81em;">Tipo Plano:</span>
-                                <input type="text" id="tipo_acomodacao_plano" value="" class="form-control form-control-sm" readonly>     
-                            </div>    
-                        </div> 
-                        
-                       
-
-
-
-
-                        
-                        <!-- <div class="button_individual mt-1">
-                            <button class="btn btn-danger w-50 mr-2 excluir_individual" data-comissao="">Excluir</button>
-                            <button class="btn btn-success w-50 next_individual">Conferido</button>
-                        </div>     -->
-
-
-
-                    </section>                    
-
-                    
-
-
-
-
-                </div>    
+                  
                 <!---------FIM DIREITA-------------->    
             </section>
        </main><!-------------------------------------DIV FIM Individial------------------------------------->     
@@ -872,7 +728,6 @@
                     
 
                     <div class="d-flex">
-                        
                         <a href="{{route('contratos.create.empresarial')}}" class="btn btn-block" style="background-color:#123449;color:#FFF;font-size:1.2em;">Contrato</a>
                     </div>
 
@@ -1150,6 +1005,8 @@
 
 @section('js')
     <script src="{{asset('js/jquery.mask.min.js')}}"></script>   
+    <script src="{{asset('js/jquery.form.js')}}"></script>   
+    <script src="{{asset('js/jquery.ajax-progress.js')}}"></script>   
     <script>
         $(function(){  
 
@@ -1201,31 +1058,7 @@
                 $('#uploadModal').modal('show')
             });
 
-            $(".atualizar_dados").on('click',function(){
-                var load = $(".ajax_load");          
-                
-                $.ajax({
-                    url:"{{route('financeiro.atualizar.dados')}}",
-                    method:"POST",
-                    beforeSend: function () {
-                        load.fadeIn(200).css("display", "flex");
-                        $('#uploadModal').modal('hide')
-                    },
-                    success:function(res) {
-                        
-                        if (res == "sucesso") {
-                            load.fadeOut(200);
-                            $('#uploadModal').modal('show');
-                            //window.location.href = response.redirect;
-                        } else {       
-                        }
-                    }
-                });
-
-                return false;
-            });
-
-
+            /*************************************************REALIZAR UPLOAD DO EXCEL*********************************************************************/
             $("#arquivo_upload").on('change',function(e){
                 var files = $('#arquivo_upload')[0].files;
                 var load = $(".ajax_load");
@@ -1241,12 +1074,16 @@
                     processData: false,
                     beforeSend: function () {
                         load.fadeIn(200).css("display", "flex");
-                        $('#uploadModal').modal('hide')
+                        $('#uploadModal').modal('hide');
                     },
                     success:function(res) {
+                       
                         if(res == "sucesso") {
                             load.fadeOut(200);
                             $('#uploadModal').modal('show');
+                            $(".div_icone_arquivo_upload").removeClass('btn-danger').addClass('btn-success').html('<i class="far fa-smile-beam fa-lg"></i>');
+                            $("#arquivo_upload").val('').prop('disabled',true);
+
                         } else {
 
                         }
@@ -1255,12 +1092,58 @@
                 });
             });
 
+
+
+            /*************************************************Atualizar Dados*********************************************************************/
+            $(".atualizar_dados").on('click',function(){
+                var load = $(".ajax_load");          
+                
+                $.ajax({
+                    url:"{{route('financeiro.atualizar.dados')}}",
+                    method:"POST",
+                   
+                    
+                    beforeSend: function (res) {
+                        load.fadeIn(200).css("display", "flex");
+                        $('#uploadModal').modal('hide')
+                        
+                    },
+                    success:function(res) { 
+                        if (res == "sucesso") {
+                            load.fadeOut(200);
+                            $('#uploadModal').modal('show');
+                            $(".div_icone_arquivo_upload").removeClass('btn-danger').addClass('btn-success').html('<i class="far fa-smile-beam fa-lg"></i>');
+                            $(".div_icone_atualizar_dados").removeClass('btn-danger').addClass('btn-success').html('<i class="far fa-smile-beam fa-lg"></i>');
+                            $(".atualizar_dados").removeClass('btn-warning').addClass('btn-secondary').prop('disabled',true);
+                            $("#arquivo_upload").val('').prop('disabled',true);
+                            //window.location.href = response.redirect;
+                        } 
+                    }
+                });
+
+                return false;
+            });
+
+
+            
+            /*************************************************Sincronizar Dados*********************************************************************/
             $(".sincronizar_baixas").on('click',function(){
+                var load = $(".ajax_load");       
                 $.ajax({
                     url:"{{route('financeiro.sincronizar.baixas')}}",
                     method:"POST",
+                    beforeSend: function (res) {
+                        load.fadeIn(200).css("display", "flex");
+                        $('#uploadModal').modal('hide')
+                        
+                    },
                     success:function(res) {
-                        console.log(res);
+                        
+                        if(res == "sucesso") {
+                            window.location.reload();
+                        } else {
+
+                        }
                     }
                 });
                 return false;
@@ -1505,9 +1388,7 @@
                 table_individual.ajax.url("{{ route('financeiro.individual.geralIndividualPendentes.contrato') }}").load();
                 
                 $("#title_empresarial").html("<h4 style='font-size:1em;margin-top:10px;'>Em Análise</h4>");
-                tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.analise")}}').load();
-
-                
+                tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.analise")}}').load();              
                 
                 $("#cliente_id_alvo").val('');
                 $("#cliente_id_alvo_individual").val('');
@@ -1710,8 +1591,7 @@
                             $("#error_data_baixa_empresarial").html('');
                         }
                     },
-                    success:function(res) {
-                        
+                    success:function(res) {   
                         $('#dataBaixaEmpresarialModal').modal('hide');
                         $(".empresarial_quantidade_em_analise").html(res.qtd_empresarial_em_analise);    
                         $(".empresarial_quantidade_1_parcela").html(res.qtd_empresarial_01_parcela);
@@ -1724,7 +1604,6 @@
                         $(".empresarial_quantidade_cancelado").html(res.qtd_empresarial_cancelado);
                         tableempresarial.ajax.reload();
                         //tableempresarial.ajax.reload();
-                        
                         $('#date_baixa_empresarial').val('');
                     }
                 });    
@@ -1737,7 +1616,7 @@
                     "url": "{{asset('traducao/pt-BR.json')}}"
                 },
                 ajax: {
-                    "url":"{{ route('financeiro.individual.em_analise') }}",
+                    "url":"{{ route('financeiro.individual.geralIndividualPendentes') }}",
                     "dataSrc": ""
                 },
                 "lengthMenu": [50,100,150,200,300,500],
@@ -1747,6 +1626,7 @@
                 "info": true,
                 "autoWidth": false,
                 "responsive": true,
+               
                 columns: [
                     {data:"created_at",name:"data",
                         "createdCell": function (td, cellData, rowData, row, col) {
@@ -1756,12 +1636,24 @@
                         },
                         "width":"8%"
                     },
-                    {data:"clientes.user.name",name:"corretor",
+                    {data:"clientes.celular",name:"celular",
                         "createdCell": function (td, cellData, rowData, row, col) {
-                            let palavra = cellData.split(" ");
-                            if(palavra.length >= 3) {
-                                $(td).html(palavra[0]+" "+palavra[1]+"...")
-                            }
+                            let phone = "("+cellData.substr(0,2)+") "+cellData.substr(2,1)+" "+cellData.substr(3,4)+" - "+cellData.substr(7,4);
+                            $(td).html(phone);
+                        }
+                    },
+                    {data:"clientes.user.name",name:"corretor",
+                        // "createdCell": function (td, cellData, rowData, row, col) {
+                        //     let palavra = cellData.split(" ");
+                        //     if(palavra.length >= 3) {
+                        //         $(td).html(palavra[0]+" "+palavra[1]+"...")
+                        //     }
+                        // }
+                    },
+                    {data:"clientes.cpf",name:"cpf",
+                        "createdCell": function (td, cellData, rowData, row, col) {
+                            let cpf = cellData.substr(0,3)+"."+cellData.substr(3,3)+"."+cellData.substr(6,3)+"-"+cellData.substr(9,2);
+                            $(td).html(cpf);
                         }
                     },
                     {data:"clientes.nome",name:"cliente",
@@ -1769,6 +1661,10 @@
                             let palavras = cellData.ucWords();
                             $(td).html(palavras)
                         }
+                    },
+                    {
+                        data:"valor_plano",name:"valor_plano",
+                        render: $.fn.dataTable.render.number('.', ',', 2, 'R$ ')
                     },
                     {data:"comissao.comissao_atual_financeiro",name:"vencimento",
                         "createdCell": function(td,cellData,rowData,row,col) {
@@ -1790,42 +1686,39 @@
                 "columnDefs": [
                     {
                         "targets": 0,
-                        "createdCell": function (td, cellData, rowData, row, col) {
-                            let datas = cellData.split("T")[0]
-                            let alvo = datas.split("-").reverse().join("/")
-                            $(td).html(alvo)    
-                        },
+                       
                         "width":"8%"
                     },
                     {
                         "targets": 1,
-                        "width":"20%",
-                        "createdCell": function (td, cellData, rowData, row, col) {
-                            let palavra = cellData.split(" ");
-                            if(palavra.length >= 3) {
-                                $(td).html(palavra[0]+" "+palavra[1]+"...")
-                            }
-                        }
-                    },
+                       
+                        "width":"10%",
+                        
+                       
+                    },                  
                     {
                         "targets": 2,
-                        "width":"35%",
-                        "createdCell":function(td,cellData,rowData,row,col) {
-                            let palavras = cellData.ucWords();
-                            $(td).html(palavras)
-                        }
+                        "width":"17%",
                     },
                     {
                         "targets": 3,
-                        "width":"15%",
-                        "createdCell": function (td, cellData, rowData, row, col) {
-                            let alvo = cellData.data.split("-").reverse().join("/");
-                            $(td).html(alvo);
-                        }                            
+                        "width":"10%",  
                     },
                     {
                         "targets": 4,
-                        "width":"15%",
+                        "width":"19%",      
+                    },
+                    {
+                        "targets": 5,
+                        "width":"8%",       
+                    },
+                    {
+                        "targets":6,
+                        "width":"5%",        
+                    },
+                    {
+                        "targets": 7,
+                        "width":"8%",
                         "createdCell": function (td, cellData, rowData, row, col) {
                             if(cellData == "Pagamento 1º Parcela") {
                                 $(td).html("Pag. 1º Parcela");        
@@ -1849,17 +1742,23 @@
                     },
                     {
                         "width":"4%",
-                        "targets": 5,
+                        "targets": 8,
                         "createdCell": function (td, cellData, rowData, row, col) {
-                            $(td).html("<div class='text-center'><i class='fas fa-eye div_info' data-id='"+rowData.id+"'></i></div>");
+                            var id = rowData.id;
+                            $(td).html(`<div class='text-center text-white'>
+                                    <a href="/admin/financeiro/detalhes/${id}" class="text-white">  
+                                        <i class='fas fa-eye div_info'></i>
+                                    </a>
+                                </div>
+                            `);
                         }
                     }
                ],
                 
                 "initComplete": function( settings, json ) {
-                    $('#title_individual').html("<h4 style='font-size:1em;margin-top:10px;'>Em Análise</h4>");
+                    $('#title_individual').html("<h4 style='font-size:1em;margin-top:10px;'>Pendentes</h4>");
                      this.api()
-                       .columns([1])
+                       .columns([2])
                        .every(function () {
                             var column = this;
                             var selectUsuarioIndividual = $("#select_usuario_individual");
@@ -2125,104 +2024,106 @@
             });
 
             var table_individual = $('#tabela_individual').DataTable();
-            $('#tabela_individual').on('click', 'tbody tr', function () {
-                table_individual.$('tr').removeClass('textoforte');
-                $(this).closest('tr').addClass('textoforte');
-                let data = table_individual.row(this).data();  
+            // $('#tabela_individual').on('click', 'tbody tr', function () {
+            //     table_individual.$('tr').removeClass('textoforte');
+            //     $(this).closest('tr').addClass('textoforte');
+            //     let data = table_individual.row(this).data();  
                 
-                $("#numero_registro").val(data.clientes.numero_registro_plano);
-                $("#carteirinha").val(data.clientes.cateirinha);
-                $("#tipo_acomodacao_plano").val(data.clientes.tipo_acomodacao_plano);
-                $("#segmentacao").val(data.clientes.segmentacao_plano);
-                $("#plano").val(data.clientes.nm_plano);
-                $("#rede_plano").val(data.clientes.rede_plano);
+            //     console.log(data);
+
+            //     $("#numero_registro").val(data.clientes.numero_registro_plano);
+            //     $("#carteirinha").val(data.clientes.cateirinha);
+            //     $("#tipo_acomodacao_plano").val(data.clientes.tipo_acomodacao_plano);
+            //     $("#segmentacao").val(data.clientes.segmentacao_plano);
+            //     $("#plano").val(data.clientes.nm_plano);
+            //     $("#rede_plano").val(data.clientes.rede_plano);
 
 
-                $("#cliente_id_alvo_individual").val(data.clientes.id);
-                $('#comissao_id_cancelado').val(data.comissao.id);
-                $(".excluir_individual").attr('data-cliente-excluir-individual',data.clientes.id);
-                $(".next_individual").attr('data-cliente',data.clientes.id).attr('data-contrato',data.id);
-                $('#comissao_id_baixa_individual').val(data.comissao.id);
-                let acomodacao_individual = data.acomodacao.nome;
-                let coparticipacao_individual = data.coparticipacao;
-                let odonto_individual = data.odonto;
-                let texto = "";
+            //     $("#cliente_id_alvo_individual").val(data.clientes.id);
+            //     $('#comissao_id_cancelado').val(data.comissao.id);
+            //     $(".excluir_individual").attr('data-cliente-excluir-individual',data.clientes.id);
+            //     $(".next_individual").attr('data-cliente',data.clientes.id).attr('data-contrato',data.id);
+            //     $('#comissao_id_baixa_individual').val(data.comissao.id);
+            //     // let acomodacao_individual = data.acomodacao.nome;
+            //     // let coparticipacao_individual = data.coparticipacao;
+            //     // let odonto_individual = data.odonto;
+            //     let texto = "";
 
-                // if(acomodacao_individual == "Apartamento" && coparticipacao_individual == 1 && odonto_individual == 1) {
-                //     texto = "Apartamento C/Copart + Odonto";
-                // } else if(acomodacao_individual == "Apartamento" && coparticipacao_individual == 1 && odonto_individual == 0) {
-                //     texto = "Apartamento C/Copart Sem Odonto";
-                // } else if(acomodacao_individual == "Apartamento" && coparticipacao_individual == 0 && odonto_individual == 0) {
-                //     texto = "Apartamento S/Copart Sem Odonto";
-                // } else if(acomodacao_individual == "Enfermaria" && coparticipacao_individual == 1 && odonto_individual == 1) {
-                //     texto = "Enfermaria C/Copart + Odonto";    
-                // } else if(acomodacao_individual == "Enfermaria" && coparticipacao_individual == 1 && odonto_individual == 0) {
-                //     texto = "Enfermaria C/Copart Sem Odonto";    
-                // } else if(acomodacao_individual == "Enfermaria" && coparticipacao_individual == 0 && odonto_individual == 0) {
-                //     texto = "Apartamento S/Copart Sem Odonto";    
-                // } else {
-                //     texto = "";
-                // }
-                // $("#texto_descricao_individual_view").val(texto)
+            //     // if(acomodacao_individual == "Apartamento" && coparticipacao_individual == 1 && odonto_individual == 1) {
+            //     //     texto = "Apartamento C/Copart + Odonto";
+            //     // } else if(acomodacao_individual == "Apartamento" && coparticipacao_individual == 1 && odonto_individual == 0) {
+            //     //     texto = "Apartamento C/Copart Sem Odonto";
+            //     // } else if(acomodacao_individual == "Apartamento" && coparticipacao_individual == 0 && odonto_individual == 0) {
+            //     //     texto = "Apartamento S/Copart Sem Odonto";
+            //     // } else if(acomodacao_individual == "Enfermaria" && coparticipacao_individual == 1 && odonto_individual == 1) {
+            //     //     texto = "Enfermaria C/Copart + Odonto";    
+            //     // } else if(acomodacao_individual == "Enfermaria" && coparticipacao_individual == 1 && odonto_individual == 0) {
+            //     //     texto = "Enfermaria C/Copart Sem Odonto";    
+            //     // } else if(acomodacao_individual == "Enfermaria" && coparticipacao_individual == 0 && odonto_individual == 0) {
+            //     //     texto = "Apartamento S/Copart Sem Odonto";    
+            //     // } else {
+            //     //     texto = "";
+            //     // }
+            //     // $("#texto_descricao_individual_view").val(texto)
 
-                if(data.clientes.dependente) {
-                    $("#responsavel_financeiro").val(data.clientes.dependentes.nome);
-                    $("#cpf_financeiro").val(data.clientes.dependentes.cpf);
-                } else {
-                    $("#responsavel_financeiro").val('');
-                    $("#cpf_financeiro").val('');
-                }
+            //     if(data.clientes.dependente) {
+            //         $("#responsavel_financeiro").val(data.clientes.dependentes.nome);
+            //         $("#cpf_financeiro").val(data.clientes.dependentes.cpf);
+            //     } else {
+            //         $("#responsavel_financeiro").val('');
+            //         $("#cpf_financeiro").val('');
+            //     }
 
-                $('.div_info').attr('data-id',data.id);
-                $('.container_div_info').hide();
-                let criacao = data.created_at.split("T")[0].split("-").reverse().join("/");                
-                let nascimento = data.clientes.data_nascimento.split("T")[0].split("-").reverse().join("/");
-                let data_vigencia = data.data_vigencia.split("T")[0].split("-").reverse().join("/");
-                let data_boleto = data.data_boleto.split("T")[0].split("-").reverse().join("/");
-                let valor_contrato = Number(data.valor_plano).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
-                let valor_adesao = Number(data.valor_adesao).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});       
-                $("#cliente").val(data.clientes.nome);
-                $("#cpf").val(data.clientes.cpf);
-                $("#cidade").val(data.clientes.cidade);
-                $("#status_individual_view").val(data.financeiro.nome);
-                $("#telefone").val(data.clientes.celular);
-                $("#email").val(data.clientes.email);
-                $("#data_nascimento").val(nascimento);
-                $("#cpf_coletivo").val(data.clientes.cpf);
-                $("#cep_individual_cadastro").val(data.clientes.cep);
-                $("#bairro_individual_cadastro").val(data.clientes.bairro)
-                $("#rua_individual_cadastro").val(data.clientes.rua);
-                $("#uf").val(data.clientes.uf);
-                $("#administradora_individual").val(data.administradora.nome);
-                $("#codigo_externo_individual").val(data.codigo_externo);              
-                $("#data_contrato").val(criacao);
-                $("#valor_contrato").val(valor_contrato);
-                $("#data_vigencia").val(data_vigencia);
-                $("#data_boleto").val(data_boleto);
-                $("#valor_adesao").val(valor_adesao);
-                $("#complemento_individual_cadastro").val(data.clientes.complemento);
+            //     $('.div_info').attr('data-id',data.id);
+            //     $('.container_div_info').hide();
+            //     let criacao = data.created_at.split("T")[0].split("-").reverse().join("/");                
+            //     let nascimento = data.clientes.data_nascimento.split("T")[0].split("-").reverse().join("/");
+            //     let data_vigencia = data.data_vigencia.split("T")[0].split("-").reverse().join("/");
+            //     let data_boleto = data.data_boleto.split("T")[0].split("-").reverse().join("/");
+            //     let valor_contrato = Number(data.valor_plano).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+            //     let valor_adesao = Number(data.valor_adesao).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});       
+            //     $("#cliente").val(data.clientes.nome);
+            //     $("#cpf").val(data.clientes.cpf);
+            //     $("#cidade").val(data.clientes.cidade);
+            //     $("#status_individual_view").val(data.financeiro.nome);
+            //     $("#telefone").val(data.clientes.celular);
+            //     $("#email").val(data.clientes.email);
+            //     $("#data_nascimento").val(nascimento);
+            //     $("#cpf_coletivo").val(data.clientes.cpf);
+            //     $("#cep_individual_cadastro").val(data.clientes.cep);
+            //     $("#bairro_individual_cadastro").val(data.clientes.bairro)
+            //     $("#rua_individual_cadastro").val(data.clientes.rua);
+            //     $("#uf").val(data.clientes.uf);
+            //     $("#administradora_individual").val(data.administradora.nome);
+            //     $("#codigo_externo_individual").val(data.codigo_externo);              
+            //     $("#data_contrato").val(criacao);
+            //     $("#valor_contrato").val(valor_contrato);
+            //     $("#data_vigencia").val(data_vigencia);
+            //     $("#data_boleto").val(data_boleto);
+            //     $("#valor_adesao").val(valor_adesao);
+            //     $("#complemento_individual_cadastro").val(data.clientes.complemento);
 
-                $("#celular_individual_view_input").val(data.clientes.celular);
-                $("#telefone_individual_view_input").val(data.clientes.telefone);
+            //     $("#celular_individual_view_input").val(data.clientes.celular);
+            //     $("#telefone_individual_view_input").val(data.clientes.telefone);
 
-                $("#coparticipacao_sim").attr("style","padding:0.21rem 0.75rem;");
-                $("#coparticipacao_nao").attr("style","padding:0.21rem 0.75rem;");
-                $("#odonto_sim").attr("style","padding:0.21rem 0.75rem;");
-                $("#odonto_nao").attr("style","padding:0.21rem 0.75rem;");
-                if(data.coparticipacao) {       
-                    $("#coparticipacao_sim").attr("style","padding:0.21rem 0.75rem;background-color:white;color:black;").attr("disabled",true);
-                } else {
-                    $("#coparticipacao_nao").attr("style","padding:0.21rem 0.75rem;background-color:white;color:black;").attr("disabled",true);
-                }
-                if(data.odonto) {
-                    $("#odonto_sim").attr("style","padding:0.21rem 0.75rem;background-color:white;color:black;").attr("disabled",true);
-                } else {
-                    $("#odonto_nao").attr("style","padding:0.21rem 0.75rem;background-color:white;color:black;").attr("disabled",true);
-                }
-                // $("#quantidade_vidas").val(vidas);
-                $("#tipo_plano_individual").val(data.plano.nome); 
-                $("#quantidade_vidas_individual_cadastrar").val(data.clientes.quantidade_vidas);                
-            });
+            //     $("#coparticipacao_sim").attr("style","padding:0.21rem 0.75rem;");
+            //     $("#coparticipacao_nao").attr("style","padding:0.21rem 0.75rem;");
+            //     $("#odonto_sim").attr("style","padding:0.21rem 0.75rem;");
+            //     $("#odonto_nao").attr("style","padding:0.21rem 0.75rem;");
+            //     if(data.coparticipacao) {       
+            //         $("#coparticipacao_sim").attr("style","padding:0.21rem 0.75rem;background-color:white;color:black;").attr("disabled",true);
+            //     } else {
+            //         $("#coparticipacao_nao").attr("style","padding:0.21rem 0.75rem;background-color:white;color:black;").attr("disabled",true);
+            //     }
+            //     if(data.odonto) {
+            //         $("#odonto_sim").attr("style","padding:0.21rem 0.75rem;background-color:white;color:black;").attr("disabled",true);
+            //     } else {
+            //         $("#odonto_nao").attr("style","padding:0.21rem 0.75rem;background-color:white;color:black;").attr("disabled",true);
+            //     }
+            //     // $("#quantidade_vidas").val(vidas);
+            //     $("#tipo_plano_individual").val(data.plano.nome); 
+            //     $("#quantidade_vidas_individual_cadastrar").val(data.clientes.quantidade_vidas);                
+            // });
             
 
             $(".listarempresarial").DataTable({
@@ -2389,6 +2290,10 @@
                 $("#telefone_corretor_view_empresarial").val(data.telefone)
                 $("#celular_corretor_view_empresarial").val(data.celular)
                 $("#cliente_id_alvo_empresarial").val(data.id);
+
+                $("#contrato_id_update").val(data.id);
+
+
                 let texto_empresarial = "";
                 if(data.plano_contrado == 1) {
                     texto_empresarial = "C/ Copart + Odonto"
@@ -2543,8 +2448,11 @@
                         data:"financeiro="+financeiro+"&id_contrato="+id_contrato,
                         method:"POST",
                         success:function(res) {
-                            if(res == "abrir_modal_empresarial") {
-                                //$('#dataBaixaModal').modal('show');                      
+
+                            if(res.modal == "abrir_modal_desconto") {
+                                $('#modalDiferencaEntreValores').modal('show');
+                                $(".diferenca_entre_valores").html("R$ "+res.diferenca);
+                            } else if(res == "abrir_modal_empresarial") {
                                 $("#dataBaixaEmpresarialModal").modal('show');
                             } else {
                                 $(".empresarial_quantidade_em_analise").html(res.qtd_empresarial_em_analise);    
@@ -2557,12 +2465,68 @@
                                 $(".empresarial_quantidade_finalizado").html(res.qtd_empresarial_finalizado);
                                 $(".empresarial_quantidade_cancelado").html(res.qtd_empresarial_cancelado);
                                 tableempresarial.ajax.reload();
-                                // limparFormulario();
+                                limparEmpresarial();
                             }
+
+
+                            
+                            //let diferenca = valor_t - valor_a;
+                            // if(res == "abrir_modal_empresarial") {
+                            //     //$('#dataBaixaModal').modal('show');                      
+                            //     $("#dataBaixaEmpresarialModal").modal('show');
+                            // } else {
+                            //     $(".empresarial_quantidade_em_analise").html(res.qtd_empresarial_em_analise);    
+                            //     $(".empresarial_quantidade_1_parcela").html(res.qtd_empresarial_01_parcela);
+                            //     $(".empresarial_quantidade_2_parcela").html(res.qtd_empresarial_02_parcela);
+                            //     $(".empresarial_quantidade_3_parcela").html(res.qtd_empresarial_03_parcela);
+                            //     $(".empresarial_quantidade_4_parcela").html(res.qtd_empresarial_04_parcela);
+                            //     $(".empresarial_quantidade_5_parcela").html(res.qtd_empresarial_05_parcela);
+                            //     $(".empresarial_quantidade_6_parcela").html(res.qtd_empresarial_06_parcela);
+                            //     $(".empresarial_quantidade_finalizado").html(res.qtd_empresarial_finalizado);
+                            //     $(".empresarial_quantidade_cancelado").html(res.qtd_empresarial_cancelado);
+                            //     tableempresarial.ajax.reload();
+                            //     // limparFormulario();
+                            // }
                         }
                     });
                 }
             });
+            $('#desconto_corretora_valores').mask("#.##0,00", {reverse: true});
+            $("#desconto_corretora_valores").change(function(){
+                let valor = $(this).val().replace(".","").replace(",",".");
+                let total = $(".diferenca_entre_valores").text().replace("R$","").replace(".","").replace(",",".").trim();
+                let corretor = total - valor;
+                let resto_corretor = parseFloat(corretor);
+                $("#desconto_corretor_valores").val(resto_corretor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+                $("#desconto_corretor").val(resto_corretor);
+                $("#desconto_corretora").val(valor);
+            });
+
+
+            $("form[name='update_desconto_corretor_corretora']").on('submit',function(){
+                let valores = $(this).serialize()+"&acao=update_desconto";
+                $.ajax({
+                    url:"{{route('financeiro.mudarStatusEmpresarialUpdate')}}",
+                    data:valores,
+                    method:"POST",
+                    success:function(res) {
+                        $(".empresarial_quantidade_em_analise").html(res.qtd_empresarial_em_analise);    
+                        $(".empresarial_quantidade_1_parcela").html(res.qtd_empresarial_01_parcela);
+                        $(".empresarial_quantidade_2_parcela").html(res.qtd_empresarial_02_parcela);
+                        $(".empresarial_quantidade_3_parcela").html(res.qtd_empresarial_03_parcela);
+                        $(".empresarial_quantidade_4_parcela").html(res.qtd_empresarial_04_parcela);
+                        $(".empresarial_quantidade_5_parcela").html(res.qtd_empresarial_05_parcela);
+                        $(".empresarial_quantidade_6_parcela").html(res.qtd_empresarial_06_parcela);
+                        $(".empresarial_quantidade_finalizado").html(res.qtd_empresarial_finalizado);
+                        $(".empresarial_quantidade_cancelado").html(res.qtd_empresarial_cancelado);
+                        tableempresarial.ajax.reload();
+                        $('#modalDiferencaEntreValores').modal('hide');
+                        limparEmpresarial();
+                    }
+                });        
+                return false;
+            });
+
 
             $("ul#listar li.coletivo").on('click',function(){
                 let id_lista = $(this).attr('id');

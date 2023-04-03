@@ -95,9 +95,6 @@ Route::middleware('auth')->prefix("admin")->group(function(){
     Route::get('/financeiro/coletivo/em_geral',"App\Http\Controllers\Admin\FinanceiroController@coletivoEmGeral")->name('financeiro.coletivo.em_geral');
     Route::get('/financeiro/coletivo/em_geral/corretor',"App\Http\Controllers\Admin\FinanceiroController@coletivoEmGeralCorretor")->name('financeiro.coletivo.em_geral.corretor');
 
-
-
-
     Route::get('/financeiro/empresarial/em_geral',"App\Http\Controllers\Admin\FinanceiroController@empresarialEmGeral")->name('financeiro.empresarial.em_geral');
 
     Route::get('/financeiro/coletivo/emissao_boleto',"App\Http\Controllers\Admin\FinanceiroController@coletivoEmissaoBoleto")->name('financeiro.coletivo.emissao_boleto');
@@ -142,6 +139,8 @@ Route::middleware('auth')->prefix("admin")->group(function(){
     Route::post('/financeiro/atualizar_dados',"App\Http\Controllers\Admin\FinanceiroController@atualizarDados")->name('financeiro.atualizar.dados');
     Route::post('/financeiro/sincronizar_baixas',"App\Http\Controllers\Admin\FinanceiroController@sincronizarBaixas")->name('financeiro.sincronizar.baixas');
 
+    Route::get('/financeiro/detalhes/{id}',"App\Http\Controllers\Admin\FinanceiroController@detalhesContrato")->name('financeiro.detalhes.contrato');
+
 
 
     Route::get('/financeiro/individual/pagamento_primeira_parcela',"App\Http\Controllers\Admin\FinanceiroController@individualPagamentoPrimeiraParcela")->name('financeiro.individual.pagamento_primeira_parcela');
@@ -174,6 +173,9 @@ Route::middleware('auth')->prefix("admin")->group(function(){
     Route::post('/financeiro/mudarEstadosColetivo',"App\Http\Controllers\Admin\FinanceiroController@mudarEstadosColetivo")->name('financeiro.mudarStatusColetivo');
     Route::post('/financeiro/mudarEstadosIndividual',"App\Http\Controllers\Admin\FinanceiroController@mudarEstadosIndividual")->name('financeiro.mudarStatusIndividual');
     Route::post('/financeiro/mudarEstadosEmpresarial',"App\Http\Controllers\Admin\FinanceiroController@mudarEstadosEmpresarial")->name('financeiro.mudarStatusEmpresarial');
+
+    Route::post('/financeiro/mudarEstadosEmpresarialDescontos',"App\Http\Controllers\Admin\FinanceiroController@mudarEstadosEmpresarialDescontos")->name('financeiro.mudarStatusEmpresarialUpdate');
+
     Route::post("/financeiro/mudarDataVigenciaColetivo","App\Http\Controllers\Admin\FinanceiroController@mudarDataVivenciaColetivo")->name('financeiro.mudarVigenciaColetivo');
     Route::post('/financeiro/baixaDaData',"App\Http\Controllers\Admin\FinanceiroController@baixaDaData")->name('financeiro.baixa.data');
     Route::post('/financeiro/baixaDaData/individual',"App\Http\Controllers\Admin\FinanceiroController@baixaDaDataIndividual")->name('financeiro.baixa.data.individual');
@@ -250,8 +252,17 @@ Route::middleware('auth')->prefix("admin")->group(function(){
 
 
         /**Tabela de Preços */
-        Route::get("/tabela","App\Http\Controllers\Admin\TabelaController@index")->name('tabela.index');    
+        Route::get("/tabela","App\Http\Controllers\Admin\TabelaController@index")->name('tabela.index');  
+        
+        Route::post("/tabela/search","App\Http\Controllers\Admin\TabelaController@pesquisar")->name("tabela.pesquisar");
+        Route::get("/tabela/search","App\Http\Controllers\Admin\TabelaController@search")->name("tabela.search");
+
         Route::post("/tabela","App\Http\Controllers\Admin\TabelaController@store")->name("store.tabela");
+        
+        Route::post("/tabelas/pegar/cidades/administradoras","App\Http\Controllers\Admin\TabelaController@pegarCidadeAdministradora")->name("cidades.administradoras.pegar");
+        Route::post("/tabela/orcamento/alterar","App\Http\Controllers\Admin\TabelaController@edit")->name("tabela.edit.valor");
+        
+        
         /** Fim Tabela de Preços */
            
         

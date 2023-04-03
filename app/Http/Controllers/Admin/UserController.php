@@ -23,6 +23,7 @@ class UserController extends Controller
 
     public function setUser(Request $request)
     {
+        
         $rules = [
             "name" => "required",
             'password' => ['nullable', 'confirmed', 'min:8'],
@@ -37,7 +38,15 @@ class UserController extends Controller
         $request->validate($rules,$message);
         $user = User::find($request->user_id);
         $data = $request->all();
-        $data['password'] = Hash::make($request->password);
+
+        if(!empty($data['password']) && $data['password'] != null) {
+            $data['password'] = Hash::make($request->password);
+        } else {
+            unset($data['password']);
+        }
+
+        
+
         if($request->hasFile('image')) {
             if(Storage::exists($user->image)) {
                 Storage::delete($user->image);
