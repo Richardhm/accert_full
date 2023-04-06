@@ -47,23 +47,51 @@ class FinanceiroController extends Controller
         $plano_empresarial = PlanoEmpresarial::all();
         $users = User::where("id","!=",auth()->user()->id)->get();
         $tabela_origem = TabelaOrigens::all();
-        $qtd_individual_pendentes = Contrato::where("plano_id",1)->count();
+
+        $qtd_individual_pendentes = Contrato::where("plano_id",1)->whereHas('clientes',function($query){
+            $query->whereRaw('cateirinha IS NOT NULL');
+        })->count();
+
+        
+        $qtd_individual_atrasado = Contrato
+        ::where("plano_id",1)
+        ->whereHas('comissao.comissoesLancadas',function($query){
+            $query->whereRaw("DATA <= NOW()");
+            $query->whereRaw("valor > 0");
+            $query->whereRaw("data_baixa IS NULL");
+            $query->groupBy("comissoes_id");
+        })
+        ->whereHas('clientes',function($query){
+            $query->whereRaw('cateirinha IS NOT NULL');
+        })
+        ->count();
+
+        
+
+
         $qtd_individual_em_analise = Contrato::where("financeiro_id",1)->where("plano_id",1)->count();
 
         $qtd_individual_parcela_01 = Contrato
             ::where("plano_id",1)        
             ->where("financeiro_id",5)
+            ->whereHas('clientes',function($query){
+                $query->whereRaw("cateirinha IS NOT NULL");
+            })
             ->whereHas('comissao.comissoesLancadas',function($query){
                 //$query->where("status_financeiro",0);
                 //$query->where("status_gerente",0);
                 $query->where("parcela",1);
                 //$query->whereRaw("data_baixa IS NULL");
             })
+            
             ->count();
         
         $qtd_individual_parcela_02 = Contrato
             ::where("plano_id",1)        
             ->where("financeiro_id",6)
+            ->whereHas('clientes',function($query){
+                $query->whereRaw("cateirinha IS NOT NULL");
+            })
             ->whereHas('comissao.comissoesLancadas',function($query){
                 //$query->where("status_financeiro",0);
                 //$query->where("status_gerente",0);
@@ -75,6 +103,9 @@ class FinanceiroController extends Controller
         $qtd_individual_parcela_03 = Contrato
             ::where("plano_id",1)        
             ->where("financeiro_id",7)
+            ->whereHas('clientes',function($query){
+                $query->whereRaw("cateirinha IS NOT NULL");
+            })
             ->whereHas('comissao.comissoesLancadas',function($query){
                 //$query->where("status_financeiro","=",0);
                 //$query->where("status_gerente",0);
@@ -86,6 +117,9 @@ class FinanceiroController extends Controller
         $qtd_individual_parcela_04 = Contrato
             ::where("plano_id",1)        
             ->where("financeiro_id",8)
+            ->whereHas('clientes',function($query){
+                $query->whereRaw("cateirinha IS NOT NULL");
+            })
             ->whereHas('comissao.comissoesLancadas',function($query){
                 //$query->where("status_financeiro","=",0);
                 //$query->where("status_gerente",0);
@@ -97,6 +131,9 @@ class FinanceiroController extends Controller
         $qtd_individual_parcela_05 = Contrato
             ::where("plano_id",1)        
             ->where("financeiro_id",9)
+            ->whereHas('clientes',function($query){
+                $query->whereRaw("cateirinha IS NOT NULL");
+            })
             ->whereHas('comissao.comissoesLancadas',function($query){
                 //$query->where("status_financeiro","=",0);
                 //$query->where("status_gerente",0);
@@ -108,6 +145,9 @@ class FinanceiroController extends Controller
         $qtd_individual_parcela_06 = Contrato
             ::where("plano_id",1)        
             ->where("financeiro_id",10)
+            ->whereHas('clientes',function($query){
+                $query->whereRaw("cateirinha IS NOT NULL");
+            })
             ->whereHas('comissao.comissoesLancadas',function($query){
                 //$query->where("status_financeiro","=",0);
                 //$query->where("status_gerente",0);
@@ -346,6 +386,8 @@ class FinanceiroController extends Controller
             "qtd_individual_finalizado" => $qtd_individual_finalizado,
             "qtd_individual_cancelado" => $qtd_individual_cancelado,
 
+            "qtd_individual_atrasado" => $qtd_individual_atrasado,
+
             "qtd_coletivo_em_analise" => $qtd_coletivo_em_analise,
             "qtd_coletivo_emissao_boleto" => $qtd_coletivo_emissao_boleto,
             "qtd_coletivo_pg_adesao" => $qtd_coletivo_pg_adesao,
@@ -370,12 +412,268 @@ class FinanceiroController extends Controller
             "qtd_empresarial_em_analise" => $qtd_empresarial_em_analise,
             "qtd_empresarial_finalizado" => $qtd_empresarial_finalizado,
             "qtd_empresarial_cancelado" => $qtd_empresarial_cancelado,
-
             "total" => $total,
-
             "motivo_cancelados" => $motivo_cancelados
-
         ]);
+    }
+
+    public function getAtrasados()
+    {
+        $atrasados = Contrato
+                ::where("plano_id",1)
+                ->whereHas('comissao.comissoesLancadas',function($query){
+                    $query->whereRaw("DATA <= NOW()");
+                    $query->whereRaw("valor > 0");
+                    $query->whereRaw("data_baixa IS NULL");
+                    $query->groupBy("comissoes_id");
+                })
+                ->whereHas('clientes',function($query){
+                    $query->whereRaw('cateirinha IS NOT NULL');
+                })
+                ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','comissao.comissaoAtualFinanceiro','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
+                ->get();
+
+        return $atrasados;        
+
+    }
+
+
+
+
+    public function quantidadeCorretor(Request $request) 
+    {
+        if($request->id != 0) {
+                $qtd_individual_parcela_01 = Contrato
+                ::where("plano_id",1)
+                ->where("financeiro_id",5)
+                ->whereHas('comissao.comissoesLancadas',function($query){
+                    $query->where("parcela",1);
+                })
+                ->whereHas('clientes',function($query) use($request){
+                    $query->where("user_id",$request->id);
+                    $query->whereRaw("cateirinha IS NOT NULL");
+                })
+                ->count();
+
+            $qtd_individual_parcela_02 = Contrato
+                ::where("plano_id",1)
+                ->where("financeiro_id",6)
+                ->whereHas('comissao.comissoesLancadas',function($query){
+                    $query->where("parcela",2);
+                })
+                ->whereHas('clientes',function($query) use($request){
+                    $query->where("user_id",$request->id);
+                    $query->whereRaw("cateirinha IS NOT NULL");
+                })
+                ->count();  
+
+            $qtd_individual_parcela_03 = Contrato
+                ::where("plano_id",1)
+                ->where("financeiro_id",7)
+                ->whereHas('comissao.comissoesLancadas',function($query){
+                    $query->where("parcela",3);
+                })
+                ->whereHas('clientes',function($query) use($request){
+                    $query->where("user_id",$request->id);
+                    $query->whereRaw("cateirinha IS NOT NULL");
+                })
+                ->count();      
+
+            $qtd_individual_parcela_04 = Contrato
+                ::where("plano_id",1)
+                ->where("financeiro_id",8)
+                ->whereHas('comissao.comissoesLancadas',function($query){
+                    $query->where("parcela",4);
+                })
+                ->whereHas('clientes',function($query) use($request){
+                    $query->where("user_id",$request->id);
+                    $query->whereRaw("cateirinha IS NOT NULL");
+                })
+                ->count();   
+            $qtd_individual_parcela_05 = Contrato
+                ::where("plano_id",1)
+                ->where("financeiro_id",9)
+                ->whereHas('comissao.comissoesLancadas',function($query){
+                    $query->where("parcela",5);
+                })
+                ->whereHas('clientes',function($query) use($request){
+                    $query->where("user_id",$request->id);
+                    $query->whereRaw("cateirinha IS NOT NULL");
+                })
+                ->count();  
+            $qtd_individual_parcela_06 = Contrato
+                ::where("plano_id",1)
+                ->where("financeiro_id",10)
+                ->whereHas('comissao.comissoesLancadas',function($query){
+                    $query->where("parcela",6);
+                })
+                ->whereHas('clientes',function($query) use($request){
+                    $query->where("user_id",$request->id);
+                    $query->whereRaw("cateirinha IS NOT NULL");
+                })
+                ->count();
+
+            $qtd_individual_finalizado = Contrato
+                ::where("financeiro_id",11)
+                ->where("plano_id",1)
+               
+                ->whereHas('clientes',function($query) use($request){
+                    $query->where("user_id",$request->id);
+                })
+                ->count(); 
+                
+            $qtd_individual_cancelado = Contrato
+                ::where("financeiro_id",12)
+                ->where("plano_id",1)
+               
+                ->whereHas('clientes',function($query) use($request){
+                    $query->where("user_id",$request->id);
+                })
+                ->count();
+
+            $qtd_cliente = Cliente
+                ::where("user_id",$request->id)
+                ->whereRaw("cateirinha IS NOT NULL")
+                ->whereHas('contrato',function($query){
+                    $query->whereRaw('plano_id = 1');
+                })->count();            
+
+            $qtd_vidas = Cliente
+                ::where("user_id",$request->id)
+                ->whereRaw("cateirinha IS NOT NULL")
+                ->whereHas('contrato',function($query){
+                    $query->whereRaw('plano_id = 1');
+            })->selectRaw("sum(quantidade_vidas) as quantidade_vidas")->first();
+            
+            return [
+                "qtd_individual_parcela_01" => $qtd_individual_parcela_01,
+                "qtd_individual_parcela_02" => $qtd_individual_parcela_02,
+                "qtd_individual_parcela_03" => $qtd_individual_parcela_03,
+                "qtd_individual_parcela_04" => $qtd_individual_parcela_04,
+                "qtd_individual_parcela_05" => $qtd_individual_parcela_05,
+                "qtd_individual_parcela_06" => $qtd_individual_parcela_06,
+                "qtd_individual_finalizado" => $qtd_individual_finalizado,
+                "qtd_individual_cancelado" => $qtd_individual_cancelado,
+                "qtd_clientes" => $qtd_cliente,
+                "qtd_vidas" => $qtd_vidas->quantidade_vidas
+            ];
+
+
+
+        } else {
+
+            $qtd_individual_parcela_01 = Contrato
+            ::where("plano_id",1)
+            ->where("financeiro_id",5)
+            ->whereHas('clientes',function($query) use($request){
+                
+                $query->whereRaw("cateirinha IS NOT NULL");
+            })
+            ->whereHas('comissao.comissoesLancadas',function($query){
+                $query->where("parcela",1);
+            })
+           
+            ->count();
+        $qtd_individual_parcela_02 = Contrato
+            ::where("plano_id",1)
+            ->where("financeiro_id",6)
+            ->whereHas('clientes',function($query) use($request){
+                
+                $query->whereRaw("cateirinha IS NOT NULL");
+            })
+            ->whereHas('comissao.comissoesLancadas',function($query){
+                $query->where("parcela",2);
+            })
+            
+            ->count();  
+
+        $qtd_individual_parcela_03 = Contrato
+            ::where("plano_id",1)
+            ->where("financeiro_id",7)
+            ->whereHas('clientes',function($query) use($request){
+                
+                $query->whereRaw("cateirinha IS NOT NULL");
+            })
+            ->whereHas('comissao.comissoesLancadas',function($query){
+                $query->where("parcela",3);
+            })
+            ->count();      
+
+        $qtd_individual_parcela_04 = Contrato
+            ::where("plano_id",1)
+            ->where("financeiro_id",8)
+            ->whereHas('clientes',function($query) use($request){
+                
+                $query->whereRaw("cateirinha IS NOT NULL");
+            })
+            ->whereHas('comissao.comissoesLancadas',function($query){
+                $query->where("parcela",4);
+            })
+            ->count();   
+
+        $qtd_individual_parcela_05 = Contrato
+            ::where("plano_id",1)
+            ->where("financeiro_id",9)
+            ->whereHas('clientes',function($query) use($request){
+                
+                $query->whereRaw("cateirinha IS NOT NULL");
+            })
+            ->whereHas('clientes',function($query) use($request){
+                $query->where("user_id",$request->id);
+            })
+            ->count();  
+
+        $qtd_individual_parcela_06 = Contrato
+            ::where("plano_id",1)
+            ->where("financeiro_id",10)
+            ->whereHas('clientes',function($query) use($request){
+                
+                $query->whereRaw("cateirinha IS NOT NULL");
+            })
+            ->whereHas('clientes',function($query) use($request){
+                $query->where("user_id",$request->id);
+            })
+            ->count();
+
+        $qtd_individual_finalizado = Contrato
+            ::where("financeiro_id",11)
+            ->where("plano_id",1)
+            ->whereHas('comissao.comissoesLancadas',function($query){
+                $query->where("parcela",6);
+            })
+            ->count(); 
+
+        $qtd_individual_cancelado = Contrato
+            ::where("financeiro_id",12)
+            ->where("plano_id",1)
+            ->whereHas('comissao.comissoesLancadas',function($query){
+                $query->where("parcela",6);
+            })
+            ->count();
+
+            $qtd_cliente = Contrato::where("plano_id",1)->whereHas('clientes',function($query){
+                $query->whereRaw('cateirinha IS NOT NULL');
+            })->count();    
+        
+        $qtd_vidas = Cliente
+            ::whereRaw("cateirinha IS NOT NULL")
+            ->selectRaw("sum(quantidade_vidas) as quantidade_vidas")->first();
+        
+        return [
+            "qtd_individual_parcela_01" => $qtd_individual_parcela_01,
+            "qtd_individual_parcela_02" => $qtd_individual_parcela_02,
+            "qtd_individual_parcela_03" => $qtd_individual_parcela_03,
+            "qtd_individual_parcela_04" => $qtd_individual_parcela_04,
+            "qtd_individual_parcela_05" => $qtd_individual_parcela_05,
+            "qtd_individual_parcela_06" => $qtd_individual_parcela_06,
+            "qtd_individual_finalizado" => $qtd_individual_finalizado,
+            "qtd_individual_cancelado" => $qtd_individual_cancelado,
+            "qtd_clientes" => $qtd_cliente,
+            "qtd_vidas" => $qtd_vidas->quantidade_vidas
+        ];
+    }
+       
+
     }
 
     public function coletivoEmAnalise(Request $request)
@@ -560,7 +858,10 @@ class FinanceiroController extends Controller
     public function geralIndividualPendentes(Request $request)
     {
         $contratos = Contrato
-            ::where("plano_id",1)        
+            ::where("plano_id",1)   
+            ->whereHas('clientes',function($query){
+                $query->whereRaw("cateirinha IS NOT NULL");
+            })     
             ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','comissao.comissaoAtualFinanceiro','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
             ->orderBy("id","desc")
             ->get();
@@ -1452,14 +1753,6 @@ class FinanceiroController extends Controller
             
             
         }    
-
-        
-        
-        
-        
-        
-        
-
         //return $comissoes;
             
 
@@ -1575,17 +1868,17 @@ class FinanceiroController extends Controller
         $filename = uniqid().".xlsx";
         if(move_uploaded_file($request->file,$filename)) {
             $filePath = base_path("public/{$filename}");
-            
+            $cpfs = [];
             $reader = ReaderEntityFactory::createReaderFromFile($filePath);
-            $reader->open($filePath);       
+            $reader->open($filePath);   
+              
             foreach ($reader->getSheetIterator() as $sheet) {
                 foreach ($sheet->getRowIterator() as $rowNumber => $row) {
-                    if($rowNumber >= 5) {
-                        $cells = $row->getCells(); 
+                    $cells = $row->getCells(); 
+                    if($rowNumber >= 5 && !in_array($cells[4]->getValue(),$cpfs)) {
                         $cpf = mb_strlen($cells[4]->getValue()) == 11 ? $cells[4]->getValue() : str_pad($cells[4]->getValue(), 11, "000", STR_PAD_LEFT);
                         $dia = str_pad($cells[16]->getValue(), 2, "0", STR_PAD_LEFT);
-                        $data_boleto = date("Y-m-".$dia);
-                        //array_push($cpfs,$cpf);
+                        array_push($cpfs,$cells[4]->getValue());
                         $user_id = User::where('codigo_vendedor',$cells[2]->getValue())->first()->id;    
                         $cliente = new Cliente();
                         $cliente->user_id = $user_id;
@@ -1595,11 +1888,16 @@ class FinanceiroController extends Controller
                         $cliente->data_nascimento = implode("-",array_reverse(explode("/",$cells[6]->getValue())));
                         $cliente->pessoa_fisica = 1;
                         $cliente->pessoa_juridica = 0;
-                        $cliente->quantidade_vidas = $cells[15]->getValue();
+                        $cliente->codigo_externo = $cells[0]->getValue();
+
+                        if($cells[8]->getValue() == "RESPONSÁVEL FINANCEIRO") {
+                            $cliente->quantidade_vidas = $cells[15]->getValue();
+                        } else {
+                            $cliente->quantidade_vidas = $cells[15]->getValue() + 1;
+                        }
+
                         $cliente->save();
-
                         $data_vigencia = implode("-",array_reverse(explode("/",$cells[17]->getValue())));
-
                         $contrato = new Contrato();
                         //$contrato->acomodacao_id = $acomodacao_id;
                         $contrato->cliente_id = $cliente->id;
@@ -1643,7 +1941,7 @@ class FinanceiroController extends Controller
                                 $comissaoVendedor = new ComissoesCorretoresLancadas();
                                 $comissaoVendedor->comissoes_id = $comissao->id;
                                 //$comissaoVendedor->user_id = auth()->user()->id;
-                                //$comissaoVendedor->documento_gerador = "12345678";
+                                // $comissaoVendedor->documento_gerador = "12345678";
                                 $comissaoVendedor->parcela = $c->parcela;
                                 $comissaoVendedor->valor = ($cells[12]->getValue() * $c->valor) / 100;
                                 if($comissao_corretor_contagem == 0) {
@@ -1653,19 +1951,23 @@ class FinanceiroController extends Controller
                                         $comissaoVendedor->status_gerente = 1;            
                                     }
                                     $comissaoVendedor->data_baixa = implode("-",array_reverse(explode("/",$cells[17]->getValue())));
+                                    $comissaoVendedor->valor_pago = $cells[12]->getValue();
                                 } else {
-                                    $comissaoVendedor->data = date("Y-m-".$dia,strtotime($data_vigencia."+{$comissao_corretor_contagem}month"));
+                                    $mes = explode("-",$data_vigencia)[1];
+                                    if($dia == 30 && $mes == 01 && $comissao_corretor_contagem == 1) {
+                                        $comissaoVendedor->data = date("Y-02-28");
+                                    } else {
+                                        $comissaoVendedor->data = date("Y-m-".$dia,strtotime($data_vigencia."+{$comissao_corretor_contagem}month"));    
+                                    } 
                                 }
                                 $comissaoVendedor->save();  
                                 $comissao_corretor_contagem++;  
-                            }
+                            }                            
                         }
-
-
-
                     }
                 }
             }
+           
         }    
 
         
@@ -1716,7 +2018,12 @@ class FinanceiroController extends Controller
                         ->where("documento_gerador",$docu)
                         ->where("status_financeiro","!=",1)
                         ->where("status_gerente","!=",1)
-                        ->update(['status_financeiro'=>1,'status_gerente'=>1,'data_baixa'=>$data_baixa]);
+                        ->update([
+                                'status_financeiro'=>1,
+                                'status_gerente'=>1,
+                                'valor_pago' => $d->vlObrigacao,
+                                'data_baixa'=>$data_baixa
+                        ]);
                 }
             }
         }
@@ -1764,43 +2071,30 @@ class FinanceiroController extends Controller
         }
 
         return "sucesso";
-
-
     }  
     
     
     public function detalhesContrato($id) 
     {
-        
         $contratos = Contrato
             ::where("id",$id)        
             ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','comissao.comissaoAtualFinanceiro','comissao.comissoesLancadas','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
             ->orderBy("id","desc")
             ->first();
-
-        //dd($contratos);
-
+       
         return view('admin.pages.financeiro.detalhe',[
             "dados" => $contratos
         ]);
     }
 
-
-
-
-
     public function atualizarDados(Request $request)
     {
-        
-
-        $dados = Cliente::with('contrato')->get();
-        
+        $dados = Cliente::with('contrato')->get();   
         foreach($dados as $v) {
             $url = "https://api-hapvida.sensedia.com/wssrvonline/v1/beneficiario?cpf=$v->cpf";
             $ch = curl_init($url);
             curl_setopt($ch,CURLOPT_URL,$url);
             curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-           
             $resultado = (array) json_decode(curl_exec($ch),true);
             //$key = array_search("SAUDE",array_column($resultado[$v->cpf], 'tipoPlanoC'));
             foreach($resultado as $rr) {
@@ -1825,7 +2119,6 @@ class FinanceiroController extends Controller
                         $contrato = Contrato::where('cliente_id',$cliente_id)->first()->id;
                         $comissao_id = Comissoes::where("contrato_id",$contrato)->first()->id;
                         ComissoesCorretoresLancadas::where("comissoes_id",$comissao_id)->update(['documento_gerador'=>substr($rr['cdUsuario'],0,-3)]);
-                        
                 }
             }
         }    

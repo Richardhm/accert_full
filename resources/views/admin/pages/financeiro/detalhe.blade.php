@@ -176,7 +176,7 @@
 
             <div style="flex-basis:23%;margin:0 1%;">
                 <span class="text-white" style="font-size:0.81em;">Valor Contrato:</span>
-                <input type="text" name="valor_contrato" id="valor_contrato" value="R$ {{number_format($dados->valor_plano,2,',','.')}}" class="form-control  form-control-sm" readonly>
+                <input type="text" name="valor_contrato" id="valor_contrato" value="R$ {{number_format($dados->valor_plano - 25,2,',','.')}}" class="form-control  form-control-sm" readonly>
             </div>
 
             <div style="flex-basis:23%;">
@@ -214,97 +214,115 @@
                 <span class="text-white" style="font-size:0.81em;">Segmentaçao:</span>
                 <input type="text" id="segmentacao" class="form-control  form-control-sm" value="{{$dados->clientes->segmentacao_plano}}" readonly>
             </div>
-
-            
-            
             <input type="hidden" id="cliente_id_alvo_individual" />
-
         </div>    
-    
-                           
-    
-                            <div class="d-flex">
-                                <div style="flex-basis:70%;margin-right:1%;">
-                                    <span class="text-white" style="font-size:0.81em;">Plano:</span>
-                                    <input type="text" id="plano" class="form-control  form-control-sm" value="{{$dados->clientes->nm_plano}}" readonly>
-                                </div>
-    
-                                <div style="flex-basis:29%;">
-                                    <span class="text-white" style="font-size:0.81em;">Tipo Plano:</span>
-                                    <input type="text" id="tipo_acomodacao_plano" class="form-control form-control-sm" value="{{$dados->clientes->tipo_acomodacao_plano}}" readonly>     
-                                </div>    
-                            </div> 
-                            
+            <div class="d-flex">
+                <div style="flex-basis:70%;margin-right:1%;">
+                    <span class="text-white" style="font-size:0.81em;">Plano:</span>
+                    <input type="text" id="plano" class="form-control  form-control-sm" value="{{$dados->clientes->nm_plano}}" readonly>
+                </div>
 
-                
-    
-                
-    
-                
-    
-                
-    
-    
-                
-    
-    
-                
-    
-            
-                
-    
-    
-                   
-    
-                    
-
-
-                                    
-            
+                <div style="flex-basis:29%;">
+                    <span class="text-white" style="font-size:0.81em;">Tipo Plano:</span>
+                    <input type="text" id="tipo_acomodacao_plano" class="form-control form-control-sm" value="{{$dados->clientes->tipo_acomodacao_plano}}" readonly>     
+                </div>    
+            </div> 
         </section>   
-        
-        
-        @php 
-           
+        @php            
         @endphp
-
-
-
-        
-        
         <section class="historico_corretor">
-            <h5 class="text-center d-flex align-items-center align-self-center justify-content-center mt-1">Corretor</h5>
+            <div class="d-flex align-items-center justify-content-between">
+                <h5 class="text-center mt-1 ml-1">Pagamentos</h5>
+                <p class="align-self-center mt-3 mr-2">{{$dados->clientes->user->name}}</p>
+            </div>
+            
 
-            <table class="table table-sm">
+            <table class="table table-sm h-50" style="margin:0;padding:0;">
                 <thead>
                     <tr>
                         <th style="font-size:0.875em;">Parcela</th>
+                        <th style="font-size:0.875em;">Contrato</th>
                         <th style="font-size:0.875em;">Vencimento</th>
+                        <th style="font-size:0.875em;">Valor</th>
                         <th style="font-size:0.875em;">Baixa</th>
-                        <th style="font-size:0.875em;">Dias Atr</th>
-                        <th style="font-size:0.875em;">Comissão</th>
+                        <th style="font-size:0.875em;margin-left:10px;text-align:center;" align="center">Atrasado</th>
+                        <th style="font-size:0.875em;text-align:right;">
+                            <span style="margin-right:12px;">
+                                Comissão
+                            </span>
+                        </th>
+                        <th>Status Comissao</th>
                     </tr>
                 </thead>
                 <tbody>
-                @foreach($dados->comissao->comissoesLancadas as $kk => $cr)
+                    @php
+                        $total_cliente = 0;
+                        $total_comissao = 0;
+                    @endphp    
+                    @foreach($dados->comissao->comissoesLancadas as $kk => $cr)
+                            @php
+                                if(!empty($cr->data_baixa)):
+                                    $total_comissao += $cr->valor;
+                                else: 
+                                    $total_cliente += $cr->valor;
+                                endif;
+                            @endphp
                         <tr>
+                            <td class="" style="font-size:0.875em;">
+                                @if($cr->parcela == 1)
+                                    Adesão 
+                                @else
+                                    <span class="text-center">{{$cr->parcela}} º Parcela</span>
+                                @endif
+                            </td>
                             <td class="text-center" style="font-size:0.875em;">
-                               {{$cr->parcela}}
+                                @if($cr->parcela == 1)
+                                    {{number_format($dados->valor_plano,2,',','.')}}
+                                @else
+                                    {{number_format($dados->valor_plano - 25,2,',','.')}}
+                                @endif
                             </td>
                             <td style="font-size:0.875em;">{{date('d/m/Y',strtotime($cr->data))}}</td>
-                            <td style="font-size:0.875em;">{{empty($cr->data_baixa) ? '---' :  date('d/m/Y',strtotime($cr->data_baixa))}}</td>
-                            <td style="font-size:0.875em;">{{$cr->quantidade_dias}}</td>
-                            <td style="font-size:0.875em;" align="right">
-                                <span style="margin-right:15px;">{{number_format($cr->valor,2,',','.')}}</span>
+                            <td style="font-size:0.875em;">
+                                
+                                @if($cr->valor_pago > 0) 
+                                    {{number_format($cr->valor_pago,2,",",".") ?? 0}}
+                                @else
+                                    <span style="margin-left:10px;">---</span>
+                                @endif
+                                
+
+
                             </td>
-                            
+                            <td style="font-size:0.875em;">
+                                @if(empty($cr->data_baixa))
+                                    <span style="margin-left:20px;">---</span>
+                                @else
+                                    {{date('d/m/Y',strtotime($cr->data_baixa))}}
+                                @endif
+                                     
+                            <td style="font-size:0.875em;text-align:center;">{{$cr->quantidade_dias}}</td>
+                            <td style="font-size:0.875em;" align="right">
+                                @if($cr->valor > 0)
+                                    <span style="margin-right:15px;">{{number_format($cr->valor,2,',','.')}}</span>
+                                @else 
+                                    <span style="margin-right:28px;">---</span>
+                                @endif
+                            </td>
+                            <td align="center">---</td>
                         </tr>
                     @endforeach
                 </tbody>
+                
             </table>
 
-            <div class="d-flex justify-content-between">
-           
+            <div class="d-flex align-items-end align-self-end" style="height:40%;">
+                <div class="d-flex justify-content-between align-items-center" style="flex-basis:100%;">
+                      
+                    <p class="ml-3">Comissão a Receber: R$ @php  echo number_format($total_comissao,2,",",".")  @endphp</p>  
+                    <p class="mr-3">Comissão Recebida: R$ @php  echo number_format($total_cliente,2,",",".")  @endphp</p>      
+                </div>
+                         
             </div>
 
 

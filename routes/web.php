@@ -193,6 +193,10 @@ Route::middleware('auth')->prefix("admin")->group(function(){
 
     Route::post('/financeiro/excluir/empresarial',"App\Http\Controllers\Admin\FinanceiroController@excluirClienteEmpresarial")->name('financeiro.excluir.cliente.empresarial');
 
+    Route::post('/financeiro/quantidade/corretor',"App\Http\Controllers\Admin\FinanceiroController@quantidadeCorretor")->name('financeiro.corretor.quantidade');
+
+    Route::get('/financeiro/geral/atrsado',"App\Http\Controllers\Admin\FinanceiroController@getAtrasados")->name('financeiro.individual.atrasado');
+
 
     /**Fim Financeiro*/
 

@@ -24,7 +24,7 @@
                         <select required name="user_id" id="user_id" class="form-control  form-control-sm">
                             <option value="" class="text-center">--Vendedor--</option>
                             @foreach($users as $u)
-                                <option value="{{$u->id}}" class="text-center">{{$u->name}}</option>
+                                <option value="{{$u->id}}">{{$u->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -35,7 +35,7 @@
                         <select required class="form-control  form-control-sm" id="plano_id" name="plano_id">
                             <option value="" class="text-center">--Plano--</option>
                             @foreach($planos_empresarial as $p)
-                                <option value="{{$p->id}}" class="text-center">{{$p->nome}}</option>
+                                <option value="{{$p->id}}">{{$p->nome}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -46,7 +46,7 @@
                         <select  class="form-control  form-control-sm" id="tabela_origens_id" name="tabela_origens_id" required>
                             <option value="" class="text-center">--Origem Tabela--</option>
                             @foreach($origem_tabela as $o)
-                                <option value="{{$o->id}}" class="text-center">{{$o->nome}}</option>
+                                <option value="{{$o->id}}">{{$o->nome}}</option>
                             @endforeach
                         </select>           
                     </div>

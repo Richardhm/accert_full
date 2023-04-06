@@ -634,13 +634,6 @@
    
     <script>
         $(function(){
-
-           
-
-
-
-
-
             var default_formulario = $('.coluna-right.aba_individual').html();
             let url = window.location.href.indexOf("?");
             if(url != -1) {
@@ -713,9 +706,7 @@
                 $(this).addClass("ativo");
                 let id = $(this).attr('data-id');
                 $("#janela_ativa").val(id);
-
                 default_formulario = $('.coluna-right.'+id).html();
-
                 $('.conteudo_abas main').addClass('ocultar');
                 $('#'+id).removeClass('ocultar');
                 $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Pendentes</h4>");
@@ -993,13 +984,8 @@
                                 selectAdministradora.append('<option value="' + d + '">' + d + '</option>');
                             });
                        })
-
-
-
-
                 },
-                "drawCallback": function( settings ) {
-                    
+                "drawCallback": function( settings ) {                    
                 }
             });
 
@@ -1009,9 +995,9 @@
                 $(this).closest('tr').addClass('textoforte');
                 let data = table.row(this).data();
                 
-                let acomodacao_individual = data.acomodacao.nome;
-                let coparticipacao_individual = data.coparticipacao;
-                let odonto_individual = data.odonto;
+                // let acomodacao_individual = data.acomodacao.nome;
+                // let coparticipacao_individual = data.coparticipacao;
+                // let odonto_individual = data.odonto;
                 let texto = "";
 
                 if(acomodacao_individual == "Apartamento" && coparticipacao_individual == 1 && odonto_individual == 1) {
@@ -1096,27 +1082,27 @@
                 $(this).closest('tr').addClass('textoforte');
                 let data = table_individual.row(this).data();   
                 
-                let acomodacao_individual = data.acomodacao.nome;
-                let coparticipacao_individual = data.coparticipacao;
-                let odonto_individual = data.odonto;
-                let texto = "";
+                // let acomodacao_individual = data.acomodacao.nome;
+                // let coparticipacao_individual = data.coparticipacao;
+                // let odonto_individual = data.odonto;
+                // let texto = "";
 
-                if(acomodacao_individual == "Apartamento" && coparticipacao_individual == 1 && odonto_individual == 1) {
-                    texto = "Apartamento C/Copart + Odonto";
-                } else if(acomodacao_individual == "Apartamento" && coparticipacao_individual == 1 && odonto_individual == 0) {
-                    texto = "Apartamento C/Copart Sem Odonto";
-                } else if(acomodacao_individual == "Apartamento" && coparticipacao_individual == 0 && odonto_individual == 0) {
-                    texto = "Apartamento S/Copart Sem Odonto";
-                } else if(acomodacao_individual == "Enfermaria" && coparticipacao_individual == 1 && odonto_individual == 1) {
-                    texto = "Enfermaria C/Copart + Odonto";    
-                } else if(acomodacao_individual == "Enfermaria" && coparticipacao_individual == 1 && odonto_individual == 0) {
-                    texto = "Enfermaria C/Copart Sem Odonto";    
-                } else if(acomodacao_individual == "Enfermaria" && coparticipacao_individual == 0 && odonto_individual == 0) {
-                    texto = "Apartamento S/Copart Sem Odonto";    
-                } else {
-                    texto = "";
-                }
-                $("#texto_descricao_individual_view").val(texto)
+                // if(acomodacao_individual == "Apartamento" && coparticipacao_individual == 1 && odonto_individual == 1) {
+                //     texto = "Apartamento C/Copart + Odonto";
+                // } else if(acomodacao_individual == "Apartamento" && coparticipacao_individual == 1 && odonto_individual == 0) {
+                //     texto = "Apartamento C/Copart Sem Odonto";
+                // } else if(acomodacao_individual == "Apartamento" && coparticipacao_individual == 0 && odonto_individual == 0) {
+                //     texto = "Apartamento S/Copart Sem Odonto";
+                // } else if(acomodacao_individual == "Enfermaria" && coparticipacao_individual == 1 && odonto_individual == 1) {
+                //     texto = "Enfermaria C/Copart + Odonto";    
+                // } else if(acomodacao_individual == "Enfermaria" && coparticipacao_individual == 1 && odonto_individual == 0) {
+                //     texto = "Enfermaria C/Copart Sem Odonto";    
+                // } else if(acomodacao_individual == "Enfermaria" && coparticipacao_individual == 0 && odonto_individual == 0) {
+                //     texto = "Apartamento S/Copart Sem Odonto";    
+                // } else {
+                //     texto = "";
+                // }
+                // $("#texto_descricao_individual_view").val(texto)
 
                 if(data.clientes.dependente) {
                     $("#responsavel_financeiro").val(data.clientes.dependentes.nome);
@@ -1149,8 +1135,6 @@
                     $("#data_cancelamento").val('');
                     $("#motivo_cancelamento").val('');
                 }
-
-
 
                 //$('.div_info').attr('data-id',data.id);
                 $('.container_div_info').hide();

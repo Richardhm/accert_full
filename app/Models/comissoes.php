@@ -21,7 +21,8 @@ class comissoes extends Model
             status_gerente,
             data_baixa,
             data_baixa_gerente,
-            DATEDIFF(data_baixa,data) AS quantidade_dias
+            valor_pago,
+            if(DATEDIFF(data_baixa,DATA) >= 1,DATEDIFF(data_baixa,DATA),0) AS quantidade_dias
             ");
     }
 
