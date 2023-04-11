@@ -1779,16 +1779,7 @@
             $("body").on('click','.div_info',function(){
                 let contrato = $(this).attr('data-id');
                 let janela_ativa = $('#janela_ativa').val(); 
-
-                
-
-
             });
-
-
-
-
-
 
 
             // $(".div_info").on('click',function(){

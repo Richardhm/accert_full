@@ -338,6 +338,21 @@ class ContratoController extends Controller
 
     public function contrato()
     {
+        // $contratos = Contrato
+        //     ::where("plano_id",3)   
+        //     ->whereHas('clientes',function($query){
+        //         $query->where("user_id",auth()->user()->id);
+        //     })
+            
+        //     ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','comissao.comissaoAtualFinanceiro','comissao.comissaoAtualLast','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
+        //     ->orderBy("id","desc")
+        //     ->get();
+        // dd($contratos[0]->somarCotacaoFaixaEtaria[0]->soma);
+
+
+
+
+
         $id = auth()->user()->id;
 
         
@@ -553,7 +568,24 @@ class ContratoController extends Controller
             })
             ->whereHas('clientes',function($query) use($id){
                 $query->where("user_id",$id);
-            })->count();     
+            })->count();    
+            
+        $qtd_individual_atrasado = Contrato
+            ::where("plano_id",1)
+            ->where("financeiro_id","!=",12)
+            ->whereHas('comissao.comissoesLancadas',function($query){
+                $query->whereRaw("DATA <= NOW()");
+                $query->whereRaw("valor > 0");
+                $query->whereRaw("data_baixa IS NULL");
+                $query->groupBy("comissoes_id");
+            })
+            ->whereHas('clientes',function($query) use($id){
+                $query->whereRaw('cateirinha IS NOT NULL');
+                $query->where("user_id",$id);
+            })
+            ->count();    
+
+
 
         $total = $qtd_coletivo_em_analise + $qtd_coletivo_emissao_boleto + $qtd_coletivo_pg_adesao + $qtd_coletivo_pg_vigencia + $qtd_coletivo_02_parcela + $qtd_coletivo_03_parcela + $qtd_coletivo_04_parcela + $qtd_coletivo_05_parcela + $qtd_coletivo_06_parcela;
         
@@ -653,7 +685,7 @@ class ContratoController extends Controller
             "planos_empresarial" => $plano_empresarial,
             "users" => $users,
             "origem_tabela" => $tabela_origem,
-
+            "qtd_individual_atrasado" => $qtd_individual_atrasado,
             "contratos_coletivo_pendentes" => $contratos_coletivo_pendentes,
             "qtd_empresarial_pendentes" => $qtd_empresarial_pendentes,
             "qtd_empresarial_parcela_01" => $qtd_empresarial_parcela_01,
@@ -1526,7 +1558,6 @@ class ContratoController extends Controller
         $date = new \DateTime(now());
         $date->add(new \DateInterval('PT1M'));
         $data = $date->format('Y-m-d H:i:s');
-
 
         $comissao_corretor_contagem = 0;
         if(count($comissoes_configuradas_corretor) >= 1) {

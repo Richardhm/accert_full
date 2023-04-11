@@ -71,6 +71,11 @@ Route::middleware('auth')->prefix("admin")->group(function(){
 
     Route::post('/financeiro/importarDados',"App\Http\Controllers\Admin\FinanceiroController@importarDados")->name('financeiro.importar.dados');
 
+    Route::get('/financeiro/cliente/semcarteirinha',"App\Http\Controllers\Admin\FinanceiroController@semCarteirinha")->name('financeiro.sem.carteirinha');
+
+    Route::post('/financeiro/cliente/atualizar/carteirinha',"App\Http\Controllers\Admin\FinanceiroController@atualizarCarteirinha")->name('cliente.atualizar.carteirinha');
+
+    Route::get('/financeiro/cancelado/detalhes/{id}',"App\Http\Controllers\Admin\FinanceiroController@clienteCancelado")->name('cliente.cancelado.detalhes');
 
 
 
@@ -139,6 +144,10 @@ Route::middleware('auth')->prefix("admin")->group(function(){
     Route::post('/financeiro/atualizar_dados',"App\Http\Controllers\Admin\FinanceiroController@atualizarDados")->name('financeiro.atualizar.dados');
     Route::post('/financeiro/sincronizar_baixas',"App\Http\Controllers\Admin\FinanceiroController@sincronizarBaixas")->name('financeiro.sincronizar.baixas');
 
+    Route::post('/financeiro/sincronizar_baixas/ja_existente',"App\Http\Controllers\Admin\FinanceiroController@sincronizarBaixasJaExiste")->name('financeiro.sincronizar.baixas.jaexiste');
+
+
+
     Route::get('/financeiro/detalhes/{id}',"App\Http\Controllers\Admin\FinanceiroController@detalhesContrato")->name('financeiro.detalhes.contrato');
 
 
@@ -196,7 +205,7 @@ Route::middleware('auth')->prefix("admin")->group(function(){
     Route::post('/financeiro/quantidade/corretor',"App\Http\Controllers\Admin\FinanceiroController@quantidadeCorretor")->name('financeiro.corretor.quantidade');
 
     Route::get('/financeiro/geral/atrsado',"App\Http\Controllers\Admin\FinanceiroController@getAtrasados")->name('financeiro.individual.atrasado');
-
+    Route::get('/financeiro/geral/atrasado/corretor',"App\Http\Controllers\Admin\FinanceiroController@getAtrasadosCorretor")->name('financeiro.individual.atrasado.corretor');
 
     /**Fim Financeiro*/
 

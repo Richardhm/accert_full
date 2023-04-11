@@ -876,10 +876,6 @@
                     }
                     return false;
                  }
-
-
-                 
-
                 
                  
                  if($("#cep_coletivo").val() == "") {
@@ -1095,12 +1091,6 @@
                     }
                     return false;  
                 }    
-
-
-
-
-
-
 
                 $.ajax({
                     url:"{{route('contratos.montarPlanos')}}",

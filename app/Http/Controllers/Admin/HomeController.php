@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cliente;
+use App\Models\Contrato;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -52,24 +54,114 @@ class HomeController extends Controller
 
     public function consultarCarteirnha(Request $request)
     {
-        $carteirinha =  str_replace([".","/","-"],"",$request->carteirinha);
-        $url = "https://api-hapvida.sensedia.com/wssrvonline/v1/beneficiario/{$carteirinha}/financeiro/historico";
+        $cpf = str_replace([".","-"],"",$request->cpf);
+        // return ;
 
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_URL, $url);
+        // if(mb_strlen($cpf) != 11) {
+        //     return "error_cpf";
+        // }
+
+
+        $url = "https://api-hapvida.sensedia.com/wssrvonline/v1/beneficiario?cpf=$cpf";
+        $ca = curl_init($url);
+        curl_setopt($ca,CURLOPT_URL,$url);
+        curl_setopt($ca,CURLOPT_RETURNTRANSFER,true);
+        $resultado = (array) json_decode(curl_exec($ca),true);
+        $key = array_search("SAUDE",array_column($resultado, 'tipoPlanoC'));
+        $carteirinha = $resultado[$key]['cdUsuario'];
+        $dados = $resultado[$key];
+        //curl_close($ca);
+
+        $urlc = "https://api-hapvida.sensedia.com/wssrvonline/v1/beneficiario/{$carteirinha}/financeiro/historico";
+        $ch = curl_init($urlc);
+        curl_setopt($ch, CURLOPT_URL, $urlc);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        //curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,FALSE);
-        $resultado = json_decode(curl_exec($ch));
-        if($resultado != null && count($resultado) >= 1) {
-            sort($resultado);
+        // //curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,FALSE);
+        $resultado_final = json_decode(curl_exec($ch));
+
+        $urllast = "https://api-hapvida.sensedia.com/wssrvonline/v1/teleatendimento/beneficiario/{$carteirinha}";
+        $chlast = curl_init($urllast);
+        curl_setopt($chlast, CURLOPT_URL, $urllast);
+        curl_setopt($chlast, CURLOPT_RETURNTRANSFER, true);    
+        $resultado_last = json_decode(curl_exec($chlast));    
+
+        $celular = "(".substr($resultado_last->nuFone,0,2).") ".substr($resultado_last->nuFone,2,1)." ".substr($resultado_last->nuFone,3,8);    
+
+
+        if($resultado_final != null && count($resultado_final) >= 1) {
+            sort($resultado_final);
         } else {
-            $resultado = [];
+            $resultado_final = [];
         }
-        // if(count($resultado) >= 1) sort($resultado);
+
+
         
-        return view('admin.pages.home.resultado-consulta',[
-            "resultado" => $resultado
-        ]);
+        // $cliente = Cliente::where('cateirinha',$carteirinha);
+        // $id = Contrato::where("cliente_id",$cliente->first()->id)->first()->id;
+        // $contratos = Contrato
+        // ::where("id",$id)        
+        // ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','comissao.comissaoAtualFinanceiro','comissao.comissoesLancadas','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
+        // ->orderBy("id","desc")
+        // ->first();
+
+        
+
+
+        // // if(count($resultado) >= 1) sort($resultado);
+        
+        return view('admin.pages.financeiro.detalhe-consultar',[
+            "resultado" => $resultado_final,
+            "dados" => $dados,
+            "last" => $resultado_last,
+            "celular" => $celular
+        ]);  
+
+
+
+        // $cliente = Cliente::where('cateirinha',$carteirinha);
+        // if(count($cliente->get()) >= 0) {
+        //     $id = Contrato::where("cliente_id",$cliente->first()->id)->first()->id;
+        //     $contratos = Contrato
+        //     ::where("id",$id)        
+        //     ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','comissao.comissaoAtualFinanceiro','comissao.comissoesLancadas','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
+        //     ->orderBy("id","desc")
+        //     ->first();
+           
+
+        //     return view('admin.pages.financeiro.detalhe-consultar',[
+        //         "dados" => $contratos
+        //     ]);
+
+
+        // } else {
+            
+        // }
+
+
+
+
+        
+
+        
+
+        // $carteirinha =  str_replace([".","/","-"],"",$request->carteirinha);
+        // $url = "https://api-hapvida.sensedia.com/wssrvonline/v1/beneficiario/{$carteirinha}/financeiro/historico";
+
+        // $ch = curl_init($url);
+        // curl_setopt($ch, CURLOPT_URL, $url);
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // //curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,FALSE);
+        // $resultado = json_decode(curl_exec($ch));
+        // if($resultado != null && count($resultado) >= 1) {
+        //     sort($resultado);
+        // } else {
+        //     $resultado = [];
+        // }
+        // // if(count($resultado) >= 1) sort($resultado);
+        
+        // return view('admin.pages.home.resultado-consulta',[
+        //     "resultado" => $resultado
+        // ]);
         
 
     }    

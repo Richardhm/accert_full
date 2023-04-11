@@ -16,16 +16,17 @@
         <li data-id="aba_individual" class="ativo">Individual</li>
         <li data-id="aba_coletivo">Coletivo</li>
         <li data-id="aba_empresarial">Empresarial</li>
+        <li data-id="aba_sem_carteirinha">Sem Carteirinha</li>  
     </ul>
 @stop
 
 @section('content')
-<div class="ajax_load">
-    <div class="ajax_load_box">
-        <div class="ajax_load_box_circle"></div>
-        <p class="ajax_load_box_title">Aguarde, carregando...</p>
+    <div class="ajax_load">
+        <div class="ajax_load_box">
+            <div class="ajax_load_box_circle"></div>
+            <p class="ajax_load_box_title">Aguarde, carregando...</p>
+        </div>
     </div>
-</div>
 
 
 
@@ -38,6 +39,33 @@
     <div class="container_div_info">
         
     </div>
+
+    <div class="modal fade" id="carteirinhaModal" tabindex="-1" aria-labelledby="carteirinhaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="carteirinhaModalLabel">Carteirinha</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST" name="colocar_carteirinha" id="colocar_carteirinha">
+                        @csrf
+                        <div class="d-flex">
+                            <div style="flex-basis:100%;margin-right:2%;margin-bottom:10px;">
+                                <label for="arquivo">Carteirinha:</label>
+                                <input type="text" name="cateirinha" id="cateirinha" class="form-control form-control-sm">
+                            </div>
+                        </div>
+                        <input type="hidden" name="id_cliente" id="carteirinha_id_input" />
+                        <input type="submit" value="Enviar" class="btn btn-block btn-info">
+                   </form>
+                </div>            
+            </div>
+        </div>
+    </div>
+
 
     <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -79,11 +107,7 @@
                                 <i class="fas fa-window-close fa-lg"></i>
                             </div>
                         </div>
-                       
-
-                        
-
-                    </form>
+                   </form>
                 </div>            
             </div>
         </div>
@@ -301,6 +325,10 @@
                     </div>
 
                     <div class="mb-1">
+                        <span class="btn btn-block btn-atualizar" style="background-color:#123449;color:#FFF;font-size:1.2em;">Atualizar</span>
+                    </div>
+
+                    <div class="mb-1">
                         <select id="select_usuario_individual" class="form-control">
                             <option value="todos" class="text-center" data-id="0">---Escolher Corretor---</option>
                             @foreach($users as $u) 
@@ -391,19 +419,18 @@
                                 <span>Cancelados</span>
                                 <span class="badge badge-light individual_quantidade_cancelado" style="width:45px;text-align:right;">{{$qtd_individual_cancelado}}</span>
                             </li>  
+                            
                         </ul>
                     </div>
 
                     <div style="background-color:red;border-radius:5px;margin-top:5px;">   
-                        <ul style="list-style:none;margin:0;padding:10px 0;" id="">
-                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="atrasado_corretor" class="individual">
+                        <ul style="list-style:none;margin:0;padding:10px 0;" id="atrasado_corretor">
+                            <li style="padding:0px 5px;display:flex;justify-content:space-between;margin-bottom:5px;" id="" class="individual">
                                 <span>Atrasados</span>
-                                <span class="badge badge-light individual_quantidade_finalizado" style="width:45px;text-align:right;">{{$qtd_individual_atrasado}}</span>  
+                                <span class="badge badge-light individual_quantidade_atrasado" style="width:45px;text-align:right;">{{$qtd_individual_atrasado}}</span>  
                             </li>
                         </ul>
                     </div>
-                    
-
 
 
                 </div>
@@ -1009,6 +1036,27 @@
                 </div>
                 <!---------FIM DIREITA----------->
         </main>
+
+
+        <main id="aba_sem_carteirinha" class="ocultar">    
+            <div class="p-2" style="background-color:#123449;color:#FFF;border-radius:5px;">
+                <table id="tablesemcarteirinha" class="table table-sm table_sem_carteirinha">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Orçamento</th>  
+                            <th>Corretor</th>  
+                            <th>Cliente</th>  
+                            <th>CPF</th>  
+                            <th>Vidas</th>  
+                            <th>Editar</th>  
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>    
+        </main>    
+
     </section>
 
     
@@ -1021,6 +1069,7 @@
     <script src="{{asset('js/jquery.ajax-progress.js')}}"></script>   
     <script>
         $(function(){  
+
 
             mudar_user_empresarial = "";
 
@@ -1061,6 +1110,9 @@
                 }
             }
 
+            
+
+
             // $("#uploadModal").on('shown.bs.modal', function (event) {
             //     $("#uploadModal").css("z-index","1");
             //     //$("#error_data_baixa_individual").html('');
@@ -1069,6 +1121,27 @@
             $(".btn-upload").on('click',function(){
                 $('#uploadModal').modal('show')
             });
+
+            $(".btn-atualizar").on('click',function(){
+                var load = $(".ajax_load");
+                $.ajax({
+                    url:"{{route('financeiro.sincronizar.baixas.jaexiste')}}",
+                    method:"POST",
+                    beforeSend: function () {
+                        load.fadeIn(200).css("display", "flex");
+                    },
+                    success:function(res) {
+                        window.location.reload();
+                    }
+                })
+            });
+
+
+
+
+
+
+
 
             /*************************************************REALIZAR UPLOAD DO EXCEL*********************************************************************/
             $("#arquivo_upload").on('change',function(e){
@@ -1449,7 +1522,6 @@
             });
 
 
-
             $("body").on('change','.editar_campo',function(){
                 let alvo = $(this).attr('id');
                 let valor = $("#"+alvo).val();
@@ -1467,14 +1539,12 @@
             $("body").on('change','.editar_campo_individual',function(){
                 let alvo = $(this).attr('id');
                 let valor = $("#"+alvo).val();
-
                 let id_cliente = $("#cliente_id_alvo_individual").val();
                 $.ajax({
                     url:"{{route('financeiro.editar.individual.campoIndividualmente')}}",
                     method:"POST",
                     data:"alvo="+alvo+"&valor="+valor+"&id_cliente="+id_cliente,
                     success:function(res) {
-                        
                         table_individual.ajax.reload();
                     }
                 });
@@ -1490,13 +1560,10 @@
                     method:"POST",
                     data:"alvo="+alvo+"&valor="+valor+"&id_cliente="+id_cliente,
                     success:function(res) {
-                        console.log(res);    
-                        //table_individual.ajax.reload();
+                        //console.log(res);    
+                        table_individual.ajax.reload();
                     }
                 });
-
-
-                
             });
 
 
@@ -1621,6 +1688,93 @@
                 });    
                 return false;
             })
+
+            var tasemcarteirinha = $(".table_sem_carteirinha").DataTable({
+
+                dom: '<"d-flex justify-content-between"<"#title_sem_carteirinha">ft><t><"d-flex justify-content-between"lp>',
+                "language": {
+                    "url": "{{asset('traducao/pt-BR.json')}}"
+                },
+                ajax: {
+                    "url":"{{ route('financeiro.sem.carteirinha') }}",
+                    "dataSrc": ""
+                },
+                "lengthMenu": [50,100,150,200,300,500],
+                "ordering": true,
+                "paging": true,
+                "searching": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+                columns: [
+                    {
+                        data:"created_at",name:"data",
+                        "createdCell": function (td, cellData, rowData, row, col) {
+                            let datas = cellData.split("T")[0]
+                            let alvo = datas.split("-").reverse().join("/")
+                            $(td).html(alvo)    
+                        },
+                    },
+                    {
+                        data:"codigo_externo",name:"codigo_externo"
+                    },
+                    {   
+                        data:"clientes.user.name",name:"corretor",
+                        "createdCell": function (td, cellData, rowData, row, col) {
+                            let palavra = cellData.split(" ");
+                            if(palavra.length >= 3) {
+                                $(td).html(palavra[0]+" "+palavra[1]+"...")
+                            }
+                        }
+                    },                 
+                    {
+                        data:"clientes.nome",name:"cliente",
+                        "createdCell":function(td,cellData,rowData,row,col) {
+                            let palavras = cellData.ucWords();
+                            let dados = palavras.split(" ");
+                            if(dados.length >= 4) {
+                                $(td).html(dados[0]+" "+dados[1]+" "+dados[2]+"...");
+                            }   
+                        }
+                    },
+                    {
+                        data:"clientes.cpf",name:"cpf",
+                        "createdCell": function (td, cellData, rowData, row, col) {
+                            let cpf = cellData.substr(0,3)+"."+cellData.substr(3,3)+"."+cellData.substr(6,3)+"-"+cellData.substr(9,2);
+                            $(td).html(cpf);
+                        }
+                    },
+                    {data:"clientes.quantidade_vidas",name:"vidas"},
+                    {
+                        data:"clientes.id",name:"id",
+                        "createdCell": function (td, cellData, rowData, row, col) {
+                            var id = rowData.id;
+                            $(td).html(`
+                                <div class='text-center text-white'>
+                                    <i class="fas fa-edit editar_carteirinha" data-id="${id}"></i>
+                                </div>
+                            `);
+                            
+                        }
+                    }
+                    
+                ],
+                "initComplete": function( settings, json ) {
+                    $('#title_sem_carteirinha').html("<h4 style='font-size:1em;margin-top:10px;'>Sem Carteirinha</h4>");
+                }
+
+            });
+
+
+            $("body").on('click','.editar_carteirinha',function(){
+                let id = $(this).attr('data-id');
+                $("#carteirinha_id_input").val(id);
+                $('#carteirinhaModal').modal('show');
+
+            });
+
+
+
 
             var taindividual = $(".listarindividual").DataTable({
                 dom: '<"d-flex justify-content-between"<"#title_individual">ft><t><"d-flex justify-content-between"lp>',
@@ -1769,13 +1923,27 @@
                         "width":"2%",
                         "targets": 9,
                         "createdCell": function (td, cellData, rowData, row, col) {
-                            var id = rowData.id;
-                            $(td).html(`<div class='text-center text-white'>
-                                    <a href="/admin/financeiro/detalhes/${id}" class="text-white">  
-                                        <i class='fas fa-eye div_info'></i>
-                                    </a>
-                                </div>
-                            `);
+                            // console.log(cellData);
+                            if(cellData == "Cancelado") {
+                                var id = rowData.id;
+                                $(td).html(`<div class='text-center text-white'>
+                                        <a href="/admin/financeiro/cancelado/detalhes/${id}" class="text-white">  
+                                            <i class="fas fa-ban"></i>
+                                        </a>
+                                    </div>
+                                `);
+
+                                
+                            } else {
+                                var id = rowData.id;
+                                $(td).html(`<div class='text-center text-white'>
+                                        <a href="/admin/financeiro/detalhes/${id}" class="text-white">  
+                                            <i class='fas fa-eye div_info'></i>
+                                        </a>
+                                    </div>
+                                `);
+                            }
+                            
                         }
                     }
                ],
@@ -1804,17 +1972,11 @@
                         let total_cal = pageTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});     
                         let total_br = total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});    
                         
-                        total_vidas = api
-                        .column(5,{ page: 'current' })
-                        .data()
-                        .reduce(function (a, b) {
+                        total_vidas = api.column(5,{ page: 'current' }).data().reduce(function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0);
 
-                        total_linhas = api
-                        .column(5,{ page: 'current' })
-                        .data()
-                        .count();        
+                        total_linhas = api.column(5,{ page: 'current' }).data().count();        
 
 
 
@@ -2148,6 +2310,14 @@
                     method:"POST",
                     data:"id="+id,
                         success:function(res) {
+                            $('#title_individual').html("<h4 style='font-size:1em;margin-top:10px;'>Contratos</h4>");
+                            table_individual.ajax.url("{{ route('financeiro.individual.geralIndividualPendentes') }}").load();
+
+                            $("ul#listar_individual li.individual").removeClass('textoforte-list');
+                            $("#atrasado_corretor").removeClass('textoforte-list');
+                            $("#all_pendentes_individual").addClass('textoforte-list');
+
+
                             $(".individual_quantidade_pendentes").html(res.qtd_clientes);
                             $(".individual_quantidade_1_parcela").html(res.qtd_individual_parcela_01);
                             $(".individual_quantidade_2_parcela").html(res.qtd_individual_parcela_02);
@@ -2155,8 +2325,10 @@
                             $(".individual_quantidade_4_parcela").html(res.qtd_individual_parcela_04);
                             $(".individual_quantidade_5_parcela").html(res.qtd_individual_parcela_05);
                             $(".individual_quantidade_6_parcela").html(res.qtd_individual_parcela_06);
+                            $(".individual_quantidade_cancelado").html(res.qtd_individual_cancelado);
                             $(".total_por_vida").html(res.qtd_vidas);
                             $(".total_por_orcamento").html(res.qtd_clientes);
+                            $(".individual_quantidade_atrasado").html(res.qtd_individual_atrasado);
                         }
                     });
             });
@@ -2175,6 +2347,48 @@
             });
 
             var table_individual = $('#tabela_individual').DataTable();
+            $('#tabela_individual').on('click', 'tbody tr', function () {
+                table_individual.$('tr').removeClass('textoforte');
+                $(this).closest('tr').addClass('textoforte');
+            });    
+
+
+            $("form[name='colocar_carteirinha']").on('submit',function(){
+                var load = $(".ajax_load");
+                $.ajax({
+                    url:"{{route('cliente.atualizar.carteirinha')}}",
+                    method:"POST",
+                    data:$(this).serialize(),
+                    beforeSend: function () {
+                        load.fadeIn(100).css("display", "flex");
+                        $('#carteirinhaModal').modal('hide');
+                    },
+                    success:function(res) {                        
+                        load.fadeOut(300);
+                        $('#carteirinhaModal').modal('hide');
+                        $(".individual_quantidade_pendentes").html(res.qtd_clientes);
+                        $(".individual_quantidade_1_parcela").html(res.qtd_individual_parcela_01);
+                        $(".individual_quantidade_2_parcela").html(res.qtd_individual_parcela_02);
+                        $(".individual_quantidade_3_parcela").html(res.qtd_individual_parcela_03);
+                        $(".individual_quantidade_4_parcela").html(res.qtd_individual_parcela_04);
+                        $(".individual_quantidade_5_parcela").html(res.qtd_individual_parcela_05);
+                        $(".individual_quantidade_6_parcela").html(res.qtd_individual_parcela_06);
+                        $(".individual_quantidade_cancelado").html(res.qtd_individual_cancelado);
+                        $(".total_por_vida").html(res.qtd_vidas);
+                        $(".total_por_orcamento").html(res.qtd_clientes);
+                        $(".individual_quantidade_atrasado").html(res.qtd_individual_atrasado);
+                        tasemcarteirinha.ajax.reload();
+                    }
+                });
+                return false;
+            });
+
+
+
+
+
+
+
             //$('#tabela_individual').on('click', 'tbody tr', function () {
                 //table_individual.$('tr').removeClass('textoforte');
                 //$(this).closest('tr').addClass('textoforte');
@@ -2833,6 +3047,7 @@
                 $('#title_individual').html("<h4 style='font-size:1em;margin-top:10px;'>Contratos</h4>");
                 table_individual.ajax.url("{{ route('financeiro.individual.geralIndividualPendentes') }}").load();
                 $("ul#listar_individual li.individual").removeClass('textoforte-list');
+                $("#atrasado_corretor").removeClass('textoforte-list');
                 $(this).addClass('textoforte-list');
             });
             
@@ -3386,6 +3601,7 @@
         .list_abas li {color: #fff;width: 150px;padding: 8px 5px;text-align:center;border-radius: 5px 5px 0 0;background-color:#123449;}
         .list_abas li:hover {cursor: pointer;}    
         .list_abas li:nth-of-type(2) {margin: 0 1%;}
+        .list_abas li:nth-of-type(4) {margin-left:1%;}
         .textoforte {background-color:rgba(255,255,255,0.5) !important;color:black;}
         .textoforte-list {background-color:rgba(255,255,255,0.5);color:white;}
         .botao:hover {background-color: rgba(0,0,0,0.5) !important;color:#FFF !important;}
