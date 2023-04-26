@@ -6,17 +6,7 @@
 	<h2 class="text-white">Coletivo Adesão</h2>
 @stop
 
-
-
-
-
-
-
-
 @section('content')
-
-    
-
 
     <div class="modal fade" id="mudarDataCriacao" tabindex="-1" role="dialog" aria-labelledby="mudarDataCriacaoLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -62,9 +52,7 @@
                     <input type="text" id="desconto_corretor_valores" disabled>
                 </div>
             </div>
-
-
-            
+      
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Salvar Valores</button>
                 
@@ -72,18 +60,6 @@
             </div>
         </div>
     </div>
-    
-
-
-
-
-
-
-
-
-
-
-
 
 	
 	<div style="background-color:#123449;border-radius:5px;padding:10px 5px;">
@@ -91,6 +67,8 @@
 	<form action="" method="post" class="px-3" name="cadastrar_pessoa_fisica_formulario_modal_coletivo" id="cadastrar_pessoa_fisica_formulario_modal_coletivo">
             @csrf              
             <input type="hidden" name="tipo_cadastro" value="administrador_cadastro">
+
+            <input type="hidden" name="tipo_financeiro" value="true">
 
             <input type="hidden" name="created_at" id="created_at">
 
@@ -120,8 +98,6 @@
                             @foreach($administradoras as $admin)
                                 <option value="{{$admin->id}}" {{old('administradora') == $admin->id ? 'selected' : ''}}>{{$admin->nome}}</option>
                             @endforeach
-                            <option value=""></option>
-                            
                         </select>    
                         <div class="erroradministradora"></div>
                     </div>
@@ -162,7 +138,7 @@
                 <div style="flex-basis:9%;margin-right:1%;">
                     <div class="form-group">
                         <span for="data_nascimento" class="text-white">Data Nascimento:</span>
-                        <input type="date" name="data_nascimento_coletivo" value="{{old('data_nascimento_coletivo')}}" required id="data_nascimento_coletivo" class="form-control  form-control-sm">
+                        <input type="date" name="data_nascimento_coletivo" value="{{old('data_nascimento_coletivo')}}" id="data_nascimento_coletivo" class="form-control  form-control-sm">
                         <div class="errordatanascimento"></div>
                     </div>
                 </div>
@@ -170,7 +146,7 @@
                 <div style="flex-basis:15%;margin-right:1%;">
                     <div class="form-group">
                         <span for="email" class="text-white">Email:</span>
-                        <input type="email" name="email_coletivo" id="email_coletivo" required placeholder="Email" class="form-control  form-control-sm" value="">
+                        <input type="email" name="email_coletivo" id="email_coletivo" placeholder="Email" class="form-control  form-control-sm" value="">
                         <div class="erroremail"></div>
                     </div>
                 </div>    
@@ -194,26 +170,26 @@
                 <div style="flex-basis:8%;margin-right:1%;">
                     <div class="form-group">
                         <span for="cep" class="text-white">CEP:</span>
-                        <input type="text" name="cep_coletivo" required id="cep_coletivo" value="{{old('cep_coletivo')}}" placeholder="CEP" class="form-control  form-control-sm" value="">
+                        <input type="text" name="cep_coletivo" id="cep_coletivo" value="{{old('cep_coletivo')}}" placeholder="CEP" class="form-control  form-control-sm" value="">
                         <div class="errorcep"></div>
                     </div>
                 </div>
 
                 <div class="form-group" style="flex-basis:10%;margin-right:1%;">
                     <span for="rua" class="text-white">Cidade:</span>
-                    <input type="text" name="cidade_origem_coletivo" required id="cidade_origem_coletivo" value="{{old('cidade_origem_coletivo')}}" placeholder="Cidade" class="form-control  form-control-sm" value="">
+                    <input type="text" name="cidade_origem_coletivo" id="cidade_origem_coletivo" value="{{old('cidade_origem_coletivo')}}" placeholder="Cidade" class="form-control  form-control-sm" value="">
                     <div class="errorlogradouro"></div>
                 </div>
 
                 <div class="form-group" style="flex-basis:13%;margin-right:1%;">
                     <span for="bairro" class="text-white">Bairro:</span>
-                    <input type="text" name="bairro_coletivo" required id="bairro_coletivo" value="{{old('bairro_coletivo')}}" placeholder="Bairro" class="form-control  form-control-sm" value="">
+                    <input type="text" name="bairro_coletivo" id="bairro_coletivo" value="{{old('bairro_coletivo')}}" placeholder="Bairro" class="form-control  form-control-sm" value="">
                     
                 </div>
 
                 <div class="form-group" style="flex-basis:12%;margin-right:1%;">
                     <span for="rua" class="text-white">Rua:</span>
-                    <input type="text" name="rua_coletivo" required id="rua_coletivo" value="{{old('rua_coletivo')}}" placeholder="Logradouro(Rua)" class="form-control  form-control-sm" value="">
+                    <input type="text" name="rua_coletivo" id="rua_coletivo" value="{{old('rua_coletivo')}}" placeholder="Logradouro(Rua)" class="form-control  form-control-sm" value="">
                     
                 </div>
 
@@ -226,7 +202,7 @@
 
                 <div class="form-group" style="flex-basis:5%;margin-left:1%;">
                     <span for="uf" class="text-white">UF:</span>
-                    <input type="text" name="uf_coletivo" required id="uf_coletivo" value="{{old('uf_coletivo')}}" placeholder="UF" class="form-control  form-control-sm" value="">
+                    <input type="text" name="uf_coletivo" id="uf_coletivo" value="{{old('uf_coletivo')}}" placeholder="UF" class="form-control  form-control-sm" value="">
                     
                 </div>
 
@@ -480,44 +456,37 @@
 
 @section('css')
     <style>
-        /* .botao:hover {background-color: rgba(0,0,0,0.5) !important;color:#FFF !important;} */
-        /* .valores-acomodacao {background-color:rgba(0,0,0,0.5);color:#FFF;width:32%;box-shadow:rgba(0,0,0,0.8) 0.6em 0.7em 5px;} */
-        /* .valores-acomodacao:hover {cursor:pointer;box-shadow: none;} */
-        /* .table thead tr {background-color:rgb(36,125,157);} */
-        /* .table tbody tr:nth-child(odd) {background-color: rgba(0,0,0,0.5);} */
-        /* .table tbody tr:nth-child(even) {background-color:rgb(36,125,157);} */
         .destaque {border:5px solid rgba(36,125,157) !important;box-shadow: 5px -9px 3px #000 !important; }
     </style>
 @stop
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 @section('js')
 	<script src="{{asset('js/jquery.mask.min.js')}}"></script>  
 	<script>
 		$(function(){
-
-
-            
-
-
-
-
             $("#email_coletivo").on('keyup',(e) => {
                 $('#email_coletivo').val($('#email_coletivo').val().toLowerCase());
             });
+
+            function TestaCPF(strCPF) {
+                var Soma;
+                var Resto;
+                Soma = 0;
+                
+                if (strCPF == "00000000000") return false;
+                for (i=1; i<=9; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (11 - i);
+                Resto = (Soma * 10) % 11;
+                if ((Resto == 10) || (Resto == 11))  Resto = 0;
+                if (Resto != parseInt(strCPF.substring(9, 10)) ) return false;
+                Soma = 0;
+                for (i = 1; i <= 10; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (12 - i);
+                Resto = (Soma * 10) % 11;
+                if ((Resto == 10) || (Resto == 11))  Resto = 0;
+                if (Resto != parseInt(strCPF.substring(10, 11) ) ) return false;
+                return true;
+            }
+
+
 
 			function adicionaZero(numero){
                 if (numero <= 9) 
@@ -525,12 +494,6 @@
                 else
                     return numero; 
             }
-
-
-
-
-
-
             $("#cep_coletivo").change(function(){
                 let cep = $(this).val().replace("-","");
                 const url = `https://viacep.com.br/ws/${cep}/json`;
@@ -566,18 +529,12 @@
             $('#valor_plano_odonto').mask("#.##0,00", {reverse: true});
             $('#desconto_corretora_valores').mask("#.##0,00", {reverse: true});
             //$('#desconto_corretor_valores').mask("#.##0,00", {reverse: true});
-
-
-
-
             $('#cpf_individual').mask('000.000.000-00');
             $('#cpf_financeiro_individual_cadastro').mask('000.000.000-00');   
-            $('#responsavel_financeiro_coletivo_cadastrar_cpf').mask('000.000.000-00');
-            
+            $('#responsavel_financeiro_coletivo_cadastrar_cpf').mask('000.000.000-00');            
             $('#cpf_coletivo').mask('000.000.000-00');  
             $('#cep_individual').mask('00000-000');          
             $('#cep_coletivo').mask('00000-000');      
-
 			$.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -738,6 +695,28 @@
                     return false;
                  }
 
+                 if(!TestaCPF($("#cpf_coletivo").val().replace(/[^0-9]/g,''))) {
+                    toastr["error"]("CPF é inválido")
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                    return false;
+                }
+
                  if($("#data_nascimento_coletivo").val() == "") {
                     toastr["error"]("Data Nascimento campo obrigatório")
                     toastr.options = {
@@ -891,8 +870,6 @@
                     }
                     return false;
                  }
-
-                 
 
                  if($("#uf_coletivo").val() == "") {
                     toastr["error"]("UF é campo obrigatório")
@@ -1220,18 +1197,16 @@
                             return false;
                         }
 
-                        
-
-
-
-
                     },
                     success:function(res) {
                         
                         if(res == "contratos") {
                             $(location).prop('href','/admin/contratos?ac=coletivo');
                             return true;
-                        } else {
+                        } else if(res == "financeiro") {
+                            $(location).prop('href','/admin/financeiro?ac=coletivo');
+                            return true;
+                        }  else {
                             $(location).prop('href','/admin/contrato?ac=coletivo');
                             return true;
                         }      
@@ -1239,14 +1214,6 @@
                 });  
                 return false;
             });
-
-            
-
-
-
-
-
-
 
 			function montarValores(data) {
                 

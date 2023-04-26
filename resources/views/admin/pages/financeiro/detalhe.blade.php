@@ -333,7 +333,7 @@
         
 
     </main>            
-    <a class="btn btn-block btn-lg mt-3 text-white back" style="background-color:#123449;">Voltar</a>                              
+    <a class="btn btn-block btn-lg mt-3 text-white back" style="background-color:#123449;">Voltassssr</a>                              
     <!-- <a href="" class="btn btn-block btn-lg mt-3 text-white" style="background-color:#123449;">Voltar</a> -->
 @stop
 
@@ -344,7 +344,7 @@
             $("#cpf").mask('000.000.000-00');    
             $("#celular_individual_view_input").mask('(00) 0 0000-0000');  
             $(".back").on('click',function(){
-                window.history.back();
+                window.history.go(-1);
                 return false;
             });    
         });

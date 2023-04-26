@@ -21,7 +21,7 @@
     <div>
         <form action="" method="POST">
             @csrf
-            <label for="cpf" class="text-white">CPF:</label>
+            <label for="cpf" class="text-dark">CPF:</label>
             <input type="text" name="cpf" id="cpf" class="form-control" placeholder="CPF">
             <input type="submit" value="Consultar" class="btn btn-block btn-info">
         </form>
@@ -62,6 +62,14 @@
             $('form').on('submit',function(){
                 let cpf = $("#cpf").val();
                 var load = $(".ajax_load");
+                
+                if(!TestaCPF($("#cpf").val().replace(/[^0-9]/g,''))) {
+                    load.fadeOut(200);
+                    $("#resultado").html('<p class="alert alert-danger text-center w-100">CPF inválido</p>');
+                    return false;
+                }
+                
+                
                 $.ajax({
                     url:"{{route('consultar.carteirinha')}}",
                     method:"POST",
@@ -70,10 +78,16 @@
                         load.fadeIn(200).css("display", "flex");
                     },
                     success:function(res) {
+                        if(res == "error") {
+                            load.fadeOut(200);
+                            $("#resultado").html('<p class="alert alert-danger text-center w-100">Sem Resultado para este CPF.</p>');
+                            return false;
+                        } else {
+                            load.fadeOut(200,function(){
+                                $("#resultado").html(res);
+                            });
+                        }
                         
-                        load.fadeOut(200,function(){
-                            $("#resultado").html(res);
-                        });
                         
                     }
                 });

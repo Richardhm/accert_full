@@ -91,8 +91,7 @@ class OrcamentoController extends Controller
     enfermaria_sem_coparticipacao_total
             FROM (
                 SELECT 
-                    
-     (SELECT nome FROM faixa_etarias WHERE faixa_etarias.id = fora.faixa_etaria_id) AS nome, 
+                    (SELECT nome FROM faixa_etarias WHERE faixa_etarias.id = fora.faixa_etaria_id) AS nome, 
                     (SELECT id FROM faixa_etarias WHERE faixa_etarias.id = fora.faixa_etaria_id) AS id_faixas,          
                     CASE
                         $sql
@@ -101,25 +100,21 @@ class OrcamentoController extends Controller
                     (SELECT logo FROM administradoras as aa WHERE aa.id = fora.administradora_id) AS admin_logo,
                     (SELECT nome FROM administradoras as aa WHERE aa.id = fora.administradora_id) AS admin_nome,
                     (SELECT id FROM administradoras as aa WHERE aa.id = fora.administradora_id) AS admin_id,
-     (SELECT nome FROM tabela_origens as cc WHERE cc.id = fora.tabela_origens_id) AS cidade,
-     (SELECT nome FROM planos as pp WHERE pp.id = fora.plano_id) AS plano,
-     (SELECT if(dentro.odonto = 0,'Sem Odonto','Com Odonto') AS odontos  FROM tabelas AS dentro WHERE dentro.administradora_id = fora.administradora_id AND dentro.plano_id = fora.plano_id AND dentro.coparticipacao = fora.coparticipacao AND dentro.odonto = fora.odonto AND dentro.tabela_origens_id = fora.tabela_origens_id AND dentro.faixa_etaria_id = fora.faixa_etaria_id LIMIT 1) AS titulos,
-     (SELECT CONCAT((SELECT nome FROM administradoras as aa WHERE aa.id = dentro.administradora_id),'_',dentro.plano_id,'_',dentro.tabela_origens_id,'_',dentro.coparticipacao,'_',dentro.odonto) FROM tabelas AS dentro WHERE dentro.administradora_id = fora.administradora_id AND dentro.plano_id = fora.plano_id AND dentro.coparticipacao = fora.coparticipacao AND dentro.odonto = fora.odonto AND dentro.tabela_origens_id = fora.tabela_origens_id AND dentro.faixa_etaria_id = fora.faixa_etaria_id LIMIT 1) AS card,
-     
+                    (SELECT nome FROM tabela_origens as cc WHERE cc.id = fora.tabela_origens_id) AS cidade,
+                    (SELECT nome FROM planos as pp WHERE pp.id = fora.plano_id) AS plano,
+                    (SELECT if(dentro.odonto = 0,'Sem Odonto','Com Odonto') AS odontos  FROM tabelas AS dentro WHERE dentro.administradora_id = fora.administradora_id AND dentro.plano_id = fora.plano_id AND dentro.coparticipacao = fora.coparticipacao AND dentro.odonto = fora.odonto AND dentro.tabela_origens_id = fora.tabela_origens_id AND dentro.faixa_etaria_id = fora.faixa_etaria_id LIMIT 1) AS titulos,
+                    (SELECT CONCAT((SELECT nome FROM administradoras as aa WHERE aa.id = dentro.administradora_id),'_',dentro.plano_id,'_',dentro.tabela_origens_id,'_',dentro.coparticipacao,'_',dentro.odonto) FROM tabelas AS dentro WHERE dentro.administradora_id = fora.administradora_id AND dentro.plano_id = fora.plano_id AND dentro.coparticipacao = fora.coparticipacao AND dentro.odonto = fora.odonto AND dentro.tabela_origens_id = fora.tabela_origens_id AND dentro.faixa_etaria_id = fora.faixa_etaria_id LIMIT 1) AS card,
                     (SELECT valor FROM tabelas AS dentro where dentro.administradora_id = fora.administradora_id AND dentro.plano_id = fora.plano_id AND dentro.tabela_origens_id = fora.tabela_origens_id AND acomodacao_id = 1 AND dentro.faixa_etaria_id = fora.faixa_etaria_id AND dentro.coparticipacao = 1 AND dentro.odonto = fora.odonto GROUP BY dentro.coparticipacao) AS apartamento_com_coparticipacao,
-     (SELECT valor * quantidade FROM tabelas AS dentro where dentro.administradora_id = fora.administradora_id AND dentro.plano_id = fora.plano_id AND dentro.tabela_origens_id = fora.tabela_origens_id AND acomodacao_id = 1 AND dentro.faixa_etaria_id = fora.faixa_etaria_id AND dentro.coparticipacao = 1 AND dentro.odonto = fora.odonto GROUP BY dentro.coparticipacao) AS apartamento_com_coparticipacao_total,
-                    
+                    (SELECT valor * quantidade FROM tabelas AS dentro where dentro.administradora_id = fora.administradora_id AND dentro.plano_id = fora.plano_id AND dentro.tabela_origens_id = fora.tabela_origens_id AND acomodacao_id = 1 AND dentro.faixa_etaria_id = fora.faixa_etaria_id AND dentro.coparticipacao = 1 AND dentro.odonto = fora.odonto GROUP BY dentro.coparticipacao) AS apartamento_com_coparticipacao_total,
                     (SELECT valor FROM tabelas AS dentro where dentro.administradora_id = fora.administradora_id AND dentro.plano_id = fora.plano_id AND dentro.tabela_origens_id = fora.tabela_origens_id AND acomodacao_id = 2 AND dentro.faixa_etaria_id = fora.faixa_etaria_id AND dentro.coparticipacao = 1 AND dentro.odonto = fora.odonto GROUP BY dentro.coparticipacao) AS enfermaria_com_coparticipacao,
                     (SELECT valor * quantidade FROM tabelas AS dentro where dentro.administradora_id = fora.administradora_id AND dentro.plano_id = fora.plano_id AND dentro.tabela_origens_id = fora.tabela_origens_id AND acomodacao_id = 2 AND dentro.faixa_etaria_id = fora.faixa_etaria_id AND dentro.coparticipacao = 1 AND dentro.odonto = fora.odonto GROUP BY dentro.coparticipacao) AS enfermaria_com_coparticipacao_total,
-                    
                     (SELECT valor FROM tabelas AS dentro where dentro.administradora_id = fora.administradora_id AND dentro.plano_id = fora.plano_id AND dentro.tabela_origens_id = fora.tabela_origens_id AND acomodacao_id = 1 AND dentro.faixa_etaria_id = fora.faixa_etaria_id AND dentro.coparticipacao = 0 AND dentro.odonto = fora.odonto GROUP BY dentro.coparticipacao) AS apartamento_sem_coparticipacao,
                     (SELECT valor * quantidade FROM tabelas AS dentro where dentro.administradora_id = fora.administradora_id AND dentro.plano_id = fora.plano_id AND dentro.tabela_origens_id = fora.tabela_origens_id AND acomodacao_id = 1 AND dentro.faixa_etaria_id = fora.faixa_etaria_id AND dentro.coparticipacao = 0 AND dentro.odonto = fora.odonto GROUP BY dentro.coparticipacao) AS apartamento_sem_coparticipacao_total,
-                                                      
                     (SELECT valor FROM tabelas AS dentro where dentro.administradora_id = fora.administradora_id AND dentro.plano_id = fora.plano_id AND dentro.tabela_origens_id = fora.tabela_origens_id AND acomodacao_id = 2 AND dentro.faixa_etaria_id = fora.faixa_etaria_id AND dentro.coparticipacao = 0 AND dentro.odonto = fora.odonto GROUP BY dentro.coparticipacao) AS enfermaria_sem_coparticipacao,
                     (SELECT valor * quantidade FROM tabelas AS dentro where dentro.administradora_id = fora.administradora_id AND dentro.plano_id = fora.plano_id AND dentro.tabela_origens_id = fora.tabela_origens_id AND acomodacao_id = 2 AND dentro.faixa_etaria_id = fora.faixa_etaria_id AND dentro.coparticipacao = 0 AND dentro.odonto = fora.odonto GROUP BY dentro.coparticipacao) AS enfermaria_sem_coparticipacao_total
-     from tabelas AS fora 
-     WHERE fora.faixa_etaria_id IN($chaves) AND tabela_origens_id =  $cidade AND administradora_id = $administradora AND odonto = $odonto AND plano_id = $plano_id
-     GROUP BY faixa_etaria_id,administradora_id,plano_id,tabela_origens_id,odonto ORDER BY id
+                    from tabelas AS fora 
+                    WHERE fora.faixa_etaria_id IN($chaves) AND tabela_origens_id =  $cidade AND administradora_id = $administradora AND odonto = $odonto AND plano_id = $plano_id
+                    GROUP BY faixa_etaria_id,administradora_id,plano_id,tabela_origens_id,odonto ORDER BY id
                     ) 
 AS full_tabela");
             
@@ -188,10 +183,8 @@ AS full_tabela");
 
         $user = User::find(auth()->user()->id);
        
-       if($user) {
-                       
+       if($user) {               
             $nome = $user->name;
-            
             if($user->celular) {
                 $telefone_user = $user->celular;
                 $telefone_whattsap = str_replace([" ","(",")","-"],"",$user->celular);
@@ -199,25 +192,17 @@ AS full_tabela");
                 $telefone_user = $pdf->celular;
                 $telefone_whattsap = "";
             }
-
             if($user->image) {
                 $image_user = 'data:image/png;base64,'.base64_encode(file_get_contents(public_path("storage/".$user->image)));
             } else {
                 $image_user = null;
             }
-
-       }
-        
-       
-       if(auth()->user()->name == "Felipe Barros") {
+        }
+        if(auth()->user()->name == "Felipe Barros") {
             $frase_consultor = "Supervisor Comercial";
-       } else {
+        } else {
             $frase_consultor = "Consultor de Vendas";
-       }
-
-
-
-
+        }
         $pdf = PDF::loadView('admin.pages.orcamento.pdf',[
             "frase_consultor" => $frase_consultor,
             "planos" => $dados,
@@ -248,27 +233,19 @@ AS full_tabela");
             "site" => $site,
             "endereco" => $endereco,
             "terapias" => $terapias
-        ]);
-       
+        ]);  
         return $pdf->download(Str::kebab($nome_pdf));
     }
-
-
-
 
     public function montarOrcamento(Request $request)
     {
         if(count(array_filter($request->faixas[0])) >= 7) {
             return "error_pdf";
         }
-
-
-
-
         $sql = "";
         $chaves = [];
         foreach($request->faixas[0] as $k => $v) {
-            if($v != null) {
+            if($v != null AND $v != 0) {
                 $sql .= "WHEN (SELECT id FROM faixa_etarias WHERE faixa_etarias.id = fora.faixa_etaria_id) = $k THEN $v ";
                 $chaves[] = $k; 
             }
@@ -277,8 +254,8 @@ AS full_tabela");
         $cidade = $request->tabela_origem;
         $dados = DB::select("SELECT 
             nome,id_faixas,admin_logo,cidade,admin_id,plano,plano_id,titulos,card,admin_nome,quantidade,apartamento_com_coparticipacao,apartamento_com_coparticipacao_total,
-    enfermaria_com_coparticipacao,enfermaria_com_coparticipacao_total,apartamento_sem_coparticipacao,apartamento_sem_coparticipacao_total,enfermaria_sem_coparticipacao,
-    enfermaria_sem_coparticipacao_total
+            enfermaria_com_coparticipacao,enfermaria_com_coparticipacao_total,apartamento_sem_coparticipacao,apartamento_sem_coparticipacao_total,enfermaria_sem_coparticipacao,
+            enfermaria_sem_coparticipacao_total
             FROM (
                 SELECT 
                     (SELECT nome FROM faixa_etarias WHERE faixa_etarias.id = fora.faixa_etaria_id) AS nome, 
@@ -307,21 +284,13 @@ AS full_tabela");
                     WHERE fora.faixa_etaria_id IN($chaves) AND tabela_origens_id =  $cidade 
                     GROUP BY faixa_etaria_id,administradora_id,plano_id,tabela_origens_id,odonto ORDER BY id
                     ) 
-AS full_tabela");
-
-        
-
-
+                    AS full_tabela");
+    
         return view('admin.pages.orcamento.montarPlanos',[
             "planos" => $dados,
             'card_inicial' => count($dados) >= 1 ? $dados[0]->card : ""
         ]);    
         
-
-
-
-        
-
     }
 
 

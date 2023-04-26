@@ -103,16 +103,18 @@ class GerenteController extends Controller
         //         exists (select * from `comissoes_corretores_lancadas` where `comissoes`.`id` = `comissoes_corretores_lancadas`.`comissoes_id` and `status_financeiro` = 1 and `status_gerente` = 0)))");
             
         $dados = DB::select(
-            "SELECT 
-                (SELECT nome FROM administradoras WHERE administradoras.id = comissoes.administradora_id) AS administradora,
-                (SELECT NAME FROM users WHERE users.id = comissoes.user_id) AS corretor,
-                (SELECT nome FROM planos WHERE planos.id = comissoes.plano_id) AS plano,
-                case when empresarial then
-                    (SELECT responsavel FROM contrato_empresarial WHERE contrato_empresarial.id = comissoes.contrato_empresarial_id)
-                        else
-                    (SELECT nome FROM clientes WHERE id = (SELECT cliente_id FROM contratos WHERE contratos.id = comissoes.contrato_id))
-                    END AS cliente,
-                (SELECT nome FROM tabela_origens WHERE tabela_origens.id = comissoes.tabela_origens_id) AS tabela_origens,		
+            "
+            SELECT 
+			comissoes_corretora_lancadas.id,
+   (SELECT nome FROM administradoras WHERE administradoras.id = comissoes.administradora_id) AS administradora,
+   (SELECT NAME FROM users WHERE users.id = comissoes.user_id) AS corretor,
+   (SELECT nome FROM planos WHERE planos.id = comissoes.plano_id) AS plano,
+     case when empresarial then
+        (SELECT responsavel FROM contrato_empresarial WHERE contrato_empresarial.id = comissoes.contrato_empresarial_id)
+     else
+       (SELECT nome FROM clientes WHERE id = (SELECT cliente_id FROM contratos WHERE contratos.id = comissoes.contrato_id))
+     END AS cliente,
+       (SELECT nome FROM tabela_origens WHERE tabela_origens.id = comissoes.tabela_origens_id) AS tabela_origens,		
                 case when empresarial then
                     (SELECT codigo_externo FROM contrato_empresarial WHERE contrato_empresarial.id = comissoes.contrato_empresarial_id)
                         else
@@ -120,12 +122,13 @@ class GerenteController extends Controller
                     END AS codigo_externo,	
                     parcela,
                     valor,
-                    data_baixa,
+                    
                     comissoes_corretora_lancadas.data as vencimento,                   
-                    comissoes.id
+                    comissoes.id AS comissao
+                    
                 FROM comissoes_corretora_lancadas 
                 INNER JOIN comissoes ON comissoes.id = comissoes_corretora_lancadas.comissoes_id
-                WHERE status_financeiro = 1 AND status_gerente = 0"
+                "
         );
                 
         return $dados;     

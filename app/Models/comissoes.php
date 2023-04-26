@@ -22,6 +22,7 @@ class comissoes extends Model
             data_baixa,
             data_baixa_gerente,
             valor_pago,
+            cancelados,
             if(DATEDIFF(data_baixa,DATA) >= 1,DATEDIFF(data_baixa,DATA),0) AS quantidade_dias
             ");
     }
@@ -88,6 +89,13 @@ class comissoes extends Model
         ->where('status_financeiro',1)
         ->where('status_gerente',1);
     }
+
+    public function ultimaComissaoPaga()
+    {
+        return $this->hasOne(ComissoesCorretoresLancadas::class)->where('status_financeiro',1)->where('status_gerente',1)->orderBy("id","desc");
+    }
+
+
 
     public function administradoras() 
     {

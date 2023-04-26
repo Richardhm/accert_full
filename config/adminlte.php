@@ -494,16 +494,38 @@ return [
                     'asset' => false,
                     'location' => '/vendor/datatables/datatables.min.js',
                 ],
-                // [
-                //     'type' => 'js',
-                //     'asset' => false,
-                //     'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
-                // ],
+
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '/vendor/datatables/moment.min.js'
+                ],
+
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '/vendor/datatables/dataTables.dateTime.min.js',
+                ],
+
+
                 [
                     'type' => 'css',
                     'asset' => false,
                     'location' => '/vendor/datatables/datatables.min.css',
                 ],
+
+                
+
+                
+
+
+
+                // [
+                //     'type' => 'js',
+                //     'asset' => false,
+                //     'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
+                // ],
+                
             ],
         ],
         'Select2' => [

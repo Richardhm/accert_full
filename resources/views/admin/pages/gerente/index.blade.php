@@ -160,7 +160,7 @@
                                 <th>Parcela</th>
                                 <th>Valor</th>
                                 <th>Vencimento</th>
-                                <th>Data Baixa</th>
+                                
                                 <th>Detalhe</th>
                                 <th>Status</th>
                             </tr>
@@ -315,12 +315,12 @@
                             $(td).html(alvo);        
                         }
                     },
-                    {data:"data_baixa",name:"tabela_origens_id",
-                        "createdCell":function(td,cellData,rowData,row,col) {
-                            let alvo = cellData.split("-").reverse().join("/");
-                            $(td).html(alvo);        
-                        }
-                    },                   
+                    // {data:"data_baixa",name:"tabela_origens_id",
+                    //     "createdCell":function(td,cellData,rowData,row,col) {
+                    //         let alvo = cellData.split("-").reverse().join("/");
+                    //         $(td).html(alvo);        
+                    //     }
+                    // },                   
                     {data:"id",name:"detalhe",
                         "createdCell":function(td,cellData,rowData,row,col) {
                             $(td).css({"text-align":"center"}).html("<a href='/admin/gerente/detalhe/"+cellData+"' class='text-white'><i class='fas fa-eye'></i></a>")

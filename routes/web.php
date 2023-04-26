@@ -65,6 +65,7 @@ Route::middleware('auth')->prefix("admin")->group(function(){
     Route::get('/contratos/cadastrar/individual',"App\Http\Controllers\Admin\ContratoController@formCreate")->name('contratos.create');
     Route::get('/contrato/cadastrar/individual',"App\Http\Controllers\Admin\ContratoController@formContratoCreate")->name('contrato.create');
 
+    Route::get('/financeiro/detalhes/empresarial/{id}',"App\Http\Controllers\Admin\FinanceiroController@detalheEmpresarial")->name('financeiro.empresarial.detalhe');
 
     Route::get('/contratos/cadastrar/coletivo',"App\Http\Controllers\Admin\ContratoController@formCreateColetivo")->name('contratos.create.coletivo');
     Route::get('/contrato/cadastrar/coletivo',"App\Http\Controllers\Admin\ContratoController@formCreateColetivoCorretor")->name('contratos.create.coletivo.corretor');
@@ -96,7 +97,7 @@ Route::middleware('auth')->prefix("admin")->group(function(){
     Route::get('/financeiro/coletivo/em_analise/corretor',"App\Http\Controllers\Admin\FinanceiroController@coletivoEmAnaliseCorretor")->name('financeiro.coletivo.em_analise.corretor');
 
 
-
+    Route::get('/financeiro/coletivo/em_branco',"App\Http\Controllers\Admin\FinanceiroController@coletivoEmBranco")->name('financeiro.coletivo.em_branco');
     Route::get('/financeiro/coletivo/em_geral',"App\Http\Controllers\Admin\FinanceiroController@coletivoEmGeral")->name('financeiro.coletivo.em_geral');
     Route::get('/financeiro/coletivo/em_geral/corretor',"App\Http\Controllers\Admin\FinanceiroController@coletivoEmGeralCorretor")->name('financeiro.coletivo.em_geral.corretor');
 
@@ -133,8 +134,16 @@ Route::middleware('auth')->prefix("admin")->group(function(){
     Route::get('/financeiro/coletivo/pagamento_coletivo_cancelado',"App\Http\Controllers\Admin\FinanceiroController@coletivoCancelados")->name('financeiro.coletivo.cancelado');
     Route::get('/financeiro/coletivo/pagamento_coletivo_cancelado/corretor',"App\Http\Controllers\Admin\FinanceiroController@coletivoCanceladosCorretor")->name('financeiro.coletivo.cancelado.corretor');    
 
+    
 
     Route::get("/financeiro/individual/em_geral","App\Http\Controllers\Admin\FinanceiroController@geralIndividualPendentes")->name('financeiro.individual.geralIndividualPendentes');
+
+    Route::get("/financeiro/individual/mudar_ano/{ano}/{mes?}","App\Http\Controllers\Admin\FinanceiroController@mudarAnoIndividual")->name('financeiro.individual.mudarano');
+    Route::get("/financeiro/individual/mudar_mes/{mes}/{ano?}","App\Http\Controllers\Admin\FinanceiroController@mudarMesIndividual")->name('financeiro.individual.mudarmes');
+
+    Route::get("/financeiro/coletivo/mudar_ano/{ano}/{mes?}","App\Http\Controllers\Admin\FinanceiroController@mudarAnoColetivo")->name('financeiro.coletivo.mudarano');
+    Route::get("/financeiro/coletivo/mudar_mes/{mes}/{ano?}","App\Http\Controllers\Admin\FinanceiroController@mudarMesColetivo")->name('financeiro.coletivo.mudarmes');
+
     
     Route::get('/financeiro/individual/em_analise',"App\Http\Controllers\Admin\FinanceiroController@emAnaliseIndividual")->name('financeiro.individual.em_analise');
     Route::get('/financeiro/individual/em_analise/corretor',"App\Http\Controllers\Admin\FinanceiroController@emAnaliseIndividualCorretor")->name('financeiro.individual.em_analise.corretor');
@@ -149,6 +158,7 @@ Route::middleware('auth')->prefix("admin")->group(function(){
 
 
     Route::get('/financeiro/detalhes/{id}',"App\Http\Controllers\Admin\FinanceiroController@detalhesContrato")->name('financeiro.detalhes.contrato');
+    Route::get('/financeiro/detalhes/coletivo/{id}',"App\Http\Controllers\Admin\FinanceiroController@detalhesContratoColetivo")->name('financeiro.detalhes.contrato.coletivo');
 
 
 

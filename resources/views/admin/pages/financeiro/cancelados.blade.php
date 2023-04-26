@@ -174,7 +174,10 @@
     </section> 
 
     <section class="p-1" style="flex-basis:49%;background-color:#123449;color:#FFF;">
-        
+            <div class="d-flex align-items-center justify-content-between">
+                <h5 class="text-center mt-1 ml-1">Pagamentos</h5>
+                <p class="align-self-center mt-3 mr-2">{{$cliente->user->name}}</p>
+            </div>
             <table class="table table-sm h-50" style="margin:0;padding:0;">
 
                 <thead>
@@ -221,7 +224,13 @@
                                     {{number_format($dados->valor_plano - 25,2,',','.')}}
                                 @endif
                             </td>
-                            <td style="font-size:0.875em;">{{date('d/m/Y',strtotime($cr->data))}}</td>
+                            <td style="font-size:0.875em;">
+                               
+                                    {{date('d/m/Y',strtotime($cr->data))}}
+                               
+                                
+                            
+                            </td>
                             <td style="font-size:0.875em;">
                                 @if($cr->valor_pago > 0) 
                                     {{number_format($cr->valor_pago,2,",",".") ?? 0}}
@@ -230,21 +239,31 @@
                                 @endif
                             </td>
                             <td style="font-size:0.875em;">
-                                @if(empty($cr->data_baixa))
-                                    <span style="margin-left:20px;">---</span>
-                                @elseif($cr->data_baixa == "0000-00-00")
-                                    <span style="margin-left:20px;">Cancelado</span>
+
+                                @if($cr->cancelados == 1)
+                                    Cancelado
                                 @else
                                     {{date('d/m/Y',strtotime($cr->data_baixa))}}
                                 @endif
+
+
+
+                                
                                      
                             <td style="font-size:0.875em;text-align:center;">{{$cr->quantidade_dias}}</td>
                             <td style="font-size:0.875em;" align="right">
-                                @if($cr->valor > 0)
+
+                                @if($cr->cancelados == 1)
+                                    Cancelado @if($cr->valor > 0) <small style="color:red;">({{$cr->valor}})</small>  @endif
+                                @elseif($cr->valor > 0 && $cr->cancelados != 1)
                                     <span style="margin-right:15px;">{{number_format($cr->valor,2,',','.')}}</span>
-                                @else 
+                                @else
                                     <span style="margin-right:28px;">---</span>
                                 @endif
+
+
+
+                                
                             </td>
                             <td align="center">---</td>
                         </tr>
@@ -269,7 +288,7 @@
             $("#celular_individual_view_input").mask('(00) 0 0000-0000');    
 
             $(".back").on('click',function(){
-                window.history.back();
+                window.history.go(-1);
                 return false;
             });
 

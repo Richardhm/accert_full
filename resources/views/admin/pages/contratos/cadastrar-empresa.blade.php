@@ -122,7 +122,7 @@
 					<div style="flex-basis:10%;margin-right: 1%;">
 	                    <div>
 	                        <span for="uf" class="text-white" style="font-size:0.875em;">UF:</span>
-	                        <select id="uf" name="uf" class="form-control form-control-sm select2-single">
+	                        <select id="uf" name="uf" class="form-control form-control-sm select2-single" required>
                                 <option value=""></option>
                             </select>         
 	                    </div>
@@ -131,15 +131,15 @@
 	                <div style="flex-basis:15%;margin-right:1%;">
 	                    <div>
 	                        <span for="cidade" class="text-white" style="font-size:0.875em;">Cidade:</span>
-	                        <select id="cidade" name="cidade" class="form-control form-control-sm select2-single"></select>    
+	                        <select id="cidade" name="cidade" class="form-control form-control-sm select2-single" required></select>    
 	                    </div>
 	                </div>
 
 	                <div style="flex-basis:15%;margin-right:1%;">
 	                    <div>
 	                        <span for="plano_contrado" class="text-white" style="font-size:0.875em;">Plano Contratado:</span>
-	                        <select name="plano_contrado" id="plano_contrado" class="form-control form-control-sm">
-	                        	<option class="text-center">--Plano Contratado--</option>
+	                        <select name="plano_contrado" id="plano_contrado" class="form-control form-control-sm" required>
+	                        	<option class="text-center" value="">--Plano Contratado--</option>
 	                        	<option value="1">C/ Copart + Odonto</option>
 	                        	<option value="2">C/ Copart Sem Odonto</option>
 	                        	<option value="3">Sem Copart + Odonto</option>
@@ -150,8 +150,8 @@
 
                     <div style="flex-basis:8%;">
 	                    <div>
-	                        <span for="cidade" class="text-white" style="font-size:0.875em;">Data:</span>
-	                        <input type="date" name="created_at" id="created_at" value="<?= date('Y-m-d'); ?>" class="form-control form-control-sm">
+	                        <span for="created_at" class="text-white" style="font-size:0.875em;">Data:</span>
+	                        <input type="date" required name="created_at" id="created_at" value="<?= date('Y-m-d'); ?>" class="form-control form-control-sm">
 	                    </div>
 	                </div>
 

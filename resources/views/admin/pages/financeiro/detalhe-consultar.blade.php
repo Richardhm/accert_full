@@ -154,23 +154,35 @@
 @endphp
 <section class="historico_corretor" style="flex-basis:49%;background-color:#123449;color:#FFF;border-radius:5px;max-height:500px;overflow-y:scroll;">
 
+    @php
+        $ii=0;
+    @endphp
     
 
     <table class="table table-sm">
         <thead>
             <tr style="background-color:#FFF;color:#000;">
+                <td>Parcela</td>
                 <td>Vencimento</td>
-                <td>Valor</td>
                 <td>Pagamento</td>
+                <td>Valor</td>
                 <td>Status</td>
             </tr>
         </thead>
         <tbody>
             @foreach($resultado as $r)
+            @php  
+                $ii++; 
+
+                
+
+
+            @endphp
             <tr>
+                <td style="margin-right:5px;">{{$ii}}</td>
                 <td>{{$r->dtVencimento}}</td>
-                <td>{{number_format($r->vlObrigacao,2,",",".")}}</td>
                 <td>{{$r->dtPagamento != '' ? $r->dtPagamento : '----'}}</td>
+                <td>{{number_format($r->vlObrigacao,2,",",".")}}</td>
                 <td>{{mb_convert_case($r->dsStatus,MB_CASE_TITLE)}}</td>
             </tr>
             @endforeach

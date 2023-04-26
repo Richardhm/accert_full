@@ -9,6 +9,7 @@ use App\Models\{
     Contrato,Cliente,TabelaOrigens,Administradoras,Planos,Acomodacao,CotacaoFaixaEtaria,User,PlanoEmpresarial,ContratoEmpresarial,  
     Comissoes,ComissoesCorretoresLancadas,ComissoesCorretoraConfiguracoes,ComissoesCorretoralancadas,ComissoesCorretoresConfiguracoes,
     Premiacoes,PremiacoesCorretoraLancadas,PremiacoesCorretoresLancadas,PremiacoesCorretoraConfiguracoes,PremiacoesCorretoresConfiguracoes,
+    ComissoesCorretoresDefault,
     Dependentes
 };
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,9 @@ class ContratoController extends Controller
 {
     public function index()
     {
+
+
+
         $contratos_coletivo_pendentes = Contrato::where("plano_id",3)->count();
         $cidades = TabelaOrigens::all();
         $administradoras = Administradoras::whereRaw("id != (SELECT id FROM administradoras WHERE nome LIKE '%hapvida%')")->get();
@@ -1123,6 +1127,7 @@ class ContratoController extends Controller
 
 
         $comissao_corretor_contagem = 0;
+        $comissao_corretor_default = 0;
         if(count($comissoes_configuradas_corretor) >= 1) {
             foreach($comissoes_configuradas_corretor as $c) {
                 $comissaoVendedor = new ComissoesCorretoresLancadas();
@@ -1139,6 +1144,13 @@ class ContratoController extends Controller
                 $comissaoVendedor->save();  
                 $comissao_corretor_contagem++;  
             }
+        } else {
+
+            
+
+
+
+
         }
 
         /** Comissao Corretora */   
@@ -1245,8 +1257,8 @@ class ContratoController extends Controller
             ::selectRaw("(SELECT name FROM users WHERE users.id = contrato_empresarial.user_id) as usuario")
             ->selectRaw("(SELECT nome FROM planos WHERE planos.id = contrato_empresarial.plano_id) as plano")
             ->selectRaw("(SELECT nome FROM tabela_origens WHERE tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem")
-            ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,created_at,id")
-            ->with(['comissao','comissao.comissaoAtualFinanceiro','comissao.comissaoAtualLast'])
+            ->selectRaw("responsavel,email,telefone,celular,codigo_externo,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,created_at,id")
+            ->with(['comissao','comissao.comissaoAtualFinanceiro','comissao.comissaoAtualLast','financeiro'])
             ->get();
     }
 
@@ -1256,17 +1268,44 @@ class ContratoController extends Controller
     public function listarContratoEmAnalise(Request $request)
     {
         if($request->ajax()) {
-            if($request->ajax()) {
+           
                 return ContratoEmpresarial
                     ::selectRaw("(SELECT name FROM users WHERE users.id = contrato_empresarial.user_id) as usuario")
                     ->selectRaw("(SELECT nome FROM planos WHERE planos.id = contrato_empresarial.plano_id) as plano")
                     ->selectRaw("(SELECT nome FROM tabela_origens WHERE tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem")
-                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,created_at,financeiro_id,id")
-                    ->with(['comissao','comissao.comissaoAtualFinanceiro'])
+                    ->selectRaw("responsavel,
+                        email,
+                        telefone,
+                        celular,
+                        cidade,
+                        uf,
+                        quantidade_vidas,
+                        cnpj,
+                        razao_social,
+                        codigo_vendedor,
+                        codigo_cliente,
+                        codigo_corretora,
+                        taxa_adesao,
+                        valor_plano,
+                        valor_total,
+                        vencimento_boleto,
+                        valor_boleto,
+                        codigo_cliente,
+                        valor_plano_odonto,
+                        valor_plano_saude,
+                        senha_cliente,
+                        codigo_saude,
+                        codigo_odonto,
+                        plano_contrado,
+                        data_boleto,
+                        created_at,
+                        codigo_externo,
+                        financeiro_id,
+                        id
+                        ")
+                    ->with(['comissao','comissao.comissaoAtualFinanceiro','financeiro'])
                     ->where("financeiro_id",1)
                     ->get(); 
-
-            }
         }
     }
 
@@ -1298,7 +1337,7 @@ class ContratoController extends Controller
             // ->where("financeiro_id",5)
             // ->get();
             $dados = ContratoEmpresarial
-            ::with(["comissao","comissao.comissaoAtualFinanceiro"])
+            ::with(["comissao","comissao.comissaoAtualFinanceiro","financeiro"])
             ->whereHas('comissao.comissoesLancadas',function($query){
                 $query->where("status_financeiro",0);
                 $query->where("status_gerente",0);
@@ -1308,7 +1347,7 @@ class ContratoController extends Controller
             ->selectRaw("(SELECT name FROM users WHERE users.id = contrato_empresarial.user_id) as usuario")
             ->selectRaw("(SELECT nome FROM planos WHERE planos.id = contrato_empresarial.plano_id) as plano")
             ->selectRaw("(SELECT nome FROM tabela_origens WHERE tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem")
-            ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
+            ->selectRaw("responsavel,email,telefone,codigo_externo,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
             ->selectRaw("contrato_empresarial.created_at")
             ->where("financeiro_id",5)
             ->get();
@@ -1321,19 +1360,20 @@ class ContratoController extends Controller
         if($request->ajax()) {
            
                 return ContratoEmpresarial
-                ::with(["comissao","comissao.comissaoAtualFinanceiro"])
+                ::with(["comissao","comissao.comissaoAtualFinanceiro","financeiro",'comissao.comissaoAtualFinanceiro','comissao.comissaoAtualLast'])
                 ->whereHas('comissao.comissoesLancadas',function($query){
                     $query->where("status_financeiro",0);
                     $query->where("status_gerente",0);
                     $query->where("parcela",2);
+                    $query->where("atual",1);
                     $query->whereRaw("data_baixa IS NULL");
                 })
                     ->selectRaw("(SELECT name FROM users WHERE users.id = contrato_empresarial.user_id) as usuario")
                     ->selectRaw("(SELECT nome FROM planos WHERE planos.id = contrato_empresarial.plano_id) as plano")
                     ->selectRaw("(SELECT nome FROM tabela_origens WHERE tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem")
-                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
+                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,codigo_externo,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
                     ->selectRaw("contrato_empresarial.created_at")
-                    ->where("financeiro_id",6)
+                    //->where("financeiro_id",6)
                     ->get();
            
         }
@@ -1343,19 +1383,20 @@ class ContratoController extends Controller
     {
         if($request->ajax()) {
                 return ContratoEmpresarial
-                ::with(["comissao","comissao.comissaoAtualFinanceiro"])
+                ::with(["comissao","comissao.comissaoAtualFinanceiro","financeiro",'comissao.comissaoAtualFinanceiro','comissao.comissaoAtualLast'])
                 ->whereHas('comissao.comissoesLancadas',function($query){
                     $query->where("status_financeiro",0);
                     $query->where("status_gerente",0);
                     $query->where("parcela",3);
+                    $query->where("atual",1);
                     $query->whereRaw("data_baixa IS NULL");
                 })
                     ->selectRaw("(SELECT name FROM users WHERE users.id = contrato_empresarial.user_id) as usuario")
                     ->selectRaw("(SELECT nome FROM planos WHERE planos.id = contrato_empresarial.plano_id) as plano")
                     ->selectRaw("(SELECT nome FROM tabela_origens WHERE tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem")
-                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
+                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,codigo_externo,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
                     ->selectRaw("contrato_empresarial.created_at")
-                    ->where("financeiro_id",7)
+                    //->where("financeiro_id",7)
                     ->get();
            
         }
@@ -1371,14 +1412,15 @@ class ContratoController extends Controller
                     $query->where("status_financeiro",0);
                     $query->where("status_gerente",0);
                     $query->where("parcela",4);
+                    $query->where("atual",1);
                     $query->whereRaw("data_baixa IS NULL");
                 })
                     ->selectRaw("(SELECT name FROM users WHERE users.id = contrato_empresarial.user_id) as usuario")
                     ->selectRaw("(SELECT nome FROM planos WHERE planos.id = contrato_empresarial.plano_id) as plano")
                     ->selectRaw("(SELECT nome FROM tabela_origens WHERE tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem")
-                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
+                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,codigo_externo,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
                     ->selectRaw("contrato_empresarial.created_at")
-                    ->where("financeiro_id",8)
+                    // ->where("financeiro_id",8)
                     ->get();
             }
         }
@@ -1394,14 +1436,15 @@ class ContratoController extends Controller
                     $query->where("status_financeiro",0);
                     $query->where("status_gerente",0);
                     $query->where("parcela",5);
+                    $query->where("atual",1);
                     $query->whereRaw("data_baixa IS NULL");
                 })
                     ->selectRaw("(SELECT name FROM users WHERE users.id = contrato_empresarial.user_id) as usuario")
                     ->selectRaw("(SELECT nome FROM planos WHERE planos.id = contrato_empresarial.plano_id) as plano")
                     ->selectRaw("(SELECT nome FROM tabela_origens WHERE tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem")
-                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
+                    ->selectRaw("responsavel,email,codigo_externo,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
                     ->selectRaw("contrato_empresarial.created_at")
-                    ->where("financeiro_id",9)
+                    // ->where("financeiro_id",9)
                     ->get();
             }
         }
@@ -1417,14 +1460,15 @@ class ContratoController extends Controller
                     $query->where("status_financeiro",0);
                     $query->where("status_gerente",0);
                     $query->where("parcela",6);
+                    $query->where("atual",1);
                     $query->whereRaw("data_baixa IS NULL");
                 })
                     ->selectRaw("(SELECT name FROM users WHERE users.id = contrato_empresarial.user_id) as usuario")
                     ->selectRaw("(SELECT nome FROM planos WHERE planos.id = contrato_empresarial.plano_id) as plano")
                     ->selectRaw("(SELECT nome FROM tabela_origens WHERE tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem")
-                    ->selectRaw("responsavel,email,telefone,celular,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
+                    ->selectRaw("responsavel,email,telefone,celular,codigo_externo,cidade,uf,quantidade_vidas,cnpj,razao_social,codigo_vendedor,codigo_cliente,codigo_corretora,taxa_adesao,valor_plano,valor_total,vencimento_boleto,valor_boleto,codigo_cliente,valor_plano_odonto,valor_plano_saude,senha_cliente,codigo_saude,codigo_odonto,plano_contrado,data_boleto,financeiro_id,id")
                     ->selectRaw("contrato_empresarial.created_at")
-                    ->where("financeiro_id",10)
+                    //->where("financeiro_id",10)
                     ->get();
             }
         }
@@ -1560,6 +1604,7 @@ class ContratoController extends Controller
         $data = $date->format('Y-m-d H:i:s');
 
         $comissao_corretor_contagem = 0;
+        $comissao_corretor_default = 0;
         if(count($comissoes_configuradas_corretor) >= 1) {
             foreach($comissoes_configuradas_corretor as $c) {
                 $comissaoVendedor = new ComissoesCorretoresLancadas();
@@ -1580,12 +1625,47 @@ class ContratoController extends Controller
                 $comissaoVendedor->save();  
                 $comissao_corretor_contagem++;  
             }
+        } else {
+
+            $dados = ComissoesCorretoresDefault
+            ::where("plano_id",3)
+            ->where("administradora_id",$request->administradora)
+            ->where("tabela_origens_id",2)
+            ->get();    
+            foreach($dados as $c) {
+                $comissaoVendedor = new ComissoesCorretoresLancadas();
+                $comissaoVendedor->comissoes_id = $comissao->id;
+                $comissaoVendedor->parcela = $c->parcela;
+                
+
+                if($comissao_corretor_default == 0) {
+                    $comissaoVendedor->data = $data_vigencia;
+                    //$comissaoVendedor->status_financeiro = 1;
+                    if($comissaoVendedor->valor == "0.00" || $comissaoVendedor->valor == 0 || $comissaoVendedor->valor >= 0) {
+                        //$comissaoVendedor->status_gerente = 1;            
+                    }
+                    
+                } else {
+                    $comissaoVendedor->data = date("Y-m-d H:i:s",strtotime($request->data_boleto."+{$comissao_corretor_default}month"));
+                    $date = new \DateTime($data);
+                    $date->add(new \DateInterval("PT{$comissao_corretor_default}M"));
+                    //$data_add = $date->format('Y-m-d H:i:s');                      
+                    
+
+                }
+                $comissaoVendedor->valor = ($valor * $c->valor) / 100;
+                $comissaoVendedor->save();  
+                $comissao_corretor_default++; 
+            }
+
+
+
         }
 
         // /** Comissao Corretora */   
         $comissoes_configurada_corretora = ComissoesCorretoraConfiguracoes::where("administradora_id",$request->administradora)
         ->where('plano_id',3)
-        ->where('tabela_origens_id',$request->tabela_origem)
+        ->where('tabela_origens_id',2)
         ->get();
         $comissoes_corretora_contagem=0;
         if(count($comissoes_configurada_corretora)>=1) {
@@ -1673,7 +1753,13 @@ class ContratoController extends Controller
         //         $premiacaoCorretoraLancados->save();
         //         $premiacao_corretora_contagem++;
         //     }
-        // }   
+        // }  
+        
+        if($request->tipo_financeiro) {
+            return "financeiro";
+        }    
+
+
 
         if($request->tipo_cadastro == "administrador_cadastro") {
             return "contratos";
@@ -1890,7 +1976,9 @@ class ContratoController extends Controller
 
     public function formCreateColetivo()
     {
-        $users = User::where("id","!=",auth()->user()->id)->get();
+        $users = User::where("id","!=",auth()->user()->id)
+        ->where("id","!=",1)
+        ->get();
         $origem_tabela = TabelaOrigens::all();
         $administradoras = Administradoras::whereRaw("id != (SELECT id FROM administradoras WHERE nome LIKE '%hapvida%')")->get();
         return view('admin.pages.contratos.cadastrar-coletivo',[
@@ -1913,7 +2001,9 @@ class ContratoController extends Controller
 
     public function formCreateEmpresarial()
     {
-        $users = User::where("id","!=",auth()->user()->id)->get();
+        $users = User::where("id","!=",auth()->user()->id)
+        ->where("id","!=",1)
+        ->get();
         $plano_empresarial = Planos::where("empresarial",1)->get();
         $tabela_origem = TabelaOrigens::all();
         return view('admin.pages.contratos.cadastrar-empresa',[
