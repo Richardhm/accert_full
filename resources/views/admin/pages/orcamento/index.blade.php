@@ -365,6 +365,11 @@
                             '10' : $('#faixa-input-59').val()
                         }]
                     },
+
+					// success:function(res) {
+					// 	console.log(res);
+					// }
+
 					xhrFields: {
                         responseType: 'blob' 
                     },

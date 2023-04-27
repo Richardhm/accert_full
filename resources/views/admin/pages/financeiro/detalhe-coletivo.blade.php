@@ -260,7 +260,7 @@
 
             <div style="flex-basis:18%;margin-right:1%;">
                 <span class="text-white" style="font-size:0.81em;">Valor Adesão:</span>
-                <input type="text" name="valor_adesao" id="valor_adesao" value="R$ {{number_format($dados->valor_adesao + 25,2,',','.')}}"  class="form-control  form-control-sm" readonly>
+                <input type="text" name="valor_adesao" id="valor_adesao" value="R$ {{number_format($dados->valor_adesao,2,',','.')}}"  class="form-control  form-control-sm" readonly>
             </div>
 
             <div style="flex-basis:18%;margin-right:1%;">
@@ -395,7 +395,7 @@
                             <td style="font-size:0.875em;">
                                 
                                 @if($cr->parcela == 1) 
-                                    <span style="margin-left:10px;">{{number_format($dados->valor_plano + 25,2,",",".")}}</span>
+                                    <span style="margin-left:10px;">{{number_format($dados->valor_plano ,2,",",".")}}</span>
                                 @else
                                     <span style="margin-left:10px;">{{number_format($dados->valor_plano,2,",",".")}}</span>
                                 @endif

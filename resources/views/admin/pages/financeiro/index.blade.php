@@ -149,30 +149,7 @@
 
     
 
-    <div class="modal fade" id="dataBaixaEmpresarialModal" tabindex="-1" role="dialog" aria-labelledby="dataBaixaEmpresarialLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="dataBaixaEmpresarialLabel">Data Da Baixa?</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="" name="data_da_baixa_empresarial" id="data_da_baixa_empresarial" method="POST">
-                    <input type="date" name="date_baixa_empresarial" id="date_baixa_empresarial" class="form-control form-control-sm">
-                                       
-                    <div id="error_data_baixa_empresarial">
-                    </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                <button type="submit" class="btn btn-primary">Salvar</button>
-            </div>
-            </form>
-            </div>
-        </div>
-    </div>
+    
 
     
     <div>
@@ -628,9 +605,6 @@
                 <!--COLUNA DA ESQUERDA-->
                 <div class="d-flex flex-column text-white ml-1" style="flex-basis:16%;border-radius:5px;">                    
                     
-
-                    
-
                     <div style="background-color:#123449;border-radius:5px;margin:1px 0;">   
                         <ul style="list-style:none;margin:0;padding:5px 0;" id="atrasado_corretor_coletivo">
                             <li style="padding:0px 3px;display:flex;text-align:center;justify-content:center;">
@@ -885,7 +859,7 @@
                 $('#title_individual').html("<h4 style='font-size:1em;margin-top:10px;'>Contratos</h4>");
                 table_individual.ajax.url("{{ route('financeiro.individual.geralIndividualPendentes') }}").load();                
                 $(".container_edit").addClass('ocultar')
-                adicionarReadonly();
+                //adicionarReadonly();
                 $("#atrasado_corretor").removeClass('textoforte-list');
                 $("ul#listar_individual li.individual").removeClass('textoforte-list');
                 $("#all_pendentes_individual").removeClass('textoforte-list');
@@ -917,6 +891,20 @@
                 var ano = $("#mudar_ano_table_coletivo").val() != null ? $("#mudar_ano_table_coletivo").val() : null;
                 table.ajax.url(`/admin/financeiro/coletivo/mudar_mes/${mes}/${ano}`).load();
             });
+
+            // $("#mudar_ano_table_coletivo").on('change',function(){
+            //     var ano = $(this).val();
+            //     var mes = $("#mudar_mes_table_coletivo").val() != null ? $("#mudar_mes_table_coletivo").val() : null;
+            //     table.ajax.url(`/admin/financeiro/coletivo/mudar_ano/${ano}/${mes}`).load();  
+            // });
+
+            // $("#mudar_mes_table_coletivo").on('change',function(){
+            //     var mes = $(this).val();
+            //     var ano = $("#mudar_ano_table_coletivo").val() != null ? $("#mudar_ano_table_coletivo").val() : null;
+            //     table.ajax.url(`/admin/financeiro/coletivo/mudar_mes/${mes}/${ano}`).load();
+            // });
+
+
 
             mudar_user_empresarial = "";
 
@@ -1172,7 +1160,7 @@
                 limparFormularioIndividual();
                 limparFormulario();
                 limparEmpresarial();
-                adicionarReadonly();
+                //adicionarReadonly();
                 adicionarReadonlyIndividual();
                 $("#all_pendentes_individual").removeClass('textoforte-list');
                 $("ul#listar li.coletivo").removeClass('textoforte-list');
@@ -2345,26 +2333,36 @@
                ],
                 "initComplete": function( settings, json ) {
                     $('#title_empresarial').html("<h4 style='font-size:1em;margin-top:10px;'>Em Analise</h4>");
-                    //  this.api()
-                    //    .columns([1])
-                    //    .every(function () {
-                    //         var column = this;
-                    //         var selectUsuarioIndividual = $("#mudar_user_empresarial");
-                    //         selectUsuarioIndividual.on('change',function(){
-                    //             var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                    //             if(val != "todos") {
-                    //                 column.search(val ? '^' + val + '$' : '', true, false).draw();    
-                    //             } else {
-                    //                 var val = "";
-                    //                 column.search(val ? '^' + val + '$' : '', true, false).draw();
-                    //             }
-                                
-                    //         });
-
-                    //         column.data().unique().sort().each(function (d, j) {
-                    //             selectUsuarioIndividual.append('<option value="' + d + '">' + d + '</option>');
-                    //         });
-                    //    })
+                    this.api()
+                       .columns([2])
+                       .every(function () {
+                            var column = this;
+                            var selectUsuario = $("#select_usuario");
+                            selectUsuario.on('change',function(){
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                if(val != "todos") {
+                                    column.search(val ? '^' + val + '$' : '', true, false).draw();    
+                                } else {
+                                    var val = "";
+                                    column.search(val ? '^' + val + '$' : '', true, false).draw();
+                                }             
+                            });
+                        })
+                        this.api()
+                       .columns([4])
+                       .every(function () {
+                            var column = this;
+                            var selectAdministradora = $("#select_coletivo_administradoras");
+                            selectAdministradora.on('change',function(){
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                if(val != "todos") {
+                                    column.search(val ? '^' + val + '$' : '', true, false).draw();    
+                                } else {
+                                    var val = "";
+                                    column.search(val ? '^' + val + '$' : '', true, false).draw();
+                                }             
+                            });
+                        })    
                 },
                 "drawCallback":function(settings) {
                     if(settings.iDraw >= 3 && settings.sTableId == "tabela_empresarial") {
@@ -2579,7 +2577,7 @@
                     $("ul#grupo_finalizados li.coletivo").removeClass('textoforte-list');
                     $("#finalizado_corretor_coletivo").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
-                    adicionarReadonly();
+                    //adicionarReadonly();
                     limparFormulario();
                 } else if(id_lista == "pagamento_adesao_coletivo") {
                     $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento Adesão</h4>");
@@ -2593,7 +2591,7 @@
                     $("ul#grupo_finalizados li.coletivo").removeClass('textoforte-list');
                     $("#finalizado_corretor_coletivo").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
-                    adicionarReadonly();
+                    //adicionarReadonly();
                     limparFormulario();
 
                 } else if(id_lista == "pagamento_vigencia_coletivo") {
@@ -2608,7 +2606,7 @@
                     $("ul#grupo_finalizados li.coletivo").removeClass('textoforte-list');
                     $("#finalizado_corretor_coletivo").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
-                    adicionarReadonly();
+                    //adicionarReadonly();
                     limparFormulario();
                 } else if(id_lista == "pagamento_segunda_parcela") {
                     $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 2º Parcela</h4>");
@@ -2622,7 +2620,7 @@
                     $("ul#listar li.coletivo").removeClass('textoforte-list');
                     $("ul#grupo_finalizados li.coletivo").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
-                    adicionarReadonly();
+                    //adicionarReadonly();
                     limparFormulario();
                 } else if(id_lista == "pagamento_terceira_parcela") {
                     $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 3º Parcela</h4>");
@@ -2637,7 +2635,7 @@
                     $("ul#grupo_finalizados li.coletivo").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
                     
-                    adicionarReadonly();
+                    //adicionarReadonly();
                     limparFormulario();
                 } else if(id_lista == "pagamento_quarta_parcela") {
                     $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 4º Parcela</h4>");
@@ -2651,7 +2649,7 @@
                     $("ul#grupo_finalizados li.coletivo").removeClass('textoforte-list');
                     $("#finalizado_corretor_coletivo").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
-                    adicionarReadonly();
+                    //adicionarReadonly();
                     limparFormulario();
                 } else if(id_lista == "pagamento_quinta_parcela") {
                     $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 5º Parcela</h4>");
@@ -2665,7 +2663,7 @@
                     $("ul#grupo_finalizados li.coletivo").removeClass('textoforte-list');
                     $("#finalizado_corretor_coletivo").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
-                    adicionarReadonly();
+                    //adicionarReadonly();
                     limparFormulario();
                 } else if(id_lista == "pagamento_sexta_parcela") {
                     $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 6º Parcela</h4>");
@@ -2679,7 +2677,7 @@
                     $("ul#grupo_finalizados li.coletivo").removeClass('textoforte-list');
                     $("#finalizado_corretor_coletivo").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
-                    adicionarReadonly();
+                    //adicionarReadonly();
                     limparFormulario();
                 } else {
 
@@ -2724,7 +2722,7 @@
                     //     '<button class="btn btn-success w-50 emissao_boleto next_individual">1º Parcela Paga</button>'
                     // );                      
                     $(".container_edit").addClass('ocultar')
-                    adicionarReadonly();
+                    //adicionarReadonly();
                     $("#atrasado_corretor").removeClass('textoforte-list');
                     $("ul#listar_individual li.individual").removeClass('textoforte-list');
                     $("#all_pendentes_individual").removeClass('textoforte-list');
@@ -2740,7 +2738,7 @@
                     // );
                     $("#atrasado_corretor").removeClass('textoforte-list');
                     $(".container_edit").addClass('ocultar')
-                    adicionarReadonly();
+                    //adicionarReadonly();
                     $("ul#listar_individual li.individual").removeClass('textoforte-list');
                     $("#all_pendentes_individual").removeClass('textoforte-list');
                     $("ul#grupo_finalizados_individual li.individual").removeClass('textoforte-list');
@@ -2758,7 +2756,7 @@
                     $("#atrasado_corretor").removeClass('textoforte-list');
                     $(".container_edit").addClass('ocultar');
                     $("#cancelado_individual").removeClass('textoforte-list');
-                    adicionarReadonly();
+                    //adicionarReadonly();
                     $("ul#listar_individual li.individual").removeClass('textoforte-list');
                     $("#all_pendentes_individual").removeClass('textoforte-list');
                     $("ul#grupo_finalizados_individual li.individual").removeClass('textoforte-list');
@@ -2774,7 +2772,7 @@
                     // );
                     $("#atrasado_corretor").removeClass('textoforte-list');
                     $(".container_edit").addClass('ocultar')
-                    adicionarReadonly();
+                    //adicionarReadonly();
                     $("ul#listar_individual li.individual").removeClass('textoforte-list');
                     $("#all_pendentes_individual").removeClass('textoforte-list');
                     $("ul#grupo_finalizados_individual li.individual").removeClass('textoforte-list');
@@ -2790,7 +2788,7 @@
                     //     '<button class="btn btn-success w-50 pagamento_terceira_parcela next_individual">5º Parcela Paga</button>'
                     // );
                     $(".container_edit").addClass('ocultar')
-                    adicionarReadonly();
+                    //adicionarReadonly();
                     $("ul#listar_individual li.individual").removeClass('textoforte-list');
                     $("#all_pendentes_individual").removeClass('textoforte-list');
                     $("ul#grupo_finalizados_individual li.individual").removeClass('textoforte-list');
@@ -2813,7 +2811,7 @@
                 //     '<button class="btn btn-success w-50 pagamento_quarta_parcela next_individual">6º Parcela Paga</button>'
                 // );
                 $(".container_edit").addClass('ocultar')
-                adicionarReadonly();
+                //adicionarReadonly();
                 $("ul#listar_individual li.individual").removeClass('textoforte-list');
                 $("#all_pendentes_individual").removeClass('textoforte-list');
                 $("ul#grupo_finalizados_individual li.individual").removeClass('textoforte-list');
@@ -2836,7 +2834,7 @@
                     $("ul#grupo_finalizados li.coletivo").removeClass('textoforte-list');
                     $("#all_pendentes_coletivo").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
-                    adicionarReadonly();
+                    //adicionarReadonly();
                     limparFormulario();
                 } else if(id_lista == "cancelado_coletivo") {
                     $('#title_coletivo_por_adesao_table').html("<h4 style='font-size:1em;margin-top:10px;'>Cancelado</h4>");
@@ -2847,7 +2845,7 @@
                     $("ul#grupo_finalizados li.coletivo").removeClass('textoforte-list');
                     $("#all_pendentes_coletivo").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
-                    adicionarReadonly();
+                    //adicionarReadonly();
                     limparFormulario();
                 } else {
 
@@ -2879,7 +2877,7 @@
                     $("#atrasado_corretor").removeClass('textoforte-list');
                     $("ul#grupo_finalizados_individual li.individual").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
-                    adicionarReadonly();
+                    //adicionarReadonly();
                     limparFormulario();
                 } else {
                 }
@@ -2897,7 +2895,7 @@
                 $("ul#grupo_finalizados_individual li.individual").removeClass('textoforte-list');
                 $("#finalizado_corretor").removeClass('textoforte-list');
                 $(this).addClass('textoforte-list');
-                adicionarReadonly();
+                //adicionarReadonly();
                 limparFormulario(); 
             });
 

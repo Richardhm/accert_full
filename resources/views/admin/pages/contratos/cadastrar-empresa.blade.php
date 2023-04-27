@@ -150,7 +150,7 @@
 
                     <div style="flex-basis:8%;">
 	                    <div>
-	                        <span for="created_at" class="text-white" style="font-size:0.875em;">Data:</span>
+	                        <span for="created_at" class="text-white" style="font-size:0.875em;">Data Cadastrado:</span>
 	                        <input type="date" required name="created_at" id="created_at" value="<?= date('Y-m-d'); ?>" class="form-control form-control-sm">
 	                    </div>
 	                </div>

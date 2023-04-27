@@ -1612,10 +1612,10 @@ class ContratoController extends Controller
                 //$comissaoVendedor->user_id = auth()->user()->id;
                 $comissaoVendedor->parcela = $c->parcela;
                 if($comissao_corretor_contagem == 0) {
-                    $comissaoVendedor->data = date('Y-m-d H:i:s',strtotime($request->data_boleto));
+                    $comissaoVendedor->data = date('Y-m-d H:i:s',strtotime($request->data_vigencia));
                     //$comissaoVendedor->tempo = $data;
                 } else {
-                    $comissaoVendedor->data = date("Y-m-d H:i:s",strtotime($request->data_boleto."+{$comissao_corretor_contagem}month"));
+                    $comissaoVendedor->data = date("Y-m-d H:i:s",strtotime($request->data_vigencia."+{$comissao_corretor_contagem}month"));
                     $date = new \DateTime($data);
                     $date->add(new \DateInterval("PT{$comissao_corretor_contagem}M"));
                     $data_add = $date->format('Y-m-d H:i:s');
@@ -1639,14 +1639,17 @@ class ContratoController extends Controller
                 
 
                 if($comissao_corretor_default == 0) {
-                    $comissaoVendedor->data = $data_vigencia;
+                    $comissaoVendedor->data = $data_boleto;
                     //$comissaoVendedor->status_financeiro = 1;
                     if($comissaoVendedor->valor == "0.00" || $comissaoVendedor->valor == 0 || $comissaoVendedor->valor >= 0) {
                         //$comissaoVendedor->status_gerente = 1;            
                     }
                     
-                } else {
-                    $comissaoVendedor->data = date("Y-m-d H:i:s",strtotime($request->data_boleto."+{$comissao_corretor_default}month"));
+                } elseif($comissao_corretor_default == 1) {
+                    $comissaoVendedor->data = date("Y-m-d H:i:s",strtotime($request->data_vigencia));
+                }  else {
+                    $mes = $comissao_corretor_default - 1; 
+                    $comissaoVendedor->data = date("Y-m-d H:i:s",strtotime($request->data_vigencia."+{$mes}month"));
                     $date = new \DateTime($data);
                     $date->add(new \DateInterval("PT{$comissao_corretor_default}M"));
                     //$data_add = $date->format('Y-m-d H:i:s');                      

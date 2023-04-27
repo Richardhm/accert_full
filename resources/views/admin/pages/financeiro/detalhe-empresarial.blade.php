@@ -20,6 +20,42 @@
 
 @section('content')
 
+<div class="modal fade" id="dataBaixaEmpresarialModal" tabindex="-1" role="dialog" aria-labelledby="dataBaixaEmpresarialLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dataBaixaEmpresarialLabel">Data Da Baixa?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" name="data_da_baixa_empresarial" id="data_da_baixa_empresarial" method="POST">
+                    <input type="date" name="date_baixa_empresarial" id="date_baixa_empresarial" class="form-control form-control-sm">
+                                       
+                    <div id="error_data_baixa_empresarial">
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
     <div class="modal fade" id="modalDiferencaEntreValores" tabindex="-1" role="dialog" aria-labelledby="modalDiferencaEntreValoresLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -222,6 +258,18 @@
                     
                     <input type="hidden" id="cliente_id_alvo_empresarial" />
                 </div>
+
+                <div class="d-flex">
+                    <div style="flex-basis:45%;">
+
+                    </div>
+                    <div style="flex-basis:45%;">
+
+                    </div>
+                </div>
+
+
+
         </section>
 
         <section style="flex-basis:48%;background-color:#123449;color:#FFF;border-radius:5px;">
@@ -534,7 +582,7 @@
                 let valor = $(this).val().replace(".","").replace(",",".");
                 let total = $(".diferenca_entre_valores").text().replace("R$","").replace(".","").replace(",",".").trim();
                 let corretor = total - valor;
-                let resto_corretor = parseFloat(corretor);
+                let resto_corretor = parseFloat(corretor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
                 $("#desconto_corretor_valores").val(resto_corretor);
                 $("#desconto_corretor").val(resto_corretor);
                 $("#desconto_corretora").val(valor);
