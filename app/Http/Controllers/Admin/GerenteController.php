@@ -6,16 +6,556 @@ use App\Http\Controllers\Controller;
 use App\Models\{
     Contrato,Cliente,TabelaOrigens,Administradoras,Planos,Acomodacao,CotacaoFaixaEtaria,User,PlanoEmpresarial,ContratoEmpresarial,  
     Comissoes,ComissoesCorretoresLancadas,ComissoesCorretoraConfiguracoes,ComissoesCorretoraLancadas,ComissoesCorretoresConfiguracoes,
-    Dependentes,Cancelado,MotivoCancelados,
+    Dependentes,Cancelado, ComissoesCorretoresDefault, MotivoCancelados,
     Premiacoes,PremiacoesCorretoraLancadas,PremiacoesCorretoresLancadas,PremiacoesCorretoraConfiguracoes,PremiacoesCorretoresConfiguracoes,
 };
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use PDF;
+
 
 class GerenteController extends Controller
 {
     public function index()
     {
+        
+
+
+        // $contratos = Contrato
+        //     ::where("plano_id",1)   
+        //     ->whereHas('clientes',function($query){
+        //         $query->whereRaw("cateirinha IS NOT NULL");
+        //     }) 
+        //     ->whereHas('comissao.comissoesLancadas',function($query){
+        //         $query->where("status_financeiro",1);
+        //         $query->where("status_gerente",1);
+        //         $query->where("valor","!=",0);
+        //     })    
+        //     ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','comissao.comissaoAtualFinanceiro','comissao.ultimaComissaoPaga','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
+        //     ->orderBy("id","desc")
+        //     ->count();
+        // dd();    
+
+
+
+
+
+
+        //Geral
+
+        $quantidade_geral     = Contrato::count();
+
+        $total_valor_geral = Contrato::selectRaw("SUM(valor_plano) as total_geral")->first()->total_geral;
+        $quantidade_vidas_geral = Cliente::selectRaw("SUM(quantidade_vidas) as quantidade_vidas")->first()->quantidade_vidas;
+
+        $total_quantidade_recebidos = Contrato::whereHas('comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",1);
+            $query->where("valor","!=",0);
+        })->count();
+
+        $total_valor_recebidos = Contrato::whereHas('comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",1);
+            $query->where("valor","!=",0);
+        })->selectRaw("sum(valor_plano) as total_valor_plano")->first()->total_valor_plano;
+
+        $quantidade_vidas_recebidas = Cliente
+        ::whereHas('contrato',function($query){
+            $query->where('plano_id',1);
+        })
+        
+        ->whereHas('contrato.comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",1);
+            $query->where("valor","!=",0);
+        })
+        
+        ->selectRaw("sum(quantidade_vidas) as total_quantidade_vidas_recebidas")
+        ->first()
+        ->total_quantidade_vidas_recebidas;
+        
+        $total_quantidade_a_receber = Contrato::whereHas('comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",0);
+            $query->where("valor","!=",0);
+        })->count();
+
+        $total_valor_a_receber = Contrato::whereHas('comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",0);
+            $query->where("valor","!=",0);
+        })
+        ->selectRaw("if(sum(valor_plano)>=1,sum(valor_plano),0) as total_valor_plano")->first()->total_valor_plano;       
+
+        $quantidade_vidas_a_receber = Cliente::whereHas('contrato.comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",0);
+            $query->where("valor","!=",0);
+        })->selectRaw("if(sum(quantidade_vidas)>=1,sum(quantidade_vidas),0) as total_quantidade_vidas_recebidas")->first()->total_quantidade_vidas_recebidas;
+        
+        $qtd_atrasado = Contrato::where("financeiro_id","!=",12)->whereHas('comissao.comissoesLancadas',function($query){
+            $query->whereRaw("DATA < CURDATE()");
+            $query->whereRaw("data_baixa IS NULL");
+            $query->groupBy("comissoes_id");
+        })->whereHas('clientes',function($query){$query->whereRaw('cateirinha IS NOT NULL');})
+        ->count();
+
+        $qtd_atrasado_valor = Contrato::where("financeiro_id","!=",12)->whereHas('comissao.comissoesLancadas',function($query){
+            $query->whereRaw("DATA < CURDATE()");
+            $query->whereRaw("data_baixa IS NULL");
+            $query->groupBy("comissoes_id");
+        })->whereHas('clientes',function($query){$query->whereRaw('cateirinha IS NOT NULL');})
+        ->selectRaw("sum(valor_plano) as total_valor_plano")->first()->total_valor_plano;
+
+        $qtd_atrasado_quantidade_valor = Contrato::where("financeiro_id","!=",12)->whereHas('comissao.comissoesLancadas',function($query){
+            $query->whereRaw("DATA < CURDATE()");
+            $query->whereRaw("data_baixa IS NULL");
+            $query->groupBy("comissoes_id");
+        })->whereHas('clientes',function($query){$query->whereRaw('cateirinha IS NOT NULL');})
+        ->selectRaw("sum(valor_plano) as quantidade_vidas")->first()->quantidade_vidas;
+
+        $qtd_atrasado_quantidade_vidas = Cliente::whereHas('contrato.comissao.comissoesLancadas',function($query){
+            $query->whereRaw("DATA < CURDATE()");
+            $query->whereRaw("data_baixa IS NULL");
+            $query->groupBy("comissoes_id");
+        })->selectRaw("if(sum(quantidade_vidas)>=1,sum(quantidade_vidas),0) as total_quantidade_vidas_atrasadas")->first()->total_quantidade_vidas_atrasadas;
+
+        $qtd_finalizado = Contrato::where("financeiro_id",11)
+        ->count();
+
+        $quantidade_valor_finalizado = Contrato::where("financeiro_id",11)
+        ->selectRaw("if(sum(valor_plano)>=1,sum(valor_plano),0) as valor_total_finalizado")->first()->valor_total_finalizado;
+
+        $qtd_finalizado_quantidade_vidas = Cliente::whereHas('contrato',function($query){
+            $query->where("financeiro_id",11);
+            
+        })->selectRaw("if(sum(quantidade_vidas)>=1,sum(quantidade_vidas),0) as total_quantidade_vidas_finalizadas")->first()->total_quantidade_vidas_finalizadas;
+
+        $qtd_cancelado = Contrato::where("financeiro_id",12)
+        ->count();     
+
+        $quantidade_valor_cancelado = Contrato::where("financeiro_id",12)
+        ->selectRaw("if(sum(valor_plano)>=1,sum(valor_plano),0) as valor_total_cancelado")->first()->valor_total_cancelado;
+
+        $qtd_cancelado_quantidade_vidas = Cliente::whereHas('contrato',function($query){
+            $query->where("financeiro_id",12);
+            
+        })->selectRaw("if(sum(quantidade_vidas)>=1,sum(quantidade_vidas),0) as total_quantidade_vidas_cancelado")->first()->total_quantidade_vidas_cancelado;
+
+        //FIM Geral
+
+        //Individual
+
+        $quantidade_individual_geral     = Contrato::where("plano_id",1)->count();
+
+        $total_valor_geral_individual = Contrato::where("plano_id",1)->selectRaw("SUM(valor_plano) as total_geral")->first()->total_geral;
+        $quantidade_vidas_geral_individual = Cliente::whereHas('contrato',function($query){
+            $query->where("plano_id",1);
+        })->selectRaw("SUM(quantidade_vidas) as quantidade_vidas")->first()->quantidade_vidas;      
+
+        $total_quantidade_recebidos_individual = Contrato::whereHas('comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",1);
+            $query->where("valor","!=",0);
+        })
+        ->where("plano_id",1)
+        ->count();
+
+        $total_valor_recebidos_individual = Contrato::whereHas('comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",1);
+            $query->where("valor","!=",0);
+        })
+        ->where("plano_id",1)
+        ->selectRaw("sum(valor_plano) as total_valor_plano")
+        ->first()
+        ->total_valor_plano;
+    
+        $quantidade_vidas_recebidas_individual = Cliente::whereHas('contrato.comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",1);
+            $query->where("valor","!=",0);
+        })
+        ->whereHas('contrato',function($query){
+            $query->where("plano_id",1);
+        })
+        ->selectRaw("sum(quantidade_vidas) as total_quantidade_vidas_recebidas")
+        ->first()
+        ->total_quantidade_vidas_recebidas;
+        
+        $total_quantidade_a_receber_individual = Contrato::whereHas('comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",0);
+            $query->where("valor","!=",0);
+        })
+        ->where("plano_id",1)
+        ->count();
+
+        $total_valor_a_receber_individual = Contrato::whereHas('comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",0);
+            $query->where("valor","!=",0);
+        })
+        ->where("plano_id",1)
+        ->selectRaw("if(sum(valor_plano)>=1,sum(valor_plano),0) as total_valor_plano")->first()->total_valor_plano;       
+
+        $quantidade_vidas_a_receber_individual = Cliente::whereHas('contrato.comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",0);
+            $query->where("valor","!=",0);
+        })
+        ->whereHas('contrato',function($query){
+            $query->where("plano_id",1);
+        })
+        ->selectRaw("if(sum(quantidade_vidas)>=1,sum(quantidade_vidas),0) as total_quantidade_vidas_recebidas")
+        ->first()
+        ->total_quantidade_vidas_recebidas;
+
+        
+        $qtd_atrasado_individual = Contrato::where("financeiro_id","!=",12)->whereHas('comissao.comissoesLancadas',function($query){
+            $query->whereRaw("DATA < CURDATE()");
+            $query->whereRaw("data_baixa IS NULL");
+            $query->groupBy("comissoes_id");
+        })
+        ->whereHas('clientes',function($query){$query->whereRaw('cateirinha IS NOT NULL');})
+        ->where("plano_id",1)
+        ->count();
+
+        $qtd_atrasado_valor_individual = Contrato::where("financeiro_id","!=",12)->whereHas('comissao.comissoesLancadas',function($query){
+            $query->whereRaw("DATA < CURDATE()");
+            $query->whereRaw("data_baixa IS NULL");
+            $query->groupBy("comissoes_id");
+        })
+        ->whereHas('clientes',function($query){$query->whereRaw('cateirinha IS NOT NULL');})
+        ->where("plano_id",1)
+        ->selectRaw("sum(valor_plano) as total_valor_plano")->first()->total_valor_plano;
+
+        
+
+        $qtd_atrasado_quantidade_vidas_individual = Cliente::whereHas('contrato.comissao.comissoesLancadas',function($query){
+            $query->whereRaw("DATA < CURDATE()");
+            $query->whereRaw("data_baixa IS NULL");
+            $query->groupBy("comissoes_id");
+        })
+        ->whereHas('contrato',function($query){
+            $query->where("plano_id",1);
+        })
+        ->selectRaw("if(sum(quantidade_vidas)>=1,sum(quantidade_vidas),0) as total_quantidade_vidas_atrasadas")->first()->total_quantidade_vidas_atrasadas;
+
+        $qtd_finalizado_individual = Contrato::where("financeiro_id",11)->where('plano_id',1)->count();
+
+        $quantidade_valor_finalizado_individual = Contrato::where("financeiro_id",11)->where('plano_id',1)
+        ->selectRaw("if(sum(valor_plano)>=1,sum(valor_plano),0) as valor_total_finalizado")->first()->valor_total_finalizado;
+
+        $qtd_finalizado_quantidade_vidas_individual = Cliente::whereHas('contrato',function($query){
+            $query->where("financeiro_id",11);
+            $query->where("plano_id",1);
+        })->selectRaw("if(sum(quantidade_vidas)>=1,sum(quantidade_vidas),0) as total_quantidade_vidas_finalizadas")->first()->total_quantidade_vidas_finalizadas;
+
+        $qtd_cancelado_individual = Contrato::where("financeiro_id",12)
+        ->where('plano_id',1)
+        ->count();     
+
+        $quantidade_valor_cancelado_individual = Contrato::where("financeiro_id",12)->where('plano_id',1)
+        ->selectRaw("if(sum(valor_plano)>=1,sum(valor_plano),0) as valor_total_cancelado")->first()->valor_total_cancelado;
+
+        $qtd_cancelado_quantidade_vidas_individual = Cliente::whereHas('contrato',function($query){
+            $query->where("financeiro_id",12);
+            $query->where("plano_id",1);
+        })->selectRaw("if(sum(quantidade_vidas)>=1,sum(quantidade_vidas),0) as total_quantidade_vidas_cancelado")->first()->total_quantidade_vidas_cancelado;
+
+        //Fim Individual
+
+        //Coletivo
+
+        $quantidade_coletivo_geral     = Contrato::where("plano_id",3)->count();
+
+        $total_valor_geral_coletivo = Contrato::where("plano_id",3)->selectRaw("SUM(valor_plano) as total_geral")->first()->total_geral;
+        $quantidade_vidas_geral_coletivo = Cliente::whereHas('contrato',function($query){
+            $query->where("plano_id",3);
+        })->selectRaw("SUM(quantidade_vidas) as quantidade_vidas")->first()->quantidade_vidas;      
+
+        $total_quantidade_recebidos_coletivo = Contrato::whereHas('comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",1);
+            $query->where("valor","!=",0);
+        })
+        ->where("plano_id",3)
+        ->count();
+
+        $total_valor_recebidos_coletivo = Contrato::whereHas('comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",1);
+            $query->where("valor","!=",0);
+        })
+        ->where("plano_id",3)
+        ->selectRaw("sum(valor_plano) as total_valor_plano")
+        ->first()
+        ->total_valor_plano;
+    
+        $quantidade_vidas_recebidas_coletivo = Cliente::whereHas('contrato.comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",1);
+            $query->where("valor","!=",0);
+        })
+        ->whereHas('contrato',function($query){
+            $query->where("plano_id",3);
+        })
+        ->selectRaw("if(sum(quantidade_vidas)>=1,sum(quantidade_vidas),0) as total_quantidade_vidas_recebidas")
+        ->first()
+        ->total_quantidade_vidas_recebidas;
+        
+        $total_quantidade_a_receber_coletivo = Contrato::whereHas('comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",0);
+            $query->where("valor","!=",0);
+        })
+        ->where("plano_id",3)
+        ->count();
+
+        $total_valor_a_receber_coletivo = Contrato::whereHas('comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",0);
+            $query->where("valor","!=",0);
+        })
+        ->where("plano_id",3)
+        ->selectRaw("if(sum(valor_plano)>=1,sum(valor_plano),0) as total_valor_plano")->first()->total_valor_plano;       
+
+        $quantidade_vidas_a_receber_coletivo = Cliente::whereHas('contrato.comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",0);
+            $query->where("valor","!=",0);
+        })
+        ->whereHas('contrato',function($query){
+            $query->where("plano_id",3);
+        })
+        ->selectRaw("if(sum(quantidade_vidas)>=1,sum(quantidade_vidas),0) as total_quantidade_vidas_recebidas")
+        ->first()
+        ->total_quantidade_vidas_recebidas;
+
+
+
+        
+        $qtd_atrasado_coletivo = Contrato::where("financeiro_id","!=",12)->whereHas('comissao.comissoesLancadas',function($query){
+            $query->whereRaw("DATA < CURDATE()");
+            $query->whereRaw("data_baixa IS NULL");
+            $query->groupBy("comissoes_id");
+        })
+        ->whereHas('clientes',function($query){$query->whereRaw('cateirinha IS NOT NULL');})
+        ->where("plano_id",3)
+        ->count();
+
+        $qtd_atrasado_valor_coletivo = Contrato::where("financeiro_id","!=",12)->whereHas('comissao.comissoesLancadas',function($query){
+            $query->whereRaw("DATA < CURDATE()");
+            $query->whereRaw("data_baixa IS NULL");
+            $query->groupBy("comissoes_id");
+        })
+        ->whereHas('clientes',function($query){$query->whereRaw('cateirinha IS NOT NULL');})
+        ->where("plano_id",3)
+        ->selectRaw("sum(valor_plano) as total_valor_plano")->first()->total_valor_plano;
+
+        
+
+        $qtd_atrasado_quantidade_vidas_coletivo = Cliente::whereHas('contrato.comissao.comissoesLancadas',function($query){
+            $query->whereRaw("DATA < CURDATE()");
+            $query->whereRaw("data_baixa IS NULL");
+            $query->groupBy("comissoes_id");
+        })
+        ->whereHas('contrato',function($query){
+            $query->where("plano_id",3);
+        })
+        ->selectRaw("if(sum(quantidade_vidas)>=1,sum(quantidade_vidas),0) as total_quantidade_vidas_atrasadas")->first()->total_quantidade_vidas_atrasadas;
+
+        $qtd_finalizado_coletivo = Contrato::where("financeiro_id",11)->where('plano_id',3)->count();
+
+        $quantidade_valor_finalizado_coletivo = Contrato::where("financeiro_id",11)->where('plano_id',3)
+        ->selectRaw("if(sum(valor_plano)>=1,sum(valor_plano),0) as valor_total_finalizado")->first()->valor_total_finalizado;
+
+        $qtd_finalizado_quantidade_vidas_coletivo = Cliente::whereHas('contrato',function($query){
+            $query->where("financeiro_id",11);
+            $query->where("plano_id",3);
+        })->selectRaw("if(sum(quantidade_vidas)>=1,sum(quantidade_vidas),0) as total_quantidade_vidas_finalizadas")->first()->total_quantidade_vidas_finalizadas;
+
+        $qtd_cancelado_coletivo = Contrato::where("financeiro_id",12)
+        ->where('plano_id',3)
+        ->count();     
+
+        $quantidade_valor_cancelado_coletivo = Contrato::where("financeiro_id",12)->where('plano_id',3)
+        ->selectRaw("if(sum(valor_plano)>=1,sum(valor_plano),0) as valor_total_cancelado")->first()->valor_total_cancelado;
+
+        $qtd_cancelado_quantidade_vidas_coletivo = Cliente::whereHas('contrato',function($query){
+            $query->where("financeiro_id",12);
+            $query->where("plano_id",3);
+        })->selectRaw("if(sum(quantidade_vidas)>=1,sum(quantidade_vidas),0) as total_quantidade_vidas_cancelado")->first()->total_quantidade_vidas_cancelado;
+       
+
+
+
+        //Fimmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm Coletivo
+
+
+        //Empresarial
+
+        $quantidade_empresarial_geral  = Contrato::where("plano_id","!=",3)->where("plano_id","!=",1)->count();
+
+        $total_valor_geral_empresarial = Contrato::where("plano_id","!=",3)->where("plano_id","!=",1)->selectRaw("if(SUM(valor_plano)>=1,SUM(valor_plano),0) as total_geral")->first()->total_geral;
+        
+        $quantidade_vidas_geral_empresarial = Cliente::whereHas('contrato',function($query){
+            $query->where("plano_id","!=",3);
+            $query->where("plano_id","!=",1);
+        })->selectRaw("if(SUM(quantidade_vidas)>=1,SUM(quantidade_vidas),0) as quantidade_vidas")->first()->quantidade_vidas;      
+
+        $total_quantidade_recebidos_empresarial = Contrato::whereHas('comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",1);
+            $query->where("valor","!=",0);
+        })
+        ->where("plano_id","!=",3)
+        ->where("plano_id","!=",1)
+        ->count();
+
+        $total_valor_recebidos_empresarial = Contrato::whereHas('comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",1);
+            $query->where("valor","!=",0);
+        })
+        ->where("plano_id","!=",3)
+        ->where("plano_id","!=",1)
+        ->selectRaw("sum(valor_plano) as total_valor_plano")
+        ->first()
+        ->total_valor_plano;
+    
+        $quantidade_vidas_recebidas_empresarial = Cliente::whereHas('contrato.comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",1);
+            $query->where("valor","!=",0);
+        })
+        ->whereHas('contrato',function($query){
+            $query->where("plano_id","!=",3);
+            $query->where("plano_id","!=",1);
+        })
+        ->selectRaw("if(sum(quantidade_vidas)>=1,sum(quantidade_vidas),0) as total_quantidade_vidas_recebidas")
+        ->first()
+        ->total_quantidade_vidas_recebidas;
+
+
+        
+        $total_quantidade_a_receber_empresarial = Contrato::whereHas('comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",0);
+            $query->where("valor","!=",0);
+        })
+        ->where("plano_id","!=",3)
+        ->where("plano_id","!=",1)
+        ->count();
+
+        $total_valor_a_receber_empresarial = Contrato::whereHas('comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",0);
+            $query->where("valor","!=",0);
+        })
+        ->where("plano_id","!=",3)
+        ->where("plano_id","!=",1)
+        ->selectRaw("if(sum(valor_plano)>=1,sum(valor_plano),0) as total_valor_plano")->first()->total_valor_plano;       
+
+        $quantidade_vidas_a_receber_empresarial = Cliente::whereHas('contrato.comissao.comissoesLancadas',function($query){
+            $query->where("status_financeiro",1);
+            $query->where("status_gerente",0);
+            $query->where("valor","!=",0);
+        })
+        ->whereHas('contrato',function($query){
+            $query->where("plano_id","!=",3);
+            $query->where("plano_id","!=",1);
+        })
+        ->selectRaw("if(sum(quantidade_vidas)>=1,sum(quantidade_vidas),0) as total_quantidade_vidas_recebidas")
+        ->first()
+        ->total_quantidade_vidas_recebidas;
+
+
+
+        
+        $qtd_atrasado_empresarial = Contrato::where("financeiro_id","!=",12)->whereHas('comissao.comissoesLancadas',function($query){
+            $query->whereRaw("DATA < CURDATE()");
+            $query->whereRaw("data_baixa IS NULL");
+            $query->groupBy("comissoes_id");
+        })
+        ->whereHas('clientes',function($query){$query->whereRaw('cateirinha IS NOT NULL');})
+        ->where("plano_id","!=",3)
+        ->where("plano_id","!=",1)
+        ->count();
+
+        $qtd_atrasado_valor_empresarial = Contrato::where("financeiro_id","!=",12)->whereHas('comissao.comissoesLancadas',function($query){
+            $query->whereRaw("DATA < CURDATE()");
+            $query->whereRaw("data_baixa IS NULL");
+            $query->groupBy("comissoes_id");
+        })
+        ->whereHas('clientes',function($query){$query->whereRaw('cateirinha IS NOT NULL');})
+        ->where("plano_id","!=",3)
+        ->where("plano_id","!=",1)
+        ->selectRaw("sum(valor_plano) as total_valor_plano")->first()->total_valor_plano;
+
+        
+
+        $qtd_atrasado_quantidade_vidas_empresarial = Cliente::whereHas('contrato.comissao.comissoesLancadas',function($query){
+            $query->whereRaw("DATA < CURDATE()");
+            $query->whereRaw("data_baixa IS NULL");
+            $query->groupBy("comissoes_id");
+        })
+        ->whereHas('contrato',function($query){
+            $query->where("plano_id","!=",3);
+            $query->where("plano_id","!=",1);
+        })
+        ->selectRaw("if(sum(quantidade_vidas)>=1,sum(quantidade_vidas),0) as total_quantidade_vidas_atrasadas")->first()->total_quantidade_vidas_atrasadas;
+
+
+
+        $qtd_finalizado_empresarial = Contrato::where("financeiro_id",11)->where('plano_id',"!=",3)->where("plano_id","!=",1)->count();
+
+        $quantidade_valor_finalizado_empresarial = Contrato::where("financeiro_id",11)->where('plano_id',"!=",3)->where("plano_id","!=",1)
+        ->selectRaw("if(sum(valor_plano)>=1,sum(valor_plano),0) as valor_total_finalizado")->first()->valor_total_finalizado;
+
+        $qtd_finalizado_quantidade_vidas_empresarial = Cliente::whereHas('contrato',function($query){
+            $query->where("financeiro_id",11);
+            $query->where("plano_id","!=",3);
+            $query->where("plano_id","!=",1);
+        })->selectRaw("if(sum(quantidade_vidas)>=1,sum(quantidade_vidas),0) as total_quantidade_vidas_finalizadas")->first()->total_quantidade_vidas_finalizadas;
+
+        $qtd_cancelado_empresarial = Contrato::where("financeiro_id",12)
+        ->where('plano_id',"!=",3)
+        ->where("plano_id","!=",1)
+        ->count();     
+
+        $quantidade_valor_cancelado_empresarial = Contrato::where("financeiro_id",12)->where('plano_id',"!=",3)->where("plano_id","!=",1)
+        ->selectRaw("if(sum(valor_plano)>=1,sum(valor_plano),0) as valor_total_cancelado")->first()->valor_total_cancelado;
+
+        $qtd_cancelado_quantidade_vidas_empresarial = Cliente::whereHas('contrato',function($query){
+            $query->where("financeiro_id",12);
+            $query->where("plano_id","!=",3);
+            $query->where("plano_id","!=",1);
+        })->selectRaw("if(sum(quantidade_vidas)>=1,sum(quantidade_vidas),0) as total_quantidade_vidas_cancelado")->first()->total_quantidade_vidas_cancelado;
+
+
+
+
+
+
+        //Fim Empresarial
+
+
+
+
+        // $total_geral = Contrato::selectRaw("sum(valor_plano) as total_geral")->first()->total_geral;
+        // $total_recebidos = Contrato::where("financeiro_id","!=",12)->whereHas('comissao.comissoesLancadas',function($query){
+        //     $query->where("status_financeiro",1);
+        //     $query->where("status_gerente",1);
+            
+        // })->whereHas('clientes',function($query){$query->whereRaw('cateirinha IS NOT NULL');})->selectRaw("sum(valor_plano) as total_plano")->first()->total_plano;
+        //dd($total_recebidos);
+
+
+        $users = User::where("id","!=",1)->get();
+        
         $quat_comissao_a_receber = ComissoesCorretoraLancadas::where("status_financeiro",1)->where("status_gerente",0)->count();
         $quat_comissao_recebido = ComissoesCorretoraLancadas::where("status_financeiro",1)->where("status_gerente",1)->count();
 
@@ -48,6 +588,9 @@ class GerenteController extends Controller
 
         );
 
+        $administradoras = Administradoras::orderBy('id','desc')->get();
+
+
         return view('admin.pages.gerente.index',[
             "quat_comissao_a_receber" => $quat_comissao_a_receber,
             "quat_comissao_recebido" => $quat_comissao_recebido,
@@ -55,9 +598,369 @@ class GerenteController extends Controller
             "valor_quat_comissao_recebido" => $valor_quat_comissao_recebido,
             "datas_select" => $datas_select,
             "total_mes_comissao" => $total_mes_comissoes[0]->total,
-            "administradoras_mes" => $administradoras_mes
+            "administradoras_mes" => $administradoras_mes,
+            "administradoras" => $administradoras,
+            "users" => $users,
+
+            "quantidade_geral"           => $quantidade_geral,
+            "total_valor_geral" => $total_valor_geral,
+            "quantidade_vidas_geral" => $quantidade_vidas_geral,
+
+            "total_quantidade_recebidos" => $total_quantidade_recebidos,
+            "total_valor_recebidos"      => $total_valor_recebidos,
+            "quantidade_vidas_recebidas" => $quantidade_vidas_recebidas,
+            
+            
+            "total_quantidade_a_receber" => $total_quantidade_a_receber,
+            "total_valor_a_receber" => $total_valor_a_receber,
+            "quantidade_vidas_a_receber" => $quantidade_vidas_a_receber,
+
+            
+            "qtd_atrasado" => $qtd_atrasado,
+            "qtd_atrasado_valor" => $qtd_atrasado_valor,
+            "qtd_atrasado_quantidade_vidas" => $qtd_atrasado_quantidade_vidas,
+
+
+            "qtd_finalizado" => $qtd_finalizado,
+            "quantidade_valor_finalizado" => $quantidade_valor_finalizado,
+            "qtd_finalizado_quantidade_vidas" => $qtd_finalizado_quantidade_vidas,
+
+            "qtd_cancelado" => $qtd_cancelado,
+            "quantidade_valor_cancelado" => $quantidade_valor_cancelado,
+            "qtd_cancelado_quantidade_vidas" => $qtd_cancelado_quantidade_vidas,
+
+            /************************* Individual *******************************/
+            
+            "quantidade_vidas_geral_individual" => $quantidade_vidas_geral_individual,
+            "total_valor_geral_individual" => $total_valor_geral_individual,
+            
+
+            "quantidade_individual_geral" => $quantidade_individual_geral,
+            "total_valor_geral_individual" => $total_valor_geral_individual,
+            "total_quantidade_recebidos_individual" => $total_quantidade_recebidos_individual,
+            "total_valor_recebidos_individual" => $total_valor_recebidos_individual,
+            "quantidade_vidas_recebidas_individual" => $quantidade_vidas_recebidas_individual,
+
+
+            "total_quantidade_a_receber_individual" => $total_quantidade_a_receber_individual,
+            "total_valor_a_receber_individual" => $total_valor_a_receber_individual,
+            "quantidade_vidas_a_receber_individual" => $quantidade_vidas_a_receber_individual,
+            
+
+            "qtd_atrasado_individual" => $qtd_atrasado_individual,
+            "qtd_atrasado_valor_individual" => $qtd_atrasado_valor_individual, 
+            "qtd_atrasado_quantidade_vidas_individual" => $qtd_atrasado_quantidade_vidas_individual,
+
+
+            
+
+            "qtd_cancelado_individual" => $qtd_cancelado_individual,
+            "quantidade_valor_cancelado_individual" => $quantidade_valor_cancelado_individual,
+            "qtd_cancelado_quantidade_vidas_individual" => $qtd_cancelado_quantidade_vidas_individual,
+
+            "qtd_finalizado_individual" => $qtd_finalizado_individual,
+            "quantidade_valor_finalizado_individual" => $quantidade_valor_finalizado_individual, 
+            "qtd_finalizado_quantidade_vidas_individual" => $qtd_finalizado_quantidade_vidas_individual,
+
+            /********************************************Coletivo */
+
+            "quantidade_coletivo_geral" => $quantidade_coletivo_geral,
+            "total_valor_geral_coletivo" => $total_valor_geral_coletivo,
+            "total_quantidade_recebidos_coletivo" => $total_quantidade_recebidos_coletivo,
+            "quantidade_vidas_geral_coletivo" => $quantidade_vidas_geral_coletivo,
+
+            "total_valor_recebidos_coletivo" => $total_valor_recebidos_coletivo,
+            "quantidade_vidas_recebidas_coletivo" => $quantidade_vidas_recebidas_coletivo,
+            "total_quantidade_a_receber_coletivo" => $total_quantidade_a_receber_coletivo,
+
+
+            "total_valor_a_receber_coletivo" => $total_valor_a_receber_coletivo,
+            "quantidade_vidas_a_receber_coletivo" => $quantidade_vidas_a_receber_coletivo,
+            "qtd_atrasado_coletivo" => $qtd_atrasado_coletivo,
+            "qtd_atrasado_valor_coletivo" => $qtd_atrasado_valor_coletivo,
+            "qtd_atrasado_quantidade_vidas_coletivo" => $qtd_atrasado_quantidade_vidas_coletivo,
+            "qtd_finalizado_coletivo" => $qtd_finalizado_coletivo,
+            "quantidade_valor_finalizado_coletivo" => $quantidade_valor_finalizado_coletivo,
+            "qtd_finalizado_quantidade_vidas_coletivo" => $qtd_finalizado_quantidade_vidas_coletivo,
+            "qtd_cancelado_coletivo" => $qtd_cancelado_coletivo,
+            "quantidade_valor_cancelado_coletivo" => $quantidade_valor_cancelado_coletivo,
+            "qtd_cancelado_quantidade_vidas_coletivo" => $qtd_cancelado_quantidade_vidas_coletivo,
+
+            /*****************Empresarial */
+            "quantidade_empresarial_geral" => $quantidade_empresarial_geral,
+            "total_valor_geral_empresarial" => $total_valor_geral_empresarial,
+            "quantidade_vidas_geral_empresarial" => $quantidade_vidas_geral_empresarial,
+            "total_quantidade_recebidos_empresarial" => $total_quantidade_recebidos_empresarial,
+            "total_valor_recebidos_empresarial" => $total_valor_recebidos_empresarial,
+            "quantidade_vidas_recebidas_empresarial" => $quantidade_vidas_recebidas_empresarial,
+            "total_quantidade_a_receber_empresarial" => $total_quantidade_a_receber_empresarial,
+            "total_valor_a_receber_empresarial" => $total_valor_a_receber_empresarial,
+            "quantidade_vidas_a_receber_empresarial" => $quantidade_vidas_a_receber_empresarial,
+            'qtd_atrasado_empresarial' => $qtd_atrasado_empresarial,
+            "qtd_atrasado_valor_empresarial" => $qtd_atrasado_valor_empresarial,
+            "qtd_atrasado_quantidade_vidas_empresarial" => $qtd_atrasado_quantidade_vidas_empresarial,
+            "qtd_finalizado_empresarial" => $qtd_finalizado_empresarial,
+            "quantidade_valor_finalizado_empresarial" => $quantidade_valor_finalizado_empresarial,
+            "qtd_finalizado_quantidade_vidas_empresarial" => $qtd_finalizado_quantidade_vidas_empresarial,
+            "qtd_cancelado_empresarial" => $qtd_cancelado_empresarial,
+            "quantidade_valor_cancelado_empresarial" => $quantidade_valor_cancelado_empresarial,
+            "qtd_cancelado_quantidade_vidas_empresarial" => $qtd_cancelado_quantidade_vidas_empresarial
+
+
+
         ]);
     }
+
+    public function verDetalheCard($id_plano,$id_tipo)
+    {
+        return view('admin.pages.gerente.detalhe-card',[
+            "id_plano" => $id_plano,
+            "id_tipo" => $id_tipo
+        ]);
+
+
+    }
+
+    public function showDetalheCard($id_plano,$id_tipo)
+    {
+        if($id_plano == 1) {
+            switch($id_tipo) {
+                case 1:
+                    $contratos = Contrato
+                    ::where("plano_id",1)   
+                    ->whereHas('clientes',function($query){
+                        $query->whereRaw("cateirinha IS NOT NULL");
+                    }) 
+                    
+                    // ->whereHas('comissao.ultimaComissaoPaga',function($query){
+                    //     $query->whereYear("data",2022);
+                    //     $query->whereMonth('data','08');
+                    // })    
+                    ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','comissao.comissaoAtualFinanceiro','comissao.ultimaComissaoPaga','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
+                    ->orderBy("id","desc")
+                    ->get();
+                    return $contratos; 
+        
+                break;    
+                case 2:
+                    
+                    $contratos = Contrato
+                    ::where("plano_id",1)   
+                    ->whereHas('clientes',function($query){
+                        $query->whereRaw("cateirinha IS NOT NULL");
+                    }) 
+                    ->whereHas('comissao.comissoesLancadas',function($query){
+                        $query->where("status_financeiro",1);
+                        $query->where("status_gerente",1);
+                        $query->where("valor","!=",0);
+                    })    
+                    ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','comissao.comissaoAtualFinanceiro','comissao.ultimaComissaoPaga','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
+                    ->orderBy("id","desc")
+                    ->get();
+                    return $contratos; 
+                    
+
+
+                break;    
+                case 3:
+                    $contratos = Contrato
+                    ::where("plano_id",1)   
+                    ->whereHas('clientes',function($query){
+                        $query->whereRaw("cateirinha IS NOT NULL");
+                    }) 
+                    ->whereHas('comissao.comissoesLancadas',function($query){
+                        $query->where("status_financeiro",1);
+                        $query->where("status_gerente",0);
+                        $query->where("valor","!=",0);
+                    })    
+                    ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','comissao.comissaoAtualFinanceiro','comissao.ultimaComissaoPaga','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
+                    ->orderBy("id","desc")
+                    ->get();
+                    return $contratos; 
+                break;    
+                case 4:
+                    $contratos = Contrato
+                    ::where("plano_id",1)
+                    ->where("financeiro_id","!=",12)
+                    ->whereHas('comissao.comissoesLancadas',function($query){
+                        $query->whereRaw("DATA < CURDATE()");
+                        //$query->whereRaw("valor > 0");
+                        $query->whereRaw("data_baixa IS NULL");
+                        $query->groupBy("comissoes_id");
+                    })
+                    ->whereHas('clientes',function($query){
+                        $query->whereRaw('cateirinha IS NOT NULL');
+                    })
+                    ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','comissao.comissaoAtualFinanceiro','comissao.ultimaComissaoPaga','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
+                    ->get();
+
+                    return $contratos;
+
+
+                break;
+                case 5:
+
+                    $contratos = Contrato
+                    ::where("financeiro_id",12)
+                    ->where("plano_id",1)
+                    ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','comissao.comissaoAtualFinanceiro','comissao.ultimaComissaoPaga','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
+                    ->get();
+                    
+                    return $contratos;
+
+                    
+                break;    
+                case 6:
+
+                    $contratos = Contrato
+                    ::where("financeiro_id",11)
+                    ->where("plano_id",1)
+                    ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','comissao.comissaoAtualFinanceiro','comissao.ultimaComissaoPaga','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
+                    ->get();
+                    
+                    return $contratos;
+
+
+
+
+
+
+                break;
+                default:
+                    return [];
+                break;
+            }
+
+            
+        } else if($id_plano == 2) {
+            switch($id_tipo) {
+                case 1:
+                    $contratos = Contrato
+                    ::where("plano_id",3)   
+                    ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','comissao.comissaoAtualFinanceiro','comissao.ultimaComissaoPaga','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
+                    ->orderBy("id","desc")
+                    ->get();
+                    return $contratos; 
+        
+                break;    
+                case 2:
+                    
+                    $contratos = Contrato
+                    ::where("plano_id",3)   
+                    
+                    ->whereHas('comissao.comissoesLancadas',function($query){
+                        $query->where("status_financeiro",1);
+                        $query->where("status_gerente",1);
+                        $query->where("valor","!=",0);
+                    })    
+                    ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','comissao.comissaoAtualFinanceiro','comissao.ultimaComissaoPaga','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
+                    ->orderBy("id","desc")
+                    ->get();
+                    return $contratos; 
+                    
+
+
+                break;    
+                case 3:
+                    $contratos = Contrato
+                    ::where("plano_id",3)   
+                    
+                    ->whereHas('comissao.comissoesLancadas',function($query){
+                        $query->where("status_financeiro",1);
+                        $query->where("status_gerente",0);
+                        $query->where("valor","!=",0);
+                    })    
+                    ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','comissao.comissaoAtualFinanceiro','comissao.ultimaComissaoPaga','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
+                    ->orderBy("id","desc")
+                    ->get();
+                    return $contratos; 
+                break;    
+                case 4:
+                    $contratos = Contrato
+                    ::where("plano_id",3)
+                    ->where("financeiro_id","!=",12)
+                    ->whereHas('comissao.comissoesLancadas',function($query){
+                        $query->whereRaw("DATA < CURDATE()");
+                        //$query->whereRaw("valor > 0");
+                        $query->whereRaw("data_baixa IS NULL");
+                        $query->groupBy("comissoes_id");
+                    })
+                    ->whereHas('clientes',function($query){
+                        $query->whereRaw('cateirinha IS NOT NULL');
+                    })
+                    ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','comissao.comissaoAtualFinanceiro','comissao.ultimaComissaoPaga','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
+                    ->get();
+
+                    return $contratos;
+
+
+                break;
+                case 5:
+
+                    $contratos = Contrato
+                    ::where("financeiro_id",12)
+                    ->where("plano_id",3)
+                    ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','comissao.comissaoAtualFinanceiro','comissao.ultimaComissaoPaga','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
+                    ->get();
+                    
+                    return $contratos;
+
+                    
+                break;    
+                case 6:
+
+                    $contratos = Contrato
+                    ::where("financeiro_id",11)
+                    ->where("plano_id",3)
+                    ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','comissao.comissaoAtualFinanceiro','comissao.ultimaComissaoPaga','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
+                    ->get();
+                    
+                    return $contratos;
+
+
+
+
+
+
+                break;
+                default:
+                    return [];
+                break;
+            }
+        } else if($id_plano == 3) {
+            switch($id_tipo) {
+                case 1:
+                    return [];
+        
+                break;    
+                case 2:
+                    return [];
+
+                break;    
+                case 3:
+                    return [];
+                break;    
+                case 4:
+                    return [];
+                break;
+                case 5:
+                   return [];
+                break;    
+                case 6:
+                    return [];
+                break;
+                default:
+                    return [];
+                break;
+            }
+        }
+    }
+
+
+
+
+
+
 
     public function listagem()
     {
@@ -102,37 +1005,165 @@ class GerenteController extends Controller
         //         exists (select * from `comissoes` where `contratos`.`id` = `comissoes`.`contrato_id` AND 
         //         exists (select * from `comissoes_corretores_lancadas` where `comissoes`.`id` = `comissoes_corretores_lancadas`.`comissoes_id` and `status_financeiro` = 1 and `status_gerente` = 0)))");
             
-        $dados = DB::select(
-            "
-            SELECT 
-			comissoes_corretora_lancadas.id,
-   (SELECT nome FROM administradoras WHERE administradoras.id = comissoes.administradora_id) AS administradora,
-   (SELECT NAME FROM users WHERE users.id = comissoes.user_id) AS corretor,
-   (SELECT nome FROM planos WHERE planos.id = comissoes.plano_id) AS plano,
-     case when empresarial then
-        (SELECT responsavel FROM contrato_empresarial WHERE contrato_empresarial.id = comissoes.contrato_empresarial_id)
-     else
-       (SELECT nome FROM clientes WHERE id = (SELECT cliente_id FROM contratos WHERE contratos.id = comissoes.contrato_id))
-     END AS cliente,
-       (SELECT nome FROM tabela_origens WHERE tabela_origens.id = comissoes.tabela_origens_id) AS tabela_origens,		
-                case when empresarial then
-                    (SELECT codigo_externo FROM contrato_empresarial WHERE contrato_empresarial.id = comissoes.contrato_empresarial_id)
-                        else
-                    (SELECT codigo_externo FROM contratos WHERE contratos.id = comissoes.contrato_id)
-                    END AS codigo_externo,	
-                    parcela,
-                    valor,
+//         $dados = DB::select(
+//             "
+//             SELECT 
+// 			comissoes_corretora_lancadas.id,
+//    (SELECT nome FROM administradoras WHERE administradoras.id = comissoes.administradora_id) AS administradora,
+//    (SELECT NAME FROM users WHERE users.id = comissoes.user_id) AS corretor,
+//    (SELECT nome FROM planos WHERE planos.id = comissoes.plano_id) AS plano,
+//      case when empresarial then
+//         (SELECT responsavel FROM contrato_empresarial WHERE contrato_empresarial.id = comissoes.contrato_empresarial_id)
+//      else
+//        (SELECT nome FROM clientes WHERE id = (SELECT cliente_id FROM contratos WHERE contratos.id = comissoes.contrato_id))
+//      END AS cliente,
+//        (SELECT nome FROM tabela_origens WHERE tabela_origens.id = comissoes.tabela_origens_id) AS tabela_origens,		
+//                 case when empresarial then
+//                     (SELECT codigo_externo FROM contrato_empresarial WHERE contrato_empresarial.id = comissoes.contrato_empresarial_id)
+//                         else
+//                     (SELECT codigo_externo FROM contratos WHERE contratos.id = comissoes.contrato_id)
+//                     END AS codigo_externo,	
+//                     parcela,
+//                     valor,
                     
-                    comissoes_corretora_lancadas.data as vencimento,                   
-                    comissoes.id AS comissao
+//                     comissoes_corretora_lancadas.data as vencimento,                   
+//                     comissoes.id AS comissao
                     
-                FROM comissoes_corretora_lancadas 
-                INNER JOIN comissoes ON comissoes.id = comissoes_corretora_lancadas.comissoes_id
-                "
-        );
+//                 FROM comissoes_corretora_lancadas 
+//                 INNER JOIN comissoes ON comissoes.id = comissoes_corretora_lancadas.comissoes_id
+//                 WHERE valor != 0
+//                 "
+//         );
+
+    //     $dados = DB::select(
+    //         "
+    //         SELECT 
+    //         comissoes_corretora_lancadas.id,
+    //         comissoes_corretora_lancadas.status_financeiro,
+    //         comissoes_corretora_lancadas.status_gerente,
+    //         1 AS corretora,
+    //         (SELECT nome FROM administradoras WHERE administradoras.id = comissoes.administradora_id) AS administradora,
+    //         (SELECT NAME FROM users WHERE users.id = comissoes.user_id) AS corretor,
+    //         (SELECT nome FROM planos WHERE planos.id = comissoes.plano_id) AS plano,
+    //         case when empresarial then
+    //         (SELECT responsavel FROM contrato_empresarial WHERE contrato_empresarial.id = comissoes.contrato_empresarial_id)
+    //      else
+    //        (SELECT nome FROM clientes WHERE id = (SELECT cliente_id FROM contratos WHERE contratos.id = comissoes.contrato_id))
+    //      END AS cliente,
+    //         (SELECT nome FROM tabela_origens WHERE tabela_origens.id = comissoes.tabela_origens_id) AS tabela_origens,		
+    //             case when empresarial then
+    //         (SELECT codigo_externo FROM contrato_empresarial WHERE contrato_empresarial.id = comissoes.contrato_empresarial_id)
+    //             else
+    //                     (SELECT codigo_externo FROM contratos WHERE contratos.id = comissoes.contrato_id)
+    //                     END AS codigo_externo,
+    //                     comissoes_corretora_lancadas.parcela,
+    //                     comissoes_corretora_lancadas.valor,
+    //                     comissoes_corretora_lancadas.data as vencimento,                   
+    //                     comissoes.id AS comissao 
+    //         FROM comissoes_corretora_lancadas
+    // INNER JOIN comissoes ON comissoes.id = comissoes_corretora_lancadas.comissoes_id WHERE comissoes_corretora_lancadas.valor != 0
+    // AND comissoes_corretora_lancadas.status_financeiro = 1 AND comissoes_corretora_lancadas.status_gerente = 0
+
+    // UNION 
+    
+    // SELECT 
+    //     comissoes_corretores_lancadas.id,
+    //     comissoes_corretores_lancadas.status_financeiro,
+    //     comissoes_corretores_lancadas.status_gerente,
+    //     0 AS corretora,
+    //     (SELECT nome FROM administradoras WHERE administradoras.id = comissoes.administradora_id) AS administradora,
+    //     (SELECT NAME FROM users WHERE users.id = comissoes.user_id) AS corretor,
+    //     (SELECT nome FROM planos WHERE planos.id = comissoes.plano_id) AS plano,
+    //     case when empresarial then
+    //         (SELECT responsavel FROM contrato_empresarial WHERE contrato_empresarial.id = comissoes.contrato_empresarial_id)
+    //      else
+    //        (SELECT nome FROM clientes WHERE id = (SELECT cliente_id FROM contratos WHERE contratos.id = comissoes.contrato_id))
+    //      END AS cliente,
+    //                      (SELECT nome FROM tabela_origens WHERE tabela_origens.id = comissoes.tabela_origens_id) AS tabela_origens,		
+    //                 case when empresarial then
+    //                     (SELECT codigo_externo FROM contrato_empresarial WHERE contrato_empresarial.id = comissoes.contrato_empresarial_id)
+    //                         else
+    //                     (SELECT codigo_externo FROM contratos WHERE contratos.id = comissoes.contrato_id)
+    //                     END AS codigo_externo,
+    //                     comissoes_corretores_lancadas.parcela,
+    //                     comissoes_corretores_lancadas.valor,
+    //                     comissoes_corretores_lancadas.data as vencimento,                   
+    //                     comissoes.id AS comissao  
+    //     FROM comissoes_corretores_lancadas
+    // INNER JOIN comissoes ON comissoes.id = comissoes_corretores_lancadas.comissoes_id WHERE comissoes_corretores_lancadas.valor != 0
+    // AND comissoes_corretores_lancadas.status_financeiro = 1 AND comissoes_corretores_lancadas.status_gerente = 0
+    //         "
+    //     );
+
+    $dados = DB::select(
+        "
+        SELECT 
+		    (SELECT nome FROM administradoras WHERE administradoras.id = comissoes.administradora_id) AS administradora,
+		    (SELECT NAME FROM users WHERE users.id = comissoes.user_id) AS corretor,
+		    (SELECT nome FROM planos WHERE planos.id = comissoes.plano_id) AS plano,
+		    (SELECT nome FROM tabela_origens WHERE tabela_origens.id = comissoes.tabela_origens_id) AS tabela_origens,
+		    comissoes_corretores_lancadas.data as vencimento,
+		    
+            case when empresarial then
+                (SELECT responsavel FROM contrato_empresarial WHERE contrato_empresarial.id = comissoes.contrato_empresarial_id)
+                else
+                (SELECT nome FROM clientes WHERE id = (SELECT cliente_id FROM contratos WHERE contratos.id = comissoes.contrato_id))
+            END AS cliente,
+            
+            case when empresarial then
+                (SELECT codigo_externo FROM contrato_empresarial WHERE contrato_empresarial.id = comissoes.contrato_empresarial_id)
+                else
+                (SELECT codigo_externo FROM contratos WHERE contratos.id = comissoes.contrato_id)
+            END AS codigo_externo,
+            
+            case when empresarial then
+                (SELECT valor_plano FROM contrato_empresarial WHERE contrato_empresarial.id = comissoes.contrato_empresarial_id)
+            else
+            (SELECT valor_plano FROM contratos WHERE contratos.id = comissoes.contrato_id)
+            END AS valor,
+		    comissoes.id AS comissao 
+	
+        FROM comissoes_corretores_lancadas 
+        INNER JOIN comissoes ON comissoes.id = comissoes_corretores_lancadas.comissoes_id
+        WHERE status_financeiro = 1 AND status_gerente = 0 AND valor != 0");
+
+
                 
         return $dados;     
     }
+
+    public function listarcontratos()
+    {
+        $dados = DB::select(
+            "
+                SELECT 
+                (SELECT nome FROM administradoras WHERE administradoras.id = contratos.administradora_id) AS administradora,
+                (SELECT NAME FROM users WHERE users.id = clientes.user_id) AS corretor,
+                clientes.nome AS cliente,
+                (contratos.codigo_externo) AS codigo_externo,
+                (SELECT nome FROM planos WHERE planos.id = contratos.plano_id) AS plano,
+                (contratos.valor_plano) AS valor,
+                (contratos.created_at) AS data_contrato,
+                (SELECT nome FROM tabela_origens WHERE tabela_origens.id = contratos.tabela_origens_id) AS origem,
+                (contratos.id) AS detalhe
+                FROM clientes
+                INNER JOIN contratos ON contratos.cliente_id = clientes.id
+            "
+        );
+        return $dados;
+    }
+
+    public function listarcontratosDetalhe($id)
+    {
+        $contrato = Contrato::where("id",$id)
+            ->with(['comissao','comissao.comissoesLancadasCorretora','comissao.comissoesLancadas','clientes','clientes.user'])    
+            ->first();
+        return view('admin.pages.gerente.contrato',[
+            "dados" => $contrato
+        ]);    
+    }   
+
+
 
     public function listarComissao($id)
     {
@@ -184,30 +1215,41 @@ class GerenteController extends Controller
     {
         $id = $request->id;
         $dados = DB::select("
-            SELECT 
-            comissoes_corretores_lancadas.id,
-            comissoes_corretores_lancadas.comissoes_id,
-            DATE_FORMAT(comissoes_corretores_lancadas.data,'%d/%m/%Y') AS data,
-            comissoes_corretores_lancadas.valor,
-            DATE_FORMAT(comissoes_corretores_lancadas.data_baixa_gerente,'%d/%m/%Y') AS data_baixa_gerente,
-            
-            case when comissoes.empresarial then
-				(SELECT responsavel FROM contrato_empresarial WHERE contrato_empresarial.id = comissoes.contrato_empresarial_id)
-			ELSE 
-				(SELECT nome FROM clientes WHERE id = ((SELECT cliente_id FROM contratos WHERE contratos.id = comissoes.contrato_id)))
-			END AS cliente,
-
-
-
-            (SELECT nome FROM administradoras WHERE administradoras.id = comissoes.administradora_id) AS administradora,
-            CONCAT(UPPER(SUBSTR(MONTHNAME(comissoes_corretores_lancadas.data),1,1)),LOWER(SUBSTR(MONTHNAME(comissoes_corretores_lancadas.data),2))) AS mes_atual
-            FROM comissoes_corretores_lancadas 
-            INNER JOIN comissoes ON comissoes.id = comissoes_corretores_lancadas.comissoes_id
-            WHERE comissoes_corretores_lancadas.status_financeiro = 1 AND 
-            comissoes_corretores_lancadas.status_gerente = 1 AND 
-            MONTH(comissoes_corretores_lancadas.data) = MONTH(NOW()) AND
-            comissoes.user_id = {$id}
-            ORDER BY comissoes.administradora_id
+        SELECT 
+        (SELECT nome FROM administradoras WHERE administradoras.id = comissoes.administradora_id) AS administradora,      
+                       case when comissoes.empresarial then
+                               (SELECT responsavel FROM contrato_empresarial WHERE contrato_empresarial.id = comissoes.contrato_empresarial_id)
+                               ELSE 
+                               (SELECT nome FROM clientes WHERE id = ((SELECT cliente_id FROM contratos WHERE contratos.id = comissoes.contrato_id)))
+                       END AS cliente,
+                       DATE_FORMAT(comissoes_corretores_lancadas.data,'%d/%m/%Y') AS data,			
+                       DATE_FORMAT(comissoes_corretores_lancadas.data_baixa_gerente,'%d/%m/%Y') AS data_baixa_gerente,		
+                       
+                       case when empresarial then
+                            (SELECT valor_plano FROM contrato_empresarial WHERE contrato_empresarial.id = comissoes.contrato_empresarial_id)
+              else
+                      (SELECT valor_plano FROM contratos WHERE contratos.id = comissoes.contrato_id)
+                    END AS valor_plano_contratado,
+                       
+                       
+                       
+                       comissoes_corretores_lancadas.valor AS comissao_esperada,	
+                       if(comissoes_corretores_lancadas.valor_pago,comissoes_corretores_lancadas.valor_pago,comissoes_corretores_lancadas.valor) AS comissao_recebida,
+                       
+                       
+                       
+                    comissoes_corretores_lancadas.id,
+                    comissoes_corretores_lancadas.comissoes_id,
+                    comissoes_corretores_lancadas.parcela
+   
+               
+               
+   
+        FROM comissoes_corretores_lancadas 
+        INNER JOIN comissoes ON comissoes.id = comissoes_corretores_lancadas.comissoes_id
+        WHERE comissoes_corretores_lancadas.status_financeiro = 1 AND 
+        comissoes_corretores_lancadas.status_gerente = 1 AND comissoes_corretores_lancadas.status_comissao = 0 AND
+        comissoes.user_id = {$id} ORDER BY comissoes.administradora_id
         ");
 
         return $dados;
@@ -218,24 +1260,29 @@ class GerenteController extends Controller
         $id = $request->id;
         $dados = DB::select("
                 SELECT 
+                
                 comissoes_corretores_lancadas.id,
-                comissoes_corretores_lancadas.comissoes_id,
+                comissoes_corretores_lancadas.parcela,
                 DATE_FORMAT(comissoes_corretores_lancadas.data,'%d/%m/%Y') AS data, 
                 comissoes_corretores_lancadas.valor,
-                DATE_FORMAT(comissoes_corretores_lancadas.data_baixa_gerente,'%d/%m/%Y') AS data_baixa_gerente,
+                
+                
+                
                 case when empresarial then
    				    (SELECT responsavel FROM contrato_empresarial WHERE contrato_empresarial.id = comissoes.contrato_empresarial_id)
    	            ELSE 			
 				    (SELECT nome FROM clientes WHERE id = ((SELECT cliente_id FROM contratos WHERE contratos.id = comissoes.contrato_id)))
                 END AS cliente,
-                (SELECT nome FROM administradoras WHERE administradoras.id = comissoes.administradora_id) AS administradora,
-                CONCAT(UPPER(SUBSTR(MONTHNAME(comissoes_corretores_lancadas.data),1,1)),LOWER(SUBSTR(MONTHNAME(comissoes_corretores_lancadas.data),2))) AS mes_atual
+                
+                (SELECT nome FROM administradoras WHERE administradoras.id = comissoes.administradora_id) AS administradora
+                
                 FROM comissoes_corretores_lancadas 
+                
                 INNER JOIN comissoes ON comissoes.id = comissoes_corretores_lancadas.comissoes_id
                 WHERE comissoes_corretores_lancadas.status_financeiro = 1 AND 
-                comissoes_corretores_lancadas.status_gerente = 1 AND 
-                MONTH(comissoes_corretores_lancadas.data) != MONTH(NOW()) AND
-                comissoes.user_id = {$id}
+                comissoes_corretores_lancadas.status_gerente = 0 AND 
+                
+                comissoes.user_id = {$id} AND comissoes_corretores_lancadas.valor != 0
                 ORDER BY comissoes.administradora_id
         ");
         return $dados;
@@ -252,6 +1299,22 @@ class GerenteController extends Controller
        return view('admin.pages.gerente.pdf',[
             "dados" => $dados
        ]);
+    }
+
+    public function finalizarPagamento(Request $request) 
+    {
+        $ids = explode("|",$request->ids);
+        // $dados = DB::table("comissoes_corretores_lancadas")->whereIn('id', $ids)->update(['status_comissao' => 1]);
+        $dados = DB::table("comissoes_corretores_lancadas")->whereIn('id', $ids)->get();
+        
+        $pdf = PDF::loadView('admin.pages.gerente.pdf-folha',[
+            "dados" => $dados
+        ]);
+        return $pdf->stream("teste.pdf");
+
+
+
+
     }
 
 
@@ -322,541 +1385,280 @@ class GerenteController extends Controller
 
     public function detalhe($id) 
     {
-        $texto_empresarial = "";
-        $comissao = Comissoes::where('id',$id)->first();
+        
 
-        if($comissao->empresarial) {
-            $id_contrato = $comissao->contrato_empresarial_id;
-            // $contrato = Contrato::where("id",$id)
-            // ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes','comissao.comissoesAprovadasFinanceira','comissao.comissoesLancadas','comissao.comissaoAtual','comissao.comissoesLancadasCorretora'])
-            // ->first();
+        $dados = DB::select("
+        SELECT 
+        comissoes_corretores_lancadas.parcela,
+        comissoes_corretores_lancadas.id AS id_corretor,
+		comissoes_corretora_lancadas.id AS id_corretora,
+        if(comissoes_corretora_lancadas.valor_pago,comissoes_corretora_lancadas.valor_pago,0) AS valor_pago,
+        if(comissoes_corretora_lancadas.porcentagem_paga,comissoes_corretora_lancadas.porcentagem_paga,0) AS porcentagem_paga,
+        case when empresarial then
+            (SELECT codigo_externo FROM contrato_empresarial WHERE contrato_empresarial.id = comissoes.contrato_empresarial_id)
+        else
+            (SELECT codigo_externo FROM contratos WHERE contratos.id = comissoes.contrato_id)
+            END AS codigo_externo,
+     comissoes_corretores_lancadas.data AS vencimento,
+     case when empresarial then
+ (SELECT valor_plano FROM contrato_empresarial WHERE contrato_empresarial.id = comissoes.contrato_empresarial_id)
+   else
+   (SELECT valor_plano FROM contratos WHERE contratos.id = comissoes.contrato_id)
+ END AS valor_plano_contratado,
+  comissoes_corretora_lancadas.data_baixa AS data_baixa,  
+     (SELECT valor FROM comissoes_corretora_configuracoes 
+               WHERE 
+               plano_id = comissoes.plano_id AND 
+               administradora_id = comissoes.administradora_id AND 
+               tabela_origens_id = comissoes.tabela_origens_id AND
+               parcela = comissoes_corretora_lancadas.parcela
+               ) AS porcentagem_parcela_corretora,
 
-
-            $contrato = ContratoEmpresarial::where("id",$id_contrato)
-                ->selectRaw("
-                    id,
-                    responsavel,
-                    (select name from users where users.id = contrato_empresarial.user_id) as vendedor,
-                    telefone,
-                    celular,
-                    quantidade_vidas,
-                    cnpj,
-                    razao_social,
-                    email,
-                    uf,
-                    cidade,
-                    (select nome from tabela_origens where tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem,
-                    codigo_corretora,
-                    codigo_saude,
-                    codigo_odonto,
-                    senha_cliente,
-                    codigo_saude,
-                    valor_plano_odonto,
-                    valor_plano_saude,
-                    valor_total,
-                    taxa_adesao,
-                    valor_boleto,
-                    vencimento_boleto,
-                    data_boleto,
-                    plano_contrado,
-                    (select nome from planos where planos.id = contrato_empresarial.plano_id) as plano
-
-
-                    
-
-                ")
-                ->with('comissao','comissao.comissoesAprovadasFinanceira','comissao.comissoesLancadas','comissao.comissaoAtual','comissao.comissoesLancadasCorretora')
-            ->first();
-            
-            
-            if($contrato->plano_contrado == 1) {
-                $texto_empresarial = "C/ Copart + Odonto";
-            } else if($contrato->plano_contrado == 2) {
-                $texto_empresarial = "C/ Copart Sem Odonto";
-            } else if($contrato->plano_contrado == 3) {
-                $texto_empresarial = "Sem Copart + Odonto";
-            } else if($contrato->plano_contrado == 4){
-                $texto_empresarial = "Sem Copart Sem Odonto";
-            } else {
-                $texto_empresarial = "";
-            }
-
-            
-            
+               (SELECT id FROM comissoes_corretora_configuracoes 
+               WHERE 
+               plano_id = comissoes.plano_id AND 
+               administradora_id = comissoes.administradora_id AND 
+               tabela_origens_id = comissoes.tabela_origens_id AND
+               parcela = comissoes_corretora_lancadas.parcela
+               ) AS porcentagem_parcela_corretora_id,
 
 
 
 
+        comissoes_corretora_lancadas.valor AS comissao_valor_corretora,
 
-            $empresarial = true;
+          
 
-            
+        if(comissoes_corretores_lancadas.valor_pago,comissoes_corretores_lancadas.valor_pago,0) as comissao_valor_pago_corretor,
+        if(comissoes_corretores_lancadas.porcentagem_paga,comissoes_corretores_lancadas.porcentagem_paga,0) as comissao_porcentagem_pago_corretor,
 
-        } else {
-            $id_contrato = $comissao->contrato_id;
+         comissoes_corretores_lancadas.valor AS comissao_valor_corretor,
+              (SELECT valor FROM comissoes_corretores_default
+               WHERE 
+               plano_id = comissoes.plano_id AND 
+               administradora_id = comissoes.administradora_id AND 
+               tabela_origens_id = comissoes.tabela_origens_id AND
+               parcela = comissoes_corretora_lancadas.parcela
+               ) AS porcentagem_parcela_corretores,
 
-            
-            $contrato = Contrato::where("id",$id_contrato)
-                
-            ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes','comissao.comissoesAprovadasFinanceira','comissao.comissoesLancadas','comissao.comissaoAtual','comissao.comissoesLancadasCorretora'])
-            ->first();
+
+               (SELECT id FROM comissoes_corretores_default
+               WHERE 
+               plano_id = comissoes.plano_id AND 
+               administradora_id = comissoes.administradora_id AND 
+               tabela_origens_id = comissoes.tabela_origens_id AND
+               parcela = comissoes_corretora_lancadas.parcela
+               ) AS porcentagem_parcela_corretor_id,
 
 
-            $empresarial = false;
-            
 
-        }
 
         
 
 
-
-        // $contrato = Contrato::where("id",$id)
-        // ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes','comissao.comissoesAprovadasFinanceira','comissao.comissoesLancadas','comissao.comissaoAtual','comissao.comissoesLancadasCorretora','comissao.comissoesLancadas'])
-        // ->first();
-
-        // $contrato = Contrato::where("id",$id)
-        // ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes','comissao.comissoesAprovadasFinanceira','comissao.comissoesLancadas','comissao.comissaoAtual','comissao.comissoesLancadasCorretora'])
-        // ->first();
-
-        // $comissao_id = Comissoes::where("contrato_id",$contrato->id)->first()->id;
-       
-
-        $total_corretora_pago = DB::select(
-            "SELECT SUM(valor) as total FROM comissoes_corretora_lancadas WHERE status_gerente = 1 AND comissoes_id = {$id}"
-        );
-
-        $total_corretora_nao_paga = DB::select(
-            "SELECT  SUM(valor) as total FROM comissoes_corretora_lancadas WHERE status_gerente = 0 AND comissoes_id = {$id}"
-        );
-
-        $total_corretores_pago = DB::select(
-            "SELECT SUM(valor) as total FROM comissoes_corretores_lancadas WHERE  status_financeiro = 1 AND comissoes_id = {$id}"
-        );
-
-        $total_corretores_nao_paga = DB::select(
-            "SELECT SUM(valor) as total FROM comissoes_corretores_lancadas WHERE  status_financeiro = 0 AND comissoes_id = {$id}"
-        );
-        
-
-        if(isset($contrato->acomodacao->nome) && !empty($contrato->acomodacao->nome)) {
-            if($contrato->acomodacao->nome == "Apartamento" && $contrato->coparticipacao == 1 && $contrato->odonto == 1) {
-                $texto = "Apartamento C/Copart + Odonto";
-            } else if($contrato->acomodacao->nome == "Apartamento" && $contrato->coparticipacao == 1 && $contrato->odonto == 0) {
-                $texto = "Apartamento C/Copart Sem Odonto";
-            } else if($contrato->acomodacao->nome == "Apartamento" && $contrato->coparticipacao == 0 && $contrato->odonto == 0) {
-                $texto = "Apartamento S/Copart Sem Odonto";
-            } else if($contrato->acomodacao->nome == "Enfermaria" && $contrato->coparticipacao == 1 && $contrato->odonto == 1) {
-                $texto = "Enfermaria C/Copart + Odonto";    
-            } else if($contrato->acomodacao->nome == "Enfermaria" && $contrato->coparticipacao == 1 && $contrato->odonto == 0) {
-                $texto = "Enfermaria C/Copart Sem Odonto";    
-            } else if($contrato->acomodacao->nome == "Enfermaria" && $contrato->coparticipacao == 0 && $contrato->odonto == 0) {
-                $texto = "Apartamento S/Copart Sem Odonto";    
-            } else {
-                $texto = "";
-            } 
-        } else {
-            $texto = "";
-        }
+        case when empresarial then
+      (SELECT responsavel FROM contrato_empresarial WHERE contrato_empresarial.id = comissoes.contrato_empresarial_id)
+   else
+      (SELECT nome FROM clientes WHERE id = (SELECT cliente_id FROM contratos WHERE contratos.id = comissoes.contrato_id))
+   END AS cliente,
+   case when empresarial then
+      (SELECT cnpj FROM contrato_empresarial WHERE contrato_empresarial.id = comissoes.contrato_empresarial_id)
+   else
+      (SELECT cpf FROM clientes WHERE id = (SELECT cliente_id FROM contratos WHERE contratos.id = comissoes.contrato_id))
+   END AS cliente_cpf
+   FROM comissoes_corretores_lancadas 
+   INNER JOIN comissoes_corretora_lancadas ON comissoes_corretora_lancadas.parcela = comissoes_corretores_lancadas.parcela
+   INNER JOIN comissoes ON comissoes.id = comissoes_corretores_lancadas.comissoes_id
+   WHERE comissoes_corretores_lancadas.comissoes_id = $id AND comissoes_corretora_lancadas.comissoes_id = $id AND comissoes_corretores_lancadas.status_financeiro = 1 AND
+   comissoes_corretores_lancadas.status_gerente = 0 
+   AND	
+     (comissoes_corretores_lancadas.valor != 0 OR comissoes_corretora_lancadas.valor != 0)
+   GROUP BY comissoes_corretores_lancadas.parcela	
+        "); 
 
         
         
-        //dd($contrato);
         
+
+
+        
+
+        
+
         return view('admin.pages.gerente.detalhe',[
-            "contrato" => $contrato,
-            "texto" => $texto,
-            "plano" => $contrato->plano_id,
-            "total_corretora_pago" => $total_corretora_pago[0]->total,
-            "total_corretora_nao_pago" => $total_corretora_nao_paga[0]->total,
-            "total_corretores_pago" => $total_corretores_pago[0]->total,
-            "total_corretores_nao_paga" => $total_corretores_nao_paga[0]->total,
-            "empresarial" => $empresarial,
-            "texto_empresarial" => $texto_empresarial
+            "dados" => $dados,
+            "cliente" => isset($dados[0]->cliente) && !empty($dados[0]->cliente) ? $dados[0]->cliente : "",
+            "cpf" => isset($dados[0]->cliente_cpf) && !empty($dados[0]->cliente_cpf) ? $dados[0]->cliente_cpf : "",
+            "valor_plano" => isset($dados[0]->valor_plano_contratado) && !empty($dados[0]->valor_plano_contratado) ? $dados[0]->valor_plano_contratado : "",
+            "valor_corretora" => isset($dados[0]->comissao_valor_corretora) && !empty($dados[0]->comissao_valor_corretora) ? $dados[0]->comissao_valor_corretora : ""
         ]);
+
+        
+
+        
+        
+    }
+
+    public function mudarComissaoCorretora(Request $request)
+    {
+        if($request->acao == "porcentagem") {
+            $valor_plano = $request->valor_plano;
+            $porcentagem = $request->valor;
+            $resultado = ($valor_plano * $porcentagem) / 100;
+            $id = $request->id;
+            $alt = ComissoesCorretoraLancadas::where("id",$id)->first();
+            $alt->valor_pago = $resultado;
+            
+            if($alt->save()) {
+                $conf = ComissoesCorretoraConfiguracoes::where("id",$request->id_configuracao_corretora)->first();
+                $conf->valor = $porcentagem;
+                if($conf->save()) {
+                    return [
+                        "valor" => number_format($resultado,2,",","."),
+                        "porcentagem" => $porcentagem
+                    ];
+                } else {
+
+                }
+            } else {
+                return "error";    
+            }
+        } else {
+            $total = $request->valor_plano;
+            $valor = str_replace([".",","],["","."],$request->valor);
+            $porcentagem = floor(($valor / $total) * 100);
+            $id = $request->id;
+            $alt = ComissoesCorretoraLancadas::where("id",$id)->first();
+            $alt->valor_pago = $valor;  
+            $alt->porcentagem_paga = $porcentagem;
+           
+            if($alt->save()) {
+                //$conf = ComissoesCorretoraConfiguracoes::where("id",$request->id_configuracao)->first();
+                
+                //if($conf->save()) {
+                    //return [
+                        
+                        return $porcentagem;
+                    //];
+                
+            } else {
+                return "error";    
+            }
+            
+
+            //return $resultado;
+        }
+
+
+
+        
+        
         
     }
 
 
+    public function mudarComissaoCorretor(Request $request)
+    {
+        if($request->acao == "porcentagem") {
+
+            $valor_plano = $request->valor_plano;
+            $porcentagem = $request->valor;
+            $resultado = ($valor_plano * $porcentagem) / 100;
+            $id = $request->id;
+            $alt = ComissoesCorretoresLancadas::where("id",$id)->first();
+            $alt->valor_pago = $resultado;
+           
+            $id_default = $request->default_corretor;
+            if($alt->save()) {
+                $conf = ComissoesCorretoresDefault::where("id",$id_default)->first();
+                $conf->valor = $porcentagem;
+                if($conf->save()) {
+                    return [
+                        "valor" => number_format($resultado,2,",","."),
+                        "porcentagem" => $porcentagem
+                    ];
+                }
+            } else {
+                return "error"; 
+            }
+
+
+
+        } else {
+            $id = $request->id;
+            $valor = str_replace([".",","],["","."],$request->valor);
+            
+            $valor_plano = $request->valor_plano;
+            $porcentagem = floor(($valor / $valor_plano) * 100);
+            $alt = ComissoesCorretoresLancadas::where("id",$id)->first();
+            $alt->valor_pago = $valor;
+           
+            $alt->porcentagem_paga = $porcentagem;
+            if($alt->save()) {
+                return $porcentagem;
+            } else {
+                return "error";
+            }
+            
+        }
+
+
+
+        
+
+
+        
+    }
+
+
+    public function administradoraPagouComissao(Request $request)
+    {
+        $corretor = $request->corretor;
+        $corretora = $request->corretora;
+
+        $alt_corretor = ComissoesCorretoresLancadas::where("id",$corretor)->where('valor','!=',0)->first();
+        $alt_corretor->status_gerente = 1;
+        $alt_corretor->data_baixa_gerente = date('Y-m-d');
+        $alt_corretor->save();
+
+
+        $alt_corretora = ComissoesCorretoraLancadas::where("id",$corretora)->where('valor','!=',0)->first();
+        $alt_corretora->status_gerente = 1;
+        $alt_corretora->data_baixa_gerente = date('Y-m-d');
+        $alt_corretora->save();
+
+        return "sucesso";
+    }
+
+
+
+
+
     public function mudarStatus(Request $request) 
     {
-        $comissao = Comissoes::where("id",$request->id)->first();    
-        if($comissao->empresarial) {
-            $id_contrato = $comissao->contrato_empresarial_id; 
-            $contrato = ContratoEmpresarial::where("id",$id_contrato)->first();
-            $plano_id = $contrato->plano_id;
-        } else {
-            $id_contrato = $comissao->contrato_id;     
-            $contrato = Contrato::find($id_contrato);
-            $plano_id = $contrato->plano_id;    
-        }
-        $comissao_id = $comissao->id;
-        if($plano_id == 3) {
-
-            switch($contrato->financeiro_id) {
-
-                case 3: 
-                    $contrato->financeiro_id = 4;
-                    $contrato->save();
-                    
-                    $comissaoCorretor = ComissoesCorretoresLancadas
-                        ::where("comissoes_id",$comissao_id)
-                        ->where("parcela",1)            
-                        ->first();
-                    if($comissaoCorretor) {                    
-                        $comissaoCorretor->status_gerente = 1;
-                        $comissaoCorretor->data_baixa_gerente = $request->data_baixa; 
-                        $comissaoCorretor->save();
-                    }
-
-                    $comissaoCorretora = ComissoesCorretoraLancadas
-                        ::where('comissoes_id',$comissao_id)
-                        ->where('parcela',1)
-                        ->first();
-                    if(isset($comissaoCorretora) && $comissaoCorretora) {
-                        $comissaoCorretora->status_gerente = 1;
-                        $comissaoCorretora->data_baixa_gerente = $request->data_baixa;
-                        $comissaoCorretora->save();
-                    } 
-                break;
-
-                case 4:
-                    $contrato->financeiro_id = 6;
-                    $contrato->save();
-                    
-                    $comissao = ComissoesCorretoresLancadas
-                        ::where("comissoes_id",$comissao_id)
-                        ->where("parcela",2)            
-                        ->first();
-                    if($comissao) {
-                        $comissao->status_gerente = 1;
-                        $comissao->data_baixa_gerente = $request->data_baixa;
-                        $comissao->save();  
-                    }
-    
-                    $comissaoCorretora = ComissoesCorretoraLancadas
-                        ::where('comissoes_id',$comissao_id)
-                        ->where('parcela',2)
-                        ->first();
-                    if(isset($comissaoCorretora) && $comissaoCorretora) {
-                        $comissaoCorretora->status_gerente = 1;
-                        $comissaoCorretora->data_baixa_gerente = $request->data_baixa;
-                        $comissaoCorretora->save();
-                    } 
-        
-                break;    
-
-                case 6:
-                    $contrato->financeiro_id = 7;
-                    $contrato->save();
-                    //$contrato->data_baixa = $request->data_baixa;
-                    $comissao = ComissoesCorretoresLancadas
-                        ::where("comissoes_id",$comissao_id)
-                        ->where("parcela",3)            
-                        ->first();
-                    if($comissao) {
-                        $comissao->status_gerente = 1;
-                        $comissao->data_baixa_gerente = $request->data_baixa;
-                        $comissao->save();   
-                    }
-    
-                    $comissaoCorretora = ComissoesCorretoraLancadas
-                        ::where('comissoes_id',$comissao_id)
-                        ->where('parcela',3)
-                        ->first();
-                    if(isset($comissaoCorretora) && $comissaoCorretora) {
-                        $comissaoCorretora->status_gerente = 1;
-                        $comissaoCorretora->data_baixa_gerente = $request->data_baixa;
-                        $comissaoCorretora->save();
-                    } 
-        
-                break;   
-                
-                case 7:
-                    $contrato->financeiro_id = 8;
-                    $contrato->save();
-                    //$contrato->data_baixa = $request->data_baixa;
-                    $comissao = ComissoesCorretoresLancadas
-                        ::where("comissoes_id",$comissao_id)
-                        ->where("parcela",4)            
-                        ->first();               
-                    if($comissao) {
-                        $comissao->status_gerente = 1;
-                        $comissao->data_baixa_gerente = $request->data_baixa;
-                        $comissao->save();   
-                    }
-                    
-                    $comissaoCorretora = ComissoesCorretoraLancadas
-                        ::where('comissoes_id',$comissao_id)
-                        ->where('parcela',4)
-                        ->first();
-                    if(isset($comissaoCorretora) && $comissaoCorretora) {
-                        $comissaoCorretora->status_gerente = 1;
-                        $comissaoCorretora->data_baixa_gerente = $request->data_baixa;
-                        $comissaoCorretora->save();
-                    }     
-    
-                break;    
-            
-                case 8:
-                    $contrato->financeiro_id = 9;
-                    $contrato->save();
-                    //$contrato->data_baixa = $request->data_baixa;
-                    $comissao = ComissoesCorretoresLancadas
-                        ::where("comissoes_id",$comissao_id)
-                        ->where("parcela",5)            
-                        ->first();
-                    if($comissao) {
-                        $comissao->status_gerente = 1;
-                        $comissao->data_baixa_gerente = $request->data_baixa;
-                        $comissao->save();
-                    }
-    
-                    $comissaoCorretora = ComissoesCorretoraLancadas
-                        ::where('comissoes_id',$comissao_id)
-                        ->where('parcela',5)
-                        ->first();
-                    if(isset($comissaoCorretora) && $comissaoCorretora) {
-                        $comissaoCorretora->status_gerente = 1;
-                        $comissaoCorretora->data_baixa_gerente = $request->data_baixa;
-                        $comissaoCorretora->save();
-                    } 
-        
-                break;    
-
-                case 9:
-                    $contrato->financeiro_id = 10;
-                    $contrato->save();
-                    //$contrato->data_baixa = $request->data_baixa;
-                    $comissao = ComissoesCorretoresLancadas
-                        ::where("comissoes_id",$comissao_id)
-                        ->where("parcela",6)            
-                        ->first();
-                    if($comissao) {
-                        $comissao->status_gerente = 1;
-                        $comissao->data_baixa_gerente = $request->data_baixa;
-                        $comissao->save();
-                    }
-    
-                    $comissaoCorretora = ComissoesCorretoraLancadas
-                        ::where('comissoes_id',$comissao_id)
-                        ->where('parcela',6)
-                        ->first();
-                    if(isset($comissaoCorretora) && $comissaoCorretora) {
-                        $comissaoCorretora->status_gerente = 1;
-                        $comissaoCorretora->data_baixa_gerente = $request->data_baixa;
-                        $comissaoCorretora->save();
-                    } 
-                break;   
-                
-                case 10:
-                    $contrato->financeiro_id = 11;
-                    $contrato->save();
-                    //$contrato->data_baixa = $request->data_baixa;
-                    $comissao = ComissoesCorretoresLancadas
-                        ::where("comissoes_id",$comissao_id)
-                        ->where("parcela",7)            
-                        ->first();
-
-                    if($comissao) {
-                        $comissao->status_gerente = 1;
-                        $comissao->data_baixa_gerente = $request->data_baixa;
-                        $comissao->save();  
-                    }
-    
-                    $comissaoCorretora = ComissoesCorretoraLancadas
-                        ::where('comissoes_id',$comissao_id)
-                        ->where('parcela',7)
-                        ->first();
-                    if(isset($comissaoCorretora) && $comissaoCorretora) {
-                        $comissaoCorretora->status_gerente = 1;
-                        $comissaoCorretora->data_baixa_gerente = $request->data_baixa;
-                        $comissaoCorretora->save();
-                    } 
-                break;
-
+        $id = $request->id;
+        if($request->corretora) {
+            $comissao = ComissoesCorretoraLancadas::where("id",$id)->first();
+            $comissao->status_gerente = 1;
+            if($comissao->save()) {
+                return "sucesso";
+            } else {
+                return "error";
             }
-            
-        } else {
-
-            switch($contrato->financeiro_id) {
-
-                case 5: 
-                    $contrato->financeiro_id = 6;
-                    $contrato->save();
-
-                    $comissao = ComissoesCorretoresLancadas
-                    ::where("comissoes_id",$comissao_id)
-                    ->where("parcela",1)            
-                    ->first();
-                    if($comissao) {                    
-                        $comissao->status_gerente = 1;
-                        $comissao->data_baixa_gerente = $request->data_baixa;
-                        $comissao->save();
-                    }   
-                
-                    $comissaoCorretora = ComissoesCorretoraLancadas
-                        ::where('comissoes_id',$comissao_id)
-                        ->where('parcela',1)
-                        ->first();
-                    if(isset($comissaoCorretora) && $comissaoCorretora) {
-                        $comissaoCorretora->status_gerente = 1;
-                        $comissaoCorretora->data_baixa_gerente = $request->data_baixa;
-                        $comissaoCorretora->save();
-                    } 
-                break;
-                
-                case 6: 
-                    $contrato->financeiro_id = 7;
-                    $contrato->save();
-
-                    $comissao = ComissoesCorretoresLancadas
-                    ::where("comissoes_id",$comissao_id)
-                    ->where("parcela",2)            
-                    ->first();
-                    if($comissao) {                    
-                        $comissao->status_gerente = 1;
-                        $comissao->data_baixa_gerente = $request->data_baixa;
-                        $comissao->save();
-                    }   
-                    $comissaoCorretora = ComissoesCorretoraLancadas
-                        ::where('comissoes_id',$comissao_id)
-                        ->where('parcela',2)
-                        ->first();
-                    if(isset($comissaoCorretora) && $comissaoCorretora) {
-                        $comissaoCorretora->status_gerente = 1;
-                        $comissaoCorretora->data_baixa_gerente = $request->data_baixa;
-                        $comissaoCorretora->save();
-                    } 
-                break;   
-                
-                case 7: 
-                    $contrato->financeiro_id = 8;
-                    $contrato->save();
-
-                    $comissao = ComissoesCorretoresLancadas
-                    ::where("comissoes_id",$comissao_id)
-                    ->where("parcela",3)            
-                    ->first();
-                    if($comissao) {                    
-                        $comissao->status_gerente = 1;
-                        $comissao->data_baixa_gerente  = $request->data_baixa;
-                        $comissao->save();
-                    }   
-                    $comissaoCorretora = ComissoesCorretoraLancadas
-                        ::where('comissoes_id',$comissao_id)
-                        ->where('parcela',3)
-                        ->first();
-                    if(isset($comissaoCorretora) && $comissaoCorretora) {
-                        $comissaoCorretora->status_gerente = 1;
-                        $comissaoCorretora->data_baixa_gerente  = $request->data_baixa;
-                        $comissaoCorretora->save();
-                    } 
-                break;   
-                
-                case 8: 
-                    $contrato->financeiro_id = 9;
-                    $contrato->save();
-
-                    $comissao = ComissoesCorretoresLancadas
-                    ::where("comissoes_id",$comissao_id)
-                    ->where("parcela",4)            
-                    ->first();
-                    if($comissao) {                    
-                        $comissao->status_gerente = 1;
-                        $comissao->data_baixa_gerente = $request->data_baixa;
-                        $comissao->save();
-                    }   
-                    $comissaoCorretora = ComissoesCorretoraLancadas
-                        ::where('comissoes_id',$comissao_id)
-                        ->where('parcela',4)
-                        ->first();
-                    if(isset($comissaoCorretora) && $comissaoCorretora) {
-                        $comissaoCorretora->status_gerente = 1;
-                        $comissaoCorretora->data_baixa_gerente = $request->data_baixa;
-                        $comissaoCorretora->save();
-                    } 
-                break;  
-                
-                case 9: 
-                    $contrato->financeiro_id = 10;
-                    $contrato->save();
-
-                    $comissao = ComissoesCorretoresLancadas
-                    ::where("comissoes_id",$comissao_id)
-                    ->where("parcela",5)            
-                    ->first();
-                    if($comissao) {                    
-                        $comissao->status_gerente = 1;
-                        $comissao->data_baixa_gerente = $request->data_baixa;
-                        $comissao->save();
-                    }   
-                    $comissaoCorretora = ComissoesCorretoraLancadas
-                        ::where('comissoes_id',$comissao_id)
-                        ->where('parcela',5)
-                        ->first();
-                    if(isset($comissaoCorretora) && $comissaoCorretora) {
-                        $comissaoCorretora->status_gerente = 1;
-                        $comissaoCorretora->data_baixa_gerente = $request->data_baixa;
-                        $comissaoCorretora->save();
-                    } 
-                break;   
-                
-                case 10: 
-                    $contrato->financeiro_id = 11;
-                    $contrato->save();
-
-                    $comissao = ComissoesCorretoresLancadas
-                    ::where("comissoes_id",$comissao_id)
-                    ->where("parcela",6)            
-                    ->first();
-                    if($comissao) {                    
-                        $comissao->status_gerente = 1;
-                        $comissao->data_baixa_gerente = $request->data_baixa;
-                        $comissao->save();
-                    }   
-                    $comissaoCorretora = ComissoesCorretoraLancadas
-                        ::where('comissoes_id',$comissao_id)
-                        ->where('parcela',6)
-                        ->first();
-                    if(isset($comissaoCorretora) && $comissaoCorretora) {
-                        $comissaoCorretora->status_gerente = 1;
-                        $comissaoCorretora->data_baixa_gerente = $request->data_baixa;
-                        $comissaoCorretora->save();
-                    } 
-                break;    
+        } else {    
+            $comissao = ComissoesCorretoresLancadas::where("id",$id)->first();
+            $comissao->status_gerente = 1;
+            if($comissao->save()) {
+                return "sucesso";
+            } else {
+                return "error";
             }
         }
-
-        $datas_select = DB::select("SELECT data_baixa_gerente FROM comissoes_corretora_lancadas WHERE status_financeiro = 1 AND status_gerente = 1 GROUP BY MONTH(data_baixa_gerente)");
-        $select = "";
-        foreach($datas_select as $v) {
-            $valor = date('Y-m',strtotime($v->data_baixa_gerente));
-            $texto = date('m/Y',strtotime($v->data_baixa_gerente));
-            $select .= "<option value=".$valor.">".$texto."</option>"; 
-        } 
-        
-        $valor_quat_comissao_a_receber = ComissoesCorretoraLancadas
-            ::selectRaw("sum(valor) as total")
-            ->where("status_financeiro",1)
-            ->where("status_gerente",0)->first()->total;
-
-        $valor_quat_comissao_recebido = ComissoesCorretoresLancadas
-            ::selectRaw("sum(valor) as total")
-            ->where("status_financeiro",1)
-            ->where("status_gerente",1)->first()->total;
-
-        $administradoras = DB::select("SELECT nome FROM administradoras WHERE id IN (SELECT administradora_id FROM comissoes WHERE id IN(SELECT comissoes_id FROM comissoes_corretora_lancadas WHERE status_financeiro = 1 AND status_gerente = 1 GROUP BY comissoes_id) GROUP BY administradora_id)");    
+        //$comissao = 
         
 
 
-        return [
-            "quat_comissao_a_receber" => ComissoesCorretoraLancadas::where("status_financeiro",1)->where("status_gerente",0)->count(),
-            "quat_comissao_recebido"  => ComissoesCorretoraLancadas::where("status_financeiro",1)->where("status_gerente",1)->count(),
-            'datas_select'            => $select ,
-            'valor_quat_comissao_a_receber' => number_format($valor_quat_comissao_a_receber,2,",","."),
-            'valor_quat_comissao_recebido' => number_format($valor_quat_comissao_recebido,2,",","."),  
-        ];
+        
 
     }
 
@@ -865,23 +1667,29 @@ class GerenteController extends Controller
         $users = DB::select(
             "SELECT id,name,
             (SELECT if(SUM(valor)>0,SUM(valor),0) FROM comissoes_corretores_lancadas WHERE status_financeiro = 1 AND status_gerente = 1 
-            AND MONTH(DATA) = MONTH(NOW()) AND comissoes_id 
+             AND comissoes_id 
             IN(SELECT id FROM comissoes WHERE user_id = users.id AND comissoes.administradora_id = 1)) AS valor_allcare,
+            
             (SELECT if(SUM(valor)>0,SUM(valor),0) FROM comissoes_corretores_lancadas WHERE status_financeiro = 1 AND status_gerente = 1 
-            AND MONTH(DATA) = MONTH(NOW()) AND comissoes_id 
+             AND comissoes_id 
             IN(SELECT id FROM comissoes WHERE user_id = users.id AND comissoes.administradora_id = 2)) AS valor_alter,
-            (SELECT if(SUM(valor)>0,SUM(valor),0) FROM comissoes_corretores_lancadas WHERE status_financeiro = 1 AND status_gerente = 1 
-            AND MONTH(DATA) = MONTH(NOW()) AND comissoes_id 
+            
+												(SELECT if(SUM(valor)>0,SUM(valor),0) FROM comissoes_corretores_lancadas WHERE status_financeiro = 1 AND status_gerente = 1 
+             AND comissoes_id 
             IN(SELECT id FROM comissoes WHERE user_id = users.id AND comissoes.administradora_id = 3)) AS valor_qualicorp,
+            
             (SELECT if(SUM(valor)>0,SUM(valor),0) FROM comissoes_corretores_lancadas WHERE status_financeiro = 1 AND status_gerente = 1 
-            AND MONTH(DATA) = MONTH(NOW()) AND comissoes_id 
+             AND comissoes_id 
             IN(SELECT id FROM comissoes WHERE user_id = users.id AND comissoes.administradora_id = 4)) AS valor_hapvida,
+            
             (SELECT if(SUM(valor)>0,SUM(valor),0) FROM comissoes_corretores_lancadas WHERE status_financeiro = 1 AND status_gerente = 1 
-            AND MONTH(DATA) = MONTH(NOW()) AND comissoes_id 
+             AND comissoes_id 
             IN(SELECT id FROM comissoes WHERE user_id = users.id)) AS valor,
+            
             (SELECT COUNT(*) FROM comissoes_corretores_lancadas WHERE status_financeiro = 1 AND status_gerente = 1 AND status_comissao = 1
-		    AND MONTH(DATA) = MONTH(NOW()) AND comissoes_id 
-            IN(SELECT id FROM comissoes WHERE user_id = users.id)) AS status     
+		    						 AND comissoes_id 
+            IN(SELECT id FROM comissoes WHERE user_id = users.id)) AS status 
+												    
             FROM users WHERE cargo_id IS NOT NULL"
         );
 

@@ -5,9 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class comissoes extends Model
+class Comissoes extends Model
 {
     use HasFactory;
+
+    public function plano()
+    {
+        return $this->belongsTo(Planos::class);
+    }
 
     public function comissoesLancadas()
     {
@@ -128,7 +133,19 @@ class comissoes extends Model
 
     public function comissoesAprovadasFinanceira()
     {
-        return $this->hasMany(ComissoesCorretoresLancadas::class)->where('status_financeiro',1)->where('status_gerente',0);
+        return $this->hasMany(ComissoesCorretoresLancadas::class)
+            ->where('status_financeiro',1)
+            ->where('status_gerente',0)
+            ->where('valor','!=',0);
+    }
+
+    public function comissoesCorretorasAprovadasFinanceira()
+    {
+        return $this->hasMany(ComissoesCorretoraLancadas::class)
+            ->where('status_financeiro',1)
+            ->where('status_gerente',0)
+            ->where('valor','!=',0);
+            
     }
 
 
@@ -138,10 +155,32 @@ class comissoes extends Model
         return $this->belongsTo(User::class);
     }
 
+    // public function contrato()
+    // {
+    //     return $this->belongsTo(Contrato::class);   
+    // }
+
     public function contrato()
     {
-        return $this->belongsTo(Contrato::class);   
+        return $this->belongsTo(ContratoEmpresarial::class,"contrato_empresarial_id","id");
+        // if($this->hasEmpresarial()) {
+        //     return $this->belongsTo(ContratoEmpresarial::class,"id","contrato_empresarial_id");
+        // } else {
+        //     return $this->belongsTo(Contrato::class);
+        // }
     }
+
+
+    public function hasEmpresarial()
+    {
+        if($this->empresarial) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     
 
 

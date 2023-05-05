@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'Gerenciavel')
+@section('title', 'Gerenciavel - Baixas')
 
 @section('content_top_nav_right')
    
@@ -10,478 +10,257 @@
 @stop
 
 @section('content_header')
-    <h1 class=" border-bottom border-dark">Histórico</h1>
+    <h1 class=" border-bottom border-dark">Baixas</h1>
 @stop
 
 
+
+
+
 @section('content')
+    <input type="hidden" id="valor_plano" value="{{$valor_plano}}">
+    <input type="hidden" id="valor_corretora" value="{{$valor_corretora}}">
+    <main>
 
-    <main class="container_full_cards">
-
-        <section class="p-1 card_info">
-
-            @if(!$empresarial)
-
-                <div class="d-flex mb-2">
-                    
-                    <div style="flex-basis:25%;">
-                        <span class="text-white" style="font-size:0.8em;">Administradora:</span>
-                        <input type="text" id="administradora_coletivo_view" class="form-control  form-control-sm font-small" value="{{$contrato->administradora->nome}}" readonly>
-                    </div>
-    
-                    <div style="flex-basis:33%;margin:0 1%;">    
-                        <span class="text-white" style="font-size:0.8em;">Tipo Plano:</span>
-                        <input type="text" id="tipo_plano_coletivo_view" class="form-control  form-control-sm font-small" value="{{$contrato->plano->nome}}" readonly>
-                    </div>
-    
-                    <div style="flex-basis:40%;" id="status">
-                        <span class="text-white" style="margin:4px 0 0 0;padding:0;font-size:0.8em;display:flex;">Status:</span>
-                        <input type="text" id="estagio_contrato_coletivo_view" class="form-control form-control-sm font-small" value="Parc {{$contrato->comissao->comissaoAtual->parcela}}" readonly>
-                    </div>  
-    
-                </div>
-    
-                <div class="d-flex mb-2">
-                    
-                    <div style="flex-basis:43%;">
-                        <span class="text-white" style="font-size:0.8em;">Cliente:</span>
-                        <input type="text" id="cliente_coletivo_view" class="form-control form-control-sm font-small" value="{{$contrato->clientes->nome}}" readonly>
-                    </div>
-                    
-                    <div style="flex-basis:25%;margin:0 1%;">
-                        <span class="text-white" style="font-size:0.8em;">Data Nasc:</span>
-                        <input type="text" id="data_nascimento_coletivo_view" class="form-control form-control-sm font-small" value="{{date('d/m/Y',strtotime($contrato->clientes->data_nascimento))}}" readonly>
-                    </div>
-                    
-                    <div style="flex-basis:30%;">
-                        <span class="text-white" style="font-size:0.8em;">Codigo Externo:</span>
-                        <input type="text" id="codigo_externo_coletivo_view" class="form-control  form-control-sm font-small" value="{{$contrato->codigo_externo}}" readonly>
-                    </div>    
-    
-                </div>
-    
-                <div class="d-flex mb-2">
-    
-                    <div style="flex-basis:28%;">
-                        <span class="text-white" style="font-size:0.8em;">CPF:</span>
-                        <input type="text" id="cpf_coletivo_view" class="form-control form-control-sm font-small" value="{{$contrato->clientes->cpf}}" readonly>
-                    </div>
-    
-                    <div style="flex-basis:38%;margin:0 1%;">
-                        <span class="text-white" style="font-size:0.8em;">Responsavel Financeiro:</span>
-                        <input type="text" id="responsavel_financeiro_coletivo" class="form-control  form-control-sm font-small" readonly>
-                    </div>
-                    
-                    <div style="flex-basis:32%;">
-                        <span class="text-white" style="font-size:0.8em;">CPF Financeiro:</span>
-                        <input type="text" id="cpf_financeiro_coletivo_view" class="form-control  form-control-sm font-small" readonly>
-                    </div>    
-    
-                </div>
-    
-                <div class="d-flex mb-2">
-                    
-                    <div style="flex-basis:28%;margin-right:1%;">
-                        <span class="text-white" style="font-size:0.8em;">Celular:</span>
-                        <input type="text" id="celular_coletivo_view" class="form-control form-control-sm font-small" value="{{$contrato->clientes->celular}}" readonly>
-                    </div>
-    
-                    <div style="flex-basis:26%;margin-right:1%;">
-                        <span class="text-white" style="font-size:0.8em;">Telefone:</span>
-                        <input type="text" id="telefone_coletivo_view" class="form-control form-control-sm font-small" value="{{$contrato->clientes->telefone}}" readonly>
-                    </div>
-    
-                    <div style="flex-basis:46%;">
-                        <span class="text-white" style="font-size:0.8em;">Email:</span>
-                        <input type="text" id="email_coletivo_view" class="form-control form-control-sm font-small" value="{{$contrato->clientes->email}}" readonly>
-                    </div>
-    
-                </div>
-    
-    
-                <div class="d-flex mb-2">
-    
-                    <div style="flex-basis:22%;">
-                        <span class="text-white" style="font-size:0.8em;">CEP:</span>
-                        <input type="text" id="cep_coletivo_view" class="form-control form-control-sm font-small" value="{{$contrato->clientes->cep}}" value="cep" readonly>
-                    </div>
-    
-                    <div style="flex-basis:78%;margin:0 1%;">
-                        <span class="text-white" style="font-size:0.8em;">Cidade:</span> 
-                        <input type="text" id="cidade_coletivo_view" class="form-control  form-control-sm font-small" value="{{$contrato->clientes->cidade}}" readonly>
-                    </div>
-    
-                    <div style="flex-basis:10%;">
-                        <span class="text-white" style="font-size:0.8em;">UF:</span>
-                        <input type="text" id="uf_coletivo_view" class="form-control form-control-sm font-small" value="{{$contrato->clientes->uf}}" readonly>
-                    </div>
-    
-                </div> 
-    
-    
-                <div class="d-flex mb-2">
-                    
-                        <div style="flex-basis:30%;">
-                        <span class="text-white" style="font-size:0.8em;">Bairro:</span>
-                        <input type="text" id="bairro_coletivo_view" class="form-control form-control-sm font-small" value="{{$contrato->clientes->bairro}}" readonly>
-                    </div>    
-            
-                    <div style="flex-basis:30%;margin:0 1%;">
-                        <span class="text-white" style="font-size:0.8em;">Rua:</span>
-                        <input type="text" id="rua_coletivo_view" class="form-control form-control-sm font-small" value="{{$contrato->clientes->rua}}" readonly>
-                    </div>
-    
-                    <div style="flex-basis:40%;">
-                        <span class="text-white" style="font-size:0.8em;">Complemento:</span>
-                        <input type="text" id="complemento_coletivo_view" class="form-control form-control-sm font-small" value="{{$contrato->clientes->complemento}}" readonly>
-                    </div>
-    
-                </div>
-    
-            
-                <div class="d-flex mb-2">
-    
-                    <div style="flex-basis:31%;">
-                        <span class="text-white" style="font-size:0.8em;">Data Contrato:</span>
-                        <input type="text" id="data_contrato_coletivo_view" value="{{date('d/m/Y',strtotime($contrato->created_at))}}" class="form-control form-control-sm font-small" readonly>
-                    </div>
-    
-                    <div style="flex-basis:31%;margin:0 1%;">
-                        <span class="text-white" style="font-size:0.8em;">Valor Contrato:</span>
-                        <input type="text" id="valor_contrato_coletivo_view" value="{{number_format($contrato->valor_plano,2,',','.')}}" class="form-control  form-control-sm font-small" readonly>
-                    </div>
-    
-                        
-    
-                    <div style="flex-basis:31%;margin-right:1%;">
-                        <span class="text-white" style="font-size:0.8em;">Valor Adesão:</span>
-                        <input type="text" id="valor_adesao_coletivo_view" class="form-control  form-control-sm font-small" value="{{number_format($contrato->valor_adesao,2,',','.')}}" readonly>
-                    </div>
-    
-                    <div style="flex-basis:7%">    
-                        <span class="text-white" style="font-size:0.8em;">Vidas</span>
-                        <input type="text" id="quantidade_vidas_coletivo_cadastrar" value="{{$contrato->somarCotacaoFaixaEtaria[0]->soma}}" class="form-control  form-control-sm font-small" readonly>
-                    </div>
-            
-                </div>
-    
-    
-                    <div class="d-flex mb-2">
-    
-                    <div style="flex-basis:23%;">
-                        <span class="text-white" style="font-size:0.8em;">Data Boleto:</span>
-                        <input type="text" id="data_boleto_coletivo_view" class="form-control  form-control-sm font-small" value="{{date('d/m/Y',strtotime($contrato->data_boleto))}}" readonly>
-                    </div>
-    
-                    <div style="flex-basis:23%;margin:0 1%;">
-                        <span class="text-white" style="font-size:0.8em;">Data Vigência:</span>
-                        <input type="text" id="data_vigencia_coletivo_view" class="form-control  form-control-sm font-small" value="{{date('d/m/Y',strtotime($contrato->data_vigencia))}}" readonly>
-                    </div>
-                    
-                    <div style="flex-basis:54%;">
-                        <span class="text-white" style="font-size:0.8em;">Plano Contratado:</span>
-                        <input type="text" id="texto_descricao_coletivo_view" class="form-control form-control-sm font-small" value="{{$texto}}" readonly> 
-                    </div>    
-    
-                    
-                </div>                
-            @else
-
-                <div class="d-flex mb-2">
-                    
-                    <div style="flex-basis:33%;">
-                        <span class="text-white" style="font-size:0.875em;">Vendedor:</span>
-                        <input type="text" id="vendedor_view_empresarial" class="form-control form-control-sm" readonly value="{{$contrato->vendedor}}">
-                    </div>
-
-                    <div style="flex-basis:33%;margin:0 1%;">
-                        <span class="text-white" style="font-size:0.875em;">Plano:</span> 
-                        <input type="text" name="plano_view_empresarial" id="plano_view_empresarial" class="form-control form-control-sm" value="{{$contrato->plano}}" readonly>
-                    </div>
-
-                    <div style="flex-basis:33%;">
-                        <span class="text-white" style="font-size:0.875em;">Tabela Origem:</span> 
-                        <input type="text" name="tabela_origem_view_empresarial" id="tabela_origem_view_empresarial" value="{{$contrato->tabela_origem}}" class="form-control  form-control-sm" readonly>
-                    </div>
-
-                </div>
-
-                <div class="d-flex mb-2">
-                                        
-                    <div style="flex-basis:57%;">
-                        <span class="text-white" style="font-size:0.875em;">Razão Social:</span>
-                        <input type="text" id="razao_social_view_empresarial" class="form-control form-control-sm" value="{{$contrato->razao_social}}" readonly>
-                    </div>
-                            
-                    <div style="flex-basis:33%;margin:0 1%;">
-                        <span class="text-white" style="font-size:0.875em;">CNPJ:</span>
-                        <input type="text" id="cnpj_view" class="form-control form-control-sm" value="{{$contrato->cnpj}}" readonly>
-                    </div>
-
-                    <div style="flex-basis:8%;">
-                        <span class="text-white" style="font-size:0.875em;">Vidas:</span>
-                        <input type="text" id="qtd_vidas" class="form-control form-control-sm" value="{{$contrato->quantidade_vidas}}" readonly>
-                    </div>
-            
-                </div>
-
-                <div class="d-flex mb-2">
-
-                    <div style="flex-basis:30%;">
-                        <span class="text-white" style="font-size:0.875em;">Telefone:</span>
-                        <input type="text" id="telefone_corretor_view_empresarial" class="form-control form-control-sm" value="{{$contrato->telefone}}" readonly>
-                    </div>    
-
-                    <div style="flex-basis:30%;margin:0 1%;">
-                        <span class="text-white" style="font-size:0.875em;">Celular:</span>
-                        <input type="text" id="celular_corretor_view_empresarial" class="form-control form-control-sm" value="{{$contrato->celular}}" readonly>
-                    </div>
-
-                    <div style="flex-basis:40%;">
-                        <span class="text-white" style="font-size:0.875em;">Email:</span>
-                        <input type="text" id="email_odonto_view_empresarial" class="form-control form-control-sm" value="{{$contrato->email}}" readonly>
-                    </div>
-                    
-                </div>
-
-                <div class="d-flex mb-2">
-
-                    <div style="flex-basis:30%;margin-right:1%;">
-                        <span class="text-white" style="font-size:0.875em;">Responsavel:</span>
-                        <input type="text" id="nome_corretor_view_empresarial" class="form-control form-control-sm" value="{{$contrato->responsavel}}" readonly>
-                    </div>
-
-                    <div style="flex-basis:10%;margin-right:1%;">
-                        <span class="text-white" style="font-size:0.875em;">UF:</span>
-                        <input type="text" id="uf_cliente_view_empresarial" class="form-control form-control-sm" value="{{$contrato->uf}}" readonly>
-                    </div> 
-
-                    <div style="flex-basis:24%;margin-right:1%;">
-                        <span class="text-white" style="font-size:0.875em;">Cidade:</span>
-                        <input type="text" id="cidade_saude_view_empresarial" class="form-control form-control-sm" value="{{$contrato->cidade}}" readonly>
-                    </div>
-
-                                            
-                    <div style="flex-basis:38%;">
-                        <span class="text-white" style="font-size:0.875em;">Plano Contratado:</span>
-                        <input type="text" id="plano_contratado_corretor_view_empresarial" class="form-control form-control-sm" value="{{$texto_empresarial}}" readonly>
-                    </div>
-
-                </div> 
-                
-                
-                <div class="d-flex mb-2">
-
-                    <div style="flex-basis:24%;">
-                        <span class="text-white" style="font-size:0.875em;">Cód.Corretora:</span>
-                        <input type="text" id="cod_corretora_view_empresarial" class="form-control form-control-sm" value="{{$contrato->codigo_corretora}}" readonly>
-                    </div>
-
-                    <div style="flex-basis:24%;margin:0 1%;">
-                        <span class="text-white" style="font-size:0.875em;">Codigo Saude:</span>
-                        <input type="text" id="cod_saude_view_empresarial" class="form-control form-control-sm" value="{{$contrato->codigo_saude ?? ''}}" readonly>
-                    </div>
-
-                    <div style="flex-basis:24%;margin-right: 1%;">
-                        <span class="text-white" style="font-size:0.875em;">Codigo Odonto:</span>
-                        <input type="text" id="cod_odonto_view_empresarial" class="form-control form-control-sm" value="{{$contrato->codigo_odonto ?? ''}}" readonly>
-                    </div>
-
-                    <div style="flex-basis:25%;">
-                        <span class="text-white" style="font-size:0.875em;">Senha Cliente:</span>
-                        <input type="text" id="senha_cliente_view_empresarial" class="form-control form-control-sm" value="{{$contrato->senha_cliente ?? ''}}" readonly>
-                    </div>
-
-                </div>                    
-
-                
-                <div class="d-flex mb-2">
-
-                    <div style="flex-basis:25%;margin-right:1%;">
-                        <span class="text-white" style="font-size:0.875em;">Valor Saude:</span>
-                        <input type="text" id="valor_plano_saude_view" class="form-control form-control-sm" value="{{number_format($contrato->valor_plano_saude,2,',','.')}}" readonly>
-                    </div>
-
-                    <div style="flex-basis:25%;margin-right:1%;">
-                        <span class="text-white" style="font-size:0.875em;">Valor Odonto:</span>
-                        <input type="text" id="valor_plano_odonto_view" class="form-control form-control-sm" value="{{number_format($contrato->valor_plano_odonto,2,',','.')}}" readonly>
-                    </div>
-
-                    
-
-                    <div style="flex-basis:25%;margin-right:1%;">
-                        <span class="text-white" style="font-size:0.875em;">Total Plano:</span>
-                        <input type="text" id="valor_plano_view_empresarial" class="form-control form-control-sm" value="{{number_format($contrato->valor_plano_saude + $contrato->valor_plano_odonto,2,',','.')}}" readonly>
-                    
-                    </div>
-
-                    <div style="flex-basis:25%;">
-                        <span class="text-white" style="font-size:0.875em;">Taxa Adesão:</span>
-                        <input type="text" id="taxa_adesao_view_empresarial" class="form-control form-control-sm"  value="{{number_format($contrato->taxa_adesao,2,',','.')}}" readonly>
-                    </div>
-
-                </div>
-
-                <div class="d-flex mb-1">
-                            
-                    <div style="flex-basis:24%;margin-right:1%;">
-                        <span class="text-white" style="font-size:0.875em;">Plano c/Adesão:</span>
-                        <input type="text" id="plano_adesao_view_empresarial" class="form-control form-control-sm" value="{{number_format($contrato->valor_plano_saude + $contrato->valor_plano_odonto + $contrato->taxa_adesao,2,',','.')}}" readonly>
-                    </div>
-
-                    <div style="flex-basis:24%;">
-                        <span class="text-white" style="font-size:0.875em;">Valor Boleto:</span>
-                        <input type="text" id="valor_boleto_view_empresarial" class="form-control form-control-sm" value="{{number_format($contrato->valor_boleto,2,',','.')}}" readonly>
-                    </div>
-
-                    <div style="flex-basis:25%;margin:0 1%;">
-                        <span class="text-white" style="font-size:0.875em;">Venc. Boleto:</span>
-                        <input type="text" id="vencimento_boleto_view_empresarial" class="form-control form-control-sm" value="{{date('d/m/Y',strtotime($contrato->vencimento_boleto))}}" readonly>
-                    </div>
-
-                    <div style="flex-basis:25%;">
-                        <span class="text-white" style="font-size:0.9em;">Data 1º Boleto:</span>
-                        <input type="text" id="data_boleto_view_empresarial" class="form-control form-control-sm" value="{{date('d/m/Y',strtotime($contrato->data_boleto))}}" readonly>
-                    </div>                      
-
-                </div>
-
-
-
-
-                        
-                       
-                        
-               
-
-
-            @endif
-
-
-                                    
-            
-        </section>   
-        
-        
-        @php 
-            if($plano == 3) {
-                $dados = ["Pag Adesao","Parc 2","Parc 3","Parc 4","Parc 5","Parc 6","Parc 7"];
-            }
-        @endphp
-
-
-
-        <section class="historico_corretora">
-            <h5 class="text-center d-flex align-items-center align-self-center justify-content-center mt-1">Corretora</h5>
-
-            <table class="table table-sm">
+        <section>
+           <!-- 0 <h3 style="background-color:#123449;text-align:center;color:#FFF;margin:0;border-top-left-radius: 5px;border-top-right-radius: 5px;height:20px;"></h3> -->
+            <table class="table table-sm table-striped table-bordered">
                 <thead>
-                    <tr>
-                        <th style="font-size:0.875em;">Parcela</th>
-                        <th style="font-size:0.875em;">Valor</th>
-                        <th style="font-size:0.875em;">Vencimento</th>
-                        <th style="font-size:0.875em;">Baixa</th>
-                        <th style="font-size:0.875em;">Dias Atr</th>
-                        <th style="font-size:0.875em;">Comissão</th>
-                        
+                    
+                    <tr style="background-color:#123449;color:#FFF;"> 
+
+                        <th colspan="6" style="vertical-align : middle;text-align:center;">
+                            <h6 class="mx-auto" style="margin-top:6px;">{{$cliente}} - {{$cpf}}</h6>
+                        </th>
+
+                        <td colspan="3" style="text-align:center;">
+                            Corretora
+                        </td>
+
+                        <td colspan="3" style="text-align:center;">
+                            Corretor
+                        </td>
+
+                        <td style="text-align:center;">
+                            Status
+                        </td>
+
                     </tr>
+
                 </thead>
                 <tbody>
-                    @foreach($contrato->comissao->comissoesLancadasCorretora as $k => $co)
+                    <tr>  
+                        <th>Parcela</th>
+                        <th>Contrato</th>
+                        <th>Vencimento</th>
+                        <th>Valor Plano</th>
+                        <th>Baixa(Laura)</th>
+                        <th>Atrasado</th>
+
+                        <th>Comissão</th>
+                        <th>%</th>
+                        <th>Recebido</th>
+                        
+                        <th>Comissão</th>
+                        <th>%</th>
+                        <th>Pagar</th>
+
+                        
+
+                    </tr>
+                    @foreach($dados as $co)
                         <tr>
-                            <td class="text-center" style="font-size:0.875em;">
-                               @if($plano == 3)
-                                    {{$dados[$k]}}
-                               @else
-                                    {{$co->parcela}}     
-                               @endif
+                            <td>{{$co->parcela}}</td>
+                            <td>{{$co->codigo_externo}}</td>
+                            <td>{{date("d/m/Y",strtotime($co->vencimento))}}</td>
+                            <td>R$ {{number_format($co->valor_plano_contratado,2,",",".")}}</td>
+                            <td>{{date("d/m/Y",strtotime($co->data_baixa))}}</td>
+                            <td>0</td>
+
+                            <td>R$ {{number_format($co->comissao_valor_corretora,2,",",".")}}</td>
+                            <td>
+                                <input type="text" data-corretora="{{$co->id_corretora}}" data-configuracao-porcentagem="{{$co->porcentagem_parcela_corretora_id}}" id="porcentagem_corretora" value="{{$co->porcentagem_paga ? $co->porcentagem_paga : $co->porcentagem_parcela_corretora}}" style="width:45px">
                             </td>
-                            <td style="font-size:0.875em;">{{number_format($co->valor_plano,2,',','.')}}</td>
-                            <td style="font-size:0.875em;">{{date('d/m/Y',strtotime($co->data))}}</td>
-                            <td style="font-size:0.875em;">{{empty($co->data_baixa_gerente) ? '---' :  date('d/m/Y',strtotime($co->data_baixa_gerente))}}</td>
-                            <td class="text-center" style="font-size:0.875em;">{{$co->quantidade_dias}}</td>
-                            <td style="font-size:0.875em;" align="right">
-                                <span style="margin-right:15px;">{{number_format($co->valor,2,',','.')}}</span>
+                            <td>
+                                <input type="text" style="color:#666;" name="recebido" data-corretora-valor="{{$co->id_corretora}}" data-configuracao-porcentagem-valor="{{$co->porcentagem_parcela_corretora_id}}" class="form-control-sm" id="recebido" value="{{$co->valor_pago != 0 ? $co->valor_pago : $co->comissao_valor_corretora }}">
                             </td>
+                            
+                            <td>
+                                R$ {{number_format($co->comissao_valor_corretor,2,",",".")}}
+                            </td>
+                            <td>
+                                <input type="text" data-corretor="{{$co->id_corretor}}" data-default-porcentagem="{{$co->porcentagem_parcela_corretor_id}}" id="porcentagem_corretor" value="{{$co->comissao_porcentagem_pago_corretor != 0 ? $co->comissao_porcentagem_pago_corretor :  $co->porcentagem_parcela_corretores}}" style="width:45px">
+                            </td>
+                            <td>
+                                <input type="text" style="color:#666;" data-corretor="{{$co->id_corretor}}" class="form-control-sm" id="recebido_corretor" value="{{$co->comissao_valor_pago_corretor != 0 ? number_format($co->comissao_valor_pago_corretor,2,',','.') : number_format($co->comissao_valor_corretor,2,',','.')}}">
+                            </td>
+                            
+                           
+                            <td align="center" v-align="middle" style="vertical-align : middle;text-align:center;">
+                                <select name="" id="mudar_pago_parcela" class="form-control-sm mx-auto d-flex" data-corretor="{{$co->id_corretor}}" data-corretora="{{$co->id_corretora}}">
+                                    <option value="">Em Aberto</option>
+                                    <option value="pago">Pago</option>
+                                    <option value="repique">Repique</option>
+                                </select>
+                            </td>
+                            
                             
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-
-            <div class="d-flex justify-content-around">
-                <span>Total Recebido: R$ {{number_format($total_corretora_pago,2,",",".")}}</span>
-                <span>Total a Receber: R$ {{number_format($total_corretora_nao_pago,2,",",".")}}</span>
-            </div>
-
-
-        </section> 
         
-        <section class="historico_corretor">
-            <h5 class="text-center d-flex align-items-center align-self-center justify-content-center mt-1">Corretor</h5>
+        </section>
 
-            <table class="table table-sm">
-                <thead>
-                    <tr>
-                        <th style="font-size:0.875em;">Parcela</th>
-                        <th style="font-size:0.875em;">Vencimento</th>
-                        <th style="font-size:0.875em;">Baixa</th>
-                        <th style="font-size:0.875em;">Dias Atr</th>
-                        <th style="font-size:0.875em;">Comissão</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($contrato->comissao->comissoesLancadas as $kk => $cr)
-                        <tr>
-                            <td class="text-center" style="font-size:0.875em;">
-                                @if($plano == 3)
-                                    {{$dados[$kk]}}
-                               @else
-                                    {{$cr->parcela}}     
-                               @endif
-                            </td>
-                            <td style="font-size:0.875em;">{{date('d/m/Y',strtotime($cr->data))}}</td>
-                            <td style="font-size:0.875em;">{{empty($cr->data_baixa) ? '---' :  date('d/m/Y',strtotime($cr->data_baixa))}}</td>
-                            <td style="font-size:0.875em;">{{$cr->quantidade_dias}}</td>
-                            <td style="font-size:0.875em;" align="right">
-                                <span style="margin-right:15px;">{{number_format($cr->valor,2,',','.')}}</span>
-                            </td>
-                            
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+        <hr style="background-color:tomato" width="100%" />
 
-            <div class="d-flex justify-content-between">
-                <span style="margin-left:28px;">Total Pago: R$ {{number_format($total_corretores_pago,2,",",".")}}</span>
-                <span style="margin-right:25px;">Total a Pagar: R$ {{number_format($total_corretores_nao_paga,2,",",".")}}</span>
-            </div>
+        <section>
+            
 
 
 
-        </section>    
+        </section>
 
 
-        
 
-    </main>            
+
+
+    </main>
+
+
+
+    
 
     <a href="{{route('gerente.index')}}" class="btn btn-block btn-lg mt-3 text-white" style="background-color:#123449;">Voltar</a>
 @stop
 
 @section('css')
-
     <style>
-
         .container_full_cards {display: flex;}
         .card_info {background-color:#123449;flex-basis: 33%;border-radius: 5px;}
         .historico_pagamento {background-color:#123449;flex-basis: 19%;margin-left:1%;color:#FFF;border-radius: 5px;}
         .historico_pagamento h3 {color:#FFF;border-bottom: 1px solid #FFF;text-align: center;padding:5px 0;}
         .historico_corretora {background-color:#123449;flex-basis: 33%;margin-left:1%;color:#FFF;border-radius: 5px;}
         .historico_corretor {background-color:#123449;flex-basis: 33%;margin-left:1%;color:#FFF;border-radius: 5px;}
-        
-
     </style>
-
-
 @stop
+
+@section('js')
+    <script src="{{asset('js/jquery.mask.min.js')}}"></script> 
+    <script>
+        $(function(){
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });             
+
+            $('#recebido').mask('#.##0,00', {reverse: true});
+            $('#recebido_corretor').mask('#.##0,00', {reverse: true});
+
+            $("#porcentagem_corretora").on('change',function(){
+                let id = $(this).attr("data-corretora");
+                let valor = $(this).val();
+                let valor_plano = $("#valor_plano").val();
+                let valor_corretora = $("#valor_corretora").val();
+                let id_configuracao_corretora = $(this).attr('data-configuracao-porcentagem');
+                $.ajax({
+                    url:"{{route('gerente.mudar.valor.corretora')}}",
+                    method:"POST",
+                    data:"id="+id+"&valor="+valor+"&valor_plano="+valor_plano+"&valor_corretora="+valor_corretora+"&id_configuracao_corretora="+id_configuracao_corretora+"&acao=porcentagem",
+                    success:function(res) {
+                        
+                        $("#recebido").val(res.valor);
+                        $("#porcentagem_corretora").val(res.porcentagem);
+                    }
+                });
+            });
+
+
+            $("#porcentagem_corretor").on('change',function(){
+                let id = $(this).attr("data-corretor");
+                let valor = $(this).val();
+                let valor_plano = $("#valor_plano").val();
+                let default_corretor = $(this).attr('data-default-porcentagem');
+                $.ajax({
+                    url:"{{route('gerente.mudar.valor.corretor')}}",
+                    method:"POST",
+                    data:"id="+id+"&valor="+valor+"&valor_plano="+valor_plano+"&default_corretor="+default_corretor+"&acao=porcentagem",
+                    success:function(res) {
+                        
+                        $("#recebido_corretor").val(res.valor);
+                        $("#porcentagem_corretor").val(res.porcentagem);
+                    }
+                });
+            });
+
+            $("#recebido").on('change',function(){
+                let valor = $(this).val();
+                let id = $(this).attr("data-corretora-valor");
+                let valor_plano = $("#valor_plano").val();
+                let id_configuracao = $(this).attr("data-configuracao-porcentagem-valor");
+                $.ajax({
+                    url:"{{route('gerente.mudar.valor.corretora')}}",
+                    method:"POST",
+                    data:"id="+id+"&valor="+valor+"&valor_plano="+valor_plano+"&id_configuracao="+id_configuracao+"&acao=valor",
+                    success:function(res) {
+                        
+                        $("#porcentagem_corretora").val(res) 
+                        
+                    }
+                });
+                
+            });
+
+            $("#recebido_corretor").on('change',function(){
+                let valor = $(this).val();
+                let id = $(this).attr("data-corretor");
+                let valor_plano = $("#valor_plano").val();
+                $.ajax({
+                    url:"{{route('gerente.mudar.valor.corretor')}}",
+                    method:"POST",
+                    data:"id="+id+"&valor="+valor+"&valor_plano="+valor_plano+"&acao=valor",
+                    success:function(res) {
+                        
+                        $("#porcentagem_corretor").val(res);    
+                        
+                    }
+                });
+
+
+                
+            });
+
+
+            $("#mudar_pago_parcela").on('change',function(){
+                let valor = $(this).val();
+                let corretor = $(this).attr('data-corretor');
+                let corretora = $(this).attr('data-corretora');
+                let select = $(this);
+                $.ajax({
+                    url:"{{route('gerente.administradorapagoucomissao')}}",
+                    method:"POST",
+                    data:"corretor="+corretor+"&corretora="+corretora,
+                    success:function(res) {
+                        select.closest('tr').slideUp("slow");
+                        //console.log(res);    
+                        // $("#porcentagem_corretor").val(res);    
+                        // $("#recebido_corretor").val(res.valor);
+                        // $("#porcentagem_corretor").val(res.porcentagem);
+                    }
+                });
+            });
+
+
+
+
+
+        });
+    </script>
+@stop
+
+
+
+
+

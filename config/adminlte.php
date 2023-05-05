@@ -339,7 +339,7 @@ return [
         ],
 
         [
-            "text" => "Financeiro - Tharllyany",
+            "text" => "Gerente",
             "url" => "admin/gerente",
             "icon" => "fas fa-money-check-alt",
             "icon_color" => 'white',

@@ -150,6 +150,7 @@ Route::middleware('auth')->prefix("admin")->group(function(){
 
 
     Route::post('/financeiro/sincronizar',"App\Http\Controllers\Admin\FinanceiroController@sincronizarDados")->name('financeiro.sincronizar');
+    Route::post('/financeiro/sincronizar/coletivo',"App\Http\Controllers\Admin\FinanceiroController@sincronizarDadosColetivo")->name('financeiro.sincronizar.coletivo');
     Route::post('/financeiro/atualizar_dados',"App\Http\Controllers\Admin\FinanceiroController@atualizarDados")->name('financeiro.atualizar.dados');
     Route::post('/financeiro/sincronizar_baixas',"App\Http\Controllers\Admin\FinanceiroController@sincronizarBaixas")->name('financeiro.sincronizar.baixas');
 
@@ -245,6 +246,16 @@ Route::middleware('auth')->prefix("admin")->group(function(){
     Route::get('/gerente/listagem/comissao_mes_diferente/{id}',"App\Http\Controllers\Admin\GerenteController@comissaoMesDiferente")->name('gerente.listagem.comissao_mes_diferente');
     Route::post('/gerente/mudar_status',"App\Http\Controllers\Admin\GerenteController@mudarStatus")->name('gerente.mudar_status');
     Route::get('/gerente/criar_pdf_pagamento',"App\Http\Controllers\Admin\GerenteController@criarPdfPagamento")->name('comissao.create.pdf');
+    Route::post('/gerente/mudarcomisao/corretora',"App\Http\Controllers\Admin\GerenteController@mudarComissaoCorretora")->name('gerente.mudar.valor.corretora');
+    Route::post('/gerente/mudarcomisao/corretor/gerente',"App\Http\Controllers\Admin\GerenteController@mudarComissaoCorretor")->name('gerente.mudar.valor.corretor');
+    Route::post('/gerente/administradorapagou/comissao',"App\Http\Controllers\Admin\GerenteController@administradoraPagouComissao")->name('gerente.administradorapagoucomissao');
+    Route::post('/gerente/finalizar/pagamento',"App\Http\Controllers\Admin\GerenteController@finalizarPagamento")->name('gerente.finalizar.pagamento');
+    Route::get('/gerente/listarcontratosemgeral',"App\Http\Controllers\Admin\GerenteController@listarcontratos")->name('gerente.listarcontratos.geral');
+    Route::get('/gerente/contrato/{id}',"App\Http\Controllers\Admin\GerenteController@listarcontratosDetalhe")->name('gerente.contrato.detalhe');
+
+    Route::get('/gerente/ver/{id_plano}/{id_tipo}',"App\Http\Controllers\Admin\GerenteController@verDetalheCard")->name('gerente.contrato.ver.detalhe.card');
+    Route::get('/gerente/show/{id_plano}/{id_tipo}',"App\Http\Controllers\Admin\GerenteController@showDetalheCard")->name('gerente.contrato.show.detalhe.card');
+
     /***Fim Financeiro Gerente */
 
     /****************************************************************Configurações******************************************************************/

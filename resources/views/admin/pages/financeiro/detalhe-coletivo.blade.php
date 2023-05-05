@@ -271,7 +271,7 @@
 
             <div style="flex-basis:8%;margin-right:1%;">    
                 <span class="text-white" style="font-size:0.81em;">Vidas</span>
-                <input type="text" name="quantidade_vidas" id="quantidade_vidas_individual_cadastrar" value="{{$dados->somarCotacaoFaixaEtaria[0]->soma}}" class="form-control  form-control-sm" readonly>
+                <input type="text" name="quantidade_vidas" id="quantidade_vidas_individual_cadastrar" value="{{$dados->somarCotacaoFaixaEtaria[0]->soma ?? $dados->clientes->quantidade_vidas}}" class="form-control  form-control-sm" readonly>
             </div>
 
             <div style="flex-basis:18%;">
@@ -465,7 +465,7 @@
 
                 @case(3)
                     <button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>
-                    <button class="btn btn-success w-50 pagamento_adesao next">Pagou Adesão</button>
+                    <button class="btn btn-success w-50 pagamento_adesao next">Pagar Vigencia</button>
                 @break
 
                 

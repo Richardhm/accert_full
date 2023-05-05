@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'Financeiro')
+@section('title', 'Gerente')
 
 @section('plugins.Datatables', true)
 
@@ -12,11 +12,7 @@
 @stop
 
 @section('content_header')
-    <ul class="list_abas">
-        <li data-id="aba_individual" class="ativo">Gerência</li>
-        <li data-id="aba_comissao" class="menu-inativo">Comissão</li>
-        <li data-id="aba_relatorio" class="menu-inativo">Relatório</li>
-    </ul>
+    
 @stop
 
 @section('content')
@@ -34,7 +30,7 @@
                 <form action="" name="data_da_baixa" id="data_da_baixa" method="POST">
                     <input type="date" name="data_baixa" id="data_baixa" class="form-control form-control-sm">
                     <input type="hidden" name="id" id="id">  
-                                 
+                    <input type="hidden" name="corretora" id="corretora">             
                     
             </div>
             <div class="modal-footer">
@@ -46,21 +42,956 @@
         </div>
     </div>
 
-
-
+    
 
     
-    <section class="conteudo_abas">
-        <!--------------------------------------Gerencia------------------------------------------>
-        <main id="aba_individual">
-           
-            <section class="d-flex justify-content-between" style="flex-wrap: wrap;align-content: flex-start;">
+    <section class="conteudo_abas" style="padding:5px;">
+
+    <ul class="list_abas" style="margin-top:6px;">
+        
+        <li data-id="aba_contratos" class="ativo">Contratos</li>
+        <li data-id="aba_baixas" class="menu-inativo">Baixas</li>
+        <li data-id="aba_recebidas" class="menu-inativo">Recebidos</li>
+        <li data-id="aba_comissao" class="menu-inativo" style="margin:0 1%;">Comissão</li>
+        <li data-id="aba_relatorio" class="menu-inativo">Relatório</li>
+    
+    
+</ul>
+
+
+        <!--------------------------------------Contratos------------------------------------------>
+        <main id="aba_contratos">
+
+        
+
+        <div class="d-flex" style="margin:7px 0;">
+            <select class="form-control" style="flex-basis:15%;">
+                <option value="" class="text-center">--Escolher Ano--</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+            </select>
+            <select class="form-control" style="flex-basis:15%;margin:0 1%;">
+                <option value="" class="text-center">--Escolher Mês--</option>
+                <option value="01">Janeiro</option>
+                <option value="02">Fevereiro</option>
+                <option value="03">Março</option>
+                <option value="04">Abril</option>
+                <option value="05">Maio</option>
+                <option value="06">Junho</option>
+                <option value="07">Julho</option>
+                <option value="08">Agosto</option>
+                <option value="09">Setembro</option>
+                <option value="10">Outubro</option>
+                <option value="11">Novembro</option>
+                <option value="12">Dezembro</option>
+            </select>
+    
+            <select class="form-control" style="flex-basis:15%;">
+                <option value="" class="text-center">--Escolher Corretor--</option>
+                @foreach($users as $u)
+                    <option value="{{$u->id}}">{{$u->name}}</option>
+                @endforeach
+            </select>
+
+
+
+
+                    
+        </div>
+
+
+
+
+
             
+            <section class="d-flex" style="justify-content: space-between;">
+
+                
+
+                <div style="flex-basis:24%;">
+
+                    <h5 style="margin:0;color:#FFF;text-align: center;background-color: #28a745;border-top-left-radius: 5px;border-top-right-radius: 5px;padding:4px 0;">Contratos</h5>
+
+                    <div class="d-flex" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;background-color:#28a745;color:#FFF">
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$quantidade_geral}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                                <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">Total</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center" style="font-weight:bold;">R$ {{number_format($total_valor_geral,2,",",".")}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_geral}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+
+                    </div>
+
+                   
+                    <div class="d-flex" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;background-color:#28a745;color:#FFF;">
+                        
+                    
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$total_quantidade_recebidos}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                                <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">Recebidos</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center" style="font-weight:bold;">R$ {{number_format($total_valor_recebidos,2,",",".")}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_recebidas}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+
+
+
+
+
+                        
+                    </div>
+
+                    <div class="d-flex" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;background-color:#28a745;color:#FFF;">
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                            <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$total_quantidade_a_receber}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">A Receber</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center">R$ {{$total_valor_a_receber}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_a_receber}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;background-color:#28a745;color:#FFF;">
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_atrasado}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">Atrasados</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center">R$ {{number_format($qtd_atrasado_valor,2,",",".")}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_atrasado_quantidade_vidas}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;background-color:#28a745;color:#FFF;">
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_finalizado}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">Finalizados</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center">R$ {{$quantidade_valor_finalizado}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_finalizado_quantidade_vidas}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;background-color:#28a745;color:#FFF;">
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_cancelado}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">Cancelado</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center">R$ {{number_format($quantidade_valor_cancelado,2,",",".")}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_cancelado_quantidade_vidas}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div style="flex-basis:24%;">
+
+                <h5 class="bg-info" style="margin:0;padding:0;color:#FFF;text-align: center;border-top-left-radius: 5px;border-top-right-radius: 5px;padding:4px 0;">Individual</h5>
+
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[1,1])}}" class="d-flex bg-info" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
+                        
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$quantidade_individual_geral}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">Total</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center">R$ {{number_format($total_valor_geral_individual,2,",",".")}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_geral_individual}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+
+                    </a>
+
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[1,2])}}" class="d-flex bg-info" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
+                        
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$total_quantidade_recebidos_individual}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                                <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">Recebidos</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center">R$ {{number_format($total_valor_recebidos_individual,2,",",".")}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_recebidas_individual}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+
+                    </a>
+
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[1,3])}}" class="d-flex bg-info" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
+                        
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$total_quantidade_a_receber_individual}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">A Receber</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center">R$ {{$total_valor_a_receber_individual}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_a_receber_individual}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+
+                    </a>
+
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[1,4])}}" class="d-flex bg-info" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
+                        
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_atrasado_individual}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">Atrasados</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center">R$ {{number_format($qtd_atrasado_valor_individual,2,",",".")}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_atrasado_quantidade_vidas_individual}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+
+                    </a>
+
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[1,5])}}" class="d-flex bg-info" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
+                        
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_cancelado_individual}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">Cancelado</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center">R$ {{number_format($quantidade_valor_cancelado_individual,2,",",".")}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_cancelado_quantidade_vidas_individual}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+
+                    </a>
+
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[1,6])}}" class="d-flex bg-info" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
+                        
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_finalizado_individual}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">Finalizados</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center">R$ {{number_format($quantidade_valor_finalizado_individual,2,",",".")}}</span>
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_finalizado_quantidade_vidas_individual}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+
+                    </a>
+
+                </div>
+
+
+                <div style="flex-basis:24%;">
+
+                <h5 style="margin:0;padding:0;color:#FFF;text-align: center;background-color: #dc3545;border-top-left-radius: 5px;border-top-right-radius: 5px;padding:4px 0;">Coletivo</h5>
+
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[2,1])}}" class="d-flex " style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;background-color:#dc3545;color:#FFF;border-radius:5px;">
+                        
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$quantidade_coletivo_geral}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">Total</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center">R$ {{number_format($total_valor_geral_coletivo,2,",",".")}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_geral_coletivo}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+
+
+
+
+
+                    </a>
+
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[2,2])}}" class="d-flex" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;background-color:#dc3545;color:#FFF;border-radius:5px;">
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$total_quantidade_recebidos_coletivo}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">Recebidos</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center">R$ {{number_format($total_valor_recebidos_coletivo,2,",",".")}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_recebidas_coletivo}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+                    </a>
+
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[2,3])}}" class="d-flex" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;background-color:#dc3545;color:#FFF;border-radius:5px;">
+                        
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$total_quantidade_a_receber_coletivo}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">A receber</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center">R$ {{number_format($total_valor_a_receber_coletivo,2,",",".")}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_a_receber_coletivo}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+
+                    </a>
+
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[2,4])}}" class="d-flex" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;background-color:#dc3545;color:#FFF;border-radius:5px;">
+                        
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_atrasado_coletivo}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">Atrasados</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center">R$ {{number_format($qtd_atrasado_valor_coletivo,2,",",".")}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_atrasado_quantidade_vidas_coletivo}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+
+
+
+
+                    </a>
+
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[2,5])}}" class="d-flex" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;background-color:#dc3545;color:#FFF;border-radius:5px;">
+                        
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_cancelado_coletivo}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">Cancelado</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center">R$ {{number_format($quantidade_valor_cancelado_coletivo,2,",",".")}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_cancelado_quantidade_vidas_coletivo}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+
+                    </a>
+
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[2,6])}}" class="d-flex" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;background-color:#dc3545;color:#FFF;border-radius:5px;">
+                        
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_finalizado_coletivo}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">Finalizados</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center">R$ {{number_format($quantidade_valor_finalizado_coletivo,2,",",".")}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_finalizado_quantidade_vidas_coletivo}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+
+                    </a>
+
+                </div>
+
+
+                <div style="flex-basis:24%;">
+
+                <h5 style="margin:0;padding:0;color:#FFF;text-align: center;background-color: #FF8C00;border-top-left-radius: 5px;border-top-right-radius: 5px;padding:4px 0;">Empresarial</h5>
+
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[3,1])}}" class="d-flex" style="background-color:#FF8C00;color:#FFF;flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
+                        
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$quantidade_empresarial_geral}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">Total</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center">R$ {{number_format($total_valor_geral_empresarial,2,",",".")}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_geral_empresarial}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+
+                    </a>
+
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[3,2])}}" class="d-flex" style="background-color:#FF8C00;color:#FFF;flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
+                        
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$total_quantidade_recebidos_empresarial}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">Recebidos</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center">R$ {{number_format($total_valor_recebidos_empresarial,2,",",".")}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_recebidas_empresarial}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+
+
+
+
+
+
+
+                    </a>
+
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[3,3])}}" class="d-flex" style="background-color:#FF8C00;color:#FFF;flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
+                        
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$total_quantidade_a_receber_empresarial}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">A Receber</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center">R$ {{number_format($total_valor_a_receber_empresarial,2,",",".")}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_a_receber_empresarial}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+
+                    </a>
+
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[3,4])}}" class="d-flex" style="background-color:#FF8C00;color:#FFF;flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
+                       
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_atrasado_empresarial}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">Atrasados</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center">R$ {{number_format($qtd_atrasado_valor_empresarial,2,",",".")}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_atrasado_quantidade_vidas_empresarial}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+
+
+                    </a>
+
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[3,5])}}" class="d-flex" style="background-color:#FF8C00;color:#FFF;flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_cancelado_empresarial}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">Cancelado</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center">R$ {{number_format($quantidade_valor_cancelado_empresarial,2,",",".")}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_cancelado_quantidade_vidas_empresarial}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+                    </a>
+
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[3,6])}}" class="d-flex" style="background-color:#FF8C00;color:#FFF;flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_finalizado_empresarial}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">Finalizado</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center">R$ {{number_format($quantidade_valor_finalizado_empresarial,2,",",".")}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_finalizado_quantidade_vidas_empresarial}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+                    </a>
+
+                </div>
+
+
+
+
+
+
+            
+
+            
+
+            
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </section>
+
+
+
+           
+
+          
+
+           
+            
+
+            
+        
+        </main>    
+        <!--------------------------------------Fim Contratos------------------------------------------>
+
+
+        <!--------------------------------------Baixas------------------------------------------>
+        <main id="aba_baixas" class="ocultar">
+            <section class="d-flex justify-content-between" style="flex-wrap: wrap;align-content: flex-start;">
+                
                 <!--COLUNA DA ESQUERDA-->
                 <div class="d-flex flex-column text-white ml-1" style="flex-basis:16%;border-radius:5px;">                    
 
                     <div class="mb-1">
-                        <span class="btn btn-block" style="background-color:#123449;color:#FFF;font-size:1.2em;">Contratos</span>
+                        <span class="btn btn-block" style="background-color:#123449;color:#FFF;font-size:1.2em;">Baixas</span>
                     </div>
 
                     <div style="background-color:#123449;padding:5px 0;border-radius:5px;margin-bottom:5px;" id="listar_gerenciavel" class="listar_gerenciavel">   
@@ -102,47 +1033,7 @@
                     </div>
 
 
-                    <div style="background-color:#123449;border-radius:5px;padding:5px 0;" id="listar_recebido" class="listar_recebido">
-
-                        <ul style="margin:0;padding:0;list-style:none;">
-                            <li style="padding:10px;display:flex;justify-content:space-between;border-radius:5px;" id="container_recebido">
-                                <span style="flex-basis:30%;font-size:0.875em;">Recebido</span>
-                                <span style="flex-basis:65%;background-color:#FFF;color:#000;border-radius:3px;display:flex;justify-content:space-between;">
-                                    <span class="ml-2" id="quat_comissao_recebido" style="font-size:0.875em;">{{$quat_comissao_recebido}}</span>
-                                    <span class="mr-2 valor_quat_comissao_recebido" style="font-size:0.875em;">R$ {{number_format($valor_quat_comissao_recebido,2,",",".")}}</span>        
-                                </span>                        
-                            </li> 
-                        </ul>
-
-                        <div class="mb-1" style="padding:0 5px;">
-                            <select id="select_mes_recebido" class="form-control">
-                                <option value="todos" class="text-center">---Escolher Vigente---</option>
-                                @foreach($datas_select as $d)
-                                    <option value="{{date('Y-m',strtotime($d->data_baixa_gerente))}}">{{date('F/Y',strtotime($d->data_baixa_gerente))}}</option> 
-                                @endforeach
-                            </select>
-                        </div>   
-                        
-                        <div style="padding:0 5px;">
-                            <select id="select_administradora_recebido" class="form-control">
-                                <option value="todos" class="text-center">-Escolher Administradora-</option>
-                            </select>
-                        </div>
-
-                        <div style="padding:0 5px;margin:5px 0;">
-                            <select id="select_vendedor_recebido" class="form-control">
-                                <option value="todos" class="text-center">-Escolher Corretor-</option>
-                            </select>
-                        </div>
-
-                        <div style="padding:0 5px;">
-                            <select id="select_plano_recebido" class="form-control">
-                                <option value="todos" class="text-center">-Escolher Plano-</option>
-                            </select>
-                        </div>
-
-                    </div>
-
+                    
                 </div>
                 <!--Fim Coluna da Esquerda  -->
                 <!--COLUNA DA CENTRAL-->
@@ -157,11 +1048,8 @@
                                 <th>Origem</th>
                                 <th>Cliente</th>
                                 <th>Cod. Externo</th>
-                                <th>Parcela</th>
                                 <th>Valor</th>
                                 <th>Vencimento</th>
-                                
-                                <th>Detalhe</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -171,7 +1059,69 @@
                 </div>  
                 <!--FIM COLUNA DA CENTRAL-->
 
-                <div style="flex-basis:83%;" class="tabela_a_recebido_container ocultar">
+                
+
+                
+            </section>
+        </main>    
+        <!--------------------------------------Fim Baixas------------------------------------------>
+
+
+
+
+
+
+        <!--------------------------------------Gerencia------------------------------------------>
+        <main id="aba_recebidas" class="ocultar">
+        <section class="d-flex justify-content-between" style="flex-wrap: wrap;align-content: flex-start;">
+                <!---COLUNA ESQUERDA-->
+
+                <div style="background-color:#123449;border-radius:5px;padding:5px 0;" id="listar_recebido" class="listar_recebido">
+
+                    <ul style="margin:0;padding:0;list-style:none;">
+                        <li style="padding:10px;display:flex;justify-content:space-between;border-radius:5px;" id="container_recebido">
+                            <span style="flex-basis:30%;font-size:0.875em;">Recebido</span>
+                            <span style="flex-basis:65%;background-color:#FFF;color:#000;border-radius:3px;display:flex;justify-content:space-between;">
+                                <span class="ml-2" id="quat_comissao_recebido" style="font-size:0.875em;">{{$quat_comissao_recebido}}</span>
+                                <span class="mr-2 valor_quat_comissao_recebido" style="font-size:0.875em;">R$ {{number_format($valor_quat_comissao_recebido,2,",",".")}}</span>        
+                            </span>                        
+                        </li> 
+                    </ul>
+
+                    <div class="mb-1" style="padding:0 5px;">
+                        <select id="select_mes_recebido" class="form-control">
+                            <option value="todos" class="text-center">---Escolher Vigente---</option>
+                            @foreach($datas_select as $d)
+                                <option value="{{date('Y-m',strtotime($d->data_baixa_gerente))}}">{{date('F/Y',strtotime($d->data_baixa_gerente))}}</option> 
+                            @endforeach
+                        </select>
+                    </div>   
+                    
+                    <div style="padding:0 5px;">
+                        <select id="select_administradora_recebido" class="form-control">
+                            <option value="todos" class="text-center">-Escolher Administradora-</option>
+                        </select>
+                    </div>
+
+                    <div style="padding:0 5px;margin:5px 0;">
+                        <select id="select_vendedor_recebido" class="form-control">
+                            <option value="todos" class="text-center">-Escolher Corretor-</option>
+                        </select>
+                    </div>
+
+                    <div style="padding:0 5px;">
+                        <select id="select_plano_recebido" class="form-control">
+                            <option value="todos" class="text-center">-Escolher Plano-</option>
+                        </select>
+                    </div>
+
+            </div>
+
+
+                
+                <!--Fim Coluna da Esquerda  -->
+                <!--COLUNA DA CENTRAL-->
+                <div style="flex-basis:83%;" class="tabela_a_recebido_container">
                     <div class="p-2" style="background-color:#123449;color:#FFF;border-radius:5px;">
                     <table id="tabela_recebido" class="table table-sm listardadosrecebido">
                         <thead>
@@ -193,9 +1143,13 @@
                     </table>   
                     </div>
                 </div>  
+                <!--FIM COLUNA DA CENTRAL-->
 
-                  
+                
+
+                
             </section>
+            
        </main><!-------------------------------------DIV FIM Gerencia------------------------------------->     
        
        <main id="aba_comissao" class="ocultar aba_comissao_container">
@@ -235,7 +1189,7 @@
                             <th>Alter</th>
                             <th>Qualicorp</th>
                             <th>Hapvida</th>
-                            <th>Valor</th>
+                            <th>Total</th>
                             <th>Detalhe</th>
                             
                         </tr>
@@ -278,7 +1232,68 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-            });             
+            });     
+            
+            var listarcontratos = $(".listarcontratos").DataTable({
+
+                dom: '<"d-flex justify-content-between"<"#title_listar_contratos"><"estilizar_search"f>><t><"d-flex justify-content-between align-items-center"<"por_pagina"l><"estilizar_pagination"p>>',
+                "language": {
+                    "url": "{{asset('traducao/pt-BR.json')}}"
+                },
+                ajax: {
+                    "url":"{{ route('gerente.listarcontratos.geral') }}",
+                    "dataSrc": ""
+                },
+                "lengthMenu": [50,100,150,200,300,500],
+                "ordering": false,
+                "paging": true,
+                "searching": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+                columns: [
+                    {data:"administradora",name:"administradora"},
+                    {data:"corretor",name:"corretor","width":"10%"},
+                    {data:"cliente",name:"cliente"},  
+                    {data:"codigo_externo",name:"codigo_externo"}, 
+                    {data:"plano",name:"plano"},
+                    {data:"valor",name:"valor_plano",render: $.fn.dataTable.render.number('.', ',', 2, '')},
+                    {data:"data_contrato",name:"data_boleto",
+                        "createdCell":function(td,cellData,rowData,row,col) {
+                            
+                            let alvo = cellData.split(" ")[0].split("-").reverse().join("/");
+                            $(td).html(alvo);        
+                        }
+                    },
+                    {data:"origem",name:"origem"},
+                                    
+                   
+                    
+                    
+                    
+                    
+                    {data:"detalhe",name:"detalhe",
+                        "createdCell":function(td,cellData,rowData,row,col) {
+                            $(td).css({"text-align":"center"}).html("<a href='/admin/gerente/contrato/"+cellData+"' class='text-white'><i class='fas fa-eye'></i></a>")
+                        }
+                    },
+                   
+                ],
+                "columnDefs": [],  
+                "initComplete": function( settings, json ) {
+                    $('#title_listar_contratos').html("<h4>Contratos</h4>");
+                    
+                },
+                footerCallback: function (row, data, start, end, display) {
+                    
+                }
+
+
+
+
+            });    
+
+
             
 
             /** Tabela de Listar A receber */
@@ -307,7 +1322,7 @@
                     {data:"tabela_origens",name:"cidade"},
                     {data:"cliente",name:"cliente"},                   
                     {data:"codigo_externo",name:"codigo_externo"},
-                    {data:"parcela",name:"financeiro_id"},
+                    
                     {data:"valor",name:"valor_plano",render: $.fn.dataTable.render.number('.', ',', 2, '')},
                     {data:"vencimento",name:"data_boleto",
                         "createdCell":function(td,cellData,rowData,row,col) {
@@ -315,46 +1330,18 @@
                             $(td).html(alvo);        
                         }
                     },
-                    // {data:"data_baixa",name:"tabela_origens_id",
-                    //     "createdCell":function(td,cellData,rowData,row,col) {
-                    //         let alvo = cellData.split("-").reverse().join("/");
-                    //         $(td).html(alvo);        
-                    //     }
-                    // },                   
-                    {data:"id",name:"detalhe",
+                       
+                    {data:"comissao",name:"detalhe",
                         "createdCell":function(td,cellData,rowData,row,col) {
                             $(td).css({"text-align":"center"}).html("<a href='/admin/gerente/detalhe/"+cellData+"' class='text-white'><i class='fas fa-eye'></i></a>")
                         }
                     },
-                    {data:"id",name:"check",
-                        "createdCell":function(td,cellData,rowData,row,col) {
-                            //$(td).css({"text-align":"center"}).html('<input type="checkbox" data-id="'+cellData+'" id="mudar_status_gerenciavel_individual">');
-                            $(td).html('<button class="btn_recebido" data-id="'+cellData+'">Recebido</button>');
-                        }
-                    },
+                    
                 ],
                 "columnDefs": [],  
                 "initComplete": function( settings, json ) {
                     $('#title_coletivo_por_adesao_table').html("<h4>Corretora</h4>");
-                    // this.api()
-                    //    .columns([1])
-                    //    .every(function () {
-                    //         var column = this;
-                    //         var selectUsuario = $("#select_usuario");
-                    //         // selectUsuario.on('change',function(){
-                    //         //     var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                    //         //     if(val != "todos") {
-                    //         //         column.search(val ? '^' + val + '$' : '', true, false).draw();    
-                    //         //     } else {
-                    //         //         var val = "";
-                    //         //         column.search(val ? '^' + val + '$' : '', true, false).draw();
-                    //         //     }             
-                    //         // });
-
-                    //         column.data().unique().sort().each(function (d, j) {
-                    //             selectUsuario.append('<option value="' + d + '">' + d + '</option>');
-                    //         });
-                    //    })
+                  
                         this.api()
                        .columns([2])
                        .every(function () {
@@ -559,6 +1546,7 @@
             });            
 
             $('body').on('click','.btn_recebido',function(){
+                $("#corretora").val($(this).attr('data-corretora'));
                 $('#dataBaixaModal').modal('show');
             });
 
@@ -665,20 +1653,26 @@
                     method:"POST",
                     data:dados,
                     success:function(res) {
+                        console.log(res);
+                        // if(res == "sucesso") {
+                        //     tableareceber.ajax.reload();
+                        // } else {
+
+                        // }
                         // var select_mes =  $("#select_mes");
                         // select_mes.html('');
                         // select_mes.prepend('<option value="todos" class="text-center">---Escolher Mes---</option>');
                         // select_mes.append(res.datas_select);
-                        tableareceber.ajax.reload();
-                        listarcomissao.ajax.reload();
-                        $('#dataBaixaModal').modal('hide');
-                        $("#quat_comissao_a_receber").text(res.quat_comissao_a_receber);
-                        $("#quat_comissao_recebido").text(res.quat_comissao_recebido);
+                        // tableareceber.ajax.reload();
+                        // listarcomissao.ajax.reload();
+                        // $('#dataBaixaModal').modal('hide');
+                        // $("#quat_comissao_a_receber").text(res.quat_comissao_a_receber);
+                        // $("#quat_comissao_recebido").text(res.quat_comissao_recebido);
 
-                        $(".valor_quat_comissao_a_receber").html("R$ "+res.valor_quat_comissao_a_receber);
-                        $(".valor_quat_comissao_recebido").html("R$ "+res.valor_quat_comissao_recebido);
+                        // $(".valor_quat_comissao_a_receber").html("R$ "+res.valor_quat_comissao_a_receber);
+                        // $(".valor_quat_comissao_recebido").html("R$ "+res.valor_quat_comissao_recebido);
 
-                        $("#data_baixa").val('');
+                        // $("#data_baixa").val('');
 
                     }
                 })
@@ -775,69 +1769,10 @@
 
             $("#select_administradora").on('change',function(){
 
-                
-
-                
-            //     if($(this).val() != "todos") {
-            //         table
-            //         .column(0)
-            //         .search($(this).val())
-            //         .draw();
-            //     } else {
-            //         var val = "";
-            //         table
-            //         .column(0)
-            //         .search(val)
-            //         .draw();
-            //         table.column(0).search(val ? '^' + val + '$' : '', true, false).draw();
-                   
-            //     }
             });
             
 
-            // $("#select_administradora_recebido").on('change',function(){
-                
-            //     if($(this).val() != "todos") {
-
-            //         console.log($(this).val());
-
-            //         //$("#select_administradorada_recebido option[value='"+$(this).val()+"']").prop('selected',true);
-
-
-
-            //         table
-            //         .column(0)
-            //         .search($(this).val())
-            //         .draw();
-            //     } else {
-            //         var val = "";
-            //         table
-            //         .column(0)
-            //         .search(val)
-            //         .draw();
-            //         table.column(0).search(val ? '^' + val + '$' : '', true, false).draw();
-                   
-            //     }
-            // });
-
-
-            // $("#select_plano").on('change',function(){
-            //     if($(this).val() != "todos") {
-            //         table
-            //         .column(2)
-            //         .search($(this).val())
-            //         .draw();
-            //     } else {
-            //         var val = "";
-            //         table
-            //         .column(2)
-            //         .search(val)
-            //         .draw();
-            //         table.column(2).search(val ? '^' + val + '$' : '', true, false).draw();
-                   
-            //     }
-            // });
-
+            
 
 
 
