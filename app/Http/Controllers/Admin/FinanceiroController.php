@@ -451,13 +451,10 @@ class FinanceiroController extends Controller
         ->selectRaw("(select name from users where users.id = contrato_empresarial.user_id) as vendedor") 
         ->selectRaw("(select nome from planos where planos.id = contrato_empresarial.plano_id) as plano")
         ->selectRaw("(select nome from tabela_origens where tabela_origens.id = contrato_empresarial.tabela_origens_id) as tabela_origem")   
-        
         ->with(["financeiro","comissao","comissao.comissoesLancadas",'comissao.comissaoAtualFinanceiro','comissao.comissaoAtualLast'])
         ->first();
 
-        
-
-       
+        //dd($contratos);
 
         $texto_empresarial = "";
         if($contratos->plano_contrado == 1) {
@@ -2219,6 +2216,7 @@ class FinanceiroController extends Controller
 
     public function mudarEstadosColetivo(Request $request)
     {
+        
         $id_cliente = $request->id_cliente;
         $id_contrato = $request->id_contrato;
         $contrato = Contrato::find($id_contrato);
@@ -2256,7 +2254,7 @@ class FinanceiroController extends Controller
 
     public function mudarEstadosEmpresarial(Request $request)
     {
-        //return $request->all();
+        
         // $id_cliente = $request->id_cliente;
         $id_contrato = $request->id_contrato;
         $contrato = ContratoEmpresarial::where("id",$id_contrato)->first();
@@ -2723,7 +2721,7 @@ class FinanceiroController extends Controller
             foreach ($reader->getSheetIterator() as $sheet) {
                 foreach ($sheet->getRowIterator() as $rowNumber => $row) {
                     $cells = $row->getCells(); 
-                    if($rowNumber >= 5 && !in_array($cells[0]->getValue(),$cpfs)) {
+                    if($rowNumber >= 2 && !in_array($cells[0]->getValue(),$cpfs)) {
                         $cpf = mb_strlen($cells[4]->getValue()) == 11 ? $cells[4]->getValue() : str_pad($cells[4]->getValue(), 11, "000", STR_PAD_LEFT);
                         $dia = str_pad($cells[16]->getValue(), 2, "0", STR_PAD_LEFT);
                         array_push($cpfs,$cells[0]->getValue());
@@ -2998,6 +2996,7 @@ class FinanceiroController extends Controller
                 break;
             }
         }
+
         $dados = DB::select('
             SELECT * FROM comissoes_corretores_cancelados
             INNER JOIN comissoes_corretores_lancadas ON 
@@ -3006,8 +3005,6 @@ class FinanceiroController extends Controller
             AND valor_pago IS NULL 
             GROUP BY comissoes_corretores_cancelados.documento_gerador
         ');
-            
-        
 
         foreach($dados as $d) {
             $contrato_id = Comissoes::where("id",$d->comissoes_id)->first()->contrato_id;
@@ -3025,15 +3022,10 @@ class FinanceiroController extends Controller
 
         foreach($canc as $c) {
             DB::table('comissoes_corretores_lancadas')
-            ->whereRaw("documento_gerador = (SELECT documento_gerador FROM comissoes_corretores_lancadas WHERE id = $c->id) AND data_baixa IS NULL")
+            ->where("id","=",$c->id) 
+            ->whereRaw("data_baixa IS NULL")
             ->update(['cancelados'=>1]);
-
         }
-        
-
-
-
-
 
         return "sucesso";
     }  
@@ -3119,20 +3111,13 @@ class FinanceiroController extends Controller
 
     public function detalhesContratoColetivo($id)
     {
-        
-
-
 
         $contratos = Contrato
             ::where("id",$id)        
             ->with(['administradora','financeiro','cidade','comissao','acomodacao','plano','comissao.comissaoAtualFinanceiro','comissao.comissoesLancadas','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
             ->orderBy("id","desc")
             ->first();
-
         
-
-
-
         $motivo_cancelados = MotivoCancelados::all();
 
 

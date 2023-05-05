@@ -103,7 +103,7 @@
     <input type="hidden" id="excluir_cliente" value="{{$dados->clientes->id}}">
 
     <input type="hidden" id="data_cliente" value="{{$dados->clientes->id}}">
-    <input type="hidden" id="data_contrato" value="{{$dados->clientes->id}}">
+    <input type="hidden" id="data_contrato" value="{{$dados->id}}">
 
     <input type="hidden" id="data_financeiro" value="{{$dados->financeiro_id}}">
 
@@ -381,10 +381,6 @@
                                         Pag. 6º Parcela
                                     @break;
                                 @endswitch
-
-
-
-
                                
                             </td>
                             <td class="text-center" style="font-size:0.875em;">
@@ -590,6 +586,7 @@
                                     data:"id_cliente="+id_cliente+"&id_contrato="+id_contrato,
                                     method:"POST",
                                     success:function(res) {
+                                        
                                         window.location.href = "/admin/financeiro?ac=coletivo";
                                     }
                                 })

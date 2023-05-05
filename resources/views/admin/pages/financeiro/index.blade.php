@@ -1357,7 +1357,7 @@
                     "url":"{{ route('financeiro.individual.geralIndividualPendentes') }}",
                     "dataSrc": ""
                 },
-                "lengthMenu": [50,100,150,200,300,500],
+                "lengthMenu": [200,250,300,500],
                 "ordering": true,
                 "paging": true,
                 "searching": true,
@@ -1899,10 +1899,6 @@
 	                        return intVal(a) + intVal(b);
                         }, 0);
 
-                       
-
-
-
                         total_linhas = api.column(0,{ page: 'current' }).data().count();
                         
                         total = api.column(7,{ page: 'current' }).data().reduce(function (a, b) {
@@ -2125,7 +2121,7 @@
                     "url":"{{ route('contratos.listarEmpresarial.analise') }}",
                     "dataSrc": ""
                 },
-                "lengthMenu": [50,100,150,200,300,500],
+                "lengthMenu": [200,250,300,500],
                 "ordering": false,
                 "paging": true,
                 "searching": true,
@@ -2827,7 +2823,6 @@
                     $("#all_pendentes_empresarial").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');    
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.analise")}}').load();
-                    limparEmpresarial();
                 } else if(id_lista == "aguardando_pagamento_1_parcela_empresarial") {
                     $("#title_empresarial").html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 1º Parcela</h4>");
                     // $('.button_empresarial').empty().html(
@@ -2839,7 +2834,6 @@
                     $("#all_pendentes_empresarial").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');  
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.primeiraparcela")}}').load();
-                    limparEmpresarial();
                 } else if(id_lista == "aguardando_pagamento_2_parcela_empresarial") {
                     $("#title_empresarial").html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 2º Parcela</h4>");
                     // $('.button_empresarial').empty().html(
@@ -2851,7 +2845,6 @@
                     $("#all_pendentes_empresarial").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');        
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.segundaparcela")}}').load();
-                    limparEmpresarial();
                 } else if(id_lista == "aguardando_pagamento_3_parcela_empresarial") {
                     $("#title_empresarial").html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 3º Parcela</h4>");
                     $('.button_empresarial').empty().html(
@@ -2863,7 +2856,6 @@
                     $("#all_pendentes_empresarial").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');        
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.terceiraparcela")}}').load();
-                    limparEmpresarial();
                 } else if(id_lista == "aguardando_pagamento_4_parcela_empresarial") {
                     $("#title_empresarial").html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 4º Parcela</h4>");
                     $('.button_empresarial').empty().html(
@@ -2875,7 +2867,6 @@
                     $("#all_pendentes_empresarial").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.quartaparcela")}}').load();
-                    limparEmpresarial();
                 } else if(id_lista == "aguardando_pagamento_5_parcela_empresarial") {
                     $("#title_empresarial").html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 5º Parcela</h4>");
                     $('.button_empresarial').empty().html(
@@ -2887,7 +2878,6 @@
                     $("#all_pendentes_empresarial").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.quintaparcela")}}').load();
-                    limparEmpresarial();
                 } else if(id_lista == "aguardando_pagamento_6_parcela_empresarial") {
                     $("#title_empresarial").html("<h4 style='font-size:1em;margin-top:10px;'>Pagamento 6º Parcela</h4>");
                     $('.button_empresarial').empty().html(
@@ -2899,17 +2889,14 @@
                     $("#all_pendentes_empresarial").removeClass('textoforte-list');
                     $(this).addClass('textoforte-list');
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.sextaparcela")}}').load();
-                    limparEmpresarial();
                 } else if(id_lista == "aguardando_finalizado_empresarial") {
                     $("#title_empresarial").html("<h4 style='font-size:1em;margin-top:10px;'>Finalizado</h4>");
                     $('.button_empresarial').empty().html('');  
                     $("#all_pendentes_empresarial").removeClass('textoforte-list');              
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.finalizado")}}').load();
-                    limparEmpresarial();
                 } else if(id_lista == "aguardando_cancelado_empresarial") {
                     $("#title_empresarial").html("<h4 style='font-size:1em;margin-top:10px;'>Cancelado</h4>");
                     tableempresarial.ajax.url('{{route("contratos.listarEmpresarial.cancelado")}}').load();
-                    limparEmpresarial();
                 } else {
 
                 }

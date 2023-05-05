@@ -390,21 +390,6 @@
     <button class="btn btn-danger w-50 mr-2 excluir_empresarial">Excluir</button>
     <button class="btn btn-success w-50 next_empresarial">Conferido</button>
 </div>   -->
-
-
-
-
-
-
-
-
-
-
-
-
-        
-        
-        
         
 
     </main>  
@@ -412,43 +397,51 @@
     <div class="d-flex mt-3 " style="flex-basis:100%;justify-content: flex-end;">
         <div class="d-flex" style="flex-basis:49%;justify-content: flex-end;">
            
-            @switch(isset($dados->comissao->comissaoAtualFinanceiro->parcela) && !empty($dados->comissao->comissaoAtualFinanceiro->parcela) &&  $dados->comissao->comissaoAtualFinanceiro->parcela)
 
-                @case(1)
-                    <button class="btn btn-danger w-50 mr-1 excluir_empresarial">Excluir</button>
-                    <button class="btn btn-success w-50 next">Conferido</button>                  
-                @break
+            @if(isset($dados->comissao->comissaoAtualFinanceiro->parcela) && !empty($dados->comissao->comissaoAtualFinanceiro->parcela) &&  $dados->comissao->comissaoAtualFinanceiro->parcela) 
+               
+                @switch($dados->comissao->comissaoAtualFinanceiro->parcela)
 
-                @case(2)
-                    <button class="btn btn-danger w-50 mr-1 cancelar">Cancelar</button>
-                    <button class="btn btn-success w-50 next">Pagar 2º Parcela</button>
-                @break 
+                    @case(1)
+                        <button class="btn btn-danger w-50 mr-1 excluir_empresarial">Excluir</button>
+                        <button class="btn btn-success w-50 next">Pagar 1º Parcela</button>                  
+                    @break
 
-                @case(3)
-                    <button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>
-                    <button class="btn btn-success w-50 pagamento_adesao next">Pagar 3º Parcela</button>
-                @break
+                    @case(2)
+                        <button class="btn btn-danger w-50 mr-1 cancelar">Cancelar</button>
+                        <button class="btn btn-success w-50 next">Pagar 2º Parcela</button>
+                    @break 
 
-                @case(4)
-                    <button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>
-                    <button class="btn btn-success w-50 pagamento_adesao next">Pagar 4º Parcela</button>
-                @break
+                    @case(3)
+                        <button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>
+                        <button class="btn btn-success w-50 pagamento_adesao next">Pagar 3º Parcela</button>
+                    @break
 
-                @case(5)
-                    <button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>
-                    <button class="btn btn-success w-50 pagamento_adesao next">Pagar 5º Parcela</button>
-                @break
+                    @case(4)
+                        <button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>
+                        <button class="btn btn-success w-50 pagamento_adesao next">Pagar 4º Parcela</button>
+                    @break
 
-                @case(6)
-                    <button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>
-                    <button class="btn btn-success w-50 pagamento_adesao next">Pagar 6º Parcela</button>
-                @break
+                    @case(5)
+                        <button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>
+                        <button class="btn btn-success w-50 pagamento_adesao next">Pagar 5º Parcela</button>
+                    @break
 
-                
-            @endswitch                        
+                    @case(6)
+                        <button class="btn btn-danger w-50 mr-2 cancelar">Cancelar</button>
+                        <button class="btn btn-success w-50 pagamento_adesao next">Pagar 6º Parcela</button>
+                    @break
+
+
+                @endswitch                                      
 
 
 
+
+
+
+
+            @endif
 
         </div>
     </div>                                
@@ -530,51 +523,47 @@
 
 
            $("body").on('click','.next',function(){
+                
                 let contrato = $("#contrato").val();
-                let financeiro = $("#financeiro").val();
-                
-                    
-                    $.ajax({
-                        url:"{{route('financeiro.mudarStatusEmpresarial')}}",
-                        data:"financeiro="+financeiro+"&id_contrato="+contrato,
-                        method:"POST",
-                        success:function(res) {
+                let financeiro = $("#financeiro").val(); 
+                $.ajax({
+                    url:"{{route('financeiro.mudarStatusEmpresarial')}}",
+                    data:"financeiro="+financeiro+"&id_contrato="+contrato,
+                    method:"POST",
+                    success:function(res) {
+                        
 
-                            
-
-
-                            // if(res == "abrir_modal_empresarial") {
-                            //     $("#dataBaixaEmpresarialModal").modal('show');
-                            // } else {
-                            //     window.location.href = "/admin/financeiro?ac=empresarial";
-                            // }
-
-
-
-                            
-                            if(res.modal == "abrir_modal_desconto") {
-                                $('#modalDiferencaEntreValores').modal('show');
-                                $(".diferenca_entre_valores").html("R$ "+res.diferenca);
-                            } else if(res == "abrir_modal_empresarial") {
-                                $("#dataBaixaEmpresarialModal").modal('show');
-                            } else {
-
-                                // $(".empresarial_quantidade_em_analise").html(res.qtd_empresarial_em_analise);    
-                                // $(".empresarial_quantidade_1_parcela").html(res.qtd_empresarial_01_parcela);
-                                // $(".empresarial_quantidade_2_parcela").html(res.qtd_empresarial_02_parcela);
-                                // $(".empresarial_quantidade_3_parcela").html(res.qtd_empresarial_03_parcela);
-                                // $(".empresarial_quantidade_4_parcela").html(res.qtd_empresarial_04_parcela);
-                                // $(".empresarial_quantidade_5_parcela").html(res.qtd_empresarial_05_parcela);
-                                // $(".empresarial_quantidade_6_parcela").html(res.qtd_empresarial_06_parcela);
-                                // $(".empresarial_quantidade_finalizado").html(res.qtd_empresarial_finalizado);
-                                // $(".empresarial_quantidade_cancelado").html(res.qtd_empresarial_cancelado);
-                                // tableempresarial.ajax.reload();
-                                // limparEmpresarial();
-                            }
-
+                        if(res.modal == "abrir_modal_desconto") {
+                            $('#modalDiferencaEntreValores').modal('show');
+                            $(".diferenca_entre_valores").html("R$ "+res.diferenca);  
+                        } else if(res == "abrir_modal_empresarial") {
+                            $("#dataBaixaEmpresarialModal").modal('show');
+                        } else {
+                            window.location.href = "/admin/financeiro?ac=empresarial";
                         }
-                    });
-                
+
+
+
+
+                        // if(res == "abrir_modal_empresarial") {
+                        //     $("#dataBaixaEmpresarialModal").modal('show');
+                        // } else {
+                        //     window.location.href = "/admin/financeiro?ac=empresarial";
+                        // }                            
+                        // if(res.modal == "abrir_modal_desconto") {
+                        //     $('#modalDiferencaEntreValores').modal('show');
+                        //     $(".diferenca_entre_valores").html("R$ "+res.diferenca);
+                        //     return false;
+                        // } else if(res == "abrir_modal_empresarial") {
+                        //     $("#dataBaixaEmpresarialModal").modal('show');
+                        // } else {
+
+                            
+                        // }
+
+                    }
+                });
+                return false;
             });
 
             $('#desconto_corretora_valores').mask("#.##0,00", {reverse: true});
@@ -587,10 +576,6 @@
                 $("#desconto_corretor").val(resto_corretor);
                 $("#desconto_corretora").val(valor);
             });
-
-
-
-
 
             $("form[name='data_da_baixa']").on('submit',function(){
                 let id_cliente = $("#data_cliente").val();
