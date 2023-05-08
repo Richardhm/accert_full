@@ -1554,7 +1554,9 @@
                             return intVal(a) + intVal(b);
                         }, 0);
 
-                        total_linhas = api.column(5,{ page: 'current' }).data().count();        
+                        total_linhas = api.column(5,{ page: 'current' }).data().count();   
+                        
+                        console.log(total_linhas);
 
 
 
@@ -2031,7 +2033,7 @@
                     data:"id="+id,
                         success:function(res) {
                             $('#title_individual').html("<h4 style='font-size:1em;margin-top:10px;'>Contratos</h4>");
-                            table_individual.ajax.url("{{ route('financeiro.individual.geralIndividualPendentes') }}").load();
+                            //table_individual.ajax.url("{{ route('financeiro.individual.geralIndividualPendentes') }}").load();
 
                             $("ul#listar_individual li.individual").removeClass('textoforte-list');
                             $("#atrasado_corretor").removeClass('textoforte-list');

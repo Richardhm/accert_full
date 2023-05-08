@@ -586,7 +586,6 @@
                                     data:"id_cliente="+id_cliente+"&id_contrato="+id_contrato,
                                     method:"POST",
                                     success:function(res) {
-                                        
                                         window.location.href = "/admin/financeiro?ac=coletivo";
                                     }
                                 })

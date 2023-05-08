@@ -135,7 +135,7 @@ Route::middleware('auth')->prefix("admin")->group(function(){
     Route::get('/financeiro/coletivo/pagamento_coletivo_cancelado/corretor',"App\Http\Controllers\Admin\FinanceiroController@coletivoCanceladosCorretor")->name('financeiro.coletivo.cancelado.corretor');    
 
     
-
+    Route::get("/financeiro/todososcontratos/em_geral_todos_os_planos","App\Http\Controllers\Admin\FinanceiroController@geralTodosContratosPendentes")->name('financeiro.todos.geralTodosContratosPendentes');
     Route::get("/financeiro/individual/em_geral","App\Http\Controllers\Admin\FinanceiroController@geralIndividualPendentes")->name('financeiro.individual.geralIndividualPendentes');
 
     Route::get("/financeiro/individual/mudar_ano/{ano}/{mes?}","App\Http\Controllers\Admin\FinanceiroController@mudarAnoIndividual")->name('financeiro.individual.mudarano');
@@ -237,6 +237,10 @@ Route::middleware('auth')->prefix("admin")->group(function(){
 
     /***Financeiro Gerente */
     Route::get('/gerente',"App\Http\Controllers\Admin\GerenteController@index")->name('gerente.index');
+    Route::post('/gerente/pegartodos',"App\Http\Controllers\Admin\GerenteController@pegarTodososDados")->name('gerente.todos.valores.usuario');
+
+
+
     Route::get('/gerente/listagem',"App\Http\Controllers\Admin\GerenteController@listagem")->name('gerente.listagem.em_geral');
     Route::get('/gerente/listagem/areceber',"App\Http\Controllers\Admin\GerenteController@listagemRecebido")->name('gerente.listagem.recebido');
     Route::get('/gerente/comissao/{id}',"App\Http\Controllers\Admin\GerenteController@listarComissao")->name('gerente.comissao.listar');
@@ -253,8 +257,8 @@ Route::middleware('auth')->prefix("admin")->group(function(){
     Route::get('/gerente/listarcontratosemgeral',"App\Http\Controllers\Admin\GerenteController@listarcontratos")->name('gerente.listarcontratos.geral');
     Route::get('/gerente/contrato/{id}',"App\Http\Controllers\Admin\GerenteController@listarcontratosDetalhe")->name('gerente.contrato.detalhe');
 
-    Route::get('/gerente/ver/{id_plano}/{id_tipo}',"App\Http\Controllers\Admin\GerenteController@verDetalheCard")->name('gerente.contrato.ver.detalhe.card');
-    Route::get('/gerente/show/{id_plano}/{id_tipo}',"App\Http\Controllers\Admin\GerenteController@showDetalheCard")->name('gerente.contrato.show.detalhe.card');
+    Route::get('/gerente/ver/{id_plano}/{id_tipo}/{ano?}/{mes?}/{id_user?}',"App\Http\Controllers\Admin\GerenteController@verDetalheCard")->name('gerente.contrato.ver.detalhe.card');
+    Route::get('/gerente/show/{id_plano}/{id_tipo}/{ano?}/{mes?}/{id_user?}',"App\Http\Controllers\Admin\GerenteController@showDetalheCard")->name('gerente.contrato.show.detalhe.card');
 
     /***Fim Financeiro Gerente */
 

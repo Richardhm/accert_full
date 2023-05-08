@@ -9,10 +9,21 @@ class Comissoes extends Model
 {
     use HasFactory;
 
+    protected $fillable = ["data","plano_id","user_id","administradora_id","tabela_origens_id","contrato_id","contrato_empresarial_id","empresarial"];
+
+    protected $casts = [
+        'empresarial' => 'boolean',
+    ];
+
+
     public function plano()
     {
         return $this->belongsTo(Planos::class);
     }
+
+    
+
+
 
     public function comissoesLancadas()
     {
@@ -155,6 +166,11 @@ class Comissoes extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function getEmpresarialAttribute($value) : bool
+    {
+        return $value ? 1 : 0;
+    }
+
     // public function contrato()
     // {
     //     return $this->belongsTo(Contrato::class);   
@@ -162,22 +178,33 @@ class Comissoes extends Model
 
     public function contrato()
     {
-        return $this->belongsTo(ContratoEmpresarial::class,"contrato_empresarial_id","id");
-        // if($this->hasEmpresarial()) {
+        
+        return $this->empresarial;
+        //if($this->empresarial) {
+            //return $this->belongsTo(ContratoEmpresarial::class,"contrato_empresarial_id","id");
+        //} else {
+            //return $this->belongsTo(Contrato::class);
+        //}
+        //return $this->belongsTo(ContratoEmpresarial::class,"contrato_empresarial_id","id");
+        // if($this->belongsTo(ContratoEmpresarial::class,"id","contrato_empresarial_id")) {
         //     return $this->belongsTo(ContratoEmpresarial::class,"id","contrato_empresarial_id");
         // } else {
         //     return $this->belongsTo(Contrato::class);
         // }
+        //return $this->teste();
     }
 
 
-    public function hasEmpresarial()
+
+
+    public function teste()
     {
-        if($this->empresarial) {
-            return true;
-        } else {
-            return false;
-        }
+        // if($this->empresarial) {
+        //     return true;
+        // } else {
+        //     return false;
+        // }
+        return $this->belongsTo(Planos::class,"plano_id","id");
     }
 
 

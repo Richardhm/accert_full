@@ -65,13 +65,13 @@
         
 
         <div class="d-flex" style="margin:7px 0;">
-            <select class="form-control" style="flex-basis:15%;">
-                <option value="" class="text-center">--Escolher Ano--</option>
+            <select class="form-control mudar_valores" style="flex-basis:15%;" id="selecionar_ano">
+                <option value="todos" class="text-center">--Escolher Ano--</option>
                 <option value="2022">2022</option>
                 <option value="2023">2023</option>
             </select>
-            <select class="form-control" style="flex-basis:15%;margin:0 1%;">
-                <option value="" class="text-center">--Escolher Mês--</option>
+            <select class="form-control mudar_valores" style="flex-basis:15%;margin:0 1%;" id="selecionar_mes">
+                <option value="todos" class="text-center">--Escolher Mês--</option>
                 <option value="01">Janeiro</option>
                 <option value="02">Fevereiro</option>
                 <option value="03">Março</option>
@@ -86,8 +86,8 @@
                 <option value="12">Dezembro</option>
             </select>
     
-            <select class="form-control" style="flex-basis:15%;">
-                <option value="" class="text-center">--Escolher Corretor--</option>
+            <select class="form-control mudar_valores" style="flex-basis:15%;" id="selecionar_corretor">
+                <option value="todos" class="text-center">--Escolher Corretor--</option>
                 @foreach($users as $u)
                     <option value="{{$u->id}}">{{$u->name}}</option>
                 @endforeach
@@ -116,7 +116,7 @@
 
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$quantidade_geral}}</span>
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="quantidade_geral">{{$quantidade_geral}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -128,7 +128,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">Total</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center" style="font-weight:bold;">R$ {{number_format($total_valor_geral,2,",",".")}}</span>
+                                <span class="text-center" style="font-weight:bold;" id="valor_geral">R$ {{number_format($total_valor_geral,2,",",".")}}</span>
                                 
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
@@ -138,7 +138,7 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_geral}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="quantidade_geral_vidas">{{$quantidade_vidas_geral}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
@@ -151,7 +151,7 @@
                     
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$total_quantidade_recebidos}}</span>
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="quantidade_geral_recebidas">{{$total_quantidade_recebidos}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -163,7 +163,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">Recebidos</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center" style="font-weight:bold;">R$ {{number_format($total_valor_recebidos,2,",",".")}}</span>
+                                <span class="text-center" style="font-weight:bold;" id="total_geral_recebidos_valor">R$ {{number_format($total_valor_recebidos,2,",",".")}}</span>
                                 
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
@@ -173,22 +173,17 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_recebidas}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="quantidade_vidas_recebidas_geral">{{$quantidade_vidas_recebidas}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
-
-
-
-
-
                         
                     </div>
 
                     <div class="d-flex" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;background-color:#28a745;color:#FFF;">
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                            <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$total_quantidade_a_receber}}</span>
+                            <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="total_quantidade_a_receber_geral">{{$total_quantidade_a_receber}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -200,7 +195,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">A Receber</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center">R$ {{$total_valor_a_receber}}</span>
+                                <span class="text-center" id="total_valor_a_receber_geral">R$ {{$total_valor_a_receber}}</span>
                                 
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
@@ -210,7 +205,7 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_a_receber}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="quantidade_vidas_a_receber_geral">{{$quantidade_vidas_a_receber}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
@@ -219,7 +214,7 @@
                     <div class="d-flex" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;background-color:#28a745;color:#FFF;">
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_atrasado}}</span>
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="quantidade_atrasado_geral">{{$qtd_atrasado}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -231,7 +226,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">Atrasados</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center">R$ {{number_format($qtd_atrasado_valor,2,",",".")}}</span>
+                                <span class="text-center" id="quantidade_atrasado_valor_geral">R$ {{number_format($qtd_atrasado_valor,2,",",".")}}</span>
                                 
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
@@ -241,7 +236,7 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_atrasado_quantidade_vidas}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="qtd_atrasado_quantidade_vidas_geral">{{$qtd_atrasado_quantidade_vidas}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
@@ -250,38 +245,7 @@
                     <div class="d-flex" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;background-color:#28a745;color:#FFF;">
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_finalizado}}</span>
-                                <span style="padding-left:10px;"></span>
-                            </span>
-                            <span style="flex-basis:34%;"></span>
-                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
-                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
-                            </span>
-                        </div>
-
-                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
-                            <span style="flex-basis:33%;padding-left:13px;">Finalizados</span>
-                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center">R$ {{$quantidade_valor_finalizado}}</span>
-                                
-                            </span>
-                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
-                        </div>
-
-                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
-                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
-                            <span style="flex-basis:34%;"></span>
-                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_finalizado_quantidade_vidas}}</span>
-                                <span style="padding-right:10px;"></span>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="d-flex" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;background-color:#28a745;color:#FFF;">
-                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
-                            <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_cancelado}}</span>
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="quantidade_geral_cancelado">{{$qtd_cancelado}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -293,7 +257,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">Cancelado</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center">R$ {{number_format($quantidade_valor_cancelado,2,",",".")}}</span>
+                                <span class="text-center" id="quantidade_geral_cancelado_valor">R$ {{number_format($quantidade_valor_cancelado,2,",",".")}}</span>
                                 
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
@@ -303,7 +267,38 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_cancelado_quantidade_vidas}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="quantidade_cancelado_vidas_geral">{{$qtd_cancelado_quantidade_vidas}}</span>
+                                <span style="padding-right:10px;"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;background-color:#28a745;color:#FFF;">
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;" class="ml-1">
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="quantidade_finalizado_geral">{{$qtd_finalizado}}</span>
+                                <span style="padding-left:10px;"></span>
+                            </span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;display:flex;justify-content:flex-end;font-size:1.8em;padding-right:10px;font-weight:bold;" class="mr-1">
+                            <i class="fas fa-users fa-xs" style="font-size:0.7em;margin-top:5px;margin-right:5px;"></i>
+                            </span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
+                            <span style="flex-basis:33%;padding-left:13px;">Finalizados</span>
+                            <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
+                                <span class="text-center" id="quantidade_geral_finalizado">R$ {{$quantidade_valor_finalizado}}</span>
+                                
+                            </span>
+                            <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
+                        </div>
+
+                        <div style="display:flex;flex-basis:100%;line-height:1.2;">
+                            <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
+                            <span style="flex-basis:34%;"></span>
+                            <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="quantidade_finalizado_quantidade_vidas_geral">{{$qtd_finalizado_quantidade_vidas}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
@@ -316,12 +311,11 @@
 
                 <h5 class="bg-info" style="margin:0;padding:0;color:#FFF;text-align: center;border-top-left-radius: 5px;border-top-right-radius: 5px;padding:4px 0;">Individual</h5>
 
-                    <a href="{{route('gerente.contrato.ver.detalhe.card',[1,1])}}" class="d-flex bg-info" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[1,1])}}" class="d-flex bg-info link_individual_um" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
                         
-
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$quantidade_individual_geral}}</span>
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="quantidade_individual_geral">{{$quantidade_individual_geral}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -333,7 +327,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">Total</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center">R$ {{number_format($total_valor_geral_individual,2,",",".")}}</span>
+                                <span class="text-center" id="total_valor_geral_individual">R$ {{number_format($total_valor_geral_individual,2,",",".")}}</span>
                                 
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
@@ -343,19 +337,19 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_geral_individual}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="quantidade_vidas_geral_individual">{{$quantidade_vidas_geral_individual}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
 
                     </a>
 
-                    <a href="{{route('gerente.contrato.ver.detalhe.card',[1,2])}}" class="d-flex bg-info" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[1,2])}}" class="d-flex bg-info link_individual_dois" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
                         
 
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$total_quantidade_recebidos_individual}}</span>
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="total_quantidade_recebidos_individual">{{$total_quantidade_recebidos_individual}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -367,7 +361,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">Recebidos</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center">R$ {{number_format($total_valor_recebidos_individual,2,",",".")}}</span>
+                                <span class="text-center" id="total_valor_recebidos_individual">R$ {{number_format($total_valor_recebidos_individual,2,",",".")}}</span>
                                 
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
@@ -377,19 +371,19 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_recebidas_individual}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="quantidade_vidas_recebidas_individual">{{$quantidade_vidas_recebidas_individual}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
 
                     </a>
 
-                    <a href="{{route('gerente.contrato.ver.detalhe.card',[1,3])}}" class="d-flex bg-info" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[1,3])}}" class="d-flex bg-info link_individual_tres" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
                         
 
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$total_quantidade_a_receber_individual}}</span>
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="total_quantidade_a_receber_individual">{{$total_quantidade_a_receber_individual}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -401,7 +395,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">A Receber</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center">R$ {{$total_valor_a_receber_individual}}</span>
+                                <span class="text-center" id="total_valor_a_receber_individual">R$ {{$total_valor_a_receber_individual}}</span>
                                 
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
@@ -411,19 +405,19 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_a_receber_individual}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="quantidade_vidas_a_receber_individual">{{$quantidade_vidas_a_receber_individual}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
 
                     </a>
 
-                    <a href="{{route('gerente.contrato.ver.detalhe.card',[1,4])}}" class="d-flex bg-info" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[1,4])}}" class="d-flex bg-info link_individual_quatro" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
                         
 
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_atrasado_individual}}</span>
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="qtd_atrasado_individual">{{$qtd_atrasado_individual}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -435,7 +429,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">Atrasados</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center">R$ {{number_format($qtd_atrasado_valor_individual,2,",",".")}}</span>
+                                <span class="text-center" id="qtd_atrasado_valor_individual">R$ {{number_format($qtd_atrasado_valor_individual,2,",",".")}}</span>
                                 
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
@@ -445,19 +439,19 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_atrasado_quantidade_vidas_individual}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="qtd_atrasado_quantidade_vidas_individual">{{$qtd_atrasado_quantidade_vidas_individual}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
 
                     </a>
 
-                    <a href="{{route('gerente.contrato.ver.detalhe.card',[1,5])}}" class="d-flex bg-info" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[1,5])}}" class="d-flex bg-info link_individual_cinco" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
                         
 
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_cancelado_individual}}</span>
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="qtd_cancelado_individual">{{$qtd_cancelado_individual}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -469,7 +463,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">Cancelado</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center">R$ {{number_format($quantidade_valor_cancelado_individual,2,",",".")}}</span>
+                                <span class="text-center" id="quantidade_valor_cancelado_individual">R$ {{number_format($quantidade_valor_cancelado_individual,2,",",".")}}</span>
                                 
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
@@ -479,19 +473,19 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_cancelado_quantidade_vidas_individual}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="qtd_cancelado_quantidade_vidas_individual">{{$qtd_cancelado_quantidade_vidas_individual}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
 
                     </a>
 
-                    <a href="{{route('gerente.contrato.ver.detalhe.card',[1,6])}}" class="d-flex bg-info" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[1,6])}}" class="d-flex bg-info link_individual_seis" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
                         
 
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_finalizado_individual}}</span>
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="qtd_finalizado_individual">{{$qtd_finalizado_individual}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -503,7 +497,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">Finalizados</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center">R$ {{number_format($quantidade_valor_finalizado_individual,2,",",".")}}</span>
+                                <span class="text-center" id="quantidade_valor_finalizado_individual">R$ {{number_format($quantidade_valor_finalizado_individual,2,",",".")}}</span>
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
                         </div>
@@ -512,7 +506,7 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_finalizado_quantidade_vidas_individual}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="qtd_finalizado_quantidade_vidas_individual">{{$qtd_finalizado_quantidade_vidas_individual}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
@@ -526,11 +520,11 @@
 
                 <h5 style="margin:0;padding:0;color:#FFF;text-align: center;background-color: #dc3545;border-top-left-radius: 5px;border-top-right-radius: 5px;padding:4px 0;">Coletivo</h5>
 
-                    <a href="{{route('gerente.contrato.ver.detalhe.card',[2,1])}}" class="d-flex " style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;background-color:#dc3545;color:#FFF;border-radius:5px;">
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[2,1])}}" class="d-flex link_coletivo_um" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;background-color:#dc3545;color:#FFF;border-radius:5px;">
                         
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$quantidade_coletivo_geral}}</span>
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="quantidade_coletivo_geral">{{$quantidade_coletivo_geral}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -542,7 +536,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">Total</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center">R$ {{number_format($total_valor_geral_coletivo,2,",",".")}}</span>
+                                <span class="text-center" id="total_valor_geral_coletivo">R$ {{number_format($total_valor_geral_coletivo,2,",",".")}}</span>
                                 
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
@@ -552,7 +546,7 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_geral_coletivo}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="quantidade_vidas_geral_coletivo">{{$quantidade_vidas_geral_coletivo}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
@@ -563,10 +557,10 @@
 
                     </a>
 
-                    <a href="{{route('gerente.contrato.ver.detalhe.card',[2,2])}}" class="d-flex" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;background-color:#dc3545;color:#FFF;border-radius:5px;">
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[2,2])}}" class="d-flex link_coletivo_dois" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;background-color:#dc3545;color:#FFF;border-radius:5px;">
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$total_quantidade_recebidos_coletivo}}</span>
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="total_quantidade_recebidos_coletivo">{{$total_quantidade_recebidos_coletivo}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -578,7 +572,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">Recebidos</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center">R$ {{number_format($total_valor_recebidos_coletivo,2,",",".")}}</span>
+                                <span class="text-center" id="total_valor_recebidos_coletivo">R$ {{number_format($total_valor_recebidos_coletivo,2,",",".")}}</span>
                                 
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
@@ -588,17 +582,17 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_recebidas_coletivo}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="quantidade_vidas_recebidas_coletivo">{{$quantidade_vidas_recebidas_coletivo}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
                     </a>
 
-                    <a href="{{route('gerente.contrato.ver.detalhe.card',[2,3])}}" class="d-flex" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;background-color:#dc3545;color:#FFF;border-radius:5px;">
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[2,3])}}" class="d-flex link_coletivo_tres" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;background-color:#dc3545;color:#FFF;border-radius:5px;">
                         
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$total_quantidade_a_receber_coletivo}}</span>
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="total_quantidade_a_receber_coletivo">{{$total_quantidade_a_receber_coletivo}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -610,7 +604,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">A receber</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center">R$ {{number_format($total_valor_a_receber_coletivo,2,",",".")}}</span>
+                                <span class="text-center" id="total_valor_a_receber_coletivo">R$ {{number_format($total_valor_a_receber_coletivo,2,",",".")}}</span>
                                 
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
@@ -620,18 +614,18 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_a_receber_coletivo}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="quantidade_vidas_a_receber_coletivo">{{$quantidade_vidas_a_receber_coletivo}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
 
                     </a>
 
-                    <a href="{{route('gerente.contrato.ver.detalhe.card',[2,4])}}" class="d-flex" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;background-color:#dc3545;color:#FFF;border-radius:5px;">
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[2,4])}}" class="d-flex link_coletivo_quatro" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;background-color:#dc3545;color:#FFF;border-radius:5px;">
                         
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_atrasado_coletivo}}</span>
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="qtd_atrasado_coletivo">{{$qtd_atrasado_coletivo}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -643,7 +637,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">Atrasados</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center">R$ {{number_format($qtd_atrasado_valor_coletivo,2,",",".")}}</span>
+                                <span class="text-center" id="qtd_atrasado_valor_coletivo">R$ {{number_format($qtd_atrasado_valor_coletivo,2,",",".")}}</span>
                                 
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
@@ -653,7 +647,7 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_atrasado_quantidade_vidas_coletivo}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="qtd_atrasado_quantidade_vidas_coletivo">{{$qtd_atrasado_quantidade_vidas_coletivo}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
@@ -663,11 +657,11 @@
 
                     </a>
 
-                    <a href="{{route('gerente.contrato.ver.detalhe.card',[2,5])}}" class="d-flex" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;background-color:#dc3545;color:#FFF;border-radius:5px;">
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[2,5])}}" class="d-flex link_coletivo_cinco" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;background-color:#dc3545;color:#FFF;border-radius:5px;">
                         
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_cancelado_coletivo}}</span>
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="qtd_cancelado_coletivo">{{$qtd_cancelado_coletivo}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -679,7 +673,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">Cancelado</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center">R$ {{number_format($quantidade_valor_cancelado_coletivo,2,",",".")}}</span>
+                                <span class="text-center" id="quantidade_valor_cancelado_coletivo">R$ {{number_format($quantidade_valor_cancelado_coletivo,2,",",".")}}</span>
                                 
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
@@ -689,19 +683,19 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_cancelado_quantidade_vidas_coletivo}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="qtd_cancelado_quantidade_vidas_coletivo">{{$qtd_cancelado_quantidade_vidas_coletivo}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
 
                     </a>
 
-                    <a href="{{route('gerente.contrato.ver.detalhe.card',[2,6])}}" class="d-flex" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;background-color:#dc3545;color:#FFF;border-radius:5px;">
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[2,6])}}" class="d-flex link_coletivo_seis" style="flex-wrap: wrap;justify-content: space-between;margin:5px 0;background-color:#dc3545;color:#FFF;border-radius:5px;">
                         
 
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_finalizado_coletivo}}</span>
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="qtd_finalizado_coletivo">{{$qtd_finalizado_coletivo}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -713,7 +707,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">Finalizados</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center">R$ {{number_format($quantidade_valor_finalizado_coletivo,2,",",".")}}</span>
+                                <span class="text-center" id="quantidade_valor_finalizado_coletivo">R$ {{number_format($quantidade_valor_finalizado_coletivo,2,",",".")}}</span>
                                 
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
@@ -723,7 +717,7 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_finalizado_quantidade_vidas_coletivo}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="qtd_finalizado_quantidade_vidas_coletivo">{{$qtd_finalizado_quantidade_vidas_coletivo}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
@@ -741,7 +735,7 @@
                         
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$quantidade_empresarial_geral}}</span>
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="quantidade_com_empresaria_geral">{{$quantidade_empresarial_geral}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -753,7 +747,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">Total</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center">R$ {{number_format($total_valor_geral_empresarial,2,",",".")}}</span>
+                                <span class="text-center" id="total_com_empresa_valor_geral">R$ {{number_format($total_valor_geral_empresarial,2,",",".")}}</span>
                                 
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
@@ -763,7 +757,7 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_geral_empresarial}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="quantidade_com_empresa_vidas_geral">{{$quantidade_vidas_geral_empresarial}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
@@ -774,7 +768,7 @@
                         
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$total_quantidade_recebidos_empresarial}}</span>
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="quantidade_recebidas_empresarial">{{$total_quantidade_recebidos_empresarial}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -786,7 +780,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">Recebidos</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center">R$ {{number_format($total_valor_recebidos_empresarial,2,",",".")}}</span>
+                                <span class="text-center" id="total_valor_recebidos_empresarial">R$ {{number_format($total_valor_recebidos_empresarial,2,",",".")}}</span>
                                 
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
@@ -796,7 +790,7 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_recebidas_empresarial}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="quantidade_vidas_recebidas_empresarial">{{$quantidade_vidas_recebidas_empresarial}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
@@ -813,7 +807,7 @@
                         
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$total_quantidade_a_receber_empresarial}}</span>
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="total_quantidade_a_receber_empresarial">{{$total_quantidade_a_receber_empresarial}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -825,7 +819,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">A Receber</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center">R$ {{number_format($total_valor_a_receber_empresarial,2,",",".")}}</span>
+                                <span class="text-center" id="total_valor_a_receber_empresarial">R$ {{number_format($total_valor_a_receber_empresarial,2,",",".")}}</span>
                                 
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
@@ -835,7 +829,7 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$quantidade_vidas_a_receber_empresarial}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="quantidade_vidas_a_receber_empresarial">{{$quantidade_vidas_a_receber_empresarial}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
@@ -846,7 +840,7 @@
                        
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_atrasado_empresarial}}</span>
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="qtd_atrasado_empresarial">{{$qtd_atrasado_empresarial}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -858,7 +852,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">Atrasados</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center">R$ {{number_format($qtd_atrasado_valor_empresarial,2,",",".")}}</span>
+                                <span class="text-center" id="qtd_atrasado_valor_empresarial">R$ {{number_format($qtd_atrasado_valor_empresarial,2,",",".")}}</span>
                                 
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
@@ -868,7 +862,7 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_atrasado_quantidade_vidas_empresarial}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="qtd_atrasado_quantidade_vidas_empresarial">{{$qtd_atrasado_quantidade_vidas_empresarial}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
@@ -879,7 +873,7 @@
                     <a href="{{route('gerente.contrato.ver.detalhe.card',[3,5])}}" class="d-flex" style="background-color:#FF8C00;color:#FFF;flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_cancelado_empresarial}}</span>
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="qtd_cancelado_empresarial">{{$qtd_cancelado_empresarial}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -891,7 +885,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">Cancelado</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center">R$ {{number_format($quantidade_valor_cancelado_empresarial,2,",",".")}}</span>
+                                <span class="text-center" id="quantidade_valor_cancelado_empresarial">R$ {{number_format($quantidade_valor_cancelado_empresarial,2,",",".")}}</span>
                                 
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
@@ -901,7 +895,7 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_cancelado_quantidade_vidas_empresarial}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="qtd_cancelado_quantidade_vidas_empresarial">{{$qtd_cancelado_quantidade_vidas_empresarial}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
@@ -910,7 +904,7 @@
                     <a href="{{route('gerente.contrato.ver.detalhe.card',[3,6])}}" class="d-flex" style="background-color:#FF8C00;color:#FFF;flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
-                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;">{{$qtd_finalizado_empresarial}}</span>
+                                <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="qtd_finalizado_empresarial">{{$qtd_finalizado_empresarial}}</span>
                                 <span style="padding-left:10px;"></span>
                             </span>
                             <span style="flex-basis:34%;"></span>
@@ -922,7 +916,7 @@
                         <div style="display:flex;flex-basis:100%;line-height:1;padding:5px 0;">
                             <span style="flex-basis:33%;padding-left:13px;">Finalizado</span>
                             <span style="flex-basis:34%;display:flex;justify-content: center;flex-direction: column;justify-content: center;">
-                                <span class="text-center">R$ {{number_format($quantidade_valor_finalizado_empresarial,2,",",".")}}</span>
+                                <span class="text-center" id="quantidade_valor_finalizado_empresarial">R$ {{number_format($quantidade_valor_finalizado_empresarial,2,",",".")}}</span>
                                 
                             </span>
                             <span style="flex-basis:33%;text-align: right;padding-right:16px;">Vidas</span>
@@ -932,7 +926,7 @@
                             <span style="flex-basis:33%;font-weight:bold;padding-left:10px;display:block;" class="ml-1"></span>
                             <span style="flex-basis:34%;"></span>
                             <span style="flex-basis:33%;justify-content: flex-end;display:flex;flex-direction: column;justify-content: flex-end;text-align: right;" class="mr-1"> 
-                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;">{{$qtd_finalizado_quantidade_vidas_empresarial}}</span>
+                                <span style="padding-right:10px;font-weight:bolder;font-size:1.6em;margin:0px;" id="qtd_finalizado_quantidade_vidas_empresarial">{{$qtd_finalizado_quantidade_vidas_empresarial}}</span>
                                 <span style="padding-right:10px;"></span>
                             </span>
                         </div>
@@ -1218,7 +1212,158 @@
 
     <script>
         $(function(){  
+            const date = new Date();
+
+            function adicionarZero(valor) {
+                if(valor.length == 2) return valor;
+                
+                return "0"+valor;
+            }
+
+
+
+
             
+            $(".mudar_valores").on('change',function(){
+                let campo_select = $(this).attr('id');
+                let campo_ano = $("#selecionar_ano").val();
+                let campo_mes = $("#selecionar_mes").val();
+                let campo_cor = $("#selecionar_corretor").val();
+
+                
+                let link_ano = campo_ano == "todos" ? "all" : campo_ano; 
+                let link_mes = campo_mes == "todos" ? "all" : campo_mes;
+                let link_cor = campo_cor == "todos" ? "all" : campo_cor;
+
+                $('.link_individual_um').attr("href",`/admin/gerente/ver/1/1/${link_ano}/${link_mes}/${link_cor}`);
+                $('.link_individual_dois').attr("href",`/admin/gerente/ver/1/2/${link_ano}/${link_mes}/${link_cor}`);
+                $('.link_individual_tres').attr("href",`/admin/gerente/ver/1/3/${link_ano}/${link_mes}/${link_cor}`);
+                $('.link_individual_quatro').attr("href",`/admin/gerente/ver/1/4/${link_ano}/${link_mes}/${link_cor}`);
+                $('.link_individual_cinco').attr("href",`/admin/gerente/ver/1/5/${link_ano}/${link_mes}/${link_cor}`);
+                $('.link_individual_seis').attr("href",`/admin/gerente/ver/1/6/${link_ano}/${link_mes}/${link_cor}`);
+
+                $('.link_coletivo_um').attr("href",`/admin/gerente/ver/2/1/${link_ano}/${link_mes}/${link_cor}`);
+                $('.link_coletivo_dois').attr("href",`/admin/gerente/ver/2/2/${link_ano}/${link_mes}/${link_cor}`);
+                $('.link_coletivo_tres').attr("href",`/admin/gerente/ver/2/3/${link_ano}/${link_mes}/${link_cor}`);
+                $('.link_coletivo_quatro').attr("href",`/admin/gerente/ver/2/4/${link_ano}/${link_mes}/${link_cor}`);
+                $('.link_coletivo_cinco').attr("href",`/admin/gerente/ver/2/5/${link_ano}/${link_mes}/${link_cor}`);
+                $('.link_coletivo_seis').attr("href",`/admin/gerente/ver/2/6/${link_ano}/${link_mes}/${link_cor}`);
+
+                $.ajax({
+                    url:"{{route('gerente.todos.valores.usuario')}}",
+                    method:"POST",
+                    data:"campo_ano="+campo_ano+"&campo_mes="+campo_mes+"&campo_cor="+campo_cor,
+                    success:function(res) {
+                        //console.log(res);
+                        $("#quantidade_geral").html(res.quantidade_geral);
+                        $("#valor_geral").html(res.total_valor_geral);
+                        $("#quantidade_geral_vidas").html(res.quantidade_geral_vidas);
+                        $("#quantidade_geral_recebidas").html(res.total_geral_recebidas)
+                        $("#total_geral_recebidos_valor").html(res.total_geral_recebidos_valor)
+                        $("#quantidade_vidas_recebidas_geral").html(res.quantidade_vidas_recebidas_geral);
+                        $("#total_quantidade_a_receber_geral").html(res.total_quantidade_a_receber_geral);
+                        $("#total_valor_a_receber_geral").html(res.total_valor_a_receber_geral);
+                        $("#quantidade_vidas_a_receber_geral").html(res.quantidade_vidas_a_receber_geral);
+                        $("#quantidade_atrasado_geral").html(res.quantidade_atrasado_geral);
+                        $("#quantidade_atrasado_valor_geral").html(res.quantidade_atrasado_valor_geral);
+                        $("#qtd_atrasado_quantidade_vidas_geral").html(res.qtd_atrasado_quantidade_vidas_geral);
+                        $("#quantidade_cancelado_vidas_geral").html(res.quantidade_cancelado_vidas_geral);
+                        $("#quantidade_geral_cancelado").html(res.quantidade_geral_cancelado);
+                        $("#quantidade_geral_cancelado_valor").html(res.quantidade_geral_cancelado_valor);
+                        $("#quantidade_finalizado_geral").html(res.quantidade_finalizado_geral);
+                        $("#quantidade_finalizado_quantidade_vidas_geral").html(res.quantidade_finalizado_quantidade_vidas_geral);
+                        $("#quantidade_geral_finalizado").html(res.quantidade_geral_finalizado);
+
+                        //////////INDIVIDUAL  
+
+                        $("#quantidade_individual_geral").html(res.quantidade_individual_geral);
+                        $("#total_valor_geral_individual").html(res.total_valor_geral_individual);
+                        $("#quantidade_vidas_geral_individual").html(res.quantidade_vidas_geral_individual);
+
+                        $("#total_quantidade_recebidos_individual").html(res.total_quantidade_recebidos_individual);
+                        $("#total_valor_recebidos_individual").html(res.total_valor_recebidos_individual);
+                        $("#quantidade_vidas_recebidas_individual").html(res.quantidade_vidas_recebidas_individual);
+
+                        $("#total_quantidade_a_receber_individual").html(res.total_quantidade_a_receber_individual);
+                        $("#total_valor_a_receber_individual").html(res.total_valor_a_receber_individual);
+                        $("#quantidade_vidas_a_receber_individual").html(res.quantidade_vidas_a_receber_individual);
+
+                        $("#qtd_atrasado_individual").html(res.qtd_atrasado_individual);
+                        $("#qtd_atrasado_valor_individual").html(res.qtd_atrasado_valor_individual);
+                        $("#qtd_atrasado_quantidade_vidas_individual").html(res.qtd_atrasado_quantidade_vidas_individual);
+
+                        $("#qtd_finalizado_individual").html(res.qtd_finalizado_individual); 
+                        $("#quantidade_valor_finalizado_individual").html(res.quantidade_valor_finalizado_individual);
+                        $("#qtd_finalizado_quantidade_vidas_individual").html(res.qtd_finalizado_quantidade_vidas_individual);
+
+                        $("#qtd_cancelado_individual").html(res.qtd_cancelado_individual);
+                        $("#quantidade_valor_cancelado_individual").html(res.quantidade_valor_cancelado_individual);
+                        $("#qtd_cancelado_quantidade_vidas_individual").html(res.qtd_cancelado_quantidade_vidas_individual); 
+
+                        //////////COLETIVO
+                        $('#quantidade_coletivo_geral').html(res.quantidade_coletivo_geral);
+
+                        $('#total_valor_geral_coletivo').html(res.total_valor_geral_coletivo);
+
+                        $('#quantidade_vidas_geral_coletivo').html(res.quantidade_vidas_geral_coletivo);
+
+                        $("#total_quantidade_recebidos_coletivo").html(res.total_quantidade_recebidos_coletivo);
+                        $('#total_valor_recebidos_coletivo').html(res.total_valor_recebidos_coletivo);
+                        $('#quantidade_vidas_recebidas_coletivo').html(res.quantidade_vidas_recebidas_coletivo);
+                        $('#total_quantidade_a_receber_coletivo').html(res.total_quantidade_a_receber_coletivo);
+                        $('#total_valor_a_receber_coletivo').html(res.total_valor_a_receber_coletivo);
+                        $('#quantidade_vidas_a_receber_coletivo').html(res.quantidade_vidas_a_receber_coletivo);
+
+                        $('#qtd_atrasado_coletivo').html(res.qtd_atrasado_coletivo);
+                        $('#qtd_atrasado_valor_coletivo').html(res.qtd_atrasado_valor_coletivo); 
+                        $('#qtd_atrasado_quantidade_vidas_coletivo').html(res.qtd_atrasado_quantidade_vidas_coletivo);
+                        
+                        $('#qtd_finalizado_coletivo').html(res.qtd_finalizado_coletivo);
+                        $('#quantidade_valor_finalizado_coletivo').html(res.quantidade_valor_finalizado_coletivo);
+                        $('#qtd_finalizado_quantidade_vidas_coletivo').html(res.qtd_finalizado_quantidade_vidas_coletivo);
+
+                        $('#qtd_cancelado_coletivo').html(res.qtd_cancelado_coletivo);
+                        $('#quantidade_valor_cancelado_coletivo').html(res.quantidade_valor_cancelado_coletivo);
+                        $('#qtd_cancelado_quantidade_vidas_coletivo').html(res.qtd_cancelado_quantidade_vidas_coletivo); 
+
+                        ////////////Empresarial
+
+                        $("#quantidade_com_empresaria_geral").html(res.quantidade_com_empresaria_geral);
+                        $("#total_com_empresa_valor_geral").html(res.total_com_empresa_valor_geral);
+                        $("#quantidade_com_empresa_vidas_geral").html(res.quantidade_com_empresa_vidas_geral);
+
+                        $("#quantidade_recebidas_empresarial").html(res.quantidade_recebidas_empresarial);
+                        $("#total_valor_recebidos_empresarial").html(res.total_valor_recebidos_empresarial);
+                        $("#quantidade_vidas_recebidas_empresarial").html(res.quantidade_vidas_recebidas_empresarial);
+
+
+                        $("#total_quantidade_a_receber_empresarial").html(res.total_quantidade_a_receber_empresarial);
+                        $("#total_valor_a_receber_empresarial").html(res.total_valor_a_receber_empresarial);
+                        $("#quantidade_vidas_a_receber_empresarial").html(res.quantidade_vidas_a_receber_empresarial);
+
+                        $("#qtd_atrasado_empresarial").html(res.qtd_atrasado_empresarial);
+                        $("#qtd_atrasado_valor_empresarial").html(res.qtd_atrasado_valor_empresarial); 
+                        $("#qtd_atrasado_quantidade_vidas_empresarial").html(res.qtd_atrasado_quantidade_vidas_empresarial);
+
+                        $("#qtd_finalizado_empresarial").html(res.qtd_finalizado_empresarial);
+                        $("#quantidade_valor_finalizado_empresarial").html(res.quantidade_valor_finalizado_empresarial);
+                        $("#qtd_finalizado_quantidade_vidas_empresarial").html(res.qtd_finalizado_quantidade_vidas_empresarial);
+
+                        $("#qtd_cancelado_empresarial").html(res.qtd_cancelado_empresarial);
+                        $("#quantidade_valor_cancelado_empresarial").html(res.quantidade_valor_cancelado_empresarial),
+                        $("#qtd_cancelado_quantidade_vidas_empresarial").html(res.qtd_cancelado_quantidade_vidas_empresarial);
+
+
+                    }
+
+                });    
+
+
+            });
+
+
+
+
             $(".list_abas li").on('click',function(){                
                 $('li').removeClass('ativo').addClass('menu-inativo');
                 $(this).addClass("ativo").removeClass('menu');

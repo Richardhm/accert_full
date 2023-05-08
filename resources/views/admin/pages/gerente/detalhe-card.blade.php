@@ -17,7 +17,9 @@
 
 <input type="hidden" id="id_plano" value={{$id_plano}}>
 <input type="hidden" id="id_tipo" value={{$id_tipo}}>
-
+<input type="hidden" id="ano" value="{{$ano}}">
+<input type="hidden" id="mes" value="{{$mes}}">
+<input type="hidden" id="corretor" value="{{$corretor}}">
 
 
 @section('content')
@@ -57,8 +59,11 @@
 
             var id_plano = $("#id_plano").val();
             var id_tipo = $("#id_tipo").val();
+            var ano = $("#ano").val();
+            var mes = $("#mes").val();
+            var corretor = $("#corretor").val();
 
-            var url = `http://localhost:8000/admin/gerente/show/${id_plano}/${id_tipo}`;
+            var url = `/admin/gerente/show/${id_plano}/${id_tipo}/${ano}/${mes}/${corretor}`;
             console.log(url);
 
             var taindividual = $(".listardados").DataTable({
@@ -68,7 +73,7 @@
                     "url": "{{asset('traducao/pt-BR.json')}}"
                 },
                 ajax: {
-                    "url":`http://localhost:8000/admin/gerente/show/${id_plano}/${id_tipo}`,
+                    "url":`/admin/gerente/show/${id_plano}/${id_tipo}/${ano}/${mes}/${corretor}`,
                     "dataSrc": ""
                 },
                 "lengthMenu": [50,100,150,200,300,500],

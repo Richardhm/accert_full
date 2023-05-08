@@ -184,7 +184,6 @@
     <div>
         <ul class="list_abas">
             <li data-id="aba_contratos" class="ativo">Contratos</li>
-
             <li data-id="aba_individual">Individual</li>
             <li data-id="aba_coletivo">Coletivo</li>
             <li data-id="aba_empresarial" style="margin-right:1%;">Empresarial</li>
@@ -1534,6 +1533,370 @@
                 $('#carteirinhaModal').modal('show');
 
             });
+
+            var talistartodos = $(".listartodos").DataTable({
+                dom: '<"d-flex justify-content-between"<"#title_individual">ft><t><"d-flex justify-content-between"lp>',
+                order: [[0, 'desc']],
+                "language": {
+                    "url": "{{asset('traducao/pt-BR.json')}}"
+                },
+                ajax: {
+                    "url":"{{ route('financeiro.todos.geralTodosContratosPendentes') }}",
+                    "dataSrc": ""
+                },
+                "lengthMenu": [50,100,150,200,300,500],
+                "ordering": true,
+                "paging": true,
+                "searching": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+               
+                columns: [
+                    {data:"created_at",name:"data",
+                        "createdCell": function (td, cellData, rowData, row, col) {
+                            let datas = cellData.split("T")[0]
+                            let alvo = datas.split("-").reverse().join("/")
+                            $(td).html(alvo)    
+                        },
+                       
+                    },
+                    {
+                        data:"codigo_externo",name:"codigo_externo"
+                    },
+                    {data:"clientes.user.name",name:"corretor",
+                        "createdCell": function (td, cellData, rowData, row, col) {
+                            let palavra = cellData.split(" ");
+                            if(palavra.length >= 3) {
+                                $(td).html(palavra[0]+" "+palavra[1]+"...")
+                            }
+                        }
+                    },
+                    
+                    
+                    {data:"clientes.nome",name:"cliente",
+                        "createdCell":function(td,cellData,rowData,row,col) {
+                            let palavras = cellData.ucWords();
+                            let dados = palavras.split(" ");
+                            if(dados.length >= 4) {
+                                $(td).html(dados[0]+" "+dados[1]+" "+dados[2]+"...");
+                            }
+                            
+                        }
+                    },
+
+
+                    {data:"clientes.cpf",name:"cpf",
+                        "createdCell": function (td, cellData, rowData, row, col) {
+                            let cpf = cellData.substr(0,3)+"."+cellData.substr(3,3)+"."+cellData.substr(6,3)+"-"+cellData.substr(9,2);
+                            $(td).html(cpf);
+                        }
+                    },
+
+                    {data:"clientes.quantidade_vidas",name:"vidas",
+                        
+                    },
+                    
+                    {
+                        data:"valor_plano",name:"valor_plano",
+                        render: $.fn.dataTable.render.number('.', ',', 2, 'R$ ')
+                    },
+                    {data:"comissao.ultima_comissao_paga",name:"vencimento",
+                        "createdCell": function(td,cellData,rowData,row,col) {
+                            if(cellData) {
+                                let alvo = cellData.data.split("-").reverse().join("/");
+                                $(td).html(alvo);
+                            } else {
+                                console.log(rowData);
+                                let datas = rowData.data_boleto.split("-").reverse().join("/");
+                                $(td).html(datas);
+                            }
+                            //console.log(cellData);
+                            //console.log(rowData);
+                            // $(td).html("teste");
+                            // if(cellData == null) {
+                            //     console.log(rowData.clientes.user_id);
+                            // }
+                            
+                            // if(cellData == null) {
+                            //     if(rowData.financeiro.nome == "Finalizado") {
+                            //         $(td).html("Finalizado");
+                            //     } else {
+                            //         $(td).html("Cancelado");
+                            //     }
+                            // } else {
+                                //
+                                
+                            // }
+                        }
+                    },
+                    {data:"financeiro.nome",name:"financeiro"},
+                    {data:"financeiro.nome",name:"ver"}
+                ],
+                "columnDefs": [
+                
+                    {
+                        "targets": 0,   
+                        "width":"2%"
+                    },
+                    {
+                        "targets": 1,   
+                        "width":"5%",
+                    },                 
+                    {
+                        "targets": 2,
+                        "width":"13%",
+                    },
+                    {
+                        "targets": 3,
+                        "width":"20%",  
+                    },
+                    {
+                        "targets": 4,
+                        "width":"10%",      
+                    },
+                    {
+                        "targets": 5,
+                        "width":"5%",       
+                    },
+                    {
+                        "targets":6,
+                        "width":"8%",        
+                    },
+                    {
+                        "targets":7,
+                        "width":"5%",        
+                    },
+                    {
+                        "targets": 8,
+                        "width":"10%",
+                        "createdCell": function (td, cellData, rowData, row, col) {
+                            if(cellData == "Pagamento 1º Parcela") {
+                                $(td).html("Pag. 1º Parcela");        
+                            }
+                            if(cellData == "Pagamento 2º Parcela") {
+                                $(td).html("Pag. 2º Parcela");        
+                            }
+                            if(cellData == "Pagamento 3º Parcela") {
+                                $(td).html("Pag. 3º Parcela");        
+                            }
+                            if(cellData == "Pagamento 4º Parcela") {
+                                $(td).html("Pag. 4º Parcela");        
+                            }
+                            if(cellData == "Pagamento 5º Parcela") {
+                                $(td).html("Pag. 5º Parcela");        
+                            }
+                            if(cellData == "Pagamento 6º Parcela") {
+                                $(td).html("Pag. 6º Parcela");        
+                            }
+                        },
+                    },
+                    
+                    {
+                        "width":"2%",
+                        "targets": 9,
+                        "createdCell": function (td, cellData, rowData, row, col) {
+                            // console.log(cellData);
+                            if(cellData == "Cancelado") {
+                                var id = rowData.id;
+                                $(td).html(`<div class='text-center text-white'>
+                                        <a href="/admin/financeiro/cancelado/detalhes/${id}" class="text-white">  
+                                            <i class="fas fa-ban"></i>
+                                        </a>
+                                    </div>
+                                `);
+
+                                
+                            } else {
+                                var id = rowData.id;
+                                $(td).html(`<div class='text-center text-white'>
+                                        <a href="/admin/financeiro/detalhes/${id}" class="text-white">  
+                                            <i class='fas fa-eye div_info'></i>
+                                        </a>
+                                    </div>
+                                `);
+                            }
+                            
+                        }
+                    }
+               ],
+
+               "drawCallback": function( settings ) {
+                    
+                    if(settings.iDraw >= 3 && settings.sTableId == "tabela_individual") {
+                        var api = this.api();
+                        var intVal = function (i) {
+                            return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+                        };
+
+                        total = api
+                            .column(6)
+                            .data()
+                            .reduce(function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0);
+                        
+                        pageTotal = api
+                            .column(6, { page: 'current' })
+                            .data()
+                            .reduce(function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0);
+                        let total_cal = pageTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});     
+                        let total_br = total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});    
+                        
+                        total_vidas = api.column(5,{ page: 'current' }).data().reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                        total_linhas = api.column(5,{ page: 'current' }).data().count();        
+
+
+
+                        //$("#select_usuario_individual").on('change',function(){
+                            
+                        //});    
+
+                        if($("#select_usuario_individual").val() != "todos") {
+                            $(".total_por_page").html(total_cal);
+                        } else {
+                            $(".total_por_page").html(total_br);
+                        }       
+
+                        if($("#select_usuario_individual").val() != "todos") {
+                            $(".total_por_vida").html(total_vidas);
+                        } else {
+                            //$(".total_por_page").html(total_br);
+                        } 
+
+                        if($("#select_usuario_individual").val() != "todos") {
+                            $(".total_por_orcamento").html(total_linhas);
+                        } else {
+                            //$(".total_por_page").html(total_br);
+                        } 
+                        
+                        
+                    }
+                },
+                "initComplete": function( settings, json ) {
+                    $('#title_individual').html("<h4 style='font-size:1em;margin-top:10px;'>Contratos</h4>");
+                     this.api()
+                       .columns([2])
+                       .every(function () {
+                            var column = this;
+                            var selectUsuarioIndividual = $("#select_usuario_individual");
+                            selectUsuarioIndividual.on('change',function(){
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                if(val != "todos") {
+                                    column.search(val ? '^' + val + '$' : '', true, false).draw();    
+                                } else {
+                                    var val = "";
+                                    column.search(val ? '^' + val + '$' : '', true, false).draw();
+                                }                               
+                            });
+                        })    
+
+                    this.api()
+                       .columns([0])
+                       .every(function () {
+                            var column = this;
+                            var selectAno = $('#escolher_ano')
+                            selectAno.on('change',function(){
+                                
+                                
+                                var vals = $.fn.dataTable.util.escapeRegex($(this).val());
+                                if(vals != "todos") {
+                                    //console.log(vals);
+                                    column.search(vals ? '^' + vals + '$' : '', true, false).draw();    
+                                } else {
+                                    var vals = "";
+                                    column.search(vals ? '^' + vals + '$' : '', true, false).draw();
+                                }                               
+                            });
+                            column
+                                .data()
+                                .unique()
+                                .sort()
+                                .each(function (d, j) {
+                                    //var data = d;
+                                    var dd = new Date(d);
+                                    var ano = dd.getFullYear();
+                                    
+                                    selectAno.append('<option value="' + ano + '">' + ano + '</option>');
+                                });
+
+
+
+
+                            //var selectUsuarioIndividual = $("#select_usuario_individual");
+                            //selectUsuarioIndividual.on('change',function(){
+                                //var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                //console.log($(this).val());
+                                // if(val != "todos") {
+                                //     column.search(val ? '^' + val + '$' : '', true, false).draw();    
+                                // } else {
+                                //     var val = "";
+                                //     column.search(val ? '^' + val + '$' : '', true, false).draw();
+                                // }                               
+                            //});
+                        })    
+                        
+
+
+                },
+                footerCallback: function (row, data, start, end, display) {
+                    var api = this.api();
+ 
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function (i) {
+                        return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+                    };
+ 
+                    // Total over all pages
+                    total = api
+                        .column(6)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                    
+                    total_vidas = api
+                        .column(5)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0); 
+                        
+                    total_linhas = api
+                        .column(5)
+                        .data()
+                        .count();         
+
+
+                    let total_br = total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});   
+                    // Total over this page
+                   $(".total_por_page").html(total_br)
+                   $(".total_por_vida").html(total_vidas);
+                   $(".total_por_orcamento").html(total_linhas);
+ 
+            // Update footer
+                    //$(api.column(4).footer()).html('$' + pageTotal + ' ( $' + total + ' total)');
+                }
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

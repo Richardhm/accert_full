@@ -508,6 +508,37 @@ class FinanceiroController extends Controller
         return $contratos;
     }
 
+    public function geralTodosContratosPendentes(Request $request)
+    {
+        // $comissoes = Comissoes::with('contrato')->get();
+        // return $comissoes;
+        
+        
+        
+        
+        
+        $contratos = Contrato
+            // ::where("plano_id",1)   
+            // ->whereHas('clientes',function($query){
+            //     $query->whereRaw("cateirinha IS NOT NULL");
+            // }) 
+            
+            // ->whereHas('comissao.ultimaComissaoPaga',function($query){
+            //     $query->whereYear("data",2022);
+            //     $query->whereMonth('data','08');
+            // })    
+            ::with(['administradora','financeiro','cidade','comissao','acomodacao','plano','comissao.comissaoAtualFinanceiro','comissao.ultimaComissaoPaga','somarCotacaoFaixaEtaria','clientes','clientes.user','clientes.dependentes'])
+            ->whereYear("data_vigencia",date('Y'))
+            ->whereMonth("data_vigencia",date('m'))
+            //->orderBy("id","desc")
+            ->get();
+
+        return $contratos;
+    }
+
+
+
+
     public function mudarAnoIndividual(Request $request) 
     {
         if(isset($request->mes) && !empty($request->mes) && $request->mes != null) {
@@ -1060,7 +1091,7 @@ class FinanceiroController extends Controller
                 ->where("financeiro_id","!=",12)
                 ->whereHas('comissao.comissoesLancadas',function($query){
                     $query->whereRaw("DATA < CURDATE()");
-                    $query->whereRaw("valor > 0");
+                    //$query->whereRaw("valor > 0");
                     $query->whereRaw("data_baixa IS NULL");
                     $query->groupBy("comissoes_id");
                 })
