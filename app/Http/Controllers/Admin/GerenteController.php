@@ -2385,7 +2385,7 @@ class GerenteController extends Controller
 
 
 
-    public function verDetalheCard($id_plano,$id_tipo,$ano,$mes,$corretor)
+    public function verDetalheCard($id_plano,$id_tipo,$ano="all",$mes="all",$corretor="all")
     {
        
 

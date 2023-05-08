@@ -731,7 +731,7 @@
 
                 <h5 style="margin:0;padding:0;color:#FFF;text-align: center;background-color: #FF8C00;border-top-left-radius: 5px;border-top-right-radius: 5px;padding:4px 0;">Empresarial</h5>
 
-                    <a href="{{route('gerente.contrato.ver.detalhe.card',[3,1])}}" class="d-flex" style="background-color:#FF8C00;color:#FFF;flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[3,1])}}" class="d-flex link_empresarial_um" style="background-color:#FF8C00;color:#FFF;flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
                         
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
@@ -764,7 +764,7 @@
 
                     </a>
 
-                    <a href="{{route('gerente.contrato.ver.detalhe.card',[3,2])}}" class="d-flex" style="background-color:#FF8C00;color:#FFF;flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[3,2])}}" class="d-flex link_empresarial_dois" style="background-color:#FF8C00;color:#FFF;flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
                         
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
@@ -803,7 +803,7 @@
 
                     </a>
 
-                    <a href="{{route('gerente.contrato.ver.detalhe.card',[3,3])}}" class="d-flex" style="background-color:#FF8C00;color:#FFF;flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[3,3])}}" class="d-flex link_empresarial_tres" style="background-color:#FF8C00;color:#FFF;flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
                         
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
@@ -836,7 +836,7 @@
 
                     </a>
 
-                    <a href="{{route('gerente.contrato.ver.detalhe.card',[3,4])}}" class="d-flex" style="background-color:#FF8C00;color:#FFF;flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[3,4])}}" class="d-flex link_empresarial_quatro" style="background-color:#FF8C00;color:#FFF;flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
                        
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
@@ -870,7 +870,7 @@
 
                     </a>
 
-                    <a href="{{route('gerente.contrato.ver.detalhe.card',[3,5])}}" class="d-flex" style="background-color:#FF8C00;color:#FFF;flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[3,5])}}" class="d-flex link_empresarial_cinco" style="background-color:#FF8C00;color:#FFF;flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
                                 <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="qtd_cancelado_empresarial">{{$qtd_cancelado_empresarial}}</span>
@@ -901,7 +901,7 @@
                         </div>
                     </a>
 
-                    <a href="{{route('gerente.contrato.ver.detalhe.card',[3,6])}}" class="d-flex" style="background-color:#FF8C00;color:#FFF;flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
+                    <a href="{{route('gerente.contrato.ver.detalhe.card',[3,6])}}" class="d-flex link_empresarial_seis" style="background-color:#FF8C00;color:#FFF;flex-wrap: wrap;justify-content: space-between;margin:5px 0;border-radius:5px;">
                         <div style="display:flex;flex-basis:100%;line-height:1.2;">
                             <span style="flex-basis:33%;" class="ml-1">
                                 <span style="font-size:1.6em;font-weight:bold;padding-left:10px;" id="qtd_finalizado_empresarial">{{$qtd_finalizado_empresarial}}</span>
@@ -1248,6 +1248,13 @@
                 $('.link_coletivo_quatro').attr("href",`/admin/gerente/ver/2/4/${link_ano}/${link_mes}/${link_cor}`);
                 $('.link_coletivo_cinco').attr("href",`/admin/gerente/ver/2/5/${link_ano}/${link_mes}/${link_cor}`);
                 $('.link_coletivo_seis').attr("href",`/admin/gerente/ver/2/6/${link_ano}/${link_mes}/${link_cor}`);
+
+                $('.link_empresarial_um').attr("href",`/admin/gerente/ver/3/1/${link_ano}/${link_mes}/${link_cor}`)
+                $('.link_empresarial_dois').attr("href",`/admin/gerente/ver/3/2/${link_ano}/${link_mes}/${link_cor}`)
+                $('.link_empresarial_tres').attr("href",`/admin/gerente/ver/3/3/${link_ano}/${link_mes}/${link_cor}`)
+                $('.link_empresarial_quatro').attr("href",`/admin/gerente/ver/3/4/${link_ano}/${link_mes}/${link_cor}`)
+                $('.link_empresarial_cinco').attr("href",`/admin/gerente/ver/3/5/${link_ano}/${link_mes}/${link_cor}`)
+                $('.link_empresarial_seis').attr("href",`/admin/gerente/ver/3/6/${link_ano}/${link_mes}/${link_cor}`)
 
                 $.ajax({
                     url:"{{route('gerente.todos.valores.usuario')}}",
